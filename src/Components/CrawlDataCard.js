@@ -5,12 +5,13 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>{crawlDataItem.item_id}</ItemID>
+          <ItemID>- {crawlDataItem.item_id} -</ItemID>
         </Wrapper>
 
         <Content>
           <div className="title">{crawlDataItem.title}</div>
           <div className="subTitle">{crawlDataItem.subTitle}</div>
+          <div className="writeDate">{crawlDataItem.writeDate}</div>
           <Tags>
             {crawlDataItem.tags.map((tag, i) => {
               return <Chips key={i}>{tag}</Chips>;
@@ -54,6 +55,7 @@ const Card = styled.div`
 const Tags = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 const Content = styled.div`
   margin-left:1rem;
@@ -61,12 +63,11 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 80%;
-  .title {
-    font-size: 24px;
-    margin-bottom: 1rem;
+  .title, .subTitle, .writeDate{
+    margin-bottom:0.5rem;
   }
-  .subTitle {
-    margin-bottom: 1rem;
+  .title{
+    font-size:24px;
   }
 `;
 const Chips = styled.div`
