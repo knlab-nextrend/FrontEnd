@@ -5,7 +5,7 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>- {crawlDataItem.item_id} -</ItemID>
+          <ItemID>{crawlDataItem.item_id}</ItemID>
         </Wrapper>
 
         <Content>
@@ -26,16 +26,15 @@ function CrawlDataCard({ crawlDataItem }) {
   );
 }
 
-const Wrapper = styled.div` 
-  display:flex;
-  justify-content:center;
-  flex-grow:1;
-  &:nth-child(1){
-    font-size:20px;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width:10%;
+  &:nth-child(1) {
+    font-size: 20px;
   }
-`
-const ItemID = styled.div`
 `;
+const ItemID = styled.div``;
 const Card = styled.div`
   display: flex;
   flex-direction: row;
@@ -45,7 +44,7 @@ const Card = styled.div`
   align-items: center;
   padding: 1rem;
   margin: 1rem 0 1rem 0;
-  justify-content:space-between;
+  justify-content: space-between;
   &:hover {
     transition: all 0.2s;
     filter: blur(2px);
@@ -58,16 +57,18 @@ const Tags = styled.div`
   flex-wrap: wrap;
 `;
 const Content = styled.div`
-  margin-left:1rem;
+  margin-left: 1rem;
   flex-grow: 10;
   display: flex;
   flex-direction: column;
-  max-width: 80%;
-  .title, .subTitle, .writeDate{
-    margin-bottom:0.5rem;
+  width:80%;
+  .title,
+  .subTitle,
+  .writeDate {
+    margin-bottom: 0.5rem;
   }
-  .title{
-    font-size:24px;
+  .title {
+    font-size: 24px;
   }
 `;
 const Chips = styled.div`
@@ -75,7 +76,7 @@ const Chips = styled.div`
   border-radius: 32px;
   font-size: 13px;
   background-color: #d6d6d6;
-  margin: 3px;
+  margin: 3px 3px 3px 0px;
 `;
 
 const Dot = styled.div`

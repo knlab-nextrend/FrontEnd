@@ -1,28 +1,26 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { AiOutlineSearch, AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 
 function SearchOption({ Search }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
-
-  const [subscribedOption, setSubscribedOption] = useState([
-    { value: 0, label: "전체" },
-    { value: 1, label: "기조회" },
-    { value: 2, label: "미조회" },
-  ]);
-
+  const [startDate, setStartDate] = useState("1970-01-01");
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
   const [keyword, setKeyword] = useState("");
-  const [duration, setDuration] = useState("전체");
   const [itemID, setItemID] = useState(0);
   const [lang, setLang] = useState("전체");
   const [subscribed, setSubscribed] = useState(0);
+  const [subscribedOption, setSubscribedOption] = useState([
+    { value: 0, label: "전체", color: "grey" },
+    { value: 1, label: "기조회", color: "#6DAF44" },
+    { value: 2, label: "미조회", color: "#F44336" },
+  ]);
 
   const _keywordHandler = (e) => {
     setKeyword(e.target.value);
-  };
-  const _durationHandler = (e) => {
-    setDuration(e.target.value);
   };
   const _itemIDHandler = (e) => {
     setItemID(e.target.value);
@@ -30,14 +28,32 @@ function SearchOption({ Search }) {
   const _langHandler = (e) => {
     setLang(e.target.value);
   };
-  const _subscribedHandler = (e) => {
-    setSubscribed(e.target.value);
+  const _subscribedHandler = (value) => {
+    setSubscribed(value);
+  };
+  const _calcDateDifference = (start, end) => {
+    if (Date.parse(new Date()) - Date.parse(end) < 0) { // 현재 시점에서 미래의 날짜는 선택할 수 없음
+      return false;
+    }
+    return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
+  };
+  const _startDateHandler = (e) => {
+    setStartDate(e.target.value);
+  };
+  const _endDateHandler = (e) => {
+    if (_calcDateDifference(startDate, e.target.value)) {
+      setEndDate(e.target.value);
+    } else {
+      alert("시간 선택이 잘못되었습니다.");
+      setEndDate(new Date().toISOString().substring(0, 10));
+    }
   };
   const _OptionReset = () => {
     setKeyword("");
-    setDuration("전체");
+    setStartDate("1970-01-01"); // 전체 기간을 기준으로 하기 위해서 
+    setEndDate(new Date().toISOString().substring(0, 10));
     setItemID(0);
-    setLang("전체");
+    setLang("all");
     setSubscribed(0);
   };
 
@@ -57,7 +73,7 @@ function SearchOption({ Search }) {
           <SearchButton
             color="#435269"
             onClick={() => {
-              Search(keyword, duration, itemID, lang, subscribed);
+              Search(keyword, startDate, endDate, itemID, lang, subscribed);
             }}
           >
             검색
@@ -86,44 +102,63 @@ function SearchOption({ Search }) {
         </SearchBarContainer>
         {optionIsOpen && (
           <OptionContainer>
-            <CustomInputContainer>
-              <p>기간</p>
-              <select value={duration} onChange={_durationHandler}>
-                <option value="전체">전체</option>
-                <option value="최근 1주일">최근 1주일</option>
-                <option value="최근 1달">최근 1달</option>
-                <option value="최근 1년">최근 1년</option>
-              </select>
-            </CustomInputContainer>
-            <CustomInputContainer>
-              <p>ITEM ID</p>
-              <input value={itemID} type="number" min="0" onChange={_itemIDHandler} />
-            </CustomInputContainer>
-            <CustomInputContainer>
-              <p>언어</p>
-              <select value={lang} onChange={_langHandler}>
-                <option value="전체">전체</option>
-                <option value="한국">한국</option>
-                <option value="미국">미국</option>
-                <option value="일본">일본</option>
-              </select>
-            </CustomInputContainer>
-            <CustomInputContainer>
-              <p>조회 여부</p>
-              <ButtonGroup>
-                {subscribedOption.map((item, i) => {
-                  return (
-                    <button
-                      key={i}
-                      value={item.value}
-                      onClick={_subscribedHandler}
-                    >
-                      {item.label}
-                    </button>
-                  );
-                })}
-              </ButtonGroup>
-            </CustomInputContainer>
+            <OptionRow>
+              <OptionCol>
+                <OptionTitle>기간</OptionTitle>
+                <OptionInput
+                  onChange={_startDateHandler}
+                  value={startDate}
+                  type="date"
+                ></OptionInput>
+                <OptionInput
+                  onChange={_endDateHandler}
+                  value={endDate}
+                  last
+                  type="date"
+                ></OptionInput>
+              </OptionCol>
+            </OptionRow>
+            <OptionRow>
+              <OptionCol>
+                <OptionTitle>ITEM ID</OptionTitle>
+                <OptionInput
+                  value={itemID}
+                  type="number"
+                  min="0"
+                  onChange={_itemIDHandler}
+                ></OptionInput>
+              </OptionCol>
+              <OptionCol>
+                <OptionTitle>언어</OptionTitle>
+                <OptionSelect value={lang} onChange={_langHandler}>
+                  <option value="all">전체</option>
+                  <option value="ko">한국</option>
+                  <option value="us">미국</option>
+                  <option value="jp">일본</option>
+                  <option value="other">그외</option>
+                </OptionSelect>
+              </OptionCol>
+            </OptionRow>
+            <OptionRow>
+              <OptionCol>
+                <OptionTitle>조회 여부</OptionTitle>
+                <OptionRadioGroup>
+                  {subscribedOption.map((item, i) => {
+                    return (
+                      <OptionButton
+                        key={i}
+                        color={item.color}
+                        value={item.value}
+                        onClick={() => {_subscribedHandler(item.value)}}
+                        active={subscribed === item.value}
+                      >
+                        {item.label}
+                      </OptionButton>
+                    );
+                  })}
+                </OptionRadioGroup>
+              </OptionCol>
+            </OptionRow>
             <ResetButton onClick={_OptionReset}>
               <BiRefresh size="24" />
               검색 조건 초기화
@@ -139,27 +174,129 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
+  margin: 2rem 0 2rem 0;
+  width: 960px;
+  justify-content: center;
 `;
 const SearchBarContainer = styled.div`
   display: flex;
+  width: 100%;
 `;
 const SearchBar = styled.div`
   height: 3rem;
   display: flex;
-  width: 500px;
   align-items: center;
   padding-left: 1rem;
+  width: 100%;
   border: solid 1px #d6d6d6;
   input {
     border: none;
-    width: 100%;
     &:focus {
       outline: none;
     }
   }
 `;
+const SearchButton = styled.button`
+  min-width: 200px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  background-color: ${(props) => props.color || "grey"};
+`;
 
+const OptionContainer = styled.div`
+  padding: 1rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: solid 1px #d6d6d6;
+`;
+
+const OptionRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 45px;
+  margin: 1rem;
+`;
+const OptionCol = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 1rem 0 1rem;
+`;
+const OptionTitle = styled.div`
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  background-color: #d6d6d6;
+  font-size: 12px;
+  margin-right: 0.5rem;
+`;
+
+const OptionInput = styled.input`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border: solid 1px #d6d6d6;
+  margin: 0 0.5rem 0 0.5rem;
+  padding-left: 0.5rem;
+`;
+
+const OptionSelect = styled.select`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border: solid 1px #d6d6d6;
+  margin: 0 0.5rem 0 0.5rem;
+  padding-left: 0.5rem;
+`;
+
+const OptionRadioGroup = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  input[type="radio"] {
+    display: none;
+  }
+`;
+
+const OptionButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+  background-color: white;
+  color: ${(props) => props.color || "black"};
+  border: solid 1px ${(props) => props.color || "black"};
+  margin: 0 0.5rem 0 0.5rem;
+  transition: all 0.2s;
+
+  ${(props) =>
+    props.active &&
+    css`
+      color:white;
+      background-color: ${(props) => props.color || "black"};
+      font-weight: bold;
+    `};
+
+  &:hover {
+    color: white;
+    font-weight: bold;
+    background-color: ${(props) => props.color || "black"};
+  }
+`;
 const ResetButton = styled.button`
   margin: 1rem;
   max-width: 150px;
@@ -172,61 +309,6 @@ const ResetButton = styled.button`
   background-color: #d6d6d6;
   &:hover {
     background-color: #eee;
-  }
-`;
-const SearchButton = styled.button`
-  width: 150px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-  background-color: ${(props) => props.color || "grey"};
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  width: 100%;
-  button {
-    width: 100%;
-    height: 40px;
-    border: solid 1px #d6d6d6;
-    background-color: white;
-    cursor: pointer;
-  }
-`;
-const OptionContainer = styled.div`
-  padding-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 816px;
-  border: solid 1px #d6d6d6;
-`;
-
-const CustomInputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0 2rem 0 2rem;
-  position:relative;
-  p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    height: 45px;
-    background-color: #d6d6d6;
-    display: center;
-    margin-right: 1rem;
-    font-size: 12px;
-  }
-  input,
-  select {
-    padding-left: 0.5rem;
-    height: 45px;
-    width: 100%;
-    border: solid 1px #d6d6d6;
-  }
-  input {
-    height: 40px;
   }
 `;
 
