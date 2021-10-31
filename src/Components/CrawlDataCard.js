@@ -5,7 +5,7 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>{crawlDataItem.item_id}</ItemID>
+          <ItemID>{crawlDataItem.itemId}</ItemID>
         </Wrapper>
 
         <Content>

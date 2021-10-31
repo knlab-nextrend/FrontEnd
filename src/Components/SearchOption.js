@@ -50,7 +50,7 @@ function SearchOption({ Search }) {
   };
   const _OptionReset = () => {
     setKeyword("");
-    setStartDate("1970-01-01"); // 전체 기간을 기준으로 하기 위해서 
+    setStartDate(new Date().toISOString().substring(0, 10));
     setEndDate(new Date().toISOString().substring(0, 10));
     setItemID(0);
     setLang("all");

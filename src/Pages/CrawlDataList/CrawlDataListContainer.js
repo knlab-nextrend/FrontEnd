@@ -1,135 +1,44 @@
 import React, { useEffect, useState } from "react";
-import CrawlDataList from "./CrawlDataList";
 import { useParams } from "react-router-dom";
-function CrawlDataListContainer() {
-  // 여기서
-  const crawlData = [
-    {
-      item_id: 1,
-      title: "크롤데이터 스크리닝",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 1,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 2,
-      title: "크롤데이터 스크리닝",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 1,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 3,
-      title: "크롤데이터 큐레이션",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태태그1태그1태그1태그1태그1태그1태그1그3"],
-      subscribed: true,
-      status: 5,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 4,
-      title: "크롤데이터 1차정제",
-      subTitle: "부제목",
-      tags: ["태태그1태그1그1", "태태그1그2", "태태그1태그1태그1태그1그3"],
-      subscribed: false,
-      status: 2,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 5,
-      title: "크롤데이터 2차정제",
-      subTitle: "부제목",
-      tags: ["태그1", "태태그1태그1태그1태그1그2", "태그3"],
-      subscribed: true,
-      status: 3,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 6,
-      title: "크롤데이터 등록",
-      subTitle: "부제목",
-      tags: [
-        "태그1",
-        "태태그1태그1태그1태그1그2",
-        "태그태그1태그1태그1태그1태그13",
-      ],
-      subscribed: false,
-      status: 4,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 7,
-      title: "크롤데이터 1차정제",
-      subTitle: "부제목",
-      tags: [
-        "태그1",
-        "태그태그1태그12",
-        "태그3",
-        "태태그1태그1그1",
-        "태그2",
-        "태태그1태그1그3",
-      ],
-      subscribed: true,
-      status: 2,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 8,
-      title: "크롤데이터 2차정제",
-      subTitle: "부제목",
-      tags: [
-        "태그1",
-        "태그태그1태그1태그1태그1태그12",
-        "태그3",
-        "태그1태그1태그1태그1",
-        "태그2",
-        "태그3",
-      ],
-      subscribed: false,
-      status: 3,
-      writeDate: "2021-10-30",
-    },
-    {
-      item_id: 9,
-      title: "크롤데이터 등록",
-      subTitle: "부제목",
-      tags: [
-        "태그1",
-        "태그1",
-        "태그1",
-        "태그1",
-        "태그1",
-        "태그1",
-        "태그2",
-        "태그3",
-        "태그1태그1태그1",
-        "태그2",
-        "태그3태그1",
-        "태그1",
-        "태그2",
-        "태그3",
-      ],
-      subscribed: true,
-      status: 4,
-      writeDate: "2021-10-30",
-    },
-  ];
+import data from "../../Data/data.json";
+import CrawlDataList from "./CrawlDataList";
 
+function CrawlDataListContainer() {
+  /* dummy 데이터 */
+  const [dummyData, setDummyData] = useState(data.data);
+
+  /* 현재 보여질 데이터 */
   const [statusCrawlData, setStatusCrawlData] = useState([]);
-  const [resultCount, setResultCount] = useState(12);
+  /* 검색 결과 건수 */
+  const [resultCount, setResultCount] = useState(0);
+
+  /* [스크리닝, 1차, 2차, 등록] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
 
-  useEffect(() => {
-    const statusData = crawlData.filter((item) => {
+  /* 페이지네이션 */
+  const [dcCount, setDcCount] = useState(77);
+  const [pageNo, setPageNo] = useState(1);
+  const [listSize, setListSize] = useState(10);
+
+  /* 데이터 불러오기 */
+  const dataFetch = () => {
+    const statusData = dummyData.filter((item) => {
       return item.status === Number(statusCode);
     });
     setStatusCrawlData(statusData);
+  };
+
+  useEffect(() => {
+    dataFetch();
+    setResultCount(statusCrawlData.length);
   }, [statusCode]);
+
+  useEffect(() => {
+    setResultCount(statusCrawlData.length);
+    setDcCount(statusCrawlData.length);
+  }, [statusCrawlData]);
+
+
   const Search = (
     keyword = "",
     startDate,
@@ -146,8 +55,12 @@ function CrawlDataListContainer() {
       <CrawlDataList
         statusCode={statusCode}
         Search={Search}
-        crawlData={statusCrawlData}
+        statusCrawlData={statusCrawlData}
         resultCount={resultCount}
+        dcCount={dcCount}
+        listSize={listSize}
+        pageNo={pageNo}
+        setPageNo={setPageNo}
       />
     </>
   );

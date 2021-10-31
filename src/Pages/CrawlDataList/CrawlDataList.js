@@ -1,8 +1,11 @@
 import React from "react";
+import styled from "styled-components";
+
 import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
-import styled from "styled-components";
-function CrawlDataList({ statusCode, crawlData, Search, resultCount }) {
+import Pagenation from "../../Components/Pagenation";
+
+function CrawlDataList({ dcCount,listSize,pageNo,setPageNo,statusCrawlData, Search, resultCount }) {
   return (
     <>
       <Wrapper>
@@ -12,10 +15,11 @@ function CrawlDataList({ statusCode, crawlData, Search, resultCount }) {
           <p>카드 클릭 시 편집 화면이 뜹니다.</p>
         </SearchResultTitle>
         <SearchResult>
-          {crawlData.map((item, i) => {
+          {statusCrawlData.map((item, i) => {
             return <CrawlDataCard key={i} crawlDataItem={item} />;
           })}
         </SearchResult>
+        <Pagenation dcCount={dcCount} listSize={listSize} pageNo={pageNo} setPageNo={setPageNo}/>
       </Wrapper>
     </>
   );
