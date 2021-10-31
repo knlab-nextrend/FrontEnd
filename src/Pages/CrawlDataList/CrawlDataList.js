@@ -5,13 +5,21 @@ import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
 import Pagenation from "../../Components/Pagenation";
 
-function CrawlDataList({ dcCount,listSize,pageNo,setPageNo,statusCrawlData, Search, resultCount }) {
+function CrawlDataList({
+  dcCount,
+  listSize,
+  pageNo,
+  setPageNo,
+  statusCrawlData,
+  Search,
+  resultCount,
+}) {
   return (
     <>
       <Wrapper>
         <SearchOption Search={Search} />
         <SearchResultTitle>
-          <p>"keyword" 검색결과 ({resultCount}건)</p>
+          <p>검색결과 ({resultCount}건)</p>
           <p>카드 클릭 시 편집 화면이 뜹니다.</p>
         </SearchResultTitle>
         <SearchResult>
@@ -19,12 +27,16 @@ function CrawlDataList({ dcCount,listSize,pageNo,setPageNo,statusCrawlData, Sear
             return <CrawlDataCard key={i} crawlDataItem={item} />;
           })}
         </SearchResult>
-        <Pagenation dcCount={dcCount} listSize={listSize} pageNo={pageNo} setPageNo={setPageNo}/>
+        <Pagenation
+          dcCount={dcCount}
+          listSize={listSize}
+          pageNo={pageNo}
+          setPageNo={setPageNo}
+        />
       </Wrapper>
     </>
   );
 }
-
 
 const Wrapper = styled.div`
   width: 100%;
@@ -46,6 +58,5 @@ const SearchResultTitle = styled.div`
 const SearchResult = styled.div`
   width: 100%;
 `;
-
 
 export default CrawlDataList;

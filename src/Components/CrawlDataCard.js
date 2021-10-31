@@ -5,7 +5,7 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>{crawlDataItem.itemId}</ItemID>
+          <ItemID>{crawlDataItem.itemID}</ItemID>
         </Wrapper>
 
         <Content>
@@ -66,6 +66,7 @@ const Content = styled.div`
   .subTitle,
   .writeDate {
     margin-bottom: 0.5rem;
+    word-break:break-all;
   }
   .title {
     font-size: 24px;

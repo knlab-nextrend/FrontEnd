@@ -17,7 +17,7 @@ function App() {
       </aside>
       <Section>
         <Route path="/crawl/list/:statusCode">
-          <Tab />
+        <Tab />
           <CrawlDataListContainer />
         </Route>
       </Section>

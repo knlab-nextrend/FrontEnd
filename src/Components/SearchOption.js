@@ -10,8 +10,8 @@ function SearchOption({ Search }) {
     new Date().toISOString().substring(0, 10)
   );
   const [keyword, setKeyword] = useState("");
-  const [itemID, setItemID] = useState(0);
-  const [lang, setLang] = useState("전체");
+  const [itemID, setItemID] = useState("");
+  const [lang, setLang] = useState("");
   const [subscribed, setSubscribed] = useState(0);
   const [subscribedOption, setSubscribedOption] = useState([
     { value: 0, label: "전체", color: "grey" },
@@ -52,8 +52,8 @@ function SearchOption({ Search }) {
     setKeyword("");
     setStartDate(new Date().toISOString().substring(0, 10));
     setEndDate(new Date().toISOString().substring(0, 10));
-    setItemID(0);
-    setLang("all");
+    setItemID("");
+    setLang("");
     setSubscribed(0);
   };
 
@@ -123,15 +123,14 @@ function SearchOption({ Search }) {
                 <OptionTitle>ITEM ID</OptionTitle>
                 <OptionInput
                   value={itemID}
-                  type="number"
-                  min="0"
+                  type="text"
                   onChange={_itemIDHandler}
                 ></OptionInput>
               </OptionCol>
               <OptionCol>
                 <OptionTitle>언어</OptionTitle>
                 <OptionSelect value={lang} onChange={_langHandler}>
-                  <option value="all">전체</option>
+                  <option value={""}>전체</option>
                   <option value="ko">한국</option>
                   <option value="us">미국</option>
                   <option value="jp">일본</option>
