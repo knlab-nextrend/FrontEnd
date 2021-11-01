@@ -27,8 +27,8 @@ function CrawlDataListContainer() {
     _rawStatusCrawlData.forEach((item, index) => {
       const _title = item.dc_title_kr;
       const _subTitle = item.dc_title_or;
-      const _keywords = item.dc_keyword.split(" ");
-      const _writeDate = item.dc_dt_write.split("T")[0];
+      const _keywords = item.dc_keyword;
+      const _writeDate = item.dc_dt_collect.split("T")[0];
       const _subscribed = false;
       const _itemId = Number(item.item_id);
       const _status = item.stat;

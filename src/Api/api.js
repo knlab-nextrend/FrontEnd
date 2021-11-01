@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const ip = "nextrend.kr:5000";
-
+const headers = { headers: { "Access-Control-Allow-Origin": "*" } };
+/* 크롤데이터 등록에서 사용하는 통신 함수 */
 const CrawlDataFetchApi = (
   statusCode,
   listSize,
@@ -36,12 +36,16 @@ const CrawlDataFetchApi = (
   if (subscribed !== "") {
     params["subscribed"] = subscribed;
   }
-  console.log(params);
-  return axios.get(
-    `/crawl/list/${statusCode}`,
-    { params: params },
-    { headers: { "Access-Control-Allow-Origin": "*" } }
-  );
+  return axios.get(`/crawl/list/${statusCode}`, { params: params }, headers);
+};
+
+/* 로그인 할 때 사용하는 통신 함수 */
+const LoginApi = (id, pw) => {
+  let body = {
+    id,
+    pw,
+  };
+  return axios.post(`/login`, { body: body }, headers);
 };
 
 export { CrawlDataFetchApi };
