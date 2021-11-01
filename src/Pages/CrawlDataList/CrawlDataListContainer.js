@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import data from "../../Data/data.json";
 import CrawlDataList from "./CrawlDataList";
-import { CrawlDataFetchApi } from "../../Api/api";
+import { CrawlDataFetchApi } from "../../Utils/api";
 
 function CrawlDataListContainer() {
   /* dummy 데이터 */

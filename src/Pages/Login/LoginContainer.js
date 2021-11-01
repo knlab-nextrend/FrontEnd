@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Login from "./Login";
+import { LoginApi } from "../../Utils/api";
+import { useHistory } from "react-router-dom";
 
-function LoginContainer() {
+function LoginContainer({ setIsLogin }) {
+  const history = useHistory();
   const [inputID, setInputID] = useState("");
   const [inputPW, setInputPW] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -20,11 +23,14 @@ function LoginContainer() {
       setErrorMsg("비밀번호를 입력해주세요.");
     } else {
       setErrorMsg("");
-      LoginApi(inputId, inputPW).then((res) => {
-        console.log(res);
-      }).catch((err)=>{
-          console.log(err)
-      });
+      setIsLogin(true);
+      history.push("/crawl/list/0")
+
+      //   LoginApi(inputID, inputPW).then((res) => {
+      //     console.log(res);
+      //   }).catch((err)=>{
+      //       console.log(err)
+      //   });
     }
   };
   return (
@@ -38,4 +44,5 @@ function LoginContainer() {
     </>
   );
 }
+
 export default LoginContainer;

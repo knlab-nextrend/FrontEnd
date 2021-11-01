@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const headers = { headers: { "Access-Control-Allow-Origin": "*" } };
+
 /* 크롤데이터 등록에서 사용하는 통신 함수 */
 const CrawlDataFetchApi = (
   statusCode,
@@ -40,12 +41,12 @@ const CrawlDataFetchApi = (
 };
 
 /* 로그인 할 때 사용하는 통신 함수 */
-const LoginApi = (id, pw) => {
+const LoginApi = (userID, userPW) => {
   let body = {
-    id,
-    pw,
+    userID,
+    userPW,
   };
-  return axios.post(`/login`, { body: body }, headers);
+  return axios.post(`/nextrend/login`, body, headers);
 };
 
-export { CrawlDataFetchApi };
+export { CrawlDataFetchApi, LoginApi };
