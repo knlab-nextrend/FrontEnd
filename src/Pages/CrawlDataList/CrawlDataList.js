@@ -4,10 +4,20 @@ import styled from "styled-components";
 import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
 import Pagenation from "../../Components/Pagenation";
+import Tab from "../../Components/Tab";
 
-function CrawlDataList({dcCount,listSize,pageNo,setPageNo, statusCrawlData,Search}) {
+function CrawlDataList({
+  statusCode,
+  dcCount,
+  listSize,
+  pageNo,
+  setPageNo,
+  statusCrawlData,
+  Search,
+}) {
   return (
     <>
+      <Tab statusCode={statusCode}></Tab>
       <Wrapper>
         <SearchOption Search={Search} />
         <SearchResultTitle>
@@ -31,17 +41,17 @@ function CrawlDataList({dcCount,listSize,pageNo,setPageNo, statusCrawlData,Searc
 }
 
 const Wrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 5rem 0 5rem;
 `;
 const SearchResultTitle = styled.div`
   width: 100%;
   p {
     &:nth-child(1) {
       font-size: 20px;
-      font-weight:bold;
+      font-weight: bold;
     }
     &:nth-child(2) {
       font-size: 14px;

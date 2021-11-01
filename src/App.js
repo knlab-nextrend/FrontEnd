@@ -1,33 +1,35 @@
 import React from "react";
-import Tab from "./Components/Tab";
-import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
 import { Route } from "react-router-dom";
-import styled from 'styled-components'
+import styled from "styled-components";
 
+import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
+import Header from "./Components/Header";
+import AsideMenuBar from "./Components/AsideMenuBar";
+import Footer from "./Components/Footer";
 function App() {
   return (
     <>
-      <header>
-        <div>
-          <img src="http://nextrend.kr/images/logo3.jpg" width="300px" />
-        </div>
-      </header>
-      <aside>
-        <div></div>
-      </aside>
-      <Section>
-        <Route path="/crawl/list/:statusCode">
-        <Tab />
-          <CrawlDataListContainer />
-        </Route>
-      </Section>
+      <Header />
+      <Body>
+        <AsideMenuBar />
+        <Section>
+          <Route path="/crawl/list/:statusCode">
+            <CrawlDataListContainer />
+          </Route>
+        </Section>
+      </Body>
+      <Footer />
     </>
   );
 }
 
-const Section= styled.div` 
-  width:90%;
-  margin:0 auto;
-`
+const Body = styled.div`
+  display: grid;
+  padding-top: 6.5rem; // header 때문에
+  grid-template-columns: 1fr 8fr;
+`;
+const Section = styled.section`
+  width: 100%;
+`;
 
 export default App;
