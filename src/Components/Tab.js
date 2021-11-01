@@ -5,16 +5,16 @@ function Tab() {
   const history = useHistory();
   const { statusCode } = useParams();
   const MenuList = [
-    { status: 1, name: "스크리닝" },
-    { status: 2, name: "1차 정제" },
-    { status: 3, name: "2차 정제" },
-    { status: 4, name: "등록" },
+    { status: 0, name: "1차 스크리닝" },
+    { status: 1, name: "1차 스크리닝 보류" },
+    { status: 2, name: "2차 정제" },
+    { status: 3, name: "2차 정제 보류" },
   ];
   const [index, setIndex] = useState(1);
 
   useEffect(() => {
     setIndex(Number(statusCode));
-  }, []);
+  }, [statusCode]);
 
   return (
     <>
