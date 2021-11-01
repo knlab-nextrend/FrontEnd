@@ -10,7 +10,7 @@ function SearchOption({ Search }) {
     new Date().toISOString().substring(0, 10)
   );
   const [keyword, setKeyword] = useState("");
-  const [itemID, setItemID] = useState("");
+  const [itemId, setItemId] = useState("");
   const [lang, setLang] = useState("");
   const [subscribed, setSubscribed] = useState(0);
   const [subscribedOption, setSubscribedOption] = useState([
@@ -22,8 +22,8 @@ function SearchOption({ Search }) {
   const _keywordHandler = (e) => {
     setKeyword(e.target.value);
   };
-  const _itemIDHandler = (e) => {
-    setItemID(e.target.value);
+  const _itemIdHandler = (e) => {
+    setItemId(e.target.value);
   };
   const _langHandler = (e) => {
     setLang(e.target.value);
@@ -52,7 +52,7 @@ function SearchOption({ Search }) {
     setKeyword("");
     setStartDate(new Date().toISOString().substring(0, 10));
     setEndDate(new Date().toISOString().substring(0, 10));
-    setItemID("");
+    setItemId("");
     setLang("");
     setSubscribed(0);
   };
@@ -73,7 +73,7 @@ function SearchOption({ Search }) {
           <SearchButton
             color="#435269"
             onClick={() => {
-              Search(keyword, startDate, endDate, itemID, lang, subscribed);
+              Search(keyword, startDate, endDate, itemId, lang, subscribed);
             }}
           >
             검색
@@ -122,9 +122,9 @@ function SearchOption({ Search }) {
               <OptionCol>
                 <OptionTitle>ITEM ID</OptionTitle>
                 <OptionInput
-                  value={itemID}
+                  value={itemId}
                   type="text"
-                  onChange={_itemIDHandler}
+                  onChange={_itemIdHandler}
                 ></OptionInput>
               </OptionCol>
               <OptionCol>

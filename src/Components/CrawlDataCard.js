@@ -5,18 +5,18 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>{crawlDataItem.itemID}</ItemID>
+          <ItemID>{crawlDataItem.itemId}</ItemID>
         </Wrapper>
 
         <Content>
           <div className="title">{crawlDataItem.title}</div>
           <div className="subTitle">{crawlDataItem.subTitle}</div>
           <div className="writeDate">{crawlDataItem.writeDate}</div>
-          <Tags>
-            {crawlDataItem.tags.map((tag, i) => {
-              return <Chips key={i}>{tag}</Chips>;
+          <Keywords>
+            {crawlDataItem.keywords.map((keyword, i) => {
+              return <Chips key={i}>{keyword}</Chips>;
             })}
-          </Tags>
+          </Keywords>
         </Content>
         <Wrapper>
           <Dot subscribed={crawlDataItem.subscribed}></Dot>
@@ -29,13 +29,14 @@ function CrawlDataCard({ crawlDataItem }) {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  width:10%;
+  width: 10%;
   &:nth-child(1) {
     font-size: 20px;
   }
 `;
 const ItemID = styled.div``;
 const Card = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   background-color: white;
@@ -51,7 +52,7 @@ const Card = styled.div`
     background-color: #eee;
   }
 `;
-const Tags = styled.div`
+const Keywords = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -61,12 +62,12 @@ const Content = styled.div`
   flex-grow: 10;
   display: flex;
   flex-direction: column;
-  width:80%;
+  width: 80%;
   .title,
   .subTitle,
   .writeDate {
     margin-bottom: 0.5rem;
-    word-break:break-all;
+    word-break: break-all;
   }
   .title {
     font-size: 24px;

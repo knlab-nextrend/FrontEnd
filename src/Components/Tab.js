@@ -14,7 +14,7 @@ function Tab() {
 
   useEffect(() => {
     setIndex(Number(statusCode));
-  }, []);
+  }, [statusCode]);
 
   return (
     <>

@@ -62,6 +62,7 @@ function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
         {currentPageNoArray.map((item, i) => {
           return (
             <PagenationButton
+              key={i}
               value={item}
               onClick={_handlerPageNo}
               active={item === pageNo}
@@ -83,12 +84,26 @@ const PagenationContainer = styled.div`
 `;
 const PagenationButton = styled.button`
   margin: 0.5rem;
+  color:white;
+  font-weight:bold;
   padding: 1rem;
-  background-color: ${(props) => (props.active ? "#ff9800" : "#ffeb3b")};
+  background-color: ${(props) => (props.active ? "#113241" : "#32677F")};
   cursor: pointer;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+  &:hover{
+    filter:brightness(150%);
+    transition : all 0.5s;
+  }
+  &:active{
+    filter:brightness(50%);
+    transition : all 0.2s;
+  }
 `;
 
 const NextPrevButton = styled(PagenationButton)`
-  background-color: grey;
+  background-color: #d6d6d6;
+  color:black;
 `;
 export default Pagenation;

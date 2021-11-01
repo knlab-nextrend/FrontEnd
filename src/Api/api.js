@@ -9,8 +9,8 @@ const CrawlDataFetchApi = (
   keyword = "",
   startDate = "",
   endDate = "",
-  itemID = "",
-  language = "",
+  itemId = "",
+  lang = "",
   subscribed = ""
 ) => {
   let params = {
@@ -27,16 +27,15 @@ const CrawlDataFetchApi = (
   if (endDate !== "") {
     params["endDate"] = endDate;
   }
-  if (itemID !== "") {
-    params["itemID"] = itemID;
+  if (itemId !== "") {
+    params["itemId"] = itemId;
   }
-  if (language !== "") {
-    params["language"] = language;
+  if (lang !== "") {
+    params["lang"] = lang;
   }
   if (subscribed !== "") {
     params["subscribed"] = subscribed;
   }
-  console.log(location.origin);
   console.log(params);
   return axios.get(
     `/crawl/list/${statusCode}`,
