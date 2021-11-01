@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
@@ -13,9 +13,11 @@ function App() {
       <Body>
         <AsideMenuBar />
         <Section>
-          <Route path="/crawl/list/:statusCode">
-            <CrawlDataListContainer />
-          </Route>
+          <Switch>
+            <Route path="/crawl/list/:statusCode">
+              <CrawlDataListContainer />
+            </Route>
+          </Switch>
         </Section>
       </Body>
       <Footer />

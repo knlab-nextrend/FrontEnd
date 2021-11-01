@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
+import {useHistory} from 'react-router-dom'
 import { RiUserSettingsFill, RiDashboardFill } from "react-icons/ri";
 import { MdViewHeadline, MdOutlineAdd, MdSettings } from "react-icons/md";
 
 function AsideMenuBar() {
+  let history = useHistory();
   const [subMenuToggle, setSubMenuToggle] = useState(false);
   const _subMenuToggleHandler = () => {
     setSubMenuToggle(!subMenuToggle);
   };
+
+  const _goDashboard = ()=>{history.push("/dashborad")}
+  const _goUserManagement = ()=>{history.push("/userManagement")}
+  const _goSingleDataRegister = ()=>{history.push("/dataRegister/single")}
+  const _goExcelDataRegister = ()=>{history.push("/dataRegister/excel")}
+  const _goDocumentList = ()=>{history.push("/docs/list")}
+  const _goCrawlDataList = ()=>{history.push("/crawl/list/0")}
+  const _goCrawlCurationDataList = ()=>{history.push("/crawl/list/0")} // ... 라우터 이름을 뭘로하지 ... 
+  
   return (
     <>
       <AsideMenuBarContainer>
