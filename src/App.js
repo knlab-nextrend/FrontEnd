@@ -16,7 +16,7 @@ import PublicRoute from "./RouteComponents/PublicRoute";
 import PrivateRoute from "./RouteComponents/PrivateRoute";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   return (
     <>
       {isLogin ? (
@@ -26,7 +26,7 @@ function App() {
             <AsideMenuBar />
             <Section>
               <Switch>
-                <PrivateRoute isLogin={isLogin} path="/crawl/list/:statusCode">
+                <PrivateRoute isLogin={isLogin} path="/crawl/list/:statusCode" exact>
                   <CrawlDataListContainer />
                 </PrivateRoute>
               </Switch>
@@ -35,7 +35,7 @@ function App() {
           <Footer />
         </>
       ) : (
-        <PublicRoute restricted={true} path="/login">
+        <PublicRoute isLogin={isLogin} restricted={true} path="/login" exact>
           <LoginContainer setIsLogin={setIsLogin}/>
         </PublicRoute>
       )}

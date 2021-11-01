@@ -23,14 +23,20 @@ function LoginContainer({ setIsLogin }) {
       setErrorMsg("비밀번호를 입력해주세요.");
     } else {
       setErrorMsg("");
-      setIsLogin(true);
-      history.push("/crawl/list/0")
-
-      //   LoginApi(inputID, inputPW).then((res) => {
-      //     console.log(res);
-      //   }).catch((err)=>{
-      //       console.log(err)
-      //   });
+      LoginApi(inputID, inputPW)
+        .then((res) => {
+          const _token = res.data.token;
+          const _refreshToken = res.data.token;
+          localStorage.setItem("token", _token);
+          localStorage.setItem("refreshToken", _refreshToken);
+          setIsLogin(true);
+          history.push("/crawl/list/0");
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+          }
+        });
     }
   };
   return (
