@@ -5,14 +5,14 @@ import { BiRefresh } from "react-icons/bi";
 
 function SearchOption({ Search }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState("1970-01-01");
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().substring(0, 10)
-  );
-  const [keyword, setKeyword] = useState("");
-  const [itemId, setItemId] = useState("");
-  const [lang, setLang] = useState("");
-  const [subscribed, setSubscribed] = useState(0);
+  const [startDate, setStartDate] = useState("1970-01-01"); // startDate
+  const [endDate, setEndDate] = useState(new Date().toISOString().substring(0, 10)); //endDate
+  const [keyword, setKeyword] = useState(""); // keyword
+  const [itemId, setItemId] = useState(""); // itemID
+  const [lang, setLang] = useState(""); // language
+  const [subscribed, setSubscribed] = useState(0); //subscribed 
+
+
   const [subscribedOption, setSubscribedOption] = useState([
     { value: 0, label: "전체", color: "grey" },
     { value: 1, label: "기조회", color: "#6DAF44" },

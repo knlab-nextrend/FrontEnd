@@ -2,11 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 function Header() {
+  const goNextrendPage = () => {
+    window.open("http://nextrend.kr/index.php");
+  };
   return (
     <>
       <HeaderContainer>
         <ContentWrapper>
-          <Logo src={"http://nextrend.kr/images/logo3.jpg"} />
+          <Logo
+            onClick={goNextrendPage}
+            src={"http://nextrend.kr/images/logo3.jpg"}
+          />
           <LoginInfo>
             <p className="userName">관리자</p>
             <p className="greetings">님 안녕하세요.</p>
@@ -25,9 +31,9 @@ const HeaderContainer = styled.header`
   border-bottom: solid 0.5rem #435269;
   align-items: center;
   position: fixed; // 상단고정
-  background-color:white;
-  width:100%;
-  z-index:9; // 맨 위에 
+  background-color: white;
+  width: 100%;
+  z-index: 9; // 맨 위에
 `;
 
 const ContentWrapper = styled.div`
@@ -41,25 +47,25 @@ const ContentWrapper = styled.div`
 
 const Logo = styled.img`
   height: 4rem;
+  cursor: pointer;
 `;
 
 const LoginInfo = styled.div`
   display: flex;
   flex-direction: row;
-  align-items:center;
-  .userName{
-      font-weight:bold;
+  align-items: center;
+  .userName {
+    font-weight: bold;
   }
-  button{
-      margin-left:1rem;
-      height:2rem;
-      border:none;
-      padding: 0 1rem 0 1rem;
-      border-radius:5px;
-      background-color:#435269;
-      color:white;
-      font-weight:bold;
+  button {
+    margin-left: 1rem;
+    height: 2rem;
+    border: none;
+    padding: 0 1rem 0 1rem;
+    border-radius: 5px;
+    background-color: #435269;
+    color: white;
+    font-weight: bold;
   }
-  
 `;
 export default Header;
