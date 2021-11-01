@@ -6,12 +6,13 @@ import { BiRefresh } from "react-icons/bi";
 function SearchOption({ Search }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
-  const [endDate, setEndDate] = useState(new Date().toISOString().substring(0, 10)); //endDate
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  ); //endDate
   const [keyword, setKeyword] = useState(""); // keyword
   const [itemId, setItemId] = useState(""); // itemID
   const [lang, setLang] = useState(""); // language
-  const [subscribed, setSubscribed] = useState(0); //subscribed 
-
+  const [subscribed, setSubscribed] = useState(0); //subscribed
 
   const [subscribedOption, setSubscribedOption] = useState([
     { value: 0, label: "전체", color: "grey" },
@@ -32,7 +33,8 @@ function SearchOption({ Search }) {
     setSubscribed(value);
   };
   const _calcDateDifference = (start, end) => {
-    if (Date.parse(new Date()) - Date.parse(end) < 0) { // 현재 시점에서 미래의 날짜는 선택할 수 없음
+    if (Date.parse(new Date()) - Date.parse(end) < 0) {
+      // 현재 시점에서 미래의 날짜는 선택할 수 없음
       return false;
     }
     return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
@@ -122,8 +124,9 @@ function SearchOption({ Search }) {
               <OptionCol>
                 <OptionTitle>ITEM ID</OptionTitle>
                 <OptionInput
+                  min="0"
                   value={itemId}
-                  type="text"
+                  type="number"
                   onChange={_itemIdHandler}
                 ></OptionInput>
               </OptionCol>
@@ -148,7 +151,9 @@ function SearchOption({ Search }) {
                         key={i}
                         color={item.color}
                         value={item.value}
-                        onClick={() => {_subscribedHandler(item.value)}}
+                        onClick={() => {
+                          _subscribedHandler(item.value);
+                        }}
                         active={subscribed === item.value}
                       >
                         {item.label}
@@ -285,7 +290,7 @@ const OptionButton = styled.button`
   ${(props) =>
     props.active &&
     css`
-      color:white;
+      color: white;
       background-color: ${(props) => props.color || "black"};
       font-weight: bold;
     `};

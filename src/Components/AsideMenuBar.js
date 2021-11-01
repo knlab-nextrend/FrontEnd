@@ -49,13 +49,11 @@ function AsideMenuBar() {
           </AsideMenuBarItem>
           <AsideMenuBarItem>
             <MdSettings className="icon" size="18" />
-            크롤 데이터 관리
+            크롤 데이터 등록
           </AsideMenuBarItem>
           <AsideMenuBarItem>
             <MdViewHeadline className="icon" size="18" />
             크롤 데이터 조회
-            <br />
-            (큐레이션)
           </AsideMenuBarItem>
         </AsideMenuBarWrapper>
       </AsideMenuBarContainer>
@@ -63,14 +61,17 @@ function AsideMenuBar() {
   );
 }
 
+
 const AsideMenuBarContainer = styled.aside`
-  width: 100%;
+  width:100%;
 `;
 const AsideMenuBarWrapper = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
   background-color: #eee;
+  height:100%;
+
 `;
 const AsideMenuBarItem = styled.li`
   cursor: pointer;

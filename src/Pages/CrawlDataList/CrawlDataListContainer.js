@@ -15,7 +15,7 @@ function CrawlDataListContainer() {
   const { statusCode } = useParams();
 
   /* 페이지네이션 */
-  const [dcCount, setDcCount] = useState(60); // document 총 개수
+  const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
@@ -52,17 +52,16 @@ function CrawlDataListContainer() {
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo)
     .then((res) => {
+      console.log(res.data)
       dataCleansing(res.data)
     })
   };
 
   useEffect(()=>{
-    //dataFetch();
-    setStatusCrawlData(dummyData);
+    dataFetch();
   },[pageNo])
   useEffect(() => {
-    //dataFetch();
-    setStatusCrawlData(dummyData);
+    dataFetch();
   }, [statusCode]);
 
   const Search = (keyword,startDate,endDate,itemId, lang,subscribed) => {
