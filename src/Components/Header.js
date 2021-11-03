@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {setLogout} from '../Utils/login'
 
 function Header() {
   const goNextrendPage = () => {
@@ -16,7 +17,7 @@ function Header() {
           <LoginInfo>
             <p className="userName">관리자</p>
             <p className="greetings">님 안녕하세요.</p>
-            <button>로그아웃</button>
+            <button onClick={setLogout}>로그아웃</button>
           </LoginInfo>
         </ContentWrapper>
       </HeaderContainer>

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-function Login({ _inputIDHandler, _inputPWHandler, login, errorMsg }) {
+function Login({ _inputIDHandler, _inputPWHandler, loginFunc, errorMsg }) {
   return (
     <>
       <BackgroundContainer>
@@ -9,15 +9,17 @@ function Login({ _inputIDHandler, _inputPWHandler, login, errorMsg }) {
             <img src={"../../img/logo4.png"} />
           </LogoContainer>
           <CustomInput
+            type="text"
             onChange={_inputIDHandler}
             placeholder="아이디를 입력하세요"
           />
           <CustomInput
+            type="password"
             onChange={_inputPWHandler}
             placeholder="패스워드를 입력하세요"
           />
           {errorMsg !== "" ? <ErrorMsg>{errorMsg}</ErrorMsg> : null}
-          <LoginButton onClick={login} value="로그인" type="button" />
+          <LoginButton onClick={loginFunc} value="로그인" type="button" />
           <PageIngoContainer>
             <p>
               <a href="http://knlab.co.kr/?act=info.page&pcode=sub3_1">
@@ -74,7 +76,11 @@ const CustomInput = styled.input`
   min-height: 3rem;
   border: solid 1px #d6d6d6;
   padding-left: 1rem;
+  font-size:16px;
   margin: 0.5rem 0 0.5rem 0;
+  &:focus{
+    outline:none;
+  }
 `;
 
 const LoginButton = styled(CustomInput)`

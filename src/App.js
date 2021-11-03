@@ -9,16 +9,19 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
+import ScreeningContainer from "./Pages/Screening/ScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
+
 
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
+import {isLogin} from './Utils/login'
 
 function App() {
   return (
     <>
-      {isLogin ? (
+      {isLogin() ? (
         <>
           <Header />
           <Body>
@@ -28,6 +31,9 @@ function App() {
                 <PrivateRoute path="/crawl/list/:statusCode" exact>
                   <CrawlDataListContainer />
                 </PrivateRoute>
+                <PrivateRoute path="/crawl/screening" exact>
+                  <ScreeningContainer />
+                </PrivateRoute>
               </Switch>
             </Section>
           </Body>
@@ -35,7 +41,7 @@ function App() {
         </>
       ) : (
         <PublicRoute restricted={true} path="/login" exact>
-          <LoginContainer setIsLogin={setIsLogin}/>
+          <LoginContainer/>
         </PublicRoute>
       )}
     </>

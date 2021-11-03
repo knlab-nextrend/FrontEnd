@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Login from "./Login";
 import { LoginApi } from "../../Utils/api";
 import { useHistory } from "react-router-dom";
+import {setLogin} from '../../Utils/login'
 
-function LoginContainer({ setIsLogin }) {
+function LoginContainer() {
   const history = useHistory();
   const [inputID, setInputID] = useState("");
   const [inputPW, setInputPW] = useState("");
@@ -16,7 +17,7 @@ function LoginContainer({ setIsLogin }) {
     setInputPW(e.target.value);
   };
 
-  const login = () => {
+  const loginFunc = () => {
     if (inputID === "") {
       setErrorMsg("아이디를 입력해주세요.");
     } else if (inputPW === "") {
@@ -27,9 +28,9 @@ function LoginContainer({ setIsLogin }) {
         .then((res) => {
           const _token = res.data.token;
           const _refreshToken = res.data.token;
-          localStorage.setItem("token", _token);
-          localStorage.setItem("refreshToken", _refreshToken);
-          setIsLogin(true);
+          const _permission = res.data.permission;
+          console.log(_token,_refreshToken,_permission)
+          setLogin(_token,_refreshToken,_permission)
           history.push("/crawl/list/0");
         })
         .catch((err) => {
@@ -44,8 +45,8 @@ function LoginContainer({ setIsLogin }) {
       <Login
         _inputIDHandler={_inputIDHandler}
         _inputPWHandler={_inputPWHandler}
-        login={login}
         errorMsg={errorMsg}
+        loginFunc={loginFunc}
       />
     </>
   );
