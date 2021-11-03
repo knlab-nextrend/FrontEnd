@@ -123,6 +123,7 @@ const CustomFormItem = styled.div`
     min-width: 10rem;
   }
   .form {
+    background-color: #eeffdb;
     width: 100%;
     padding-left: 1rem;
     display: flex;

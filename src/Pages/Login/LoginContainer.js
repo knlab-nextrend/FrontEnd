@@ -29,9 +29,7 @@ function LoginContainer() {
           const _token = res.data.token;
           const _refreshToken = res.data.token;
           const _permission = res.data.permission;
-          console.log(_token,_refreshToken,_permission)
           setLogin(_token,_refreshToken,_permission)
-          history.push("/crawl/list/0");
         })
         .catch((err) => {
           if (err.response.status === 401) {

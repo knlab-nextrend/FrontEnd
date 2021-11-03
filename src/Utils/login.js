@@ -21,9 +21,6 @@
     로컬스토리지에 token key에 대한 value가 존재한다면 true값을 반환하며,
     로컬스토리지에 token key에 대한 value가 undefined 이거나 null .. 등 falsy한 값을 가지면 false를 반환한다 (!! 연산자)
 */
-const isLogin = () => {
-  return !!localStorage.getItem("token");
-};
 
 /* 유저의 권한은 아래와 같이 정의 함. */
 const PERMISSION = {
@@ -33,6 +30,9 @@ const PERMISSION = {
   ADMIN: 9,
 };
 
+const isLogin = () =>{
+  return !!localStorage.getItem('token')
+}
 /* 
     로그인 설정 함수. 
     token - 로그인한 유저의 token 정보
@@ -52,6 +52,7 @@ const setLogin = (token, refreshToken, permission) => {
     case PERMISSION.ADMIN:
       localStorage.setItem("permission", PERMISSION.ADMIN);
   }
+  location.href="/"
 };
 
 const setLogout = () => {
@@ -59,8 +60,8 @@ const setLogout = () => {
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("permission");
 
-  alert("성공적으로 로그아웃 되었습니다.")
-
+  alert("성공적으로 로그아웃 되었습니다.");
+  location.href = "/login";
 };
 
-export { isLogin, setLogin, setLogout, PERMISSION };
+export { isLogin,setLogin, setLogout, PERMISSION };

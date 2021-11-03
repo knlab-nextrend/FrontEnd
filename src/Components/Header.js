@@ -67,6 +67,7 @@ const LoginInfo = styled.div`
     background-color: #435269;
     color: white;
     font-weight: bold;
+    cursor:pointer;
   }
 `;
 export default Header;

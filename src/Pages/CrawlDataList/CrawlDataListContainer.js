@@ -51,12 +51,8 @@ function CrawlDataListContainer() {
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
-        console.log(res);
         dataCleansing(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   useEffect(() => {

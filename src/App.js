@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {Switch } from "react-router-dom";
+import React from "react";
+import { Switch } from "react-router-dom";
 import styled from "styled-components";
 
 /* components */
@@ -12,45 +12,51 @@ import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer
 import ScreeningContainer from "./Pages/Screening/ScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
 
-
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
-import {isLogin} from './Utils/login'
+
+import { useSelector } from "react-redux";
 
 function App() {
+  const { isLogin } = useSelector((state) => ({
+    isLogin: state.login.isLogin,
+  }));
+
   return (
     <>
-      {isLogin() ? (
-        <>
-          <Header />
-          <Body>
-            <AsideMenuBar />
-            <Section>
-              <Switch>
-                <PrivateRoute path="/crawl/list/:statusCode" exact>
-                  <CrawlDataListContainer />
-                </PrivateRoute>
-                <PrivateRoute path="/crawl/screening" exact>
-                  <ScreeningContainer />
-                </PrivateRoute>
-              </Switch>
-            </Section>
-          </Body>
-          <Footer />
-        </>
-      ) : (
-        <PublicRoute restricted={true} path="/login" exact>
-          <LoginContainer/>
-        </PublicRoute>
-      )}
+      {isLogin && <Header />}
+      <Body isLogin={isLogin}>
+        {isLogin && <AsideMenuBar />}
+        <Section>
+          <PrivateRoute path="/" component={ScreeningContainer} exact />
+          <PrivateRoute
+            path="/crawl/list/:statusCode"
+            component={CrawlDataListContainer}
+            exact
+          />
+          <PrivateRoute
+            path="/crawl/screening"
+            component={ScreeningContainer}
+            exact
+          />
+        </Section>
+      </Body>
+      {isLogin && <Footer />}
+
+      <PublicRoute
+        restricted={true}
+        path="/login"
+        component={LoginContainer}
+        exact
+      />
     </>
   );
 }
 
 const Body = styled.div`
   display: grid;
-  padding-top: 6.5rem; // header 때문에
+  padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
   grid-template-columns: 1fr 8fr;
 `;
 const Section = styled.section`
