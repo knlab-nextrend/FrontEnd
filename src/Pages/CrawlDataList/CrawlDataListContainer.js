@@ -52,6 +52,7 @@ function CrawlDataListContainer() {
     CrawlDataFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
+        console.log(res.data)
       })
   };
 
