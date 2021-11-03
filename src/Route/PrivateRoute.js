@@ -1,0 +1,19 @@
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { isLogin } from "../Utils/login"; // 로그인 여부를 확인하는 함수
+
+/* 
+    로그인한 상태에서만 접근 가능한 페이지다.
+    로그인하지 않은 상태로 페이지에 접근하려 하면 로그인 화면으로 리다이렉트 시킨다.
+*/
+function PrivateRoute({ component: Component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isLogin() ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+}
+export default PrivateRoute;

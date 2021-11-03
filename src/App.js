@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import {Switch } from "react-router-dom";
 import styled from "styled-components";
 
 /* components */
@@ -12,11 +12,10 @@ import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer
 import LoginContainer from "./Pages/Login/LoginContainer";
 
 /* route components */
-import PublicRoute from "./RouteComponents/PublicRoute";
-import PrivateRoute from "./RouteComponents/PrivateRoute";
+import PublicRoute from "./Route/PublicRoute";
+import PrivateRoute from "./Route/PrivateRoute";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
   return (
     <>
       {isLogin ? (
@@ -26,7 +25,7 @@ function App() {
             <AsideMenuBar />
             <Section>
               <Switch>
-                <PrivateRoute isLogin={isLogin} path="/crawl/list/:statusCode" exact>
+                <PrivateRoute path="/crawl/list/:statusCode" exact>
                   <CrawlDataListContainer />
                 </PrivateRoute>
               </Switch>
@@ -35,7 +34,7 @@ function App() {
           <Footer />
         </>
       ) : (
-        <PublicRoute isLogin={isLogin} restricted={true} path="/login" exact>
+        <PublicRoute restricted={true} path="/login" exact>
           <LoginContainer setIsLogin={setIsLogin}/>
         </PublicRoute>
       )}
