@@ -1,36 +1,59 @@
-import React, { useState } from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
-function CrawlDataForm() {
-
-  const [content, setContent] = useState(""); // dc_content 크롤 데이터 내용
-  const [collectDate, setCollectDate] = useState(""); // dc_dt_collect 크롤 데이터 수집 일자
-  const [writeDate,setWriteDate] = useState(new Date().toISOString().replace("T",' ').substring(0,19)) // dc_dt_write 데이터 등록 일자. 한국 기준 현재시간
-  const [keyword, setKeyword] = useState([]); // dc_keyword 키워드 검색 단어
-  const [page, setPage] = useState(0); // dc_page 원문의 페이지 수
-  const [originTitle, setOriginTitle] = useState(""); // dc_title_or 원문 제목
-  const [koreaTitle, setKoreaTitle] = useState("");
-  const [itemId, setItemId] = useState(0); // item_id 해당 크롤 데이터의 id 
-
-
+function CrawlDataForm({
+  content,
+  collectDate,
+  writeDate,
+  keyword,
+  page,
+  originTitle,
+  koreaTitle,
+  docsUrlLocation,
+  _contentHandler,
+  _collectDateHandler,
+  _keywordHandler,
+  _originTitleHandler,
+  _koreaTitleHandler,
+  _docsUrlLocationHandler,
+  _pageHandler}
+) {
+  useEffect(()=>{
+    console.log(page)
+  },[])
   return (
     <>
       <Wrapper>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">원제목</p>
-            <input className="form" type="text" />
+            <input
+              defaultValue={originTitle}
+              onChange={_originTitleHandler}
+              className="form"
+              type="text"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">한글제목</p>
-            <input className="form" type="text" />
+            <input
+              defaultValue={koreaTitle}
+              onChange={_koreaTitleHandler}
+              className="form"
+              type="text"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">한글요약</p>
-            <input className="form" type="text" />
+            <input
+              defaultValue={koreaTitle}
+              onChange={_koreaTitleHandler}
+              className="form"
+              type="text"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -48,7 +71,12 @@ function CrawlDataForm() {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">문서 위치 URL</p>
-            <input className="form" type="text" />
+            <input
+              defaultValue={docsUrlLocation}
+              onChange={_docsUrlLocationHandler}
+              className="form"
+              type="text"
+            />
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">원문 작성일</p>
@@ -62,7 +90,12 @@ function CrawlDataForm() {
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">데이터 수집일</p>
-            <input className="form" type="text" />
+            <input
+              defaultValue={collectDate}
+              onChange={_collectDateHandler}
+              className="form"
+              type="text"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -76,23 +109,32 @@ function CrawlDataForm() {
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">데이터 등록일</p>
-            <input className="form" type="text" disabled/>
+            <input defaultValue={writeDate} className="form" type="text" readOnly />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">기관명</p>
-            <input className="form" type="text" />
+            <input className="form" type="text" readOnly/>
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">페이지 수</p>
-            <input className="form" type="number" min="0" />
+            <input
+              value={page}
+              onChange={_pageHandler}
+              className="form"
+              type="number"
+              min="0"
+              readOnly
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">검색 키워드</p>
             <input
+              defaultValue={keyword}
+              onChange={_keywordHandler}
               className="form"
               type="text"
               placeholder="검색에 사용할 키워드를 입력하세요. 검색 키워드는 쉼표(,)로 구분합니다."
@@ -102,7 +144,7 @@ function CrawlDataForm() {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <textarea className="form textarea" rows="30" />
+            <textarea defaultValue={content} onChange={_contentHandler} className="form textarea" rows="30" />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -158,8 +200,8 @@ const CustomFormItem = styled.div`
       outline: none;
     }
   }
-  .textarea{
-    padding-top:2rem;
+  .textarea {
+    padding-top: 2rem;
   }
   .notInput {
     background-color: white;

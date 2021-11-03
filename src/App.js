@@ -9,7 +9,7 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
-import ScreeningContainer from "./Pages/Screening/ScreeningContainer";
+import CrawlDataRegisterContainer from "./Pages/CrawlDataRegister/CrawlDataRegisterContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
 
 /* route components */
@@ -17,32 +17,34 @@ import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
 import { useSelector } from "react-redux";
+import { isLogin } from "./Utils/login";
 
 function App() {
-  const { isLogin } = useSelector((state) => ({
-    isLogin: state.login.isLogin,
-  }));
+  // const { isLogin } = useSelector((state) => ({
+  //   isLogin: state.login.isLogin,
+  // }));
 
   return (
     <>
-      {isLogin && <Header />}
-      <Body isLogin={isLogin}>
-        {isLogin && <AsideMenuBar />}
+      {isLogin() && <Header />}
+      <Body isLogin={isLogin()}>
+        {isLogin() && <AsideMenuBar />}
         <Section>
-          <PrivateRoute path="/" component={ScreeningContainer} exact />
-          <PrivateRoute
-            path="/crawl/list/:statusCode"
-            component={CrawlDataListContainer}
-            exact
-          />
-          <PrivateRoute
-            path="/crawl/screening/:itemId"
-            component={ScreeningContainer}
-            exact
-          />
+          <Switch>
+            <PrivateRoute
+              path="/crawl/list/:statusCode"
+              component={CrawlDataListContainer}
+              exact
+            />
+            <PrivateRoute
+              path="/crawl/:statusCode/:itemId"
+              component={CrawlDataRegisterContainer}
+              exact
+            />
+          </Switch>
         </Section>
       </Body>
-      {isLogin && <Footer />}
+      {isLogin() && <Footer />}
 
       <PublicRoute
         restricted={true}

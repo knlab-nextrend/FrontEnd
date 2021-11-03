@@ -26,7 +26,7 @@ function CrawlDataList({
         </SearchResultTitle>
         <SearchResult>
           {statusCrawlData.map((item, i) => {
-            return <Link to={`/crawl/screening/${item.itemId}`} key={i}><CrawlDataCard crawlDataItem={item} /></Link>;
+            return <Link to={`/crawl/${statusCode}/${item.itemId}`} key={i}><CrawlDataCard crawlDataItem={item} /></Link>;
           })}
         </SearchResult>
         <Pagenation
@@ -40,6 +40,7 @@ function CrawlDataList({
   );
 }
 
+/* status에 따라 라우팅을... 다르게 해야하네요 ㅎ; */
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

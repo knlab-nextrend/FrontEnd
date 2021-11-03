@@ -49,6 +49,7 @@ function CrawlDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };
