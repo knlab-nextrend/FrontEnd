@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import data from "../../Data/data.json";
 import CrawlDataList from "./CrawlDataList";
-import { CrawlDataFetchApi } from "../../Api/api";
+import { CrawlDataFetchApi } from "../../Utils/api";
 
 function CrawlDataListContainer() {
   /* dummy 데이터 */
@@ -19,16 +19,15 @@ function CrawlDataListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
-
-  const dataCleansing = (rawData)=>{
+  const dataCleansing = (rawData) => {
     let _statusCrawlData = [];
     let _rawStatusCrawlData = rawData.docs;
     let _dcCount = rawData.dcCount;
     _rawStatusCrawlData.forEach((item, index) => {
       const _title = item.dc_title_kr;
       const _subTitle = item.dc_title_or;
-      const _keywords = item.dc_keyword.split(" ");
-      const _writeDate = item.dc_dt_write.split("T")[0];
+      const _keywords = item.dc_keyword;
+      const _writeDate = item.dc_dt_collect.split("T")[0];
       const _subscribed = false;
       const _itemId = Number(item.item_id);
       const _status = item.stat;
@@ -47,29 +46,40 @@ function CrawlDataListContainer() {
     });
     setDcCount(_dcCount);
     setStatusCrawlData(_statusCrawlData);
-  }
+  };
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo)
-    .then((res) => {
-      console.log(res.data)
-      dataCleansing(res.data)
-    })
+      .then((res) => {
+        console.log(res);
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     dataFetch();
-  },[pageNo])
+  }, [pageNo]);
   useEffect(() => {
     dataFetch();
   }, [statusCode]);
 
-  const Search = (keyword,startDate,endDate,itemId, lang,subscribed) => {
-    CrawlDataFetchApi(statusCode,listSize,pageNo, keyword,startDate,endDate,itemId, lang, subscribed)
-    .then((res) => {
+  const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {
+    CrawlDataFetchApi(
+      statusCode,
+      listSize,
+      pageNo,
+      keyword,
+      startDate,
+      endDate,
+      itemId,
+      lang,
+      subscribed
+    ).then((res) => {
       dataCleansing(res.data);
-    })    
-    ;
+    });
   };
 
   return (

@@ -11,7 +11,7 @@ function Header() {
         <ContentWrapper>
           <Logo
             onClick={goNextrendPage}
-            src={"http://nextrend.kr/images/logo3.jpg"}
+            src={"../../img/logo4.png"}
           />
           <LoginInfo>
             <p className="userName">관리자</p>

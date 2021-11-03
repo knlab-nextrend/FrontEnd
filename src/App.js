@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useState } from "react";
+import {Switch } from "react-router-dom";
 import styled from "styled-components";
 
 /* components */
@@ -9,22 +9,35 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
+import LoginContainer from "./Pages/Login/LoginContainer";
+
+/* route components */
+import PublicRoute from "./Route/PublicRoute";
+import PrivateRoute from "./Route/PrivateRoute";
 
 function App() {
   return (
     <>
-      <Header />
-      <Body>
-        <AsideMenuBar />
-        <Section>
-          <Switch>
-            <Route path="/crawl/list/:statusCode">
-              <CrawlDataListContainer />
-            </Route>
-          </Switch>
-        </Section>
-      </Body>
-      <Footer />
+      {isLogin ? (
+        <>
+          <Header />
+          <Body>
+            <AsideMenuBar />
+            <Section>
+              <Switch>
+                <PrivateRoute path="/crawl/list/:statusCode" exact>
+                  <CrawlDataListContainer />
+                </PrivateRoute>
+              </Switch>
+            </Section>
+          </Body>
+          <Footer />
+        </>
+      ) : (
+        <PublicRoute restricted={true} path="/login" exact>
+          <LoginContainer setIsLogin={setIsLogin}/>
+        </PublicRoute>
+      )}
     </>
   );
 }
