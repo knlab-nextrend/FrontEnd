@@ -1,101 +1,85 @@
 import React, { useEffect, useState } from "react";
-import CrawlDataList from "./CrawlDataList";
 import { useParams } from "react-router-dom";
-function CrawlDataListContainer() {
-  // 여기서
-  const crawlData = [
-    {
-      item_id: 1,
-      title: "크롤데이터 스크리닝",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 1,
-    },
-    {
-      item_id: 2,
-      title: "크롤데이터 스크리닝",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 1,
-    },
-    {
-      item_id: 3,
-      title: "크롤데이터 큐레이션",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: true,
-      status: 5,
-    },
-    {
-      item_id: 4,
-      title: "크롤데이터 1차정제",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 2,
-    },
-    {
-      item_id: 5,
-      title: "크롤데이터 2차정제",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: true,
-      status: 3,
-    },
-    {
-      item_id: 6,
-      title: "크롤데이터 등록",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 4,
-    },
-    {
-      item_id: 7,
-      title: "크롤데이터 1차정제",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: true,
-      status: 2,
-    },
-    {
-      item_id: 8,
-      title: "크롤데이터 2차정제",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: false,
-      status: 3,
-    },
-    {
-      item_id: 9,
-      title: "크롤데이터 등록",
-      subTitle: "부제목",
-      tags: ["태그1", "태그2", "태그3"],
-      subscribed: true,
-      status: 4,
-    },
-  ];
+import data from "../../Data/data.json";
+import CrawlDataList from "./CrawlDataList";
+import { CrawlDataFetchApi } from "../../Utils/api";
 
+function CrawlDataListContainer() {
+  /* dummy 데이터 */
+  const [dummyData, setDummyData] = useState(data.data);
+
+  /* 현재 보여질 데이터 */
   const [statusCrawlData, setStatusCrawlData] = useState([]);
-  const [resultCount ,setResultCount] = useState(12);
+
+  /* [스크리닝, 1차, 2차, 등록] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
 
-  useEffect(() => {
-    const statusData = crawlData.filter((item) => {
-      return item.status === Number(statusCode);
+  /* 페이지네이션 */
+  const [dcCount, setDcCount] = useState(0); // document 총 개수
+  const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
+  const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
+
+  const dataCleansing = (rawData) => {
+    let _statusCrawlData = [];
+    let _rawStatusCrawlData = rawData.docs;
+    let _dcCount = rawData.dcCount;
+    _rawStatusCrawlData.forEach((item, index) => {
+      const _title = item.dc_title_kr;
+      const _subTitle = item.dc_title_or;
+      const _keywords = item.dc_keyword;
+      const _writeDate = item.dc_dt_collect.split("T")[0];
+      const _subscribed = false;
+      const _itemId = Number(item.item_id);
+      const _status = item.stat;
+
+      const obj = {
+        title: _title,
+        subTitle: _subTitle,
+        keywords: _keywords,
+        writeDate: _writeDate,
+        subscribed: _subscribed,
+        itemId: _itemId,
+        status: _status,
+      };
+
+      _statusCrawlData.push(obj);
     });
-    setStatusCrawlData(statusData);
+    setDcCount(_dcCount);
+    setStatusCrawlData(_statusCrawlData);
+  };
+  /* 데이터 불러오기 */
+  const dataFetch = () => {
+    CrawlDataFetchApi(statusCode, listSize, pageNo)
+      .then((res) => {
+        console.log(res);
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    dataFetch();
+  }, [pageNo]);
+  useEffect(() => {
+    dataFetch();
   }, [statusCode]);
-  const Search = (
-    keyword = "",
-    duration = "전체",
-    itemID = 0,
-    language = "전체",
-    subscribed = 0
-  ) => {
-    console.log(keyword, duration, itemID, language, subscribed);
+
+  const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {
+    CrawlDataFetchApi(
+      statusCode,
+      listSize,
+      pageNo,
+      keyword,
+      startDate,
+      endDate,
+      itemId,
+      lang,
+      subscribed
+    ).then((res) => {
+      dataCleansing(res.data);
+    });
   };
 
   return (
@@ -103,8 +87,12 @@ function CrawlDataListContainer() {
       <CrawlDataList
         statusCode={statusCode}
         Search={Search}
-        crawlData={statusCrawlData}
-        resultCount={resultCount}
+        statusCrawlData={statusCrawlData}
+        dcCount={dcCount}
+        listSize={listSize}
+        pageNo={pageNo}
+        setPageNo={setPageNo}
+        statusCode={statusCode}
       />
     </>
   );
