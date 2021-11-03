@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
 import Pagenation from "../../Components/Pagenation";
@@ -26,7 +26,11 @@ function CrawlDataList({
         </SearchResultTitle>
         <SearchResult>
           {statusCrawlData.map((item, i) => {
-            return <Link to={`/crawl/${statusCode}/${item.itemId}`} key={i}><CrawlDataCard crawlDataItem={item} /></Link>;
+            return (
+              <CustomLink to={`/crawl/${statusCode}/${item.itemId}`} key={i}>
+                <CrawlDataCard crawlDataItem={item} />
+              </CustomLink>
+            );
           })}
         </SearchResult>
         <Pagenation
@@ -41,6 +45,19 @@ function CrawlDataList({
 }
 
 /* status에 따라 라우팅을... 다르게 해야하네요 ㅎ; */
+
+const CustomLink = styled(Link)`
+  color: black;
+  &:link {
+    text-decoration: none;
+  }
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+`;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
