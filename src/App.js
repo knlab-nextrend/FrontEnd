@@ -36,7 +36,7 @@ function App() {
             exact
           />
           <PrivateRoute
-            path="/crawl/screening"
+            path="/crawl/screening/:itemId"
             component={ScreeningContainer}
             exact
           />

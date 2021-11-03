@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 function CrawlDataForm() {
-  
+
   const [content, setContent] = useState(""); // dc_content 크롤 데이터 내용
   const [collectDate, setCollectDate] = useState(""); // dc_dt_collect 크롤 데이터 수집 일자
   const [writeDate,setWriteDate] = useState(new Date().toISOString().replace("T",' ').substring(0,19)) // dc_dt_write 데이터 등록 일자. 한국 기준 현재시간
@@ -157,6 +157,9 @@ const CustomFormItem = styled.div`
     &:focus {
       outline: none;
     }
+  }
+  .textarea{
+    padding-top:2rem;
   }
   .notInput {
     background-color: white;

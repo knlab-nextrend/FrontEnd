@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import data from "../../Data/data.json";
+import { useParams, useHistory } from "react-router-dom";
 import CrawlDataList from "./CrawlDataList";
 import { CrawlDataFetchApi } from "../../Utils/api";
 
 function CrawlDataListContainer() {
-  /* dummy 데이터 */
-  const [dummyData, setDummyData] = useState(data.data);
-
   /* 현재 보여질 데이터 */
   const [statusCrawlData, setStatusCrawlData] = useState([]);
 
-  /* [스크리닝, 1차, 2차, 등록] 진행상황을 나타내기 위한 상태코드 */
+  /* [1차 스크리닝, 1차스크리닝 보류, 2차정제, 2차정제 보류] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
+
+  /* 페이지 이동 */
+  const history = useHistory();
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
@@ -27,7 +26,7 @@ function CrawlDataListContainer() {
       const _title = item.dc_title_kr;
       const _subTitle = item.dc_title_or;
       const _keywords = item.dc_keyword;
-      const _writeDate = item.dc_dt_collect.split("T")[0];
+      const _writeDate = item.dc_dt_collect;
       const _subscribed = false;
       const _itemId = Number(item.item_id);
       const _status = item.stat;
@@ -49,20 +48,22 @@ function CrawlDataListContainer() {
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataFetchApi(statusCode, listSize, pageNo)
-      .then((res) => {
-        dataCleansing(res.data);
-        console.log(res.data)
-      })
+    CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
+      dataCleansing(res.data);
+    });
   };
 
+  /* 페이지 번호가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
   }, [pageNo]);
+
+  /* statusCode가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
   }, [statusCode]);
 
+  /* 조건 검색 */
   const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {
     CrawlDataFetchApi(
       statusCode,

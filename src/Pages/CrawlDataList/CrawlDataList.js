@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import {Link} from 'react-router-dom'
 import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
 import Pagenation from "../../Components/Pagenation";
@@ -26,7 +26,7 @@ function CrawlDataList({
         </SearchResultTitle>
         <SearchResult>
           {statusCrawlData.map((item, i) => {
-            return <CrawlDataCard key={i} crawlDataItem={item} />;
+            return <Link to={`/crawl/screening/${item.itemId}`} key={i}><CrawlDataCard crawlDataItem={item} /></Link>;
           })}
         </SearchResult>
         <Pagenation

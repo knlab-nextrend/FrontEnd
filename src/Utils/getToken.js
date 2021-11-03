@@ -1,5 +1,7 @@
-const tokenHeaders = {
-  headers: { token: localStorage.getItem("token") },
-};
+const getToken = ()=>{
+  if (!!localStorage.getItem('token')){
+    return localStorage.getItem('token')
+  }
+}
 
-export { tokenHeaders };
+export { getToken };

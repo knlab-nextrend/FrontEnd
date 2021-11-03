@@ -1,10 +1,22 @@
 import axios from "axios";
-import {getToken} from './getToken'
+import { getToken } from "./getToken";
 /* 
   로그인 상태가 아니라면 아래의  통신 함수들은 모두 사용할 일이 없음. 
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
 
 */
+
+/* 크롤데이터 상세조회에서 사용하는 통신 함수 */
+
+const CrawlDataDetailFetchApi = (statusCode, itemId) => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: {
+      statusCode: statusCode,
+    },
+  };
+  return axios.get(`/crawl/detail/${itemId}`, config);
+};
 
 /* 크롤데이터 등록에서 사용하는 통신 함수 */
 const CrawlDataFetchApi = (
@@ -18,10 +30,10 @@ const CrawlDataFetchApi = (
   lang = "",
   subscribed = ""
 ) => {
-  // let params = {
-  //   listSize: listSize,
-  //   pageNo: pageNo,
-  // };
+  let params = {
+    listSize: listSize,
+    pageNo: pageNo,
+  };
 
   if (keyword !== "") {
     params["keyword"] = keyword;
@@ -48,9 +60,8 @@ const CrawlDataFetchApi = (
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
   */
 
-
   let config = {
-    headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+    headers: { authorization: `Bearer ${getToken()}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
@@ -69,5 +80,4 @@ const LoginApi = (userID, userPW) => {
   return axios.post(`/nextrend/login`, body);
 };
 
-export { CrawlDataFetchApi, LoginApi };
-
+export { CrawlDataFetchApi, LoginApi, CrawlDataDetailFetchApi };
