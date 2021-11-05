@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { RiUserSettingsFill, RiLogoutBoxRLine,RiDashboardFill } from "react-icons/ri";
 import {
@@ -116,7 +116,7 @@ const AsideMenuBarItem = styled.li`
   padding: 1.5rem 1rem 1.5rem 1rem;
   font-weight: bold;
   font-size: 14px;
-  border-bottom: solid 1px #eee;
+  border-bottom: dotted 1px #eee;
   transition: all 0.2s;
   .icon {
     margin-right: 0.5rem;
@@ -125,45 +125,5 @@ const AsideMenuBarItem = styled.li`
     background-color: #d6d6d6;
   }
 `;
-const AsideMenuBarSubWrapper = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  text-align: center;
-  cursor: pointer;
-  .icon {
-    margin-right: 0.5rem;
-  }
-  .subWrapperTitle {
-    margin: 0;
-    background-color: #bfbfbf;
-    padding: 1.5rem 1rem 1.5rem 1rem;
-    font-weight: bold;
-    font-size: 14px;
-    border-bottom: solid 1px #eee;
-    transition: all 0.2s;
-    &:hover {
-      background-color: #d6d6d6;
-    }
-  }
-`;
-const AsideMenuBarSubItem = styled.li`
-  background-color: #eee;
-  padding: 1.5rem 1rem 1.5rem 1rem;
-  font-weight: bold;
-  font-size: 14px;
-  border-bottom: solid 1px #f9f9f9;
-  transition: all 0.2s;
-  ${(props) =>
-    props.active
-      ? css`
-          display: block;
-        `
-      : css`
-          display: none;
-        `};
-  &:hover {
-    transition: all 0.2s;
-    background-color: #ffffff;
-  }
-`;
+
 export default AsideMenuBar;

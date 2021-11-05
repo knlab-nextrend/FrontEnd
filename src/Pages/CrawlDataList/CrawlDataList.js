@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SearchOption from "../../Components/SearchOption";
@@ -14,7 +14,9 @@ function CrawlDataList({
   setPageNo,
   statusCrawlData,
   Search,
+  STATUS_SET,
 }) {
+
   return (
     <>
       <Tab statusCode={statusCode}></Tab>
@@ -27,7 +29,12 @@ function CrawlDataList({
         <SearchResult>
           {statusCrawlData.map((item, i) => {
             return (
-              <CustomLink to={`/crawl/${statusCode}/${item.itemId}`} key={i}>
+              <CustomLink
+                to={`/crawl/${STATUS_SET[item.status]}/${statusCode}/${
+                  item.itemId
+                }`}
+                key={i}
+              >
                 <CrawlDataCard crawlDataItem={item} />
               </CustomLink>
             );

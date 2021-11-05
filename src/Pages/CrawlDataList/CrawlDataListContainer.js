@@ -18,6 +18,12 @@ function CrawlDataListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
+  const STATUS_SET = {
+    0: "screening",
+    1: "screening",
+    2: "refine",
+    3: "refine",
+  }; // 0: 스크리닝 1: 스크리닝보류 2: 2차정제 3:2차정제 보류
   const dataCleansing = (rawData) => {
     let _statusCrawlData = [];
     let _rawStatusCrawlData = rawData.docs;
@@ -49,7 +55,7 @@ function CrawlDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       dataCleansing(res.data);
     });
   };
@@ -92,6 +98,7 @@ function CrawlDataListContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         statusCode={statusCode}
+        STATUS_SET={STATUS_SET}
       />
     </>
   );

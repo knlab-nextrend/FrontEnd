@@ -18,6 +18,8 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   return axios.get(`/crawl/detail/${itemId}`, config);
 };
 
+
+
 /* 크롤데이터 등록에서 사용하는 통신 함수 */
 const CrawlDataFetchApi = (
   statusCode,

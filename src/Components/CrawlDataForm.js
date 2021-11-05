@@ -1,25 +1,38 @@
-import React,{useEffect} from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
-function CrawlDataForm({
-  content,
-  collectDate,
-  writeDate,
-  keyword,
-  page,
-  originTitle,
-  koreaTitle,
-  docsUrlLocation,
-  _contentHandler,
-  _collectDateHandler,
-  _keywordHandler,
-  _originTitleHandler,
-  _koreaTitleHandler,
-  _docsUrlLocationHandler,
-  _pageHandler}
-) {
-  useEffect(()=>{
-    console.log(page)
-  },[])
+function CrawlDataForm() {
+    /* 현재 보여질 데이터 정보들 */
+    const [content, setContent] = useState(""); // dc_content 크롤 데이터 내용
+    const [collectDate, setCollectDate] = useState(""); // dc_dt_collect 크롤 데이터 수집 일자
+    const [writeDate, setWriteDate] = useState(""); // dc_dt_write 데이터 등록 일자. 한국 기준 현재시간
+    const [keyword, setKeyword] = useState([]); // dc_keyword 키워드 검색 단어. 받아올 땐 배열이나, 관리는 문자열로 할 예정
+    const [page, setPage] = useState(0); // dc_page 원문의 페이지 수
+    const [originTitle, setOriginTitle] = useState(""); // dc_title_or 원문 제목
+    const [koreaTitle, setKoreaTitle] = useState("");
+    const [docsUrlLocation, setDocsUrlLocation] = useState(""); // dc_url_loc
+  
+    const _contentHandler = (e) => {
+      setContent(e.target.value);
+    };
+    const _collectDateHandler = (e) => {
+      setCollectDate(e.target.value);
+    };
+    const _keywordHandler = (e) => {
+      setKeyword(e.target.value);
+    };
+    const _pageHandler = (e) => {
+      setPage(e.target.value);
+    };
+    const _originTitleHandler = (e) => {
+      setOriginTitle(e.target.value);
+    };
+    const _koreaTitleHandler = (e) => {
+      setKoreaTitle(e.target.value);
+    };
+  
+    const _docsUrlLocationHandler = (e) => {
+      setDocsUrlLocation(e.target.value);
+    };
   return (
     <>
       <Wrapper>

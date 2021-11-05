@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch,Redirect } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 /* components */
@@ -9,8 +9,9 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
-import CrawlDataRegisterContainer from "./Pages/CrawlDataRegister/CrawlDataRegisterContainer";
+import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening/CrawlDataScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
+import CrawlDataRefineContainer from "./Pages/CrawlDataRefine/CrawlDataRefineContainer";
 
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
@@ -20,10 +21,6 @@ import { useSelector } from "react-redux";
 import { isLogin } from "./Utils/login";
 
 function App() {
-  // const { isLogin } = useSelector((state) => ({
-  //   isLogin: state.login.isLogin,
-  // }));
-
   return (
     <>
       {isLogin() && <Header />}
@@ -32,7 +29,7 @@ function App() {
         <Section>
           <Switch>
             <PrivateRoute path="/" exact>
-              <Redirect to="/crawl/list/0"/>
+              <Redirect to="/crawl/list/0" />
             </PrivateRoute>
             <PrivateRoute
               path="/crawl/list/:statusCode"
@@ -40,8 +37,13 @@ function App() {
               exact
             />
             <PrivateRoute
-              path="/crawl/:statusCode/:itemId"
-              component={CrawlDataRegisterContainer}
+              path="/crawl/screening/:statusCode/:itemId"
+              component={CrawlDataScreeningContainer}
+              exact
+            />
+            <PrivateRoute
+              path="/crawl/refine/:statusCode/:itemId"
+              component={CrawlDataRefineContainer}
               exact
             />
           </Switch>

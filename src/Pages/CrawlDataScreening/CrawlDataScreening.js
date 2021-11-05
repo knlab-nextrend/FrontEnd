@@ -5,44 +5,12 @@ import CrawlDataForm from "../../Components/CrawlDataForm";
 import FormHeader from "../../Components/FormHeader";
 import Button from "../../Components/Button";
 import styled from "styled-components";
-function CrawlDataRegister({
-  content,
-  collectDate,
-  writeDate,
-  keyword,
-  page,
-  originTitle,
-  koreaTitle,
-  docsUrlLocation,
-  _contentHandler,
-  _collectDateHandler,
-  _keywordHandler,
-  _originTitleHandler,
-  _koreaTitleHandler,
-  _docsUrlLocationHandler,
-  _pageHandler,
-}) {
 
+function CrawlDataScreening({ formData }) {
   return (
     <>
       <FormHeader type="plus" title={"1차 스크리닝 진행"} />
-      <CrawlDataForm
-        content={content}
-        collectDate={collectDate}
-        writeDate={writeDate}
-        keyword={keyword}
-        page={page}
-        originTitle={originTitle}
-        koreaTitle={koreaTitle}
-        docsUrlLocation={docsUrlLocation}
-        _contentHandler={_contentHandler}
-        _collectDateHandler={_collectDateHandler}
-        _keywordHandler={_keywordHandler}
-        _originTitleHandler={_originTitleHandler}
-        _koreaTitleHandler={_koreaTitleHandler}
-        _docsUrlLocationHandler={_docsUrlLocationHandler}
-        _pageHandler={_pageHandler}
-      />
+      <CrawlDataForm formData={formData} />
       <ButtonWrapper>
         <Button color="#dc3545">
           <p>버리기</p>
@@ -72,4 +40,4 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-export default CrawlDataRegister;
+export default CrawlDataScreening;
