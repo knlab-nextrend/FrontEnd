@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch,Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 /* components */
@@ -31,6 +31,9 @@ function App() {
         {isLogin() && <AsideMenuBar />}
         <Section>
           <Switch>
+            <PrivateRoute path="/" exact>
+              <Redirect to="/crawl/list/0"/>
+            </PrivateRoute>
             <PrivateRoute
               path="/crawl/list/:statusCode"
               component={CrawlDataListContainer}

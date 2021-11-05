@@ -14,6 +14,8 @@ function CrawlDataRegisterContainer() {
   const [koreaTitle, setKoreaTitle] = useState("");
   const [docsUrlLocation, setDocsUrlLocation] = useState(""); // dc_url_loc
 
+  
+
   const _contentHandler = (e) => {
     setContent(e.target.value);
   };
@@ -63,6 +65,7 @@ function CrawlDataRegisterContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };

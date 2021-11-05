@@ -41,7 +41,9 @@ const Card = styled.div`
   flex-direction: row;
   background-color: white;
   border: solid 1px #d6d6d6;
-  box-shadow: 3px 3px 15px 3px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 3px 3px 15px 3px rgba(0, 0, 0, 0.1); */
+  box-shadow : rgb(9 30 66 / 25%) 0px 1px 1px;
+  border-radius: 4px;
   align-items: center;
   padding: 1rem;
   margin: 1rem 0 1rem 0;
