@@ -3,7 +3,7 @@ import CrawlDataRefine from "./CrawlDataRefine";
 import { useParams } from "react-router-dom";
 
 function CrawlDataRefineContainer() {
-  const { itemId, refineStatus } = useParams();
+  const { itemId, statusCode } = useParams();
   return (
     <>
       <CrawlDataRefine />

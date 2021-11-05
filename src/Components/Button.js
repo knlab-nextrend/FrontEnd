@@ -1,11 +1,10 @@
 /* 그냥 단순 버튼 컴포넌트임 ... */
-
 import React from "react";
 import styled from "styled-components";
 
-function Button({ color, children, func }) {
+function Button({ color, children, ...rest }) {
   return (
-    <CustomButton color={color} onClick={func}>
+    <CustomButton color={color} {...rest}>
       {children}
     </CustomButton>
   );

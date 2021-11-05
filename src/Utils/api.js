@@ -8,6 +8,8 @@ import { getToken } from "./getToken";
 
 /* 크롤데이터 상세조회에서 사용하는 통신 함수 */
 
+const headers = { authorization: `Bearer ${getToken()}` };
+
 const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
@@ -18,9 +20,31 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   return axios.get(`/crawl/detail/${itemId}`, config);
 };
 
+/* 크롤데이터 1차 스크리닝 버리기(reject) */
+const CrawlDataScreeningRejectApi = (itemId,statusCode) =>{
+  
+  let config = {
+    headers: headers,
+    params: {
+      statusCode
+    },
+  };
+  return axios.delete(`/crawl/detail/${itemId}`, config);
+}
+/* 크롤데이터 1차 스크리닝 보류*/
+const CrawlDataScreeningKeepApi = (itemId, statusCode) => {
+  /* 
+    itemId - 보류 할 데이터 id값
+    statusCode - 보류 할 데이터의 상태 값 
+  */
 
+  let body = {
+    statusCode,
+  };
+  return axios.put(`/crawl/detail/${itemId}`, body, headers);
+};
 
-/* 크롤데이터 등록에서 사용하는 통신 함수 */
+/* 크롤데이터 리스트 불러오기 */
 const CrawlDataFetchApi = (
   statusCode,
   listSize,
@@ -63,7 +87,7 @@ const CrawlDataFetchApi = (
   */
 
   let config = {
-    headers: { authorization: `Bearer ${getToken()}` },
+    headers: headers,
     params: {
       listSize: listSize,
       pageNo: pageNo,
@@ -82,4 +106,10 @@ const LoginApi = (userID, userPW) => {
   return axios.post(`/nextrend/login`, body);
 };
 
-export { CrawlDataFetchApi, LoginApi, CrawlDataDetailFetchApi };
+export {
+  CrawlDataFetchApi,
+  LoginApi,
+  CrawlDataDetailFetchApi,
+  CrawlDataScreeningKeepApi,
+  CrawlDataScreeningRejectApi
+};

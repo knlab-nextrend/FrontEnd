@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import {setLogin} from '../../Utils/login'
 
 function LoginContainer() {
-  const history = useHistory();
   const [inputID, setInputID] = useState("");
   const [inputPW, setInputPW] = useState("");
   const [errorMsg, setErrorMsg] = useState("");

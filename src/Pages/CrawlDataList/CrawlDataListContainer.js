@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CrawlDataList from "./CrawlDataList";
 import { CrawlDataFetchApi } from "../../Utils/api";
 
@@ -9,9 +9,6 @@ function CrawlDataListContainer() {
 
   /* [1차 스크리닝, 1차스크리닝 보류, 2차정제, 2차정제 보류] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
-
-  /* 페이지 이동 */
-  const history = useHistory();
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
@@ -24,10 +21,12 @@ function CrawlDataListContainer() {
     2: "refine",
     3: "refine",
   }; // 0: 스크리닝 1: 스크리닝보류 2: 2차정제 3:2차정제 보류
+
   const dataCleansing = (rawData) => {
     let _statusCrawlData = [];
     let _rawStatusCrawlData = rawData.docs;
     let _dcCount = rawData.dcCount;
+    
     _rawStatusCrawlData.forEach((item, index) => {
       const _title = item.dc_title_kr;
       const _subTitle = item.dc_title_or;
@@ -55,7 +54,6 @@ function CrawlDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
       dataCleansing(res.data);
     });
   };

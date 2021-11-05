@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 import { RiUserSettingsFill, RiLogoutBoxRLine,RiDashboardFill } from "react-icons/ri";
 import {
   MdOutlineCategory,
@@ -11,30 +10,6 @@ import {
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 function AsideMenuBar() {
-  let history = useHistory();
-
-  const _goDashboard = () => {
-    history.push("/dashborad");
-  };
-  const _goUserManagement = () => {
-    history.push("/userManagement");
-  };
-  const _goSingleDataRegister = () => {
-    history.push("/dataRegister/single");
-  };
-  const _goExcelDataRegister = () => {
-    history.push("/dataRegister/excel");
-  };
-  const _goDocumentList = () => {
-    history.push("/docs/list");
-  };
-  const _goCrawlDataList = () => {
-    history.push("/crawl/list/0");
-  };
-  const _goCrawlCurationDataList = () => {
-    history.push("/crawl/list/0");
-  }; // ... 라우터 이름을 뭘로하지 ...
-
   return (
     <>
       <AsideMenuBarContainer>

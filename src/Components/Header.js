@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {setLogout} from '../Utils/login'
-
 function Header() {
   const goNextrendPage = () => {
     window.open("http://nextrend.kr/index.php");
@@ -12,7 +11,7 @@ function Header() {
         <ContentWrapper>
           <Logo
             onClick={goNextrendPage}
-            src={"../../img/logo4.png"}
+            src={"public/img/logo4.png"}
           />
           <LoginInfo>
             <p className="userName">관리자</p>

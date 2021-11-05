@@ -17,7 +17,6 @@ import CrawlDataRefineContainer from "./Pages/CrawlDataRefine/CrawlDataRefineCon
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
-import { useSelector } from "react-redux";
 import { isLogin } from "./Utils/login";
 
 function App() {
@@ -29,7 +28,7 @@ function App() {
         <Section>
           <Switch>
             <PrivateRoute path="/" exact>
-              <Redirect to="/crawl/list/0" />
+              <div></div>
             </PrivateRoute>
             <PrivateRoute
               path="/crawl/list/:statusCode"
