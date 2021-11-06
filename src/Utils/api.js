@@ -5,11 +5,19 @@ import { getToken } from "./getToken";
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
 
 */
-
-/* 크롤데이터 상세조회에서 사용하는 통신 함수 */
-
 const headers = { authorization: `Bearer ${getToken()}` };
 
+/* 크롤데이터 1차 스크리닝 > 2차 정제 넘기기 */
+const CrawlDataScreeningStagedApi = (statusCode, itemId, docs) => {
+  const body = {
+    statusCode,
+    itemId,
+    docs,
+  };
+  return axios.post(`/crawl/detail/${itemId}`, body, headers);
+};
+
+/* 크롤데이터 상세조회에서 사용하는 통신 함수 */
 const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
@@ -22,7 +30,7 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
 
 /* 크롤데이터 1차 스크리닝 버리기(reject) */
 const CrawlDataScreeningRejectApi = (itemId, statusCode) => {
-  let config = {
+  const config = {
     headers: headers,
     params: {
       statusCode,
@@ -85,7 +93,7 @@ const CrawlDataFetchApi = (
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
   */
 
-  let config = {
+  const config = {
     headers: headers,
     params: {
       listSize: listSize,
@@ -98,7 +106,7 @@ const CrawlDataFetchApi = (
 
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = (userID, userPW) => {
-  let body = {
+  const body = {
     userID,
     userPW,
   };
@@ -111,4 +119,5 @@ export {
   CrawlDataDetailFetchApi,
   CrawlDataScreeningKeepApi,
   CrawlDataScreeningRejectApi,
+  CrawlDataScreeningStagedApi,
 };

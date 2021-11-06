@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import styled from "styled-components";
-function CrawlDataForm({ formData }) {
+
+/* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
+function CrawlDataForm ({ docs }, ref){
   /* 현재 보여질 데이터 정보들 */
   const [content, setContent] = useState(""); // dc_content 크롤 데이터 내용
   const [collectDate, setCollectDate] = useState(""); // dc_dt_collect 크롤 데이터 수집 일자
   const [writeDate, setWriteDate] = useState(""); // dc_dt_write 데이터 등록 일자. 한국 기준 현재시간
   const [keyword, setKeyword] = useState([]); // dc_keyword 키워드 검색 단어. 받아올 땐 배열이나, 관리는 문자열로 할 예정
+  const [stringKeyword, setStringKeyword] = useState(""); // dc_keyword 를 문자열 형태로 표시하기 위해서 .
   const [page, setPage] = useState(0); // dc_page 원문의 페이지 수
   const [originTitle, setOriginTitle] = useState(""); // dc_title_or 원문 제목
   const [koreaTitle, setKoreaTitle] = useState("");
@@ -17,8 +25,8 @@ function CrawlDataForm({ formData }) {
   const _collectDateHandler = (e) => {
     setCollectDate(e.target.value);
   };
-  const _keywordHandler = (e) => {
-    setKeyword(e.target.value);
+  const _stringKeywordHandler = (e) => {
+    setStringKeyword(e.target.value);
   };
   const _pageHandler = (e) => {
     setPage(e.target.value);
@@ -38,23 +46,45 @@ function CrawlDataForm({ formData }) {
     setWriteDate(e.target.value);
   };
 
+  /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
+  useImperativeHandle(ref, () => ({
+    /* input state 값들을 객체에 담아서 반환함.*/
+    getCrawlFormData() {
+      let _docs = {};
+      _docs["content"] = content;
+      _docs["collectDate"] = collectDate;
+      _docs["writeDate"] = writeDate;
+      _docs["keyword"] = keyword;
+      _docs["page"] = page;
+      _docs["originTitle"] = originTitle;
+      _docs["docsUrlLocation"] = docsUrlLocation;
+      return _docs;
+    },
+  }));
   useEffect(() => {
     /* 
-      formData가 빈 객체가 아니라면
+      docs가 빈 객체가 아니라면
       빈 객체인 상황이 useEffect로 인해 만들어지면 안될텐데...
       어쩌다보니 빈 객체인 상황이 발생해서ㅠ
       에러 처리를 일단 빈 배열 검사로 했다...
     */
-    if (Object.keys(formData).length !== 0) {
-      setContent(formData.content);
-      setCollectDate(formData.collectDate);
-      setWriteDate(formData.writeDate);
-      setKeyword(formData.keyword);
-      setPage(formData.page);
-      setOriginTitle(formData.originTitle);
-      setDocsUrlLocation(formData.docsUrlLocation);
+    if (Object.keys(docs).length !== 0) {
+      setContent(docs.content);
+      setCollectDate(docs.collectDate);
+      setWriteDate(docs.writeDate);
+      setKeyword(docs.keyword);
+      setStringKeyword(docs.keyword.join(", "));
+      setPage(docs.page);
+      setOriginTitle(docs.originTitle);
+      setDocsUrlLocation(docs.docsUrlLocation);
     }
-  }, [formData]);
+  }, [docs]);
+
+  /* stringKeyword 값이 변경되면 keyword 배열도 자동으로 반영되도록.*/
+  useEffect(() => {
+    const _stringToArrayKeywordArray = stringKeyword.split(", ");
+    setKeyword(_stringToArrayKeywordArray);
+  }, [stringKeyword]);
 
   return (
     <>
@@ -163,8 +193,8 @@ function CrawlDataForm({ formData }) {
           <CustomFormItem>
             <p className="title">검색 키워드</p>
             <input
-              value={keyword}
-              onChange={_keywordHandler}
+              value={stringKeyword}
+              onChange={_stringKeywordHandler}
               className="form"
               type="text"
               placeholder="검색에 사용할 키워드를 입력하세요. 검색 키워드는 쉼표(,)로 구분합니다."
@@ -248,4 +278,6 @@ const CustomFormRow = styled.div`
   flex-direction: row;
   width: 100%;
 `;
-export default CrawlDataForm;
+
+/* forwardRef를 사용하여 부모가 자식 컴포넌트 함수를 호출할 수 있도록 함*/
+export default forwardRef(CrawlDataForm);

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef} from "react";
 import { AiOutlineArrowRight, AiOutlineDelete,AiOutlineRollback } from "react-icons/ai";
 import { FaRegHandPaper } from "react-icons/fa";
 import CrawlDataForm from "../../Components/CrawlDataForm";
@@ -6,11 +6,12 @@ import FormHeader from "../../Components/FormHeader";
 import Button from "../../Components/Button";
 import styled from "styled-components";
 
-function CrawlDataScreening({ formData,dataKeep,dataReject}) {
+// crawlDataForm 에 crawlDataFormRef 로 ref를 걸어줌.
+function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStaged}) {
   return (
     <>
       <FormHeader type="plus" title={"1차 스크리닝 진행"} />
-      <CrawlDataForm formData={formData} />
+      <CrawlDataForm docs={docs} ref={crawlDataFormRef}/>
       <ButtonWrapper>
         <Button color="#dc3545" onClick={dataReject}>
           <p>버리기</p>
@@ -24,9 +25,9 @@ function CrawlDataScreening({ formData,dataKeep,dataReject}) {
           <p>작업 취소 (돌아가기)</p>
           <AiOutlineRollback color="white" />
         </Button>
-        <Button color="#435269">
+        <Button color="#435269" onClick={dataStaged}>
           <p>2차 정제로 넘기기</p>
-          <AiOutlineArrowRight color="white" />
+          <AiOutlineArrowRight color="white"/>
         </Button>
       </ButtonWrapper>
     </>

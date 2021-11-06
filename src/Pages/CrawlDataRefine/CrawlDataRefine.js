@@ -9,7 +9,7 @@ import styled from "styled-components";
 function CrawlDataRefine({formData}) {
   return (
     <>
-      <FormHeader type="plus" title={"1차 스크리닝 진행"} />
+      <FormHeader type="plus" title={"2차 정제 진행"} />
       <CrawlDataForm formData={formData} />
       <ButtonWrapper>
         <Button color="#dc3545">
@@ -25,7 +25,7 @@ function CrawlDataRefine({formData}) {
           <AiOutlineDelete color="white" />
         </Button>
         <Button color="#435269">
-          <p>2차 정제로 넘기기</p>
+          <p>아카이브 자료 등록하기</p>
           <AiOutlineArrowRight color="white" />
         </Button>
       </ButtonWrapper>

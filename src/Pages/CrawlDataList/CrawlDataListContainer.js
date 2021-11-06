@@ -28,6 +28,7 @@ function CrawlDataListContainer() {
     let _dcCount = rawData.dcCount;
     
     _rawStatusCrawlData.forEach((item, index) => {
+
       const _title = item.dc_title_kr;
       const _subTitle = item.dc_title_or;
       const _keywords = item.dc_keyword;
@@ -54,6 +55,7 @@ function CrawlDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };

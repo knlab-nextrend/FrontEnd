@@ -5,6 +5,7 @@ import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
 import Pagenation from "../../Components/Pagenation";
 import Tab from "../../Components/Tab";
+import { CgFileDocument } from "react-icons/cg";
 
 function CrawlDataList({
   statusCode,
@@ -16,36 +17,44 @@ function CrawlDataList({
   Search,
   STATUS_SET,
 }) {
-
   return (
     <>
       <Tab statusCode={statusCode}></Tab>
       <Wrapper>
         <SearchOption Search={Search} />
-        <SearchResultTitle>
-          <p>검색결과 ({dcCount}건)</p>
-          <p>카드 클릭 시 편집 화면이 뜹니다.</p>
-        </SearchResultTitle>
-        <SearchResult>
-          {statusCrawlData.map((item, i) => {
-            return (
-              <CustomLink
-                to={`/crawl/${STATUS_SET[item.status]}/${statusCode}/${
-                  item.itemId
-                }`}
-                key={i}
-              >
-                <CrawlDataCard crawlDataItem={item} />
-              </CustomLink>
-            );
-          })}
-        </SearchResult>
-        <Pagenation
-          dcCount={dcCount}
-          listSize={listSize}
-          pageNo={pageNo}
-          setPageNo={setPageNo}
-        />
+        {statusCrawlData.length !== 0 ? (
+          <>
+            <SearchResultTitle>
+              <p>검색결과 ({dcCount}건)</p>
+              <p>카드 클릭 시 편집 화면이 뜹니다.</p>
+            </SearchResultTitle>
+            <SearchResult>
+              {statusCrawlData.map((item, i) => {
+                return (
+                  <CustomLink
+                    to={`/crawl/${STATUS_SET[item.status]}/${statusCode}/${
+                      item.itemId
+                    }`}
+                    key={i}
+                  >
+                    <CrawlDataCard crawlDataItem={item} />
+                  </CustomLink>
+                );
+              })}
+            </SearchResult>
+            <Pagenation
+              dcCount={dcCount}
+              listSize={listSize}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
+            />
+          </>
+        ) : (
+          <SearchResultNotthingContainer>
+            <CgFileDocument size="100" color="#d6d6d6" />
+            <div className="comment">등록된 데이터가 없습니다.</div>
+          </SearchResultNotthingContainer>
+        )}
       </Wrapper>
     </>
   );
@@ -53,6 +62,17 @@ function CrawlDataList({
 
 /* status에 따라 라우팅을... 다르게 해야하네요 ㅎ; */
 
+const SearchResultNotthingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top:10rem;
+  .comment {
+    font-size: 30px;
+    color: #d6d6d6;
+  }
+`;
 const CustomLink = styled(Link)`
   color: black;
   &:link {
