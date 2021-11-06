@@ -5,7 +5,7 @@ import {
   CrawlDataScreeningRejectApi,
   CrawlDataScreeningStagedApi,
 } from "../../Utils/api";
-import { useParams } from "react-router-dom";
+import { useParams,useHistory } from "react-router-dom";
 import CrawlDataScreening from "./CrawlDataScreening";
 function CrawlDataScreeningContainer() {
   /* 
@@ -14,6 +14,7 @@ function CrawlDataScreeningContainer() {
       screeningStatus - 단계 상태 코드
     */
   const { itemId, statusCode } = useParams();
+  const history = useHistory();
   const crawlDataFormRef = useRef();
   /* 
     CrawlDataScreening > CrawlDataForm 에 있는 정보를 가져오기 위해서.
@@ -25,8 +26,8 @@ function CrawlDataScreeningContainer() {
   const [modifiedDocs, setModifiedDocs] = useState({});
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
-    const _rawStatusDetailData = rawData.docs;
 
+    const _rawStatusDetailData = rawData.docs;
     /* 
       state에 값 세팅. 세팅된 값을 form에다가 defaultValue로 지정해줄거임.
       defaultValue를 지정할 때, defaultValue 키워드로 하지 말고,
@@ -59,6 +60,7 @@ function CrawlDataScreeningContainer() {
   const dataKeep = () => {
     CrawlDataScreeningKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
+      history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
     });
   };
 
@@ -71,6 +73,7 @@ function CrawlDataScreeningContainer() {
     ) {
       CrawlDataScreeningRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
+        history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
       });
     }
   };
@@ -81,9 +84,19 @@ function CrawlDataScreeningContainer() {
     CrawlDataScreeningStagedApi(statusCode, itemId, _crawlDataFormDocs).then(
       (res) => {
         alert("해당 데이터에 대한 1차 스크리닝 결과가 성공적으로 반영되었습니다.")
+        history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
+
       }
     );
   };
+
+
+  /* 1차 스크리닝 취소하기(돌아가기) */
+  const dataCancel = ()=>{
+    if(confirm("1차 스크리닝을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")){
+      history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
+    }
+  }
   useEffect(() => {
     dataFetch();
   }, [itemId]);
@@ -95,6 +108,7 @@ function CrawlDataScreeningContainer() {
         dataKeep={dataKeep}
         dataReject={dataReject}
         dataStaged={dataStaged}
+        dataCancel={dataCancel}
         crawlDataFormRef={crawlDataFormRef}
       />
     </>

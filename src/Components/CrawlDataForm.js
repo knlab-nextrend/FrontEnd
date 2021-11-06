@@ -51,13 +51,13 @@ function CrawlDataForm ({ docs }, ref){
     /* input state 값들을 객체에 담아서 반환함.*/
     getCrawlFormData() {
       let _docs = {};
-      _docs["content"] = content;
-      _docs["collectDate"] = collectDate;
-      _docs["writeDate"] = writeDate;
-      _docs["keyword"] = keyword;
-      _docs["page"] = page;
-      _docs["originTitle"] = originTitle;
-      _docs["docsUrlLocation"] = docsUrlLocation;
+      _docs["dc_content"] = content;
+      _docs["dc_dt_collect"] = collectDate;
+      _docs["dc_dt_write"] = writeDate;
+      _docs["dc_keyword"] = keyword;
+      _docs["dc_page"] = page;
+      _docs["dc_title_or"] = originTitle;
+      _docs["dc_url_loc"] = docsUrlLocation;
       return _docs;
     },
   }));

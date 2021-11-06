@@ -7,7 +7,7 @@ import Button from "../../Components/Button";
 import styled from "styled-components";
 
 // crawlDataForm 에 crawlDataFormRef 로 ref를 걸어줌.
-function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStaged}) {
+function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStaged,dataCancel}) {
   return (
     <>
       <FormHeader type="plus" title={"1차 스크리닝 진행"} />
@@ -21,7 +21,7 @@ function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStag
           <p>보류</p>
           <FaRegHandPaper color="white" />
         </Button>
-        <Button>
+        <Button onClick={dataCancel}>
           <p>작업 취소 (돌아가기)</p>
           <AiOutlineRollback color="white" />
         </Button>
