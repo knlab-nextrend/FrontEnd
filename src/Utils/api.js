@@ -21,16 +21,15 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
 };
 
 /* 크롤데이터 1차 스크리닝 버리기(reject) */
-const CrawlDataScreeningRejectApi = (itemId,statusCode) =>{
-  
+const CrawlDataScreeningRejectApi = (itemId, statusCode) => {
   let config = {
     headers: headers,
     params: {
-      statusCode
+      statusCode,
     },
   };
   return axios.delete(`/crawl/detail/${itemId}`, config);
-}
+};
 /* 크롤데이터 1차 스크리닝 보류*/
 const CrawlDataScreeningKeepApi = (itemId, statusCode) => {
   /* 
@@ -111,5 +110,5 @@ export {
   LoginApi,
   CrawlDataDetailFetchApi,
   CrawlDataScreeningKeepApi,
-  CrawlDataScreeningRejectApi
+  CrawlDataScreeningRejectApi,
 };

@@ -1,17 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import {setLogout} from '../Utils/login'
+import { setLogout } from "../Utils/login";
 function Header() {
   const goNextrendPage = () => {
     window.open("http://nextrend.kr/index.php");
   };
+
+  /* process.env.PUBLIC_URL 은 /public/ .... 의 경로를 절대경로로 나타냄. 환경변수에요*/
   return (
     <>
       <HeaderContainer>
         <ContentWrapper>
           <Logo
             onClick={goNextrendPage}
-            src={"public/img/logo4.png"}
+            src={process.env.PUBLIC_URL + "/img/logo4.png"}
           />
           <LoginInfo>
             <p className="userName">관리자</p>
@@ -66,7 +68,7 @@ const LoginInfo = styled.div`
     background-color: #435269;
     color: white;
     font-weight: bold;
-    cursor:pointer;
+    cursor: pointer;
   }
 `;
 export default Header;

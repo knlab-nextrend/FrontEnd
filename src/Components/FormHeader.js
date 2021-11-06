@@ -9,7 +9,7 @@ function FormHeader({ type, title }) {
   return (
     <>
       <HeaderWrapper>
-        <img className="icon" src={`../../img/icon_${type}.png`} />
+        <img className="icon" src={process.env.PUBLIC_URL + `/img/icon_${type}.png`} />
         <div className="title">{title}</div>
       </HeaderWrapper>
     </>
