@@ -5,7 +5,7 @@ import {
   CrawlDataScreeningRejectApi,
   CrawlDataScreeningStagedApi,
 } from "../../Utils/api";
-import { useParams,useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import CrawlDataScreening from "./CrawlDataScreening";
 function CrawlDataScreeningContainer() {
   /* 
@@ -26,7 +26,6 @@ function CrawlDataScreeningContainer() {
   const [modifiedDocs, setModifiedDocs] = useState({});
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
-
     const _rawStatusDetailData = rawData.docs;
     /* 
       state에 값 세팅. 세팅된 값을 form에다가 defaultValue로 지정해줄거임.
@@ -37,10 +36,11 @@ function CrawlDataScreeningContainer() {
 
     _docs["content"] = _rawStatusDetailData.dc_content;
     _docs["collectDate"] = _rawStatusDetailData.dc_dt_collect;
-    _docs["writeDate"] = new Date()
-      .toISOString()
-      .replace("T", " ")
-      .substring(0, 19);
+    // _docs["writeDate"] = new Date()
+    //   .toISOString()
+    //   .replace("T", " ")
+    //   .substring(0, 19);
+    _docs["writeDate"] = new Date().toISOString().substring(0, 19) + "Z";
     _docs["keyword"] = _rawStatusDetailData.dc_keyword;
     _docs["page"] = _rawStatusDetailData.dc_page;
     _docs["originTitle"] = _rawStatusDetailData.dc_title_or;
@@ -52,6 +52,7 @@ function CrawlDataScreeningContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };
@@ -60,7 +61,7 @@ function CrawlDataScreeningContainer() {
   const dataKeep = () => {
     CrawlDataScreeningKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
-      history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
+      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     });
   };
 
@@ -73,7 +74,7 @@ function CrawlDataScreeningContainer() {
     ) {
       CrawlDataScreeningRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       });
     }
   };
@@ -83,20 +84,22 @@ function CrawlDataScreeningContainer() {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
     CrawlDataScreeningStagedApi(statusCode, itemId, _crawlDataFormDocs).then(
       (res) => {
-        alert("해당 데이터에 대한 1차 스크리닝 결과가 성공적으로 반영되었습니다.")
-        history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
-
+        alert(
+          "해당 데이터에 대한 1차 스크리닝 결과가 성공적으로 반영되었습니다."
+        );
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       }
     );
   };
 
-
   /* 1차 스크리닝 취소하기(돌아가기) */
-  const dataCancel = ()=>{
-    if(confirm("1차 스크리닝을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")){
-      history.push(`/crawl/list/${statusCode}`) // 목록으로 돌아가기
+  const dataCancel = () => {
+    if (
+      confirm("1차 스크리닝을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
+    ) {
+      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     }
-  }
+  };
   useEffect(() => {
     dataFetch();
   }, [itemId]);
