@@ -5,15 +5,15 @@ function CrawlDataCard({ crawlDataItem }) {
     <>
       <Card>
         <Wrapper>
-          <ItemID>{crawlDataItem.itemId}</ItemID>
+          <ItemID>{crawlDataItem.item_id}</ItemID>
         </Wrapper>
 
         <Content>
-          <div className="title">{crawlDataItem.title}</div>
-          <div className="subTitle">{crawlDataItem.subTitle}</div>
-          <div className="writeDate">{crawlDataItem.writeDate}</div>
+          <div className="title">{crawlDataItem.dc_title_kr}</div>
+          <div className="subTitle">{crawlDataItem.dc_title_or}</div>
+          <div className="writeDate">{crawlDataItem.dc_dt_collect}</div>
           <Keywords>
-            {crawlDataItem.keywords.map((keyword, i) => {
+            {crawlDataItem.dc_keyword.map((keyword, i) => {
               return <Chips key={i}>{keyword}</Chips>;
             })}
           </Keywords>

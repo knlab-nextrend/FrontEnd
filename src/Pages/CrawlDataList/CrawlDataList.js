@@ -32,8 +32,8 @@ function CrawlDataList({
               {statusCrawlData.map((item, i) => {
                 return (
                   <CustomLink
-                    to={`/crawl/${STATUS_SET[item.status]}/${statusCode}/${
-                      item.itemId
+                    to={`/crawl/${STATUS_SET[item.stat]}/${statusCode}/${
+                      item.item_id
                     }`}
                     key={i}
                   >

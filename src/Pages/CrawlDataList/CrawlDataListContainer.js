@@ -33,22 +33,14 @@ function CrawlDataListContainer() {
     let _dcCount = rawData.dcCount;
 
     _rawStatusCrawlData.forEach((item, index) => {
-      const _title = item.dc_title_kr;
-      const _subTitle = item.dc_title_or;
-      const _keywords = item.dc_keyword;
-      const _writeDate = item.dc_dt_collect;
-      const _subscribed = false;
-      const _itemId = Number(item.item_id);
-      const _status = item.stat;
-
       const obj = {
-        title: _title,
-        subTitle: _subTitle,
-        keywords: _keywords,
-        writeDate: _writeDate,
-        subscribed: _subscribed,
-        itemId: _itemId,
-        status: _status,
+        dc_title_or: item.dc_title_or,
+        dc_title_kr: item.dc_title_kr,
+        dc_keyword: item.dc_keyword,
+        dc_dt_collect: item.dc_dt_collect,
+        subscribed: false,
+        item_id: Number(item.item_id),
+        stat: item.stat,
       };
 
       _statusCrawlData.push(obj);

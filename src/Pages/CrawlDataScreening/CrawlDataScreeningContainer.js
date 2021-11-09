@@ -31,19 +31,16 @@ function CrawlDataScreeningContainer() {
       defaultValue를 지정할 때, defaultValue 키워드로 하지 말고,
       value에 할당해서 관리하는게 리액트에서는 바람직한 방법임.... 이라네요 ㅎ
     */
-    let _docs = {};
+    let _docs = {
+      dc_content:_rawStatusDetailData.dc_content,
+      dc_dt_collect:_rawStatusDetailData.dc_dt_collect,
+      dc_dt_regi:new Date().toISOString().substring(0, 19) + "Z",
+      dc_keyword: _rawStatusDetailData.dc_keyword,
+      dc_page:_rawStatusDetailData.dc_page,
+      dc_title_or:_rawStatusDetailData.dc_title_or,
+      dc_url_loc:_rawStatusDetailData.dc_url_loc
 
-    _docs["content"] = _rawStatusDetailData.dc_content;
-    _docs["collectDate"] = _rawStatusDetailData.dc_dt_collect;
-    // _docs["writeDate"] = new Date()
-    //   .toISOString()
-    //   .replace("T", " ")
-    //   .substring(0, 19);
-    _docs["writeDate"] = new Date().toISOString().substring(0, 19) + "Z";
-    _docs["keyword"] = _rawStatusDetailData.dc_keyword;
-    _docs["page"] = _rawStatusDetailData.dc_page;
-    _docs["originTitle"] = _rawStatusDetailData.dc_title_or;
-    _docs["docsUrlLocation"] = _rawStatusDetailData.dc_url_loc;
+    };
 
     setDocs(_docs);
   };

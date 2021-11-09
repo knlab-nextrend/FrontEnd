@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { RiUserSettingsFill, RiLogoutBoxRLine,RiDashboardFill } from "react-icons/ri";
+import {
+  RiUserSettingsFill,
+  RiLogoutBoxRLine,
+  RiDashboardFill,
+} from "react-icons/ri";
 import {
   MdOutlineCategory,
   MdWebAsset,
@@ -8,8 +12,13 @@ import {
   MdOutlineAdd,
   MdSettings,
 } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 function AsideMenuBar() {
+  const history = useHistory();
+  const go크롤데이터정제 = () => {
+    history.push("/crawl/list/0");
+  };
   return (
     <>
       <AsideMenuBarContainer>
@@ -34,7 +43,7 @@ function AsideMenuBar() {
             <MdCalendarViewDay className="icon" size="18" />
             크롤 데이터 조회
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          <AsideMenuBarItem onClick={go크롤데이터정제}>
             <MdSettings className="icon" size="18" />
             크롤 데이터 정제
           </AsideMenuBarItem>
