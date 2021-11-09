@@ -4,4 +4,9 @@ const getToken = ()=>{
   }
 }
 
-export { getToken };
+const getRefreshToken = ()=>{
+  if(!!localStorage.getItem('refreshToken')){
+    return localStorage.getItem('refreshToken')
+  }
+}
+export { getToken,getRefreshToken };

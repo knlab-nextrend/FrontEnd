@@ -1,12 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { setLogout } from "../Utils/login";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../Modules/login";
 function Header() {
+  const dispatch = useDispatch();
+
   const goNextrendPage = () => {
     window.open("http://nextrend.kr/index.php");
   };
 
   /* process.env.PUBLIC_URL 은 /public/ .... 의 경로를 절대경로로 나타냄. 환경변수에요*/
+
+  const logout = () => {
+    console.log("호출")
+    dispatch(setLogout({ logout_type: "normal_logout" }));
+  };
   return (
     <>
       <HeaderContainer>
@@ -18,7 +26,7 @@ function Header() {
           <LoginInfo>
             <p className="userName">관리자</p>
             <p className="greetings">님 안녕하세요.</p>
-            <button onClick={setLogout}>로그아웃</button>
+            <button onClick={logout}>로그아웃</button>
           </LoginInfo>
         </ContentWrapper>
       </HeaderContainer>

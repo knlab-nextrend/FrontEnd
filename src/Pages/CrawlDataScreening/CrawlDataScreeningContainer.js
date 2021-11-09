@@ -23,7 +23,6 @@ function CrawlDataScreeningContainer() {
   */
 
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
-  const [modifiedDocs, setModifiedDocs] = useState({});
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
@@ -52,7 +51,6 @@ function CrawlDataScreeningContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data)
       dataCleansing(res.data);
     });
   };
@@ -62,7 +60,7 @@ function CrawlDataScreeningContainer() {
     CrawlDataScreeningKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-    });
+    }).catch(err=>console.log(err.response));
   };
 
   /* 1차 스크리닝 버리기 */

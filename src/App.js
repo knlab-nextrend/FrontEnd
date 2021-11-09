@@ -17,14 +17,16 @@ import CrawlDataRefineContainer from "./Pages/CrawlDataRefine/CrawlDataRefineCon
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
-import { isLogin } from "./Utils/login";
+import {useSelector} from 'react-redux'
+
 
 function App() {
+  const isLogin = useSelector((state) => state.login.isLogin);
   return (
     <>
-      {isLogin() && <Header />}
-      <Body isLogin={isLogin()}>
-        {isLogin() && <AsideMenuBar />}
+      {isLogin && <Header />}
+      <Body isLogin={isLogin}>
+        {isLogin && <AsideMenuBar />}
         <Section>
           <Switch>
             <PrivateRoute path="/" exact>
@@ -48,7 +50,7 @@ function App() {
           </Switch>
         </Section>
       </Body>
-      {isLogin() && <Footer />}
+      {isLogin && <Footer />}
 
       <PublicRoute
         restricted={true}

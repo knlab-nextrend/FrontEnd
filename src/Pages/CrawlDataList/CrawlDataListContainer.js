@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import CrawlDataList from "./CrawlDataList";
-import { CrawlDataFetchApi } from "../../Utils/api";
+import { CrawlDataFetchApi, RefreshTokenApi } from "../../Utils/api";
+import { setLogout } from "../../Modules/login";
 
 function CrawlDataListContainer() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   /* 현재 보여질 데이터 */
   const [statusCrawlData, setStatusCrawlData] = useState([]);
 
@@ -53,21 +58,36 @@ function CrawlDataListContainer() {
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
-      dataCleansing(res.data);
-    });
+    CrawlDataFetchApi(statusCode, listSize, pageNo)
+      .then((res) => {
+        console.log(res.data)
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        if (err.response.status === 401) {
+          
+          console.log("일반 토큰 만료");
+          RefreshTokenApi()
+            .then((res) => {
+              console.log(res)
+              localStorage.setItem("token", res.data.token);
+              localStorage.setItem("refreshToken", res.data.refreshToken);
+            })
+            .catch((err) => {
+              console.log("리프레시 토큰 만료");
+              dispatch(setLogout({ logout_type: "EXPIRED_LOGOUT" }));
+            });
+        }
+      });
   };
 
   /* 페이지 번호가 변경되었을 때 데이터를 다시 불러옴 */
+   /* statusCode가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
-  }, [pageNo]);
+  }, [pageNo,statusCode]);
 
-  /* statusCode가 변경되었을 때 데이터를 다시 불러옴 */
-  useEffect(() => {
-    dataFetch();
-  }, [statusCode]);
 
   /* 조건 검색 */
   const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {

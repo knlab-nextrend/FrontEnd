@@ -1,11 +1,42 @@
 import axios from "axios";
-import { getToken } from "./getToken";
+import { getToken, getRefreshToken } from "./getToken";
 /* 
   로그인 상태가 아니라면 아래의  통신 함수들은 모두 사용할 일이 없음. 
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
 
 */
 const headers = { authorization: `Bearer ${getToken()}` };
+const refreshHeaders = {
+  authorization: `Bearer ${getToken()}`,
+  refresh: getRefreshToken(),
+};
+
+/*  */
+const AuthorizationErrorHandler = async (err1) => {
+  if (!!err1.response.status) {
+    const _status1 = err1.response.status;
+    if (_status1 === 401) {
+      {
+        console.log("일반 토큰 만료");
+        await RefreshTokenApi()
+          .then((res) => {
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("refreshToken", res.data.refreshToken);
+          })
+          .catch((err2) => {
+            console.log("리프레시 토큰 만료");
+            console.log("리프레시", err2);
+            if (!!err2.response.status) {
+              const _status2 = err2.response.status;
+              if (_status2 === 401) {
+                return "expired_logout";
+              }
+            }
+          });
+      }
+    }
+  }
+};
 
 /* 크롤데이터 1차 스크리닝 > 2차 정제 넘기기 */
 const CrawlDataScreeningStagedApi = (statusCode, itemId, docs) => {
@@ -63,6 +94,7 @@ const CrawlDataFetchApi = (
   lang = "",
   subscribed = ""
 ) => {
+  console.log(localStorage.getItem("token"));
   let params = {
     listSize: listSize,
     pageNo: pageNo,
@@ -105,12 +137,22 @@ const CrawlDataFetchApi = (
 };
 
 /* 로그인 할 때 사용하는 통신 함수 */
-const LoginApi = (userID, userPW) => {
+const LoginApi = async (userID, userPW) => {
   const body = {
     userID,
     userPW,
   };
+
   return axios.post(`/nextrend/login`, body);
+};
+
+/* 일반 token 만료 후 refreshToken 검증 하는 함수 */
+
+const RefreshTokenApi = () => {
+  const config = {
+    headers: refreshHeaders,
+  };
+  return axios.get(`/nextrend/refresh`, config);
 };
 
 export {
@@ -120,4 +162,5 @@ export {
   CrawlDataScreeningKeepApi,
   CrawlDataScreeningRejectApi,
   CrawlDataScreeningStagedApi,
+  RefreshTokenApi,
 };
