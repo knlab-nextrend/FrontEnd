@@ -59,7 +59,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcCoverHandler = (e) => {
     setDcCover(e.target.value);
   };
-  const _dcSmryKr = (e) => {
+  const _dcSmryKrHandler = (e) => {
     setDcSmryKr(e.target.value);
   };
   const _dcPublisherHandler = (e) => {
@@ -122,7 +122,7 @@ function CrawlDataForm({ docs, type }, ref) {
       setDcCountry(docs.dc_country);
       setDcCountryPub(docs.dc_country_pub);
       setDcCover(docs.dc_cover);
-      setDcSmryKr(docs.smry_kr);
+      setDcSmryKr(docs.dc_smry_kr);
       setDcPublisher(docs.dc_publisher);
       setDcPage(docs.dc_page);
       setDcTitleOr(docs.dc_title_or);
@@ -168,6 +168,8 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">한글요약</p>
             <input
+              value={dcSmryKr}
+              onChange={_dcSmryKrHandler}
               className="form"
               type="text"
               placeholder="한글 요약을 입력하세요"
@@ -199,7 +201,11 @@ function CrawlDataForm({ docs, type }, ref) {
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">원문 작성일</p>
-            <input className="form" type="text" placeholder="원문 작성일을 입력하세요"/>
+            <input
+              className="form"
+              type="text"
+              placeholder="원문 작성일을 입력하세요"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
