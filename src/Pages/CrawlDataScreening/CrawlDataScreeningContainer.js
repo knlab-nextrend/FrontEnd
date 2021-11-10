@@ -32,14 +32,13 @@ function CrawlDataScreeningContainer() {
       value에 할당해서 관리하는게 리액트에서는 바람직한 방법임.... 이라네요 ㅎ
     */
     let _docs = {
-      dc_content:_rawStatusDetailData.dc_content,
-      dc_dt_collect:_rawStatusDetailData.dc_dt_collect,
-      dc_dt_regi:new Date().toISOString().substring(0, 19) + "Z",
+      dc_content: _rawStatusDetailData.dc_content,
+      dc_dt_collect: _rawStatusDetailData.dc_dt_collect,
+      dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_page:_rawStatusDetailData.dc_page,
-      dc_title_or:_rawStatusDetailData.dc_title_or,
-      dc_url_loc:_rawStatusDetailData.dc_url_loc
-
+      dc_page: _rawStatusDetailData.dc_page,
+      dc_title_or: _rawStatusDetailData.dc_title_or,
+      dc_url_loc: _rawStatusDetailData.dc_url_loc,
     };
 
     setDocs(_docs);
@@ -47,17 +46,21 @@ function CrawlDataScreeningContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      dataCleansing(res.data);
-    });
+    CrawlDataDetailFetchApi(statusCode, itemId)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => console.log(err.response));
   };
 
   /* 1차 스크리닝 보류 */
   const dataKeep = () => {
-    CrawlDataScreeningKeepApi(itemId, statusCode).then((res) => {
-      alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-    }).catch(err=>console.log(err.response));
+    CrawlDataScreeningKeepApi(itemId, statusCode)
+      .then((res) => {
+        alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      })
+      .catch((err) => console.log(err.response));
   };
 
   /* 1차 스크리닝 버리기 */
@@ -95,6 +98,7 @@ function CrawlDataScreeningContainer() {
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     }
   };
+
   useEffect(() => {
     dataFetch();
   }, [itemId]);

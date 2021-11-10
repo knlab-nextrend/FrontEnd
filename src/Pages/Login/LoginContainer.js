@@ -37,13 +37,18 @@ function LoginContainer() {
           dispatch(setLogin(tokensObj));
         })
         .catch((err) => {
-          console.log(err.response);
           if (err.response.status === 401) {
             alert("아이디 또는 비밀번호가 일치하지 않습니다.");
           }
         });
     }
   };
+
+  const onKeyPress = (e)=>{
+    if(e.key === 'Enter'){
+      loginFunc();
+    }
+  }
   return (
     <>
       <Login
@@ -51,6 +56,7 @@ function LoginContainer() {
         _inputPWHandler={_inputPWHandler}
         errorMsg={errorMsg}
         loginFunc={loginFunc}
+        onKeyPress={onKeyPress}
       />
     </>
   );

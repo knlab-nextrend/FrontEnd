@@ -11,7 +11,7 @@ function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStag
   return (
     <>
       <FormHeader type="plus" title={"1차 스크리닝 진행"} />
-      <CrawlDataForm docs={docs} ref={crawlDataFormRef}/>
+      <CrawlDataForm docs={docs} ref={crawlDataFormRef} type={"screening"}/>
       <ButtonWrapper>
         <Button color="#dc3545" onClick={dataReject}>
           <p>버리기</p>

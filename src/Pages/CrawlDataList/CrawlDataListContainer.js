@@ -52,22 +52,16 @@ function CrawlDataListContainer() {
   const dataFetch = () => {
     CrawlDataFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
-        console.log(res.data)
         dataCleansing(res.data);
       })
       .catch((err) => {
-        console.log(err.response);
         if (err.response.status === 401) {
-          
-          console.log("일반 토큰 만료");
           RefreshTokenApi()
             .then((res) => {
-              console.log(res)
               localStorage.setItem("token", res.data.token);
               localStorage.setItem("refreshToken", res.data.refreshToken);
             })
             .catch((err) => {
-              console.log("리프레시 토큰 만료");
               dispatch(setLogout({ logout_type: "EXPIRED_LOGOUT" }));
             });
         }

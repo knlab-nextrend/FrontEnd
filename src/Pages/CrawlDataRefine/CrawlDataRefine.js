@@ -6,11 +6,11 @@ import FormHeader from "../../Components/FormHeader";
 import Button from "../../Components/Button";
 import styled from "styled-components";
 
-function CrawlDataRefine({formData}) {
+function CrawlDataRefine({docs}) {
   return (
     <>
       <FormHeader type="plus" title={"2차 정제 진행"} />
-      <CrawlDataForm formData={formData} />
+      <CrawlDataForm docs={docs} type="refine"/>
       <ButtonWrapper>
         <Button color="#dc3545">
           <p>버리기</p>

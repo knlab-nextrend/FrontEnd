@@ -3,7 +3,6 @@ import { getToken, getRefreshToken } from "./getToken";
 /* 
   로그인 상태가 아니라면 아래의  통신 함수들은 모두 사용할 일이 없음. 
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
-
 */
 const headers = { authorization: `Bearer ${getToken()}` };
 const refreshHeaders = {
@@ -25,7 +24,6 @@ const AuthorizationErrorHandler = async (err1) => {
           })
           .catch((err2) => {
             console.log("리프레시 토큰 만료");
-            console.log("리프레시", err2);
             if (!!err2.response.status) {
               const _status2 = err2.response.status;
               if (_status2 === 401) {
@@ -38,15 +36,10 @@ const AuthorizationErrorHandler = async (err1) => {
   }
 };
 
-/* 크롤데이터 1차 스크리닝 > 2차 정제 넘기기 */
-const CrawlDataScreeningStagedApi = (statusCode, itemId, docs) => {
-  const body = {
-    statusCode,
-    itemId,
-    docs,
-  };
-  return axios.post(`/crawl/detail/${itemId}`, body, headers);
-};
+/* 크롤데이터 2차 정제 버리기(reject) */
+/* 크롤데이터 2차 정제 보류 */
+/* 크롤데이터 2차정제 > 아카이브 등록 */
+
 
 /* 크롤데이터 상세조회에서 사용하는 통신 함수 */
 const CrawlDataDetailFetchApi = (statusCode, itemId) => {
@@ -57,6 +50,17 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
     },
   };
   return axios.get(`/crawl/detail/${itemId}`, config);
+};
+
+
+/* 크롤데이터 1차 스크리닝 > 2차 정제 넘기기 */
+const CrawlDataScreeningStagedApi = (statusCode, itemId, docs) => {
+  const body = {
+    statusCode,
+    itemId,
+    docs,
+  };
+  return axios.post(`/crawl/detail/${itemId}`, body, {headers:headers});
 };
 
 /* 크롤데이터 1차 스크리닝 버리기(reject) */
@@ -79,7 +83,7 @@ const CrawlDataScreeningKeepApi = (itemId, statusCode) => {
   let body = {
     statusCode,
   };
-  return axios.put(`/crawl/detail/${itemId}`, body, headers);
+  return axios.put(`/crawl/detail/${itemId}`, body, {headers:headers});
 };
 
 /* 크롤데이터 리스트 불러오기 */
@@ -94,7 +98,6 @@ const CrawlDataFetchApi = (
   lang = "",
   subscribed = ""
 ) => {
-  console.log(localStorage.getItem("token"));
   let params = {
     listSize: listSize,
     pageNo: pageNo,
@@ -118,8 +121,6 @@ const CrawlDataFetchApi = (
   if (subscribed !== "") {
     params["subscribed"] = subscribed;
   }
-  // console.log(tokenHeaders)
-
   /* 
     get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together

@@ -7,7 +7,7 @@ import React, {
 import styled from "styled-components";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
-function CrawlDataForm({ docs }, ref) {
+function CrawlDataForm({ docs, type }, ref) {
   /* 현재 보여질 데이터 정보들 */
   const [dcContent, setDcContent] = useState(""); // dc_content 크롤 데이터 내용
   const [dcDtCollect, setDcDtCollect] = useState(""); // dc_dt_collect 원문 수집 일자
@@ -85,7 +85,7 @@ function CrawlDataForm({ docs }, ref) {
     /* input state 값들을 객체에 담아서 반환함.*/
     getCrawlFormData() {
       let _docs = {};
-      _docs["dc_content"] = content;
+      _docs["dc_content"] = dcContent;
       _docs["dc_dt_collect"] = dcDtCollect;
       _docs["dc_dt_write"] = dcDtWrite;
       _docs["dc_dt_regi"] = dcDtRegi;
@@ -96,14 +96,14 @@ function CrawlDataForm({ docs }, ref) {
       _docs["dc_country"] = dcCountry;
       _docs["dc_country_pub"] = dcCountryPub;
       _docs["dc_cover"] = dcCover;
-      _docs["dc_smry_kr"]=dcSmryKr;
-      _docs["dc_publisher"]=dcPublisher;
+      _docs["dc_smry_kr"] = dcSmryKr;
+      _docs["dc_publisher"] = dcPublisher;
       _docs["dc_page"] = dcPage;
       _docs["dc_title_or"] = dcTitleOr;
       _docs["dc_title_kr"] = dcTitleKr;
       _docs["dc_url_loc"] = dcUrlLoc;
       _docs["dc_link"] = dcLink;
-    
+
       return _docs;
     },
   }));
@@ -113,7 +113,7 @@ function CrawlDataForm({ docs }, ref) {
       setDcContent(docs.dc_content);
       setDcDtCollect(docs.dc_dt_collect);
       setDcDtWrite(docs.dc_dt_write);
-      setDcDtRegi(docs.dc_dt_regi)
+      setDcDtRegi(docs.dc_dt_regi);
       setDcKeyword(docs.dc_keyword);
       setDcKeywordString(docs.dc_keyword.join(", "));
       setDcCode(docs.dc_code);
@@ -155,13 +155,23 @@ function CrawlDataForm({ docs }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">한글제목</p>
-            <input className="form" type="text" />
+            <input
+              className="form"
+              type="text"
+              value={dcTitleKr}
+              onChange={_dcTitleKrHandler}
+              placeholder="한글 제목을 입력하세요"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">한글요약</p>
-            <input className="form" type="text" />
+            <input
+              className="form"
+              type="text"
+              placeholder="한글 요약을 입력하세요"
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -184,17 +194,23 @@ function CrawlDataForm({ docs }, ref) {
               onChange={_dcUrlLocHandler}
               className="form"
               type="text"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">원문 작성일</p>
-            <input className="form" type="text" />
+            <input className="form" type="text" placeholder="원문 작성일을 입력하세요"/>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">문서 안내 URL</p>
-            <input className="form" type="text" />
+            <input
+              className="form"
+              type="text"
+              disabled={type === "screening"}
+              placeholder="원문의 안내가 적힌 링크를 입력하세요"
+            />
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">데이터 수집일</p>
@@ -203,6 +219,7 @@ function CrawlDataForm({ docs }, ref) {
               onChange={_dcDtCollectHandler}
               className="form"
               type="text"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -212,7 +229,8 @@ function CrawlDataForm({ docs }, ref) {
             <input
               className="form"
               type="text"
-              placeholder="보고서, 지침, 뉴스, 논문 ....."
+              placeholder="보고서, 지침, 뉴스, 논문 등 문서의 물리적 형태 유형을 입력하세요"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -222,13 +240,19 @@ function CrawlDataForm({ docs }, ref) {
               value={dcDtRegi}
               className="form"
               type="text"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">발행자/발행기관 명</p>
-            <input className="form" type="text" />
+            <input
+              className="form"
+              type="text"
+              disabled={type === "screening"}
+              placeholder="원문의 발행자 및 발행기관명을 입력하세요"
+            />
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">페이지 수</p>
@@ -238,6 +262,7 @@ function CrawlDataForm({ docs }, ref) {
               className="form"
               type="number"
               min="0"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -250,6 +275,7 @@ function CrawlDataForm({ docs }, ref) {
               className="form"
               type="text"
               placeholder="검색에 사용할 키워드를 입력하세요. 검색 키워드는 쉼표(,)로 구분합니다."
+              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -261,6 +287,7 @@ function CrawlDataForm({ docs }, ref) {
               onChange={_dcContentHandler}
               className="form textarea"
               rows="30"
+              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
