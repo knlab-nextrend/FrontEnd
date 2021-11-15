@@ -1,117 +1,97 @@
-import React, { useEffect, useState, useRef } from "react";
-import {
-  CrawlDataDetailFetchApi,
-  CrawlDataScreeningKeepApi,
-  CrawlDataScreeningRejectApi,
-  CrawlDataScreeningStagedApi,
-} from "../../Utils/api";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { ScreeningDataFetchApi } from "../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
-function CrawlDataScreeningContainer() {
-  /* 
-      라우터에서 받아온 정보. 
-      itemId - 해당 크롤 데이터의 id
-      screeningStatus - 단계 상태 코드
-    */
-  const { itemId, statusCode } = useParams();
-  const history = useHistory();
-  const crawlDataFormRef = useRef();
-  /* 
-    CrawlDataScreening > CrawlDataForm 에 있는 정보를 가져오기 위해서.
-    부모 컴포넌트에서 자식 컴포넌트의 함수를 호출하는 상황임.
-    CrawlDataForm 에 ref를.. 걸고자 함. 
-  */
 
-  const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
+function CrawlDataScreeningContainer() {
+  /* 현재 보여질 데이터 */
+  const [screeningData, setScreeningData] = useState([]);
+
+  /* 페이지네이션 */
+  const [dcCount, setDcCount] = useState(0); // document 총 개수
+  const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
+  const [listSize, setListSize] = useState(50); // 한 페이지에 나타낼 document 개수
+
+  const [itemIdList, setItemIdList] = useState([]);
+  const [deleteDataList, setDeleteDataList] = useState([]);
+  const [stageDataList, setStageDataList] = useState([]);
+
+  /* item 전체 선택 */
+  const onChangeAll = (e) => {
+    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
+    setCheckList(e.target.checked ? itemIdList : []);
+  };
+
+  /* item 개별 선택*/
+  const onChangeEach = (e, id) => {
+    // 체크할 시 CheckList에 id값 넣기
+    if (e.target.checked) {
+      setStageDataList([...stageDataList, id]);
+      // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
+    } else {
+      setStageDataList(stageDataList.filter((item_id) => item_id !== id));
+    }
+  };
+
+  /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
+  const stageScreeningData = () => {
+    const _deleteDataList = itemIdList.filter(
+      (item_id) => !stageDataList.includes(item_id)
+    );
+  };
+
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
-    const _rawStatusDetailData = rawData.docs;
-    /* 
-      state에 값 세팅. 세팅된 값을 form에다가 defaultValue로 지정해줄거임.
-      defaultValue를 지정할 때, defaultValue 키워드로 하지 말고,
-      value에 할당해서 관리하는게 리액트에서는 바람직한 방법임.... 이라네요 ㅎ
-    */
-    let _docs = {
-      dc_content: _rawStatusDetailData.dc_content,
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect,
-      dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
-      dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_page: _rawStatusDetailData.dc_page,
-      dc_title_or: _rawStatusDetailData.dc_title_or,
-      dc_url_loc: _rawStatusDetailData.dc_url_loc,
-    };
+    let _screeningData = [];
+    let _rawScreeningData = rawData.docs;
+    let _dcCount = rawData.dcCount;
 
-    setDocs(_docs);
+    _rawScreeningData.forEach((item, index) => {
+      const obj = {
+        item_id: item.item_id,
+        dc_smry_kr: item.dc_smry_kr,
+        dc_publisher: item.dc_publisher,
+        dc_lang: item.dc_lang,
+        dc_dt_collect: item.dc_dt_collect,
+        dc_page: item.dc_page,
+      };
+      _screeningData.push(obj);
+    });
+    setDcCount(_dcCount);
+    setScreeningData(_screeningData);
   };
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId)
-      .then((res) => {
-        dataCleansing(res.data);
-      })
-      .catch((err) => console.log(err.response));
+    ScreeningDataFetchApi(listSize, pageNo).then((res) => {
+      dataCleansing(res.data);
+    });
   };
 
-  /* 1차 스크리닝 보류 */
-  const dataKeep = () => {
-    CrawlDataScreeningKeepApi(itemId, statusCode)
-      .then((res) => {
-        alert("해당 데이터에 대한 1차 스크리닝이 보류되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-      })
-      .catch((err) => console.log(err.response));
-  };
-
-  /* 1차 스크리닝 버리기 */
-  const dataReject = () => {
-    if (
-      confirm(
-        "해당 데이터를 1차 스크리닝 단계에서 버리시겠습니까?\n버려진 데이터는 다시 복구할 수 없습니다."
-      )
-    ) {
-      CrawlDataScreeningRejectApi(itemId, statusCode).then((res) => {
-        alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-      });
-    }
-  };
-
-  /* 1차 스크리닝 > 2차 정제 넘기기 */
-  const dataStaged = () => {
-    const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    CrawlDataScreeningStagedApi(statusCode, itemId, _crawlDataFormDocs).then(
-      (res) => {
-        alert(
-          "해당 데이터에 대한 1차 스크리닝 결과가 성공적으로 반영되었습니다."
-        );
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-      }
-    );
-  };
-
-  /* 1차 스크리닝 취소하기(돌아가기) */
-  const dataCancel = () => {
-    if (
-      confirm("1차 스크리닝을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
-    ) {
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-    }
-  };
-
+  /* statusCode가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
-  }, [itemId]);
+  }, [pageNo, listSize]);
+
+  /* 데이터를 불러오는데 성공하였을 경우 각 데이터의 id값을 list에 먼저 세팅해줌*/
+  useEffect(() => {
+    let _itemIdList = [];
+    screeningData.forEach((item) => {
+      _itemIdList.push(item.item_id);
+    });
+    setItemIdList(_itemIdList);
+  }, [screeningData]);
 
   return (
     <>
       <CrawlDataScreening
-        docs={docs}
-        dataKeep={dataKeep}
-        dataReject={dataReject}
-        dataStaged={dataStaged}
-        dataCancel={dataCancel}
-        crawlDataFormRef={crawlDataFormRef}
+        screeningData={screeningData}
+        dcCount={dcCount}
+        listSize={listSize}
+        setListSize={setListSize}
+        pageNo={pageNo}
+        setPageNo={setPageNo}
+        onChangeAll={onChangeAll}
+        onChangeEach={onChangeEach}
       />
     </>
   );

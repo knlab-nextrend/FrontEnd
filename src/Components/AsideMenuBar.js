@@ -14,10 +14,11 @@ import {
 } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
+import { GrFormView } from "react-icons/gr";
 function AsideMenuBar() {
   const history = useHistory();
-  const go크롤데이터정제 = () => {
-    history.push("/crawl/list/0");
+  const go크롤데이터스크리닝 = () => {
+    history.push("/crawl/screening");
   };
   return (
     <>
@@ -39,11 +40,11 @@ function AsideMenuBar() {
             <MdWebAsset className="icon" size="18" />
             사이트 목록 관리
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdCalendarViewDay className="icon" size="18" />
-            크롤 데이터 조회
+          <AsideMenuBarItem onClick={go크롤데이터스크리닝}>
+            <GrFormView className="icon" size="18" />
+            크롤 데이터 스크리닝
           </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go크롤데이터정제}>
+          <AsideMenuBarItem>
             <MdSettings className="icon" size="18" />
             크롤 데이터 정제
           </AsideMenuBarItem>
@@ -53,7 +54,11 @@ function AsideMenuBar() {
           </AsideMenuBarItem>
           <AsideMenuBarItem>
             <MdCalendarViewDay className="icon" size="18" />
-            데이터 조회
+            아카이브 데이터 조회
+          </AsideMenuBarItem>
+          <AsideMenuBarItem>
+            <MdCalendarViewDay className="icon" size="18" />
+            큐레이션 데이터 조회
           </AsideMenuBarItem>
           <AsideMenuBarItem>
             <MdOutlineAdd className="icon" size="18" />

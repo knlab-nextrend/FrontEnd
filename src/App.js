@@ -9,16 +9,16 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
-import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening/CrawlDataScreeningContainer";
+//import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening_temp/CrawlDataScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
 import CrawlDataRefineContainer from "./Pages/CrawlDataRefine/CrawlDataRefineContainer";
+import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening/CrawlDataScreeningContainer";
 
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
-import {useSelector} from 'react-redux'
-
+import { useSelector } from "react-redux";
 
 function App() {
   const isLogin = useSelector((state) => state.login.isLogin);
@@ -32,7 +32,7 @@ function App() {
             <PrivateRoute path="/" exact>
               <div></div>
             </PrivateRoute>
-            <PrivateRoute
+            {/* <PrivateRoute
               path="/crawl/list/:statusCode"
               component={CrawlDataListContainer}
               exact
@@ -45,6 +45,12 @@ function App() {
             <PrivateRoute
               path="/crawl/refine/:statusCode/:itemId"
               component={CrawlDataRefineContainer}
+              exact
+            /> */}
+
+            <PrivateRoute
+              path="/crawl/screening"
+              component={CrawlDataScreeningContainer}
               exact
             />
           </Switch>

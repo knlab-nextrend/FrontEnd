@@ -10,7 +10,34 @@ const refreshHeaders = {
   refresh: getRefreshToken(),
 };
 
-/*  */
+/* 크롤데이터 스크리닝 데이터 받아오기 */
+const ScreeningDataFetchApi = (listSize, pageNo) => {
+  const config = {
+    headers: headers,
+    params: {
+      listSize: listSize,
+      pageNo: pageNo,
+    },
+  };
+  return axios.get(`/crawl/screening`, config);
+};
+
+/* 크롤데이터 스크리닝에서 정제 단계로 넘기기 */
+const ScreeningDataStageApi = (stageDataList) => {
+  let body = {
+    stageDataList,
+  };
+  return axios.put(`/crawl/screening`, body, { headers: headers });
+};
+
+/* 크롤데이터 스크리닝 단계에서 버리기 */
+const ScreeningDataDeleteApi = (deleteDataList) => {
+  let body = {
+    deleteDataList,
+  };
+  return axios.delete(`/crawl/screening`, body, { headers: headers });
+};
+
 const AuthorizationErrorHandler = async (err1) => {
   if (!!err1.response.status) {
     const _status1 = err1.response.status;
@@ -188,5 +215,7 @@ export {
   CrawlDataRefineStagedApi,
   CrawlDataRefineRejectApi,
   CrawlDataRefineKeepApi,
+  ScreeningDataDeleteApi,
+  ScreeningDataStageApi,
+  ScreeningDataFetchApi,
 };
-
