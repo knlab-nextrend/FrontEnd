@@ -25,17 +25,20 @@ const ScreeningDataFetchApi = (listSize, pageNo) => {
 /* 크롤데이터 스크리닝에서 정제 단계로 넘기기 */
 const ScreeningDataStageApi = (stageDataList) => {
   let body = {
-    stageDataList,
+    list:stageDataList,
   };
   return axios.put(`/crawl/screening`, body, { headers: headers });
 };
 
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
-  let body = {
-    deleteDataList,
+  const config = {
+    headers: headers,
+    params: {
+      list:deleteDataList,
+    },
   };
-  return axios.delete(`/crawl/screening`, body, { headers: headers });
+  return axios.delete(`/crawl/screening`, config);
 };
 
 const AuthorizationErrorHandler = async (err1) => {

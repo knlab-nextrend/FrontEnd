@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import FormHeader from "../../Components/FormHeader";
 import styled from "styled-components";
-function CrawlDataScreening({ screeningData }) {
-  useEffect(() => {
-    console.log(screeningData);
-  }, [screeningData]);
+function CrawlDataScreening({ screeningData,onChangeEach ,stageScreeningData}) {
+
   return (
     <>
       <FormHeader type="view" title={"크롤데이터 스크리닝 진행"} />
@@ -26,7 +24,7 @@ function CrawlDataScreening({ screeningData }) {
               return (
                 <tr key={index}>
                   <td>
-                    <input type="checkbox" value={item.item_id} />
+                    <input type="checkbox" value={item.item_id} onChange={onChangeEach} />
                   </td>
                   <td>{item.item_id}</td>
                   <td>{item.dc_smry_kr}</td>
@@ -39,6 +37,7 @@ function CrawlDataScreening({ screeningData }) {
             })}
           </tbody>
         </CustomTable>
+        <button onClick={stageScreeningData}>스크리닝 완료</button>
       </Wrapper>
     </>
   );
@@ -55,7 +54,7 @@ const CustomTable = styled.table`
     border-bottom: solid 1px #d6d6d6;
   }
   tr {
-    height: 3rem;
+    height: 2.5rem;
   }
   tr:nth-child(2n) {
     background-color: #eee;
