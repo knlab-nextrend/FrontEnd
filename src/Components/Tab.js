@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
-function Tab() {
+function Tab({process}) {
   const history = useHistory();
   const { statusCode } = useParams();
   const MenuList = [

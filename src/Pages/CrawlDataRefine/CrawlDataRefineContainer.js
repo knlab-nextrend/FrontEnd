@@ -44,12 +44,12 @@ function CrawlDataRefineContainer() {
   };
 
   /* 데이터 불러오기 */
-  const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data);
-      dataCleansing(res.data);
-    });
-  };
+  // const dataFetch = () => {
+  //   CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+  //     console.log(res.data);
+  //     dataCleansing(res.data);
+  //   });
+  // };
 
   /* 2차 정제 보류 */
   const dataKeep = () => {

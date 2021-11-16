@@ -10,6 +10,19 @@ const refreshHeaders = {
   refresh: getRefreshToken(),
 };
 
+/* 크롤데이터 정제 데이터 받아오기 */ 
+const RefineDataFetchApi = (statusCode,listSize,pageNo)=>{
+  const config = {
+    headers: headers,
+    params: {
+      listSize: listSize,
+      pageNo: pageNo,
+    },
+  };
+
+  return axios.get(`/crawl/list/${statusCode}`, config);
+
+}
 /* 크롤데이터 스크리닝 데이터 받아오기 */
 const ScreeningDataFetchApi = (listSize, pageNo) => {
   const config = {
@@ -221,4 +234,5 @@ export {
   ScreeningDataDeleteApi,
   ScreeningDataStageApi,
   ScreeningDataFetchApi,
+  RefineDataFetchApi
 };

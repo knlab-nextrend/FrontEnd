@@ -8,7 +8,7 @@ import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
 
 /* body */
-import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
+import CrawlDataListContainer from "./Pages/CrawlRefineList/CrawlRefineListContainer";
 //import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening_temp/CrawlDataScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
 import CrawlDataRefineContainer from "./Pages/CrawlDataRefine/CrawlDataRefineContainer";
@@ -51,6 +51,11 @@ function App() {
             <PrivateRoute
               path="/crawl/screening"
               component={CrawlDataScreeningContainer}
+              exact
+            />
+            <PrivateRoute
+              path="/crawl/refine/:statusCode"
+              component={CrawlDataListContainer}
               exact
             />
           </Switch>

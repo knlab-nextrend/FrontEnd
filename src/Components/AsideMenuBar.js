@@ -20,6 +20,9 @@ function AsideMenuBar() {
   const go크롤데이터스크리닝 = () => {
     history.push("/crawl/screening");
   };
+  const go크롤데이터정제 = ()=>{
+    history.push("/crawl/refine/2") // statusCode === 2 
+  }
   return (
     <>
       <AsideMenuBarContainer>
@@ -44,7 +47,7 @@ function AsideMenuBar() {
             <GrFormView className="icon" size="18" />
             크롤 데이터 스크리닝
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          <AsideMenuBarItem onClick={go크롤데이터정제}>
             <MdSettings className="icon" size="18" />
             크롤 데이터 정제
           </AsideMenuBarItem>

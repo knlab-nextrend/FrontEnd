@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import CrawlDataList from "./CrawlDataList";
-import { CrawlDataFetchApi, RefreshTokenApi } from "../../Utils/api";
+import CrawlRefineList from "./CrawlRefineList";
+import { RefineDataFetchApi, RefreshTokenApi } from "../../Utils/api";
 import { setLogout } from "../../Modules/login";
 
-function CrawlDataListContainer() {
+function CrawlRefineListContainer() {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -20,12 +20,9 @@ function CrawlDataListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
-  const STATUS_SET = {
-    0: "screening",
-    1: "screening",
-    2: "refine",
-    3: "refine",
-  }; // 0: 스크리닝 1: 스크리닝보류 2: 2차정제 3:2차정제 보류
+  useEffect(()=>{
+    console.log(statusCode)
+  },[statusCode])
 
   const dataCleansing = (rawData) => {
     let _statusCrawlData = [];
@@ -50,22 +47,10 @@ function CrawlDataListContainer() {
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataFetchApi(statusCode, listSize, pageNo)
+    RefineDataFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          RefreshTokenApi()
-            .then((res) => {
-              localStorage.setItem("token", res.data.token);
-              localStorage.setItem("refreshToken", res.data.refreshToken);
-            })
-            .catch((err) => {
-              dispatch(setLogout({ logout_type: "EXPIRED_LOGOUT" }));
-            });
-        }
-      });
   };
 
   /* 페이지 번호가 변경되었을 때 데이터를 다시 불러옴 */
@@ -94,7 +79,7 @@ function CrawlDataListContainer() {
 
   return (
     <>
-      <CrawlDataList
+      <CrawlRefineList
         statusCode={statusCode}
         Search={Search}
         statusCrawlData={statusCrawlData}
@@ -103,9 +88,8 @@ function CrawlDataListContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         statusCode={statusCode}
-        STATUS_SET={STATUS_SET}
       />
     </>
   );
 }
-export default CrawlDataListContainer;
+export default CrawlRefineListContainer;

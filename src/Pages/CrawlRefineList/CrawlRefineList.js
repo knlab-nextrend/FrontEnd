@@ -7,7 +7,7 @@ import Pagenation from "../../Components/Pagenation";
 import Tab from "../../Components/Tab";
 import { CgFileDocument } from "react-icons/cg";
 
-function CrawlDataList({
+function CrawlRefineList({
   statusCode,
   dcCount,
   listSize,
@@ -15,11 +15,10 @@ function CrawlDataList({
   setPageNo,
   statusCrawlData,
   Search,
-  STATUS_SET,
 }) {
   return (
     <>
-      <Tab statusCode={statusCode}></Tab>
+      <Tab process={"refine"} statusCode={statusCode}></Tab>
       <Wrapper>
         <SearchOption Search={Search} />
         {statusCrawlData.length !== 0 ? (
@@ -32,9 +31,7 @@ function CrawlDataList({
               {statusCrawlData.map((item, i) => {
                 return (
                   <CustomLink
-                    to={`/crawl/${STATUS_SET[item.stat]}/${statusCode}/${
-                      item.item_id
-                    }`}
+                    to={`/crawl/detail/${statusCode}/${item.item_id}`}
                     key={i}
                   >
                     <CrawlDataCard crawlDataItem={item} />
@@ -67,7 +64,7 @@ const SearchResultNotthingContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top:10rem;
+  margin-top: 10rem;
   .comment {
     font-size: 30px;
     color: #d6d6d6;
@@ -107,4 +104,4 @@ const SearchResult = styled.div`
   width: 100%;
 `;
 
-export default CrawlDataList;
+export default CrawlRefineList;
