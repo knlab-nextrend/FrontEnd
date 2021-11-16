@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import CrawlRefineList from "./CrawlRefineList";
-import { RefineDataFetchApi, RefreshTokenApi } from "../../Utils/api";
-import { setLogout } from "../../Modules/login";
+import { useParams} from "react-router-dom";
+import { RefineDataFetchApi} from "../../Utils/api";
+import CrawlDataList from "../../Components/CrawlDataList";
+
 
 function CrawlRefineListContainer() {
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   /* 현재 보여질 데이터 */
-  const [statusCrawlData, setStatusCrawlData] = useState([]);
+  const [refineDataList, setRefineDataList] = useState([]);
 
   /* [1차 스크리닝, 1차스크리닝 보류, 2차정제, 2차정제 보류] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
@@ -20,16 +17,13 @@ function CrawlRefineListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
-  useEffect(()=>{
-    console.log(statusCode)
-  },[statusCode])
 
   const dataCleansing = (rawData) => {
-    let _statusCrawlData = [];
-    let _rawStatusCrawlData = rawData.docs;
+    let _refineDataList = [];
+    let _rawRefineDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
 
-    _rawStatusCrawlData.forEach((item, index) => {
+    _rawRefineDataList.forEach((item, index) => {
       const obj = {
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
@@ -40,10 +34,10 @@ function CrawlRefineListContainer() {
         stat: item.stat,
       };
 
-      _statusCrawlData.push(obj);
+      _refineDataList.push(obj);
     });
     setDcCount(_dcCount);
-    setStatusCrawlData(_statusCrawlData);
+    setRefineDataList(_refineDataList);
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
@@ -53,12 +47,10 @@ function CrawlRefineListContainer() {
       })
   };
 
-  /* 페이지 번호가 변경되었을 때 데이터를 다시 불러옴 */
-   /* statusCode가 변경되었을 때 데이터를 다시 불러옴 */
+  /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
   }, [pageNo,statusCode]);
-
 
   /* 조건 검색 */
   const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {
@@ -79,15 +71,16 @@ function CrawlRefineListContainer() {
 
   return (
     <>
-      <CrawlRefineList
+      <CrawlDataList
         statusCode={statusCode}
         Search={Search}
-        statusCrawlData={statusCrawlData}
+        refineDataList={refineDataList}
         dcCount={dcCount}
         listSize={listSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
         statusCode={statusCode}
+        process="refine"
       />
     </>
   );

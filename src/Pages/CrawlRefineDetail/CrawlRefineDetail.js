@@ -1,17 +1,16 @@
 import React from "react";
-import { AiOutlineArrowRight, AiOutlineDelete,AiOutlineRollback } from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineDelete } from "react-icons/ai";
 import { FaRegHandPaper } from "react-icons/fa";
 import CrawlDataForm from "../../Components/CrawlDataForm";
 import FormHeader from "../../Components/FormHeader";
 import Button from "../../Components/Button";
 import styled from "styled-components";
 
-// crawlDataForm 에 crawlDataFormRef 로 ref를 걸어줌.
-function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStaged,dataCancel}) {
+function CrawlRefineDetail({crawlDataFormRef,docs,dataKeep,dataReject,dataStaged,dataCancel}) {
   return (
     <>
-      <FormHeader type="plus" title={"1차 스크리닝 진행"} />
-      <CrawlDataForm docs={docs} ref={crawlDataFormRef} type={"screening"}/>
+      <FormHeader type="plus" title={"2차 정제 진행"} />
+      <CrawlDataForm docs={docs} type="refine" ref={crawlDataFormRef}/>
       <ButtonWrapper>
         <Button color="#dc3545" onClick={dataReject}>
           <p>버리기</p>
@@ -23,11 +22,11 @@ function CrawlDataScreening({ crawlDataFormRef,docs,dataKeep,dataReject,dataStag
         </Button>
         <Button onClick={dataCancel}>
           <p>작업 취소 (돌아가기)</p>
-          <AiOutlineRollback color="white" />
+          <AiOutlineDelete color="white" />
         </Button>
-        <Button color="#435269" onClick={dataStaged}>
-          <p>2차 정제로 넘기기</p>
-          <AiOutlineArrowRight color="white"/>
+        <Button color="#435269" onClick={dataStaged}> 
+          <p>아카이브 자료 등록하기</p>
+          <AiOutlineArrowRight color="white" />
         </Button>
       </ButtonWrapper>
     </>
@@ -41,4 +40,4 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-export default CrawlDataScreening;
+export default CrawlRefineDetail;

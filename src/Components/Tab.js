@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
-function Tab({process}) {
+function Tab({ process }) {
   const history = useHistory();
   const { statusCode } = useParams();
-  const MenuList = [
-    { status: 0, name: "1차 스크리닝" },
-    { status: 1, name: "1차 스크리닝 보류" },
-    { status: 2, name: "2차 정제" },
-    { status: 3, name: "2차 정제 보류" },
-  ];
-  const [index, setIndex] = useState(1);
+  const MenuList = {
+    refine: [
+      { status: 2, name: "정제 대기",router:"/crawl/refine/2" },
+      { status: 3, name: "정제 보류",router:"/crawl/refine/3"},
+    ],
+    register: [
+      { status: 4, name: "등록 대기", router:"/crawl/register/4" },
+      { status: 5, name: "등록 보류" ,router:"/crawl/register/5"},
+    ],
+  };
+  const [index, setIndex] = useState(2);
 
   useEffect(() => {
     setIndex(Number(statusCode));
@@ -19,13 +23,13 @@ function Tab({process}) {
   return (
     <>
       <TabContainer>
-        {MenuList.map((item, i) => {
+        {MenuList[`${process}`].map((item, i) => {
           return (
             <TabItem
               key={i}
               active={index === item.status}
               onClick={() => {
-                history.push(`/crawl/list/${item.status}`);
+                history.push(item.router);
                 setIndex(item.status);
               }}
             >

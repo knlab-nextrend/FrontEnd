@@ -1,34 +1,35 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import SearchOption from "../../Components/SearchOption";
-import CrawlDataCard from "../../Components/CrawlDataCard";
-import Pagenation from "../../Components/Pagenation";
-import Tab from "../../Components/Tab";
+import SearchOption from "./SearchOption";
+import CrawlDataCard from "./CrawlDataCard";
+import Pagenation from "./Pagenation";
+import Tab from "./Tab";
 import { CgFileDocument } from "react-icons/cg";
 
-function CrawlRefineList({
+function CrawlDataList({
   statusCode,
   dcCount,
   listSize,
   pageNo,
   setPageNo,
-  statusCrawlData,
+  refineDataList,
   Search,
+  process,
 }) {
   return (
     <>
-      <Tab process={"refine"} statusCode={statusCode}></Tab>
+      <Tab process={process}></Tab>
       <Wrapper>
         <SearchOption Search={Search} />
-        {statusCrawlData.length !== 0 ? (
+        {refineDataList.length !== 0 ? (
           <>
             <SearchResultTitle>
               <p>검색결과 ({dcCount}건)</p>
               <p>카드 클릭 시 편집 화면이 뜹니다.</p>
             </SearchResultTitle>
             <SearchResult>
-              {statusCrawlData.map((item, i) => {
+              {refineDataList.map((item, i) => {
                 return (
                   <CustomLink
                     to={`/crawl/detail/${statusCode}/${item.item_id}`}
@@ -104,4 +105,4 @@ const SearchResult = styled.div`
   width: 100%;
 `;
 
-export default CrawlRefineList;
+export default CrawlDataList;
