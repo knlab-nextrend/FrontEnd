@@ -9,9 +9,8 @@ import Footer from "./Components/Footer";
 
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlRefineList/CrawlRefineListContainer";
-//import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening_temp/CrawlDataScreeningContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
-import CrawlDataRefineContainer from "./Pages/CrawlRefineDetail/CrawlRefineDetailContainer";
+import CrawlDataDetailContainer from "./Pages/CrawlDataDetail/CrawlDataDetailContainer";
 import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening/CrawlDataScreeningContainer";
 
 /* route components */
@@ -32,21 +31,6 @@ function App() {
             <PrivateRoute path="/" exact>
               <div></div>
             </PrivateRoute>
-            {/* <PrivateRoute
-              path="/crawl/list/:statusCode"
-              component={CrawlDataListContainer}
-              exact
-            />
-            <PrivateRoute
-              path="/crawl/screening/:statusCode/:itemId"
-              component={CrawlDataScreeningContainer}
-              exact
-            />
-            <PrivateRoute
-              path="/crawl/refine/:statusCode/:itemId"
-              component={CrawlDataRefineContainer}
-              exact
-            /> */}
 
             <PrivateRoute
               path="/crawl/screening"
@@ -56,6 +40,11 @@ function App() {
             <PrivateRoute
               path="/crawl/refine/:statusCode"
               component={CrawlDataListContainer}
+              exact
+            />
+            <PrivateRoute
+              path="/crawl/detail/:statusCode/:itemId"
+              component={CrawlDataDetailContainer}
               exact
             />
           </Switch>

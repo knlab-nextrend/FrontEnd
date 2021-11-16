@@ -166,7 +166,7 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">한글요약</p>
+            <p className="title">요약</p>
             <input
               value={dcSmryKr}
               onChange={_dcSmryKrHandler}

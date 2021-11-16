@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   CrawlDataDetailFetchApi,
-  CrawlDataRefineStagedApi,
-  CrawlDataRefineKeepApi,
-  CrawlDataRefineRejectApi,
+  RefineStageApi,
+  RefineKeepApi,
+  RefineRejectApi,
 } from "../../Utils/api";
-import CrawlRefineDetail from "./CrawlRefineDetail";
+import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
 
-function CrawlRefineDetailContainer() {
+function CrawlDataDetailContainer() {
   /* 
     라우터에서 받아온 정보. 
     itemId - 해당 크롤 데이터의 id
@@ -44,54 +44,42 @@ function CrawlRefineDetailContainer() {
   };
 
   /* 데이터 불러오기 */
-  // const dataFetch = () => {
-  //   CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-  //     console.log(res.data);
-  //     dataCleansing(res.data);
-  //   });
-  // };
-
-  /* 2차 정제 보류 */
-  const dataKeep = () => {
-    CrawlDataRefineKeepApi(itemId, statusCode)
-      .then((res) => {
-        alert("해당 데이터에 대한 2차 정제가 보류되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
-      })
-      .catch((err) => console.log(err.response));
+  const dataFetch = () => {
+    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data);
+      dataCleansing(res.data);
+    });
   };
 
-  /* 2차 정제 버리기 */
-  const dataReject = () => {
-    if (
-      confirm(
-        "해당 데이터를 2차 정제 단계에서 버리시겠습니까?\n버려진 데이터는 다시 복구할 수 없습니다."
-      )
-    ) {
-      CrawlDataRefineRejectApi(itemId, statusCode).then((res) => {
+  const refineKeep = () => {
+    RefineKeepApi(itemId, statusCode).then((res) => {
+      alert("해당 데이터에 대한 정제가 보류되었습니다.");
+      history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
+    });
+  };
+
+  const refineReject = () => {
+    if (confirm("해당 데이터를 정제 단계에서 버리시겠습니까?")) {
+      RefineRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
       });
     }
   };
 
-  /* 2차 정제 > 아카이브 등록 */
-  const dataStaged = () => {
+  const refineStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    CrawlDataRefineStagedApi(statusCode, itemId, _crawlDataFormDocs).then(
+    RefineStageApi(statusCode, itemId, _crawlDataFormDocs).then(
       (res) => {
-        alert("해당 데이터가 아카이브에 성공적으로 등록되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        alert("해당 데이터가 성공적으로 정제되었습니다.");
+        history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
       }
     );
   };
 
-  /* 1차 스크리닝 취소하기(돌아가기) */
-  const dataCancel = () => {
-    if (
-      confirm("정제를 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
-    ) {
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+  const cancel = () => {
+    if (confirm("정제를 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
+      history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
     }
   };
 
@@ -101,16 +89,16 @@ function CrawlRefineDetailContainer() {
 
   return (
     <>
-      <CrawlRefineDetail
+      <CrawlDataDetail
         docs={docs}
-        dataKeep={dataKeep}
-        dataReject={dataReject}
-        dataStaged={dataStaged}
-        dataCancel={dataCancel}
+        refineKeep={refineKeep}
+        refineReject={refineReject}
+        refineStage={refineStage}
+        cancel={cancel}
         crawlDataFormRef={crawlDataFormRef}
       />
     </>
   );
 }
 
-export default CrawlRefineDetailContainer;
+export default CrawlDataDetailContainer;
