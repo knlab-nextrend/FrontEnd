@@ -40,7 +40,7 @@ function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
   useEffect(() => {
     const _pageCount = Math.ceil(dcCount / listSize);
     setPageCount(_pageCount);
-  }, [dcCount]);
+  }, [dcCount,listSize]);
 
   useEffect(() => {
     const _pageNoArray = Array.from({ length: pageCount }, (v, i) => i + 1);

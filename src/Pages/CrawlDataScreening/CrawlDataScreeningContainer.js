@@ -16,16 +16,16 @@ function CrawlDataScreeningContainer() {
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
-  const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
+  const [listSize, setListSize] = useState(50); // 한 페이지에 나타낼 document 개수
 
+  const [checkedAll, setCheckedAll] = useState(false);
   const [itemIdList, setItemIdList] = useState([]);
   const [deleteDataList, setDeleteDataList] = useState([]);
   const [stageDataList, setStageDataList] = useState([]);
 
   /* item 전체 선택 */
-  const onChangeAll = (e) => {
-    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
-    setCheckList(e.target.checked ? itemIdList : []);
+  const onChangeAll = () => {
+    setCheckedAll(!checkedAll);
   };
 
   /* item 개별 선택*/
@@ -51,7 +51,7 @@ function CrawlDataScreeningContainer() {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {
             alert("성공적으로 스크리닝이 완료되었습니다.");
-            history.go(0)
+            history.go(0);
           }
         });
       });
@@ -89,6 +89,10 @@ function CrawlDataScreeningContainer() {
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
+    /* 현재 dcCount가 listSize보다 작다면 pageNo를 0으로 세팅*/
+    if(dcCount <= listSize){
+      setPageNo(1)
+    }
     dataFetch();
   }, [pageNo, listSize]);
 
@@ -99,6 +103,7 @@ function CrawlDataScreeningContainer() {
       _itemIdList.push(item.item_id);
     });
     setItemIdList(_itemIdList);
+    setDeleteDataList(_itemIdList); // 초기에는 모두 체크해제되어있으므로 삭제대상
   }, [screeningData]);
 
   /* 체크박스를 선택 또는 해제할 때 deleteDataList와 stageDataList를 구분*/
@@ -108,6 +113,12 @@ function CrawlDataScreeningContainer() {
     );
     setDeleteDataList(_deleteDataList);
   }, [stageDataList]);
+
+  /* 전체선택을 선택 또는 해제 하였을 때 */
+  useEffect(() => {
+    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
+    setStageDataList(checkedAll ? itemIdList : []);
+  }, [checkedAll]);
 
   return (
     <>
@@ -121,6 +132,7 @@ function CrawlDataScreeningContainer() {
         onChangeAll={onChangeAll}
         onChangeEach={onChangeEach}
         stageScreeningData={stageScreeningData}
+        stageDataList={stageDataList}
       />
     </>
   );
