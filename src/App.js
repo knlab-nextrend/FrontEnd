@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Header from "./Components/Header";
 import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
-
+import GlobalModal from "./Components/ModalComponents/GlobalModal";
 /* body */
 import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
@@ -58,6 +58,7 @@ function App() {
         component={LoginContainer}
         exact
       />
+      <GlobalModal/> {/* 모달 전역 제어 */}
     </>
   );
 }

@@ -5,6 +5,9 @@ import React, {
   useImperativeHandle,
 } from "react";
 import styled from "styled-components";
+import {useDispatch} from 'react-redux'
+import { setModal } from "../Modules/modal";
+
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
 function CrawlDataForm({ docs, type }, ref) {
@@ -80,6 +83,12 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcLinkHandler = (e) => {
     setDcLink(e.target.value);
   };
+
+  const dispatch = useDispatch();
+  const _openCountryCategoryModal = ()=>{
+    dispatch(setModal("CountryCategoryModal"))
+
+  }
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
     /* input state 값들을 객체에 담아서 반환함.*/
@@ -178,7 +187,10 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">국가 설정</p>
+            <div className="title">
+              <p>국가 설정</p>
+              <button onClick={_openCountryCategoryModal}> 설정</button>
+            </div>
             <div className="form notInput" />
           </CustomFormItem>
         </CustomFormRow>
