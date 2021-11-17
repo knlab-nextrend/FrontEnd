@@ -46,7 +46,6 @@ function CrawlDataScreeningContainer() {
         "선택되지 않은 데이터는 DB에서 삭제됩니다. 스크리닝을 진행하시겠습니까?"
       )
     ) {
-      console.log(deleteDataList, stageDataList);
       ScreeningDataStageApi(stageDataList).then((res) => {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {
@@ -63,7 +62,6 @@ function CrawlDataScreeningContainer() {
     let _screeningData = [];
     let _rawScreeningData = rawData.docs;
     let _dcCount = rawData.dcCount;
-    console.log(_dcCount);
 
     _rawScreeningData.forEach((item, index) => {
       const obj = {
@@ -71,7 +69,7 @@ function CrawlDataScreeningContainer() {
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,
-        dc_dt_collect: item.dc_dt_collect,
+        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
         dc_page: item.dc_page,
       };
       _screeningData.push(obj);

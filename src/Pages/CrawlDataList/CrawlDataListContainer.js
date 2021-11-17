@@ -21,19 +21,23 @@ function CrawlDataListContainer() {
   const STATUS_CODE_SET = {
     2: {
       type: "refine",
-      title: "데이터 정제 진행",
+      mainTitle:"크롤데이터 정제 작업 데이터 목록",
+      title: "크롤데이터 정제 진행",
     },
     3: {
       type: "refine",
-      title: "데이터 정제 진행",
+      mainTitle:"크롤데이터 정제 작업 데이터 목록",
+      title: "크롤데이터 정제 진행",
     },
     4: {
       type: "register",
-      title: "데이터 등록 진행",
+      mainTitle:"크롤데이터 등록 작업 데이터 목록",
+      title: "크롤데이터 등록 진행",
     },
     5: {
       type: "register",
-      title: "데이터 등록 진행",
+      mainTitle:"크롤데이터 등록 작업 데이터 목록",
+      title: "크롤데이터 등록 진행",
     },
   };
 
@@ -49,7 +53,6 @@ function CrawlDataListContainer() {
         dc_title_kr: item.dc_title_kr,
         dc_keyword: item.dc_keyword,
         dc_dt_collect: item.dc_dt_collect,
-        subscribed: false,
         item_id: Number(item.item_id),
         stat: item.stat,
       };
@@ -83,7 +86,7 @@ function CrawlDataListContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         statusCode={statusCode}
-        process={STATUS_CODE_SET[statusCode].type}
+        STATUS_CODE_SET={STATUS_CODE_SET}
       />
     </>
   );

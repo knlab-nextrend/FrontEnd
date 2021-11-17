@@ -118,6 +118,7 @@ const TableWrapper = styled.div`
   width: 100%;
   max-height: 65rem;
   overflow: auto;
+  box-shadow : rgb(9 30 66 / 25%) 0px 1px 1px;
 `;
 const CustomTable = styled.table`
   width: 100%;

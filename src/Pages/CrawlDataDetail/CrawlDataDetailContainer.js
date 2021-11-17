@@ -42,11 +42,10 @@ function CrawlDataDetailContainer() {
       title: "데이터 등록 진행",
     },
   };
-  
+
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data);
       dataCleansing(res.data);
     });
   };
@@ -72,7 +71,7 @@ function CrawlDataDetailContainer() {
   const dataKeep = () => {
     CrawlDataKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 작업이 보류되었습니다.");
-      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
+      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     });
   };
 
@@ -80,9 +79,7 @@ function CrawlDataDetailContainer() {
     if (confirm("해당 데이터를 버리시겠습니까?")) {
       CrawlDataRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(
-          `/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`
-        ); // 목록으로 돌아가기
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       });
     }
   };
@@ -91,13 +88,13 @@ function CrawlDataDetailContainer() {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
-      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
+      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     });
   };
 
   const cancel = () => {
     if (confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
-      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
+      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     }
   };
 

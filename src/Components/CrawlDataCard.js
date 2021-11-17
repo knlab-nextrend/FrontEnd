@@ -18,9 +18,6 @@ function CrawlDataCard({ crawlDataItem }) {
             })}
           </Keywords>
         </Content>
-        <Wrapper>
-          <Dot subscribed={crawlDataItem.subscribed}></Dot>
-        </Wrapper>
       </Card>
     </>
   );
@@ -83,11 +80,4 @@ const Chips = styled.div`
   margin: 3px 3px 3px 0px;
 `;
 
-const Dot = styled.div`
-  height: 25px;
-  width: 25px;
-  background-color: ${(props) => (props.subscribed ? "#6DAF44" : "#f44336")};
-  border-radius: 50%;
-  display: inline-block;
-`;
 export default CrawlDataCard;

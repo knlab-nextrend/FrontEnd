@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SearchOption from "../../Components/SearchOption";
 import CrawlDataCard from "../../Components/CrawlDataCard";
+import FormHeader from "../../Components/FormHeader";
 import Pagenation from "../../Components/Pagenation";
 import Tab from "../../Components/Tab";
 import { CgFileDocument } from "react-icons/cg";
@@ -14,11 +15,12 @@ function CrawlDataList({
   pageNo,
   setPageNo,
   crawlDataList,
-  process,
+  STATUS_CODE_SET
 }) {
   return (
     <>
-      <Tab process={process}></Tab>
+      <FormHeader type="view" title={STATUS_CODE_SET[statusCode].mainTitle} />
+      <Tab process={STATUS_CODE_SET[statusCode].type}></Tab>
       <Wrapper>
         <SearchOption />
         {crawlDataList.length !== 0 ? (
