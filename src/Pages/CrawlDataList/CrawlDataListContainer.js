@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams} from "react-router-dom";
-import { RefineDataFetchApi} from "../../Utils/api";
-import CrawlDataList from "../../Components/CrawlDataList";
+import { CrawlDataListFetchApi} from "../../Utils/api";
+import CrawlDataList from "./CrawlDataList";
 
 
-function CrawlRefineListContainer() {
+function CrawlDataListContainer() {
 
   /* 현재 보여질 데이터 */
-  const [refineDataList, setRefineDataList] = useState([]);
+  const [crawlDataList, setCrawlDataList] = useState([]);
 
   /* [1차 스크리닝, 1차스크리닝 보류, 2차정제, 2차정제 보류] 진행상황을 나타내기 위한 상태코드 */
   const { statusCode } = useParams();
@@ -17,13 +17,33 @@ function CrawlRefineListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
+  
+  const STATUS_CODE_SET = {
+    2: {
+      type: "refine",
+      title: "데이터 정제 진행",
+    },
+    3: {
+      type: "refine",
+      title: "데이터 정제 진행",
+    },
+    4: {
+      type: "register",
+      title: "데이터 등록 진행",
+    },
+    5: {
+      type: "register",
+      title: "데이터 등록 진행",
+    },
+  };
+
 
   const dataCleansing = (rawData) => {
-    let _refineDataList = [];
-    let _rawRefineDataList = rawData.docs;
+    let _crawlDataList = [];
+    let _rawCrawlDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
 
-    _rawRefineDataList.forEach((item, index) => {
+    _rawCrawlDataList.forEach((item, index) => {
       const obj = {
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
@@ -34,14 +54,15 @@ function CrawlRefineListContainer() {
         stat: item.stat,
       };
 
-      _refineDataList.push(obj);
+      _crawlDataList.push(obj);
     });
     setDcCount(_dcCount);
-    setRefineDataList(_refineDataList);
+    setCrawlDataList(_crawlDataList);
   };
+
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    RefineDataFetchApi(statusCode, listSize, pageNo)
+    CrawlDataListFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
       })
@@ -52,37 +73,19 @@ function CrawlRefineListContainer() {
     dataFetch();
   }, [pageNo,statusCode]);
 
-  /* 조건 검색 */
-  const Search = (keyword, startDate, endDate, itemId, lang, subscribed) => {
-    CrawlDataFetchApi(
-      statusCode,
-      listSize,
-      pageNo,
-      keyword,
-      startDate,
-      endDate,
-      itemId,
-      lang,
-      subscribed
-    ).then((res) => {
-      dataCleansing(res.data);
-    });
-  };
-
   return (
     <>
       <CrawlDataList
         statusCode={statusCode}
-        Search={Search}
-        refineDataList={refineDataList}
+        crawlDataList={crawlDataList}
         dcCount={dcCount}
         listSize={listSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
         statusCode={statusCode}
-        process="refine"
+        process={STATUS_CODE_SET[statusCode].type}
       />
     </>
   );
 }
-export default CrawlRefineListContainer;
+export default CrawlDataListContainer;

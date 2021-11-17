@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { AiOutlineSearch, AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 
-function SearchOption({ Search }) {
+function SearchOption() {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
   const [endDate, setEndDate] = useState(
@@ -74,9 +74,6 @@ function SearchOption({ Search }) {
           </SearchBar>
           <SearchButton
             color="#435269"
-            onClick={() => {
-              Search(keyword, startDate, endDate, itemId, lang, subscribed);
-            }}
           >
             검색
           </SearchButton>

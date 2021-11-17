@@ -42,6 +42,7 @@ function CrawlDataDetailContainer() {
       title: "데이터 등록 진행",
     },
   };
+  
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {

@@ -21,7 +21,10 @@ function AsideMenuBar() {
     history.push("/crawl/screening");
   };
   const go크롤데이터정제 = ()=>{
-    history.push("/crawl/refine/2") // statusCode === 2 
+    history.push("/crawl/list/2") // statusCode === 2 
+  }
+  const go크롤데이터등록 = ()=>{
+    history.push("/crawl/list/4") // statusCode === 2 
   }
   return (
     <>
@@ -51,7 +54,7 @@ function AsideMenuBar() {
             <MdSettings className="icon" size="18" />
             크롤 데이터 정제
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          <AsideMenuBarItem onClick={go크롤데이터등록}>
             <MdOutlineAdd className="icon" size="18" />
             크롤 데이터 등록
           </AsideMenuBarItem>

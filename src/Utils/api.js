@@ -1,5 +1,10 @@
 import axios from "axios";
 import { getToken, getRefreshToken } from "./getToken";
+  /* 
+    get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
+    https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
+  */
+
 /* 
   로그인 상태가 아니라면 아래의  통신 함수들은 모두 사용할 일이 없음. 
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
@@ -43,8 +48,8 @@ const ScreeningDataDeleteApi = (deleteDataList) => {
 };
 
 
-/* 크롤데이터 정제 데이터 받아오기 */ 
-const RefineDataFetchApi = (statusCode,listSize,pageNo)=>{
+/* 크롤데이터 리스트 받아오기 */ 
+const CrawlDataListFetchApi = (statusCode,listSize,pageNo)=>{
   const config = {
     headers: headers,
     params: {
@@ -55,6 +60,7 @@ const RefineDataFetchApi = (statusCode,listSize,pageNo)=>{
 
   return axios.get(`/crawl/list/${statusCode}`, config);
 }
+
 
 /* 크롤데이터 버리기 */
 const CrawlDataRejectApi = (itemId, statusCode) => {
@@ -126,42 +132,6 @@ const AuthorizationErrorHandler = async (err1) => {
 
 
 
-
-
-
-/* 크롤데이터 리스트 불러오기 */
-const CrawlDataFetchApi = (
-  statusCode,
-  listSize,
-  pageNo,
-  keyword = "",
-  startDate = "",
-  endDate = "",
-  itemId = "",
-  lang = "",
-  subscribed = ""
-) => {
-  let params = {
-    listSize: listSize,
-    pageNo: pageNo,
-  };
-
-  /* 
-    get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
-    https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
-  */
-
-  const config = {
-    headers: headers,
-    params: {
-      listSize: listSize,
-      pageNo: pageNo,
-    },
-  };
-
-  return axios.get(`/crawl/list/${statusCode}`, config);
-};
-
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -184,7 +154,7 @@ const RefreshTokenApi = () => {
 export {
   LoginApi,
   RefreshTokenApi,
-  CrawlDataFetchApi,
+  CrawlDataListFetchApi,
   CrawlDataDetailFetchApi,
   CrawlDataRejectApi,
   CrawlDataStageApi,
@@ -192,6 +162,5 @@ export {
   ScreeningDataDeleteApi,
   ScreeningDataStageApi,
   ScreeningDataFetchApi,
-  RefineDataFetchApi
   
 };
