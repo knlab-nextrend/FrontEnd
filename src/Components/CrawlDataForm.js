@@ -7,6 +7,7 @@ import React, {
 import styled from "styled-components";
 import {useDispatch} from 'react-redux'
 import { setModal } from "../Modules/modal";
+import {MdSettings} from "react-icons/md"
 
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
@@ -189,7 +190,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>국가 설정</p>
-              <button onClick={_openCountryCategoryModal}> 설정</button>
+              <button onClick={_openCountryCategoryModal}><MdSettings/> 설정</button>
             </div>
             <div className="form notInput" />
           </CustomFormItem>
@@ -343,11 +344,16 @@ const CustomFormItem = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction:column;
     margin: 0;
     background-color: rgba(0, 0, 0, 0.02);
     height: 100%;
     min-width: 10rem;
     border-right: solid 2px #d6d6d6;
+    button{
+      display:inherit;
+      align-items:center;
+    }
   }
   .form {
     background-color: #eeffdb;
