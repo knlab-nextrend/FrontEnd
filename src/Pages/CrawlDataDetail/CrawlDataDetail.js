@@ -9,27 +9,30 @@ import styled from "styled-components";
 function CrawlDataDetail({
   crawlDataFormRef,
   docs,
-  refineKeep,
-  refineReject,
-  refineStage,
+  dataKeep,
+  dataReject,
+  dataStage,
   cancel,
+  STATUS_CODE_SET,
+  statusCode
 }) {
+
   return (
     <>
-      <FormHeader type="plus" title={"데이터 정제 진행"} />
+      <FormHeader type="plus" title={STATUS_CODE_SET[statusCode].title} />
       <CrawlDataForm docs={docs} type="refine" ref={crawlDataFormRef} />
       <ButtonWrapper>
-        <Button color="#dc3545" onClick={refineReject}>
+        <Button color="#dc3545" onClick={dataReject}>
           <AiOutlineDelete color="white" />
           <p>데이터 버리기</p>
         </Button>
-        <Button color="#6DAF44" onClick={refineKeep}>
+        <Button color="#6DAF44" onClick={dataKeep}>
           <FaRegHandPaper color="white" />
-          <p>정제 보류</p>
+          <p>작업 보류</p>
         </Button>
-        <Button color="#435269" onClick={refineStage}>
+        <Button color="#435269" onClick={dataStage}>
           <AiOutlineArrowRight color="white" />
-          <p>등록 단계로 넘기기</p>
+          <p>작업 완료</p>
         </Button>
         <Button onClick={cancel}>
           <AiOutlineDelete color="white" />

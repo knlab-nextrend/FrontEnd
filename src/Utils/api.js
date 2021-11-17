@@ -56,8 +56,8 @@ const RefineDataFetchApi = (statusCode,listSize,pageNo)=>{
   return axios.get(`/crawl/list/${statusCode}`, config);
 }
 
-/* 크롤데이터 정제 단계에서 버리기 */
-const RefineRejectApi = (itemId, statusCode) => {
+/* 크롤데이터 버리기 */
+const CrawlDataRejectApi = (itemId, statusCode) => {
   const config = {
     headers: headers,
     params: {
@@ -67,16 +67,16 @@ const RefineRejectApi = (itemId, statusCode) => {
   return axios.delete(`/crawl/detail/${itemId}`, config);
 };
 
-/* 크롤데이터 정제 보류 하기*/
+/* 크롤데이터 보류 하기*/
 
-const RefineKeepApi = (itemId, statusCode) => {
+const CrawlDataKeepApi = (itemId, statusCode) => {
   let body = {
     statusCode,
   };
   return axios.put(`/crawl/detail/${itemId}`, body, { headers: headers });
 };
-/* 크롤데이터 등록 단계로 넘기기*/
-const RefineStageApi = (statusCode, itemId, docs) => {
+/* 크롤데이터 넘기기*/
+const CrawlDataStageApi = (statusCode, itemId, docs) => {
   const body = {
     statusCode,
     itemId,
@@ -146,24 +146,6 @@ const CrawlDataFetchApi = (
     pageNo: pageNo,
   };
 
-  if (keyword !== "") {
-    params["keyword"] = keyword;
-  }
-  if (startDate !== "") {
-    params["startDate"] = startDate;
-  }
-  if (endDate !== "") {
-    params["endDate"] = endDate;
-  }
-  if (itemId !== "") {
-    params["itemId"] = itemId;
-  }
-  if (lang !== "") {
-    params["lang"] = lang;
-  }
-  if (subscribed !== "") {
-    params["subscribed"] = subscribed;
-  }
   /* 
     get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
@@ -200,13 +182,13 @@ const RefreshTokenApi = () => {
 };
 
 export {
-  CrawlDataFetchApi,
   LoginApi,
-  CrawlDataDetailFetchApi,
   RefreshTokenApi,
-  RefineStageApi,
-  RefineRejectApi,
-  RefineKeepApi,
+  CrawlDataFetchApi,
+  CrawlDataDetailFetchApi,
+  CrawlDataRejectApi,
+  CrawlDataStageApi,
+  CrawlDataKeepApi,
   ScreeningDataDeleteApi,
   ScreeningDataStageApi,
   ScreeningDataFetchApi,

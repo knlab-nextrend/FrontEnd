@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   CrawlDataDetailFetchApi,
-  RefineStageApi,
-  RefineKeepApi,
-  RefineRejectApi,
+  CrawlDataRejectApi,
+  CrawlDataStageApi,
+  CrawlDataKeepApi,
 } from "../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
@@ -16,6 +16,7 @@ function CrawlDataDetailContainer() {
   */
   const { itemId, statusCode } = useParams();
   const history = useHistory();
+  const crawlDataFormRef = useRef();
   /* 
     CrawlDataRefine > CrawlDataForm 에 있는 정보를 가져오기 위해서.
     부모 컴포넌트에서 자식 컴포넌트의 함수를 호출하는 상황임.
@@ -23,7 +24,31 @@ function CrawlDataDetailContainer() {
   */
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
 
-  const crawlDataFormRef = useRef();
+  const STATUS_CODE_SET = {
+    2: {
+      type: "refine",
+      title: "데이터 정제 진행",
+    },
+    3: {
+      type: "refine",
+      title: "데이터 정제 진행",
+    },
+    4: {
+      type: "register",
+      title: "데이터 등록 진행",
+    },
+    5: {
+      type: "register",
+      title: "데이터 등록 진행",
+    },
+  };
+  /* 데이터 불러오기 */
+  const dataFetch = () => {
+    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data);
+      dataCleansing(res.data);
+    });
+  };
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
@@ -43,43 +68,35 @@ function CrawlDataDetailContainer() {
     setDocs(_docs);
   };
 
-  /* 데이터 불러오기 */
-  const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data);
-      dataCleansing(res.data);
+  const dataKeep = () => {
+    CrawlDataKeepApi(itemId, statusCode).then((res) => {
+      alert("해당 데이터에 대한 작업이 보류되었습니다.");
+      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
     });
   };
 
-  const refineKeep = () => {
-    RefineKeepApi(itemId, statusCode).then((res) => {
-      alert("해당 데이터에 대한 정제가 보류되었습니다.");
-      history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
-    });
-  };
-
-  const refineReject = () => {
-    if (confirm("해당 데이터를 정제 단계에서 버리시겠습니까?")) {
-      RefineRejectApi(itemId, statusCode).then((res) => {
+  const dataReject = () => {
+    if (confirm("해당 데이터를 버리시겠습니까?")) {
+      CrawlDataRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
+        history.push(
+          `/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`
+        ); // 목록으로 돌아가기
       });
     }
   };
 
-  const refineStage = () => {
+  const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    RefineStageApi(statusCode, itemId, _crawlDataFormDocs).then(
-      (res) => {
-        alert("해당 데이터가 성공적으로 정제되었습니다.");
-        history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
-      }
-    );
+    CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
+      alert("해당 데이터가 성공적으로 저장되었습니다.");
+      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
+    });
   };
 
   const cancel = () => {
-    if (confirm("정제를 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
-      history.push(`/crawl/refine/${statusCode}`); // 목록으로 돌아가기
+    if (confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
+      history.push(`/crawl/${STATUS_CODE_SET[statusCode].type}/${statusCode}`); // 목록으로 돌아가기
     }
   };
 
@@ -91,11 +108,13 @@ function CrawlDataDetailContainer() {
     <>
       <CrawlDataDetail
         docs={docs}
-        refineKeep={refineKeep}
-        refineReject={refineReject}
-        refineStage={refineStage}
+        dataKeep={dataKeep}
+        dataReject={dataReject}
+        dataStage={dataStage}
         cancel={cancel}
         crawlDataFormRef={crawlDataFormRef}
+        STATUS_CODE_SET={STATUS_CODE_SET}
+        statusCode={statusCode}
       />
     </>
   );
