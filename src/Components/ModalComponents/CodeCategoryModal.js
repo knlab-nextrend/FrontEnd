@@ -16,31 +16,49 @@ function CodeCategoryModal({ executeModal, closeModal }) {
 
   const categoryDataFetch = (upperCode, type) => {
     CategorysListDataFetchApi(upperCode).then((res) => {
-      if(type === "section") {setSectionCategoryList(res.data)}
-      if(type === "division") {setDivisionCategoryList(res.data)}
-      if(type === "group") {setGroupCategoryList(res.data)}
+      console.log(res.data);
+      if (type === "section") {
+        setSectionCategoryList(res.data);
+      }
+      if (type === "division") {
+        setDivisionCategoryList(res.data);
+      }
+      if (type === "group") {
+        setGroupCategoryList(res.data);
+      }
     });
   };
 
   const _currentSectionCodeHandler = (e) => {
-    setCurrentSectionCode(Number(e.target.value));
-    setGroupCategoryList([])
+    const _code = e.target.value;
+    setCurrentSectionCode(Number(_code));
+    setGroupCategoryList([]);
   };
-  const _currentDivisionCodeHandler = (e) => {
-    setCurrentDivisionCode(Number(e.target.value));
+  const _currentDivisionCodeHandler = (item) => {
+    const _code = item.CODE;
+    if (_code.length === 2) { // 상위 분류를 선택했다면 ? 
+      addCategory(item);
+      setGroupCategoryList([]);
+    } else {
+      setCurrentDivisionCode(Number(_code));
+    }
   };
 
   const addCategory = (item) => {
-    if (selectedCategoryList.some((ele)=>{return ele.CODE === item.CODE})) {
+    if (
+      selectedCategoryList.some((ele) => {
+        return ele.CODE === item.CODE;
+      })
+    ) {
       alert("이미 선택된 주제 입니다.");
     } else {
-        setSelectedCategoryList([...selectedCategoryList, item]);
+      setSelectedCategoryList([...selectedCategoryList, item]);
     }
   };
 
   const deleteCategory = (code) => {
     setSelectedCategoryList(
-        selectedCategoryList.filter((item) => item.CODE !== code)
+      selectedCategoryList.filter((item) => item.CODE !== code)
     );
   };
 
@@ -52,7 +70,7 @@ function CodeCategoryModal({ executeModal, closeModal }) {
 
   useEffect(() => {
     categoryDataFetch(null, "section");
-    setSelectedCategoryList(_dc_code)
+    setSelectedCategoryList(_dc_code);
   }, []);
 
   useEffect(() => {
@@ -103,7 +121,9 @@ function CodeCategoryModal({ executeModal, closeModal }) {
                     <ListItem
                       value={item.CODE}
                       key={item.IDX}
-                      onClick={_currentDivisionCodeHandler}
+                      onClick={() => {
+                        _currentDivisionCodeHandler(item);
+                      }}
                     >
                       {item.CT_NM}
                     </ListItem>
@@ -118,7 +138,13 @@ function CodeCategoryModal({ executeModal, closeModal }) {
                 )}
                 {groupCategoryList.map((item) => {
                   return (
-                    <ListItem value={item.CODE} key={item.IDX} onClick={()=>{addCategory(item)}}>
+                    <ListItem
+                      value={item.CODE}
+                      key={item.IDX}
+                      onClick={() => {
+                        addCategory(item);
+                      }}
+                    >
                       {item.CT_NM}
                     </ListItem>
                   );
@@ -224,7 +250,7 @@ const ListWrapper = styled.ul`
   margin: 0;
   padding: 0;
   border: solid 1px #eeeeee;
-  overflow-x:hidden;
+  overflow-x: hidden;
 `;
 const ListItem = styled.li`
   cursor: pointer;
