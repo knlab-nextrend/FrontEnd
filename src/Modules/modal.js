@@ -25,7 +25,6 @@ export default function modal(state = initialState, action) {
     case SET_MODAL_DATA:
       const _modalData = { ...state.modalData };
       _modalData[action.dataType] = action.modalData;
-      console.log(_modalData);
       return {
         ...state,
         modalData: _modalData,

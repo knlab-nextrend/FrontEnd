@@ -15,7 +15,6 @@ function CountryCategoryModal({ closeModal, executeModal }) {
 
   const countrysDataFetch = (currentContinentIndex) => {
     CountrysListDataFetchApi(currentContinentIndex).then((res) => {
-      console.log(res.data);
       setCountrysListData(res.data);
     });
   };
@@ -28,11 +27,14 @@ function CountryCategoryModal({ closeModal, executeModal }) {
   const _currentContinentIndexHandler = (e) => {
     setCurrentContinentIndex(Number(e.target.value));
   };
-  
 
   const addCountry = (idx) => {
     const _country = countrysListData.find((item) => item.IDX === idx);
-    if (selectedCountryList.some((ele)=>{return ele.IDX === _country.IDX})) {
+    if (
+      selectedCountryList.some((ele) => {
+        return ele.IDX === _country.IDX;
+      })
+    ) {
       alert("이미 선택된 국가 입니다.");
     } else {
       setSelectedCountryList([...selectedCountryList, _country]);
@@ -59,7 +61,6 @@ function CountryCategoryModal({ closeModal, executeModal }) {
   useEffect(() => {
     countrysDataFetch(currentContinentIndex);
   }, [currentContinentIndex]);
-
 
   return (
     <>
@@ -222,10 +223,10 @@ const CountryList = styled.div`
   display: flex;
   justify-content: left;
   border: solid 1px #eee;
-
+  flex-wrap: wrap;
   div {
     cursor: pointer;
-    margin-right: 0.5rem;
+    margin: 0.5rem;
     background-color: #eee;
     padding: 0.5rem;
     border-radius: 1rem;

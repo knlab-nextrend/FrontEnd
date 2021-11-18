@@ -46,7 +46,6 @@ function CrawlDataDetailContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data)
       dataCleansing(res.data);
     });
   };

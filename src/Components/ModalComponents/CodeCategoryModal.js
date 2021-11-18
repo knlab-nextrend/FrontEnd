@@ -16,7 +16,6 @@ function CodeCategoryModal({ executeModal, closeModal }) {
 
   const categoryDataFetch = (upperCode, type) => {
     CategorysListDataFetchApi(upperCode).then((res) => {
-      console.log(res.data);
       if (type === "section") {
         setSectionCategoryList(res.data);
       }
@@ -36,7 +35,8 @@ function CodeCategoryModal({ executeModal, closeModal }) {
   };
   const _currentDivisionCodeHandler = (item) => {
     const _code = item.CODE;
-    if (_code.length === 2) { // 상위 분류를 선택했다면 ? 
+    if (_code.length === 2) {
+      // 상위 분류를 선택했다면 ?
       addCategory(item);
       setGroupCategoryList([]);
     } else {
@@ -265,10 +265,11 @@ const CategoryList = styled.div`
   display: flex;
   justify-content: left;
   border: solid 1px #eee;
+  flex-wrap: wrap;
 
   div {
     cursor: pointer;
-    margin-right: 0.5rem;
+    margin: 0.5rem;
     background-color: #eee;
     padding: 0.5rem;
     border-radius: 1rem;

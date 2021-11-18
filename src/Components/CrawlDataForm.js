@@ -99,7 +99,6 @@ function CrawlDataForm({ docs, type }, ref) {
   }, [dcCountry]);
 
   useEffect(() => {
-    console.log(dcCode)
     const _dcCodeList = dcCode.map((item) => item.CODE);
     setDcCodeList(_dcCodeList);
   }, [dcCode]);

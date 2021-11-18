@@ -12,7 +12,6 @@ function Header() {
   /* process.env.PUBLIC_URL 은 /public/ .... 의 경로를 절대경로로 나타냄. 환경변수에요*/
 
   const logout = () => {
-    console.log("호출")
     dispatch(setLogout({ logout_type: "normal_logout" }));
   };
   return (
