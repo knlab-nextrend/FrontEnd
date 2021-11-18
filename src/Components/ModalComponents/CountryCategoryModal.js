@@ -4,14 +4,18 @@ import {
   ContinentsListDataFetchApi,
   CountrysListDataFetchApi,
 } from "../../Utils/api";
+import { useSelector } from "react-redux";
 function CountryCategoryModal({ closeModal, executeModal }) {
   const [selectedCountryList, setSelectedCountryList] = useState([]);
   const [countrysListData, setCountrysListData] = useState([]);
   const [continentsListData, setContinentsListData] = useState([]);
   const [currentContinentIndex, setCurrentContinentIndex] = useState(0);
 
+  const _dc_country = useSelector((state) => state.modal.modalData.dc_country);
+
   const countrysDataFetch = (currentContinentIndex) => {
     CountrysListDataFetchApi(currentContinentIndex).then((res) => {
+      console.log(res.data);
       setCountrysListData(res.data);
     });
   };
@@ -24,10 +28,11 @@ function CountryCategoryModal({ closeModal, executeModal }) {
   const _currentContinentIndexHandler = (e) => {
     setCurrentContinentIndex(Number(e.target.value));
   };
+  
 
   const addCountry = (idx) => {
-    const _country = countrysListData.find((item) => item.idx === idx);
-    if (selectedCountryList.includes(_country)) {
+    const _country = countrysListData.find((item) => item.IDX === idx);
+    if (selectedCountryList.some((ele)=>{return ele.IDX === _country.IDX})) {
       alert("이미 선택된 국가 입니다.");
     } else {
       setSelectedCountryList([...selectedCountryList, _country]);
@@ -36,7 +41,7 @@ function CountryCategoryModal({ closeModal, executeModal }) {
 
   const deleteCountry = (idx) => {
     setSelectedCountryList(
-      selectedCountryList.filter((item) => item.idx !== idx)
+      selectedCountryList.filter((item) => item.IDX !== idx)
     );
   };
 
@@ -48,15 +53,14 @@ function CountryCategoryModal({ closeModal, executeModal }) {
 
   useEffect(() => {
     continentsDataFetch();
-  }, [continentsDataFetch]);
+    setSelectedCountryList(_dc_country);
+  }, []);
 
   useEffect(() => {
     countrysDataFetch(currentContinentIndex);
   }, [currentContinentIndex]);
 
-  useEffect(() => {
-    console.log(selectedCountryList);
-  }, [selectedCountryList]);
+
   return (
     <>
       <ModalWrapper>
@@ -88,19 +92,19 @@ function CountryCategoryModal({ closeModal, executeModal }) {
               })}
             </ListWrapper>
             <ListWrapper>
-              {currentContinentIndex === 0 && (
+              {currentContinentIndex.length === 0 && (
                 <ListItem>대분류를 먼저 선택하세요</ListItem>
               )}
               {countrysListData.map((item) => {
                 return (
                   <ListItem
-                    key={item.idx}
-                    value={item.idx}
+                    key={item.IDX}
+                    value={item.IDX}
                     onClick={() => {
-                      addCountry(item.idx);
+                      addCountry(item.IDX);
                     }}
                   >
-                    {item.cty_name}
+                    {item.CTY_NAME}
                   </ListItem>
                 );
               })}
@@ -110,12 +114,12 @@ function CountryCategoryModal({ closeModal, executeModal }) {
             {selectedCountryList.map((item) => {
               return (
                 <div
-                  key={item.idx}
+                  key={item.IDX}
                   onClick={() => {
-                    deleteCountry(item.idx);
+                    deleteCountry(item.IDX);
                   }}
                 >
-                  {item.cty_name}
+                  {item.CTY_NAME}
                 </div>
               );
             })}
@@ -222,11 +226,10 @@ const CountryList = styled.div`
   div {
     cursor: pointer;
     margin-right: 0.5rem;
-    background-color: #7f858e;
-    color: white;
-    font-weight: bold;
+    background-color: #eee;
     padding: 0.5rem;
     border-radius: 1rem;
+    font-size: 12px;
   }
 `;
 

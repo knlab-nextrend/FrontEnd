@@ -10,7 +10,10 @@ export const setModalData = (modalData, dataType) => ({
 });
 export const clearModalData = () => ({ type: CLEAR_MODAL_DATA });
 
-const initialState = { modalType: null, modalData: { dc_country: []} };
+const initialState = {
+  modalType: null,
+  modalData: { dc_country: [], dc_code: [] },
+};
 
 export default function modal(state = initialState, action) {
   switch (action.type) {
