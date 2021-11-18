@@ -24,7 +24,7 @@ export const setUser = (user) => ({ type: SET_USER, user });
 
 const initialState = {
   isLogin: !!localStorage.getItem("token"), // 로그인 상태를 담고 있는 state
-  user: {}, // 로그인한 유저의 정보를 담고 있는 state
+  user: {}, // 로그인한 유저의 정보를 담고 있는 state` 
 };
 
 export default function login(state = initialState, action) {

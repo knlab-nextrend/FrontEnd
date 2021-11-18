@@ -136,6 +136,13 @@ const RefreshTokenApi = () => {
   return axios.get(`/nextrend/refresh`, config);
 };
 
+const FetchUsersApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  return axios.get(`/nextrend/user/get`, config);
+};
+
 export {
   LoginApi,
   RefreshTokenApi,
@@ -148,5 +155,6 @@ export {
   ScreeningDataStageApi,
   ScreeningDataFetchApi,
   ContinentsListDataFetchApi,
-  CountrysListDataFetchApi
+  CountrysListDataFetchApi,
+  FetchUsersApi
 };

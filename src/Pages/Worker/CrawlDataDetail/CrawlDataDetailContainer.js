@@ -4,7 +4,7 @@ import {
   CrawlDataRejectApi,
   CrawlDataStageApi,
   CrawlDataKeepApi,
-} from "../../Utils/api";
+} from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
 

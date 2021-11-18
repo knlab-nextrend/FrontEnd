@@ -1,9 +1,9 @@
 import React from "react";
 import { AiOutlineArrowRight, AiOutlineDelete } from "react-icons/ai";
 import { FaRegHandPaper } from "react-icons/fa";
-import CrawlDataForm from "../../Components/CrawlDataForm";
-import FormHeader from "../../Components/FormHeader";
-import Button from "../../Components/Button";
+import CrawlDataForm from "../../../Components/CrawlDataForm";
+import FormHeader from "../../../Components/FormHeader";
+import Button from "../../../Components/Button";
 import styled from "styled-components";
 
 function CrawlDataDetail({
