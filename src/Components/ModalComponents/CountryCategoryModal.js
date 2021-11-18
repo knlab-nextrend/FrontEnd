@@ -4,7 +4,7 @@ import {
   ContinentsListDataFetchApi,
   CountrysListDataFetchApi,
 } from "../../Utils/api";
-function CountryCategoryModal() {
+function CountryCategoryModal({ closeModal, executeModal }) {
   const [selectedCountryList, setSelectedCountryList] = useState([]);
   const [countrysListData, setCountrysListData] = useState([]);
   const [continentsListData, setContinentsListData] = useState([]);
@@ -27,13 +27,23 @@ function CountryCategoryModal() {
 
   const addCountry = (idx) => {
     const _country = countrysListData.find((item) => item.idx === idx);
-    setSelectedCountryList([...selectedCountryList, _country]);
+    if (selectedCountryList.includes(_country)) {
+      alert("이미 선택된 국가 입니다.");
+    } else {
+      setSelectedCountryList([...selectedCountryList, _country]);
+    }
   };
 
   const deleteCountry = (idx) => {
     setSelectedCountryList(
       selectedCountryList.filter((item) => item.idx !== idx)
     );
+  };
+
+  const saveCountry = () => {
+    executeModal(selectedCountryList, "dc_country");
+    alert("성공적으로 저장되었습니다.");
+    closeModal();
   };
 
   useEffect(() => {
@@ -53,10 +63,16 @@ function CountryCategoryModal() {
         <Modalheader>
           <ModalTitle>국가 설정</ModalTitle>
           <ModalSubTitle>
-            해당 데이터의 국가 분류를 선택해주세요.{" "}
+            {
+              "해당 데이터의 국가 분류를 선택해주세요.\n추가된 국가는 아래 리스트에서 미리 볼 수 있으며, 추가된 국가 칩을 클릭하면 국가 목록에서 삭제됩니다."
+            }
           </ModalSubTitle>
         </Modalheader>
         <ModalBody>
+          <ListHeader>
+            <div>대분류</div>
+            <div>중분류</div>
+          </ListHeader>
           <ListContainer>
             <ListWrapper>
               {continentsListData.map((item) => {
@@ -72,6 +88,9 @@ function CountryCategoryModal() {
               })}
             </ListWrapper>
             <ListWrapper>
+              {currentContinentIndex === 0 && (
+                <ListItem>대분류를 먼저 선택하세요</ListItem>
+              )}
               {countrysListData.map((item) => {
                 return (
                   <ListItem
@@ -89,15 +108,24 @@ function CountryCategoryModal() {
           </ListContainer>
           <CountryList>
             {selectedCountryList.map((item) => {
-              return (<div onClick={()=>{deleteCountry(item.idx)}}>{item.cty_name}</div>);
+              return (
+                <div
+                  key={item.idx}
+                  onClick={() => {
+                    deleteCountry(item.idx);
+                  }}
+                >
+                  {item.cty_name}
+                </div>
+              );
             })}
           </CountryList>
         </ModalBody>
         <ModalActions>
-          <Button color="#435269">
+          <Button onClick={saveCountry} color="#435269">
             <p>저장</p>
           </Button>
-          <Button color="#bfbfbf">
+          <Button onClick={closeModal} color="#bfbfbf">
             <p>취소</p>
           </Button>
         </ModalActions>
@@ -131,14 +159,13 @@ const ModalSubTitle = styled.div`
 `;
 const ModalBody = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
   margin-bottom: 1rem;
 `;
 
 const ModalActions = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: center;
   flex-direction: row;
 `;
 
@@ -155,24 +182,52 @@ const Button = styled.button`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
+`;
+const ListHeader = styled.div`
+  display: flex;
+  width: 100%;
+  background-color: #435269;
+  div {
+    padding: 0.5rem 0 0.5rem 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+  }
 `;
 const ListWrapper = styled.ul`
+  width: 100%;
   list-style-type: none;
   height: 30rem;
   overflow: auto;
   margin: 0;
   padding: 0;
+  border: solid 1px #eeeeee;
 `;
 const ListItem = styled.li`
   cursor: pointer;
   padding: 1rem;
-  width: 10rem;
   min-height: 1.5rem;
   border-bottom: dotted 1px #eeeeee;
 `;
 
 const CountryList = styled.div`
+  margin-top: 1rem;
+  padding: 1rem;
   display: flex;
-  height:5rem;
+  justify-content: left;
+  border: solid 1px #eee;
+
+  div {
+    cursor: pointer;
+    margin-right: 0.5rem;
+    background-color: #7f858e;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem;
+    border-radius: 1rem;
+  }
 `;
+
 export default CountryCategoryModal;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setModal } from "../../Modules/modal";
+import { setModal,setModalData } from "../../Modules/modal";
 /* modal Components */
 import CountryCategoryModal from "./CountryCategoryModal";
 import CodeCategoryModal from "./CodeCategoryModal";
@@ -26,20 +26,18 @@ function GlobalModal() {
   const dispatch = useDispatch();
 
   const closeModal = () => {
-    console.log("close");
     dispatch(setModal(null));
   };
-
-  useEffect(() => {
-    console.log(modalType);
-  }, [modalType]);
+  const executeModal = (modalData,dataType)=>{
+    dispatch(setModalData(modalData,dataType))
+  }
 
   const renderComponent = () => {
     if (!modalType) {
       return null;
     }
     const ModalComponent = MODAL_COMPONENTS[modalType];
-    return <ModalComponent />;
+    return <ModalComponent closeModal={closeModal} executeModal={executeModal}/>;
   };
 
   return (

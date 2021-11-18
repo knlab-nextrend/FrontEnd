@@ -5,10 +5,9 @@ import React, {
   useImperativeHandle,
 } from "react";
 import styled from "styled-components";
-import {useDispatch} from 'react-redux'
-import { setModal } from "../Modules/modal";
-import {MdSettings} from "react-icons/md"
-
+import { useDispatch, useSelector } from "react-redux";
+import { setModal, setModalData } from "../Modules/modal";
+import { MdSettings } from "react-icons/md";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
 function CrawlDataForm({ docs, type }, ref) {
@@ -22,7 +21,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcCode, setDcCode] = useState([]); // dc_code 주제분류
   const [dcCat, setDcCat] = useState(""); //dc_cat 유형분류. 그런데 아직 모호함
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
-  const [dcCountry, setDcCountry] = useState([]); //dc_country 주제 대상 국가
+  const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCountryPub, setDcCountryPub] = useState([]); //dc_country_pub 발행 국가
   const [dcCover, setDcCover] = useState(""); // dc_cover 문서 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
@@ -32,6 +31,8 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcTitleKr, setDcTitleKr] = useState(""); // dc_title_kr 한글 제목
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
   const [dcLink, setDcLink] = useState(""); //dc_link 링크..이긴 하나 무슨 링크?
+
+  const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 주제 대상 국가
 
   const _dcContentHandler = (e) => {
     setDcContent(e.target.value);
@@ -54,9 +55,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcTypeHandler = (e) => {
     setDcType(e.target.value);
   };
-  const _dcCountryHandler = (e) => {
-    setDcCountry(e.target.value);
-  };
+
   const _dcCountryPubHandler = (e) => {
     setDcCountryPub(e.target.value);
   };
@@ -86,10 +85,15 @@ function CrawlDataForm({ docs, type }, ref) {
   };
 
   const dispatch = useDispatch();
-  const _openCountryCategoryModal = ()=>{
-    dispatch(setModal("CountryCategoryModal"))
+  const _openCountryCategoryModal = () => {
+    dispatch(setModal("CountryCategoryModal"));
+  };
 
-  }
+  useEffect(() => {
+    const _dcCountryIndexList = dcCountry.map((item) => item.idx);
+    setDcCountryIndexList(_dcCountryIndexList)
+  }, [dcCountry]);
+
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
     /* input state 값들을 객체에 담아서 반환함.*/
@@ -103,7 +107,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_code"] = dcCode;
       _docs["dc_cat"] = dcCat;
       _docs["dc_type"] = dcType;
-      _docs["dc_country"] = dcCountry;
+      _docs["dc_country"] = dcCountryIndexList;
       _docs["dc_country_pub"] = dcCountryPub;
       _docs["dc_cover"] = dcCover;
       _docs["dc_smry_kr"] = dcSmryKr;
@@ -120,6 +124,7 @@ function CrawlDataForm({ docs, type }, ref) {
   useEffect(() => {
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
+      console.log(docs);
       setDcContent(docs.dc_content);
       setDcDtCollect(docs.dc_dt_collect);
       setDcDtWrite(docs.dc_dt_write);
@@ -129,7 +134,7 @@ function CrawlDataForm({ docs, type }, ref) {
       setDcCode(docs.dc_code);
       setDcCat(docs.dc_cat);
       setDcType(docs.dc_cat);
-      setDcCountry(docs.dc_country);
+      dispatch(setModalData(docs.dc_country || [], "dc_country"));
       setDcCountryPub(docs.dc_country_pub);
       setDcCover(docs.dc_cover);
       setDcSmryKr(docs.dc_smry_kr);
@@ -190,9 +195,15 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>국가 설정</p>
-              <button onClick={_openCountryCategoryModal}><MdSettings/> 설정</button>
+              <button onClick={_openCountryCategoryModal}>
+                <MdSettings /> 설정
+              </button>
             </div>
-            <div className="form notInput" />
+            <div className="form notInput">
+              {dcCountry.map((item) => {
+                return <CustomList key={item.idx}>{item.cty_name}</CustomList>;
+              })}
+            </div>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -344,15 +355,15 @@ const CustomFormItem = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction:column;
+    flex-direction: column;
     margin: 0;
     background-color: rgba(0, 0, 0, 0.02);
     height: 100%;
     min-width: 10rem;
     border-right: solid 2px #d6d6d6;
-    button{
-      display:inherit;
-      align-items:center;
+    button {
+      display: inherit;
+      align-items: center;
     }
   }
   .form {
@@ -374,6 +385,7 @@ const CustomFormItem = styled.div`
   .notInput {
     background-color: white;
     height: 5rem;
+    justify-content: left;
   }
 `;
 const CustomFormRow = styled.div`
@@ -382,5 +394,13 @@ const CustomFormRow = styled.div`
   width: 100%;
 `;
 
+const CustomList = styled.span`
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: #eee;
+  min-width: 4rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
 /* forwardRef를 사용하여 부모가 자식 컴포넌트 함수를 호출할 수 있도록 함*/
 export default forwardRef(CrawlDataForm);

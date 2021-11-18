@@ -1,17 +1,36 @@
 const SET_MODAL = "modal/SET_MODAL";
+const SET_MODAL_DATA = "modal/SET_MODAL_DATA";
+const CLEAR_MODAL_DATA = "modal/CLEAR_MODAL_DATA";
 
-export const setModal = (modalType) => ({ type: SET_MODAL,modalType });
+export const setModal = (modalType) => ({ type: SET_MODAL, modalType });
+export const setModalData = (modalData, dataType) => ({
+  type: SET_MODAL_DATA,
+  modalData,
+  dataType,
+});
+export const clearModalData = () => ({ type: CLEAR_MODAL_DATA });
 
-
-const initialState = { modalType: null };
+const initialState = { modalType: null, modalData: { dc_country: []} };
 
 export default function modal(state = initialState, action) {
   switch (action.type) {
     case SET_MODAL:
-      console.log(action.modalType)
       return {
         ...state,
         modalType: action.modalType,
+      };
+    case SET_MODAL_DATA:
+      const _modalData = { ...state.modalData };
+      _modalData[action.dataType] = action.modalData;
+      console.log(_modalData);
+      return {
+        ...state,
+        modalData: _modalData,
+      };
+    case CLEAR_MODAL_DATA:
+      return {
+        ...state,
+        modalData: null,
       };
     default:
       return state;
