@@ -17,6 +17,9 @@ import { FaBook } from "react-icons/fa";
 import { GrFormView } from "react-icons/gr";
 function AsideMenuBar() {
   const history = useHistory();
+  const go사용자수정 = () => {
+    history.push("/user/");
+  };
   const go크롤데이터스크리닝 = () => {
     history.push("/crawl/screening");
   };
@@ -34,7 +37,7 @@ function AsideMenuBar() {
             <RiDashboardFill className="icon" size="18" />
             대시보드
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          <AsideMenuBarItem onClick={go사용자수정}>
             <RiUserSettingsFill className="icon" size="18" />
             사용자 관리
           </AsideMenuBarItem>

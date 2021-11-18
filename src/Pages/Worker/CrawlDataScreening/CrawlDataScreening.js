@@ -1,8 +1,8 @@
 import React from "react";
-import FormHeader from "../../Components/FormHeader";
+import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
-import Button from "../../Components/Button";
-import Pagenation from "../../Components/Pagenation";
+import Button from "../../../Components/Button";
+import Pagenation from "../../../Components/Pagenation";
 import { AiOutlineCheck } from "react-icons/ai";
 function CrawlDataScreening({
   screeningData,

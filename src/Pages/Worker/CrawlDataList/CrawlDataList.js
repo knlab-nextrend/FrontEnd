@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import SearchOption from "../../Components/SearchOption";
-import CrawlDataCard from "../../Components/CrawlDataCard";
-import FormHeader from "../../Components/FormHeader";
-import Pagenation from "../../Components/Pagenation";
-import Tab from "../../Components/Tab";
+import SearchOption from "../../../Components/SearchOption";
+import CrawlDataCard from "../../../Components/CrawlDataCard";
+import FormHeader from "../../../Components/FormHeader";
+import Pagenation from "../../../Components/Pagenation";
+import Tab from "../../../Components/Tab";
 import { CgFileDocument } from "react-icons/cg";
 
 function CrawlDataList({

@@ -8,10 +8,8 @@ import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
 import GlobalModal from "./Components/ModalComponents/GlobalModal";
 /* body */
-import CrawlDataListContainer from "./Pages/CrawlDataList/CrawlDataListContainer";
 import LoginContainer from "./Pages/Login/LoginContainer";
-import CrawlDataDetailContainer from "./Pages/CrawlDataDetail/CrawlDataDetailContainer";
-import CrawlDataScreeningContainer from "./Pages/CrawlDataScreening/CrawlDataScreeningContainer";
+import WorkerAside from "./Pages/Worker/WorkerAside";
 
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
@@ -27,27 +25,7 @@ function App() {
       <Body isLogin={isLogin}>
         {isLogin && <AsideMenuBar />}
         <Section>
-          <Switch>
-            <PrivateRoute path="/" exact>
-              <div></div>
-            </PrivateRoute>
-
-            <PrivateRoute
-              path="/crawl/screening"
-              component={CrawlDataScreeningContainer}
-              exact
-            />
-            <PrivateRoute
-              path="/crawl/list/:statusCode"
-              component={CrawlDataListContainer}
-              exact
-            />
-            <PrivateRoute
-              path="/crawl/detail/:statusCode/:itemId"
-              component={CrawlDataDetailContainer}
-              exact
-            />
-          </Switch>
+          <WorkerAside/>
         </Section>
       </Body>
       {isLogin && <Footer />}

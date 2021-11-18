@@ -3,7 +3,7 @@ import {
   ScreeningDataFetchApi,
   ScreeningDataStageApi,
   ScreeningDataDeleteApi,
-} from "../../Utils/api";
+} from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
 import { useHistory } from "react-router";
 
