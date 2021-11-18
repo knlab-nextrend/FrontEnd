@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { FetchUsersApi } from "../../../Utils/api";
 import UserManagement from "./UserManagement";
-
 
 function UserManagementContainer() {
     const history = useHistory();

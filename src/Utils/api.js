@@ -140,6 +140,16 @@ const FetchUsersApi = () => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
   };
+  return axios.get(`/nextrend/user/list`, config);
+};
+
+const getUserInfoApi = (uid) => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: {
+      uid: uid,
+    },
+  };
   return axios.get(`/nextrend/user/get`, config);
 };
 
@@ -156,5 +166,6 @@ export {
   ScreeningDataFetchApi,
   ContinentsListDataFetchApi,
   CountrysListDataFetchApi,
-  FetchUsersApi
+  FetchUsersApi,
+  getUserInfoApi
 };

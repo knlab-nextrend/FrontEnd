@@ -1,10 +1,18 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
+import { setModal, setModalData } from "../../../Modules/modal";
+import { useDispatch } from "react-redux";
 
 function UserManagement({
     userData,
 }){
+  const dispatch = useDispatch();
+
+  const _openUserModifyModal = (user) => {
+    dispatch(setModal("UserModifyModal"));
+    dispatch(setModalData(user,"modal_user"));
+}
 
     return(
     <>
@@ -43,6 +51,9 @@ function UserManagement({
                     <td>{user.Company}</td>
                     <td>{user.CreateAt}</td>
                     <td>{user.Category}</td>
+                    <td>
+                      <button onClick={()=>{_openUserModifyModal(user);}}>수정</button>
+                    </td>
                   </tr>
                 );
               })}
