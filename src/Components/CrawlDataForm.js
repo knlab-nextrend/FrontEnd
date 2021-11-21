@@ -36,8 +36,8 @@ function CrawlDataForm({ docs, type }, ref) {
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 주제 대상 국가
   const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
 
-  const _dcContentHandler = (e) => {
-    setDcContent(e.target.value);
+  const _dcContentHandler = (data) => {
+    setDcContent(data);
   };
   const _dcDtCollectHandler = (e) => {
     setDcDtCollect(e.target.value);
@@ -235,7 +235,6 @@ function CrawlDataForm({ docs, type }, ref) {
               onChange={_dcUrlLocHandler}
               className="form"
               type="text"
-              disabled={type === "screening"}
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -253,7 +252,6 @@ function CrawlDataForm({ docs, type }, ref) {
             <input
               className="form"
               type="text"
-              disabled={type === "screening"}
               placeholder="원문의 안내가 적힌 링크를 입력하세요"
             />
           </CustomFormItem>
@@ -264,7 +262,6 @@ function CrawlDataForm({ docs, type }, ref) {
               onChange={_dcDtCollectHandler}
               className="form"
               type="text"
-              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -275,7 +272,6 @@ function CrawlDataForm({ docs, type }, ref) {
               className="form"
               type="text"
               placeholder="보고서, 지침, 뉴스, 논문 등 문서의 물리적 형태 유형을 입력하세요"
-              disabled={type === "screening"}
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -285,7 +281,6 @@ function CrawlDataForm({ docs, type }, ref) {
               value={dcDtRegi}
               className="form"
               type="text"
-              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -295,7 +290,6 @@ function CrawlDataForm({ docs, type }, ref) {
             <input
               className="form"
               type="text"
-              disabled={type === "screening"}
               placeholder="원문의 발행자 및 발행기관명을 입력하세요"
             />
           </CustomFormItem>
@@ -307,7 +301,6 @@ function CrawlDataForm({ docs, type }, ref) {
               className="form"
               type="number"
               min="0"
-              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -320,21 +313,13 @@ function CrawlDataForm({ docs, type }, ref) {
               className="form"
               type="text"
               placeholder="검색에 사용할 키워드를 입력하세요. 검색 키워드는 쉼표(,)로 구분합니다."
-              disabled={type === "screening"}
             />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <Editor />
-            {/* <textarea
-              value={dcContent}
-              onChange={_dcContentHandler}
-              className="form textarea"
-              rows="30"
-              disabled={type === "screening"}
-            /> */}
+            <Editor dcContent={dcContent} _dcContentHandler={_dcContentHandler}/>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>

@@ -209,13 +209,14 @@ const editorConfiguration = {
     ],
   },
 };
-function Editor() {
+function Editor({dcContent,_dcContentHandler}) {
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
   return (
     <CustomCKEditor>
       <CKEditor
         editor={ClassicEditor}
+        data={dcContent}
         config={editorConfiguration}
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
@@ -223,7 +224,7 @@ function Editor() {
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log({ event, editor, data });
+          _dcContentHandler(data)
         }}
         onBlur={(event, editor) => {
           console.log("Blur.", editor);
