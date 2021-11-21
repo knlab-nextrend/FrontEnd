@@ -144,6 +144,43 @@ const RefreshTokenApi = () => {
   return axios.get(`/nextrend/refresh`, config);
 };
 
+const FetchUsersApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  return axios.get(`/nextrend/user/list`, config);
+};
+
+const getUserInfoApi = (uid) => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: {
+      uid: uid,
+    },
+  };
+  return axios.get(`/nextrend/user/get`, config);
+};
+
+const modifyUserInfoApi = (userInfo,uid) => {
+  const body = {
+    userInfo,
+    uid
+  };
+  return axios.post(`/nextrend/user/modify`, body, { headers: headers });
+}
+
+const deleteUserByIdApi = (uid) => {
+  const body = {
+    uid
+  };
+  return axios.post(`/nextrend/user/delete`, body, { headers: headers });
+}
+const addUserApi = (userInfo) => {
+  const body = {
+    userInfo,
+  };
+  return axios.post(`/nextrend/user/add`, body, { headers: headers });
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -157,5 +194,10 @@ export {
   ScreeningDataFetchApi,
   ContinentsListDataFetchApi,
   CountrysListDataFetchApi,
+  FetchUsersApi,
+  getUserInfoApi,
+  modifyUserInfoApi,
+  deleteUserByIdApi,
+  addUserApi,
   CategorysListDataFetchApi
 };

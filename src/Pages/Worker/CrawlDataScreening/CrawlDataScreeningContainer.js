@@ -3,7 +3,7 @@ import {
   ScreeningDataFetchApi,
   ScreeningDataStageApi,
   ScreeningDataDeleteApi,
-} from "../../Utils/api";
+} from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
 import { useHistory } from "react-router";
 
@@ -42,7 +42,7 @@ function CrawlDataScreeningContainer() {
   /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
   const stageScreeningData = () => {
     if (
-      confirm(
+      window.confirm(
         "선택되지 않은 데이터는 DB에서 삭제됩니다. 스크리닝을 진행하시겠습니까?"
       )
     ) {
