@@ -18,10 +18,10 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcDtRegi, setDcDtRegi] = useState(""); // dc_dt_regi 데이터 등록 일자
   const [dcKeyword, setDcKeyword] = useState([]); // dc_keyword 키워드 검색 단어. 받아올 땐 배열이나, 관리는 문자열로 할 예정
   const [dcKeywordString, setDcKeywordString] = useState(""); // dc_keyword 를 문자열 형태로 표시하기 위해서 .
-  const [dcCode, setDcCode] = useState([]); // dc_code 주제분류
   const [dcCat, setDcCat] = useState(""); //dc_cat 유형분류. 그런데 아직 모호함
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
+  const [dcCodeList,setDcCodeList] = useState([]);
   const [dcCountryPub, setDcCountryPub] = useState([]); //dc_country_pub 발행 국가
   const [dcCover, setDcCover] = useState(""); // dc_cover 문서 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
@@ -33,6 +33,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcLink, setDcLink] = useState(""); //dc_link 링크..이긴 하나 무슨 링크?
 
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 주제 대상 국가
+  const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
 
   const _dcContentHandler = (e) => {
     setDcContent(e.target.value);
@@ -88,11 +89,20 @@ function CrawlDataForm({ docs, type }, ref) {
   const _openCountryCategoryModal = () => {
     dispatch(setModal("CountryCategoryModal"));
   };
+  const _openCodeCategoryModal = () => {
+    dispatch(setModal("CodeCategoryModal"));
+  };
 
   useEffect(() => {
-    const _dcCountryIndexList = dcCountry.map((item) => item.idx);
-    setDcCountryIndexList(_dcCountryIndexList)
+    const _dcCountryIndexList = dcCountry.map((item) => item.IDX);
+    setDcCountryIndexList(_dcCountryIndexList);
   }, [dcCountry]);
+
+  useEffect(() => {
+    console.log(dcCode)
+    const _dcCodeList = dcCode.map((item) => item.CODE);
+    setDcCodeList(_dcCodeList);
+  }, [dcCode]);
 
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
@@ -104,7 +114,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_dt_write"] = dcDtWrite;
       _docs["dc_dt_regi"] = dcDtRegi;
       _docs["dc_keyword"] = dcKeyword;
-      _docs["dc_code"] = dcCode;
+      _docs["dc_code"] = dcCodeList;
       _docs["dc_cat"] = dcCat;
       _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
@@ -124,17 +134,16 @@ function CrawlDataForm({ docs, type }, ref) {
   useEffect(() => {
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
-      console.log(docs);
       setDcContent(docs.dc_content);
       setDcDtCollect(docs.dc_dt_collect);
       setDcDtWrite(docs.dc_dt_write);
       setDcDtRegi(docs.dc_dt_regi);
       setDcKeyword(docs.dc_keyword);
       setDcKeywordString(docs.dc_keyword.join(", "));
-      setDcCode(docs.dc_code);
       setDcCat(docs.dc_cat);
-      setDcType(docs.dc_cat);
-      dispatch(setModalData(docs.dc_country || [], "dc_country"));
+      setDcType(docs.dc_type);
+      dispatch(setModalData(docs.dc_code, "dc_code"));
+      dispatch(setModalData(docs.dc_country, "dc_country"));
       setDcCountryPub(docs.dc_country_pub);
       setDcCover(docs.dc_cover);
       setDcSmryKr(docs.dc_smry_kr);
@@ -201,15 +210,25 @@ function CrawlDataForm({ docs, type }, ref) {
             </div>
             <div className="form notInput">
               {dcCountry.map((item) => {
-                return <CustomList key={item.idx}>{item.cty_name}</CustomList>;
+                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
               })}
             </div>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">주제 분류 설정</p>
-            <div className="form notInput" />
+            <div className="title">
+              <p>주제 분류 설정</p>{" "}
+              <button onClick={_openCodeCategoryModal}>
+                <MdSettings /> 설정
+              </button>
+            </div>
+            <div className="form notInput">
+              {" "}
+              {dcCode.map((item) => {
+                return <CustomList key={item.CODE}>{item.CT_NM}</CustomList>;
+              })}
+            </div>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>

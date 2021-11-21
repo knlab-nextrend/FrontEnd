@@ -46,6 +46,7 @@ function CrawlDataDetailContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };
@@ -54,16 +55,24 @@ function CrawlDataDetailContainer() {
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
-      dc_content: _rawStatusDetailData.dc_content,
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect,
+      dc_content: _rawStatusDetailData.dc_content || "",
+      dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
-      dc_dt_write: _rawStatusDetailData.dc_dt_write,
+      dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_page: _rawStatusDetailData.dc_page,
-      dc_title_or: _rawStatusDetailData.dc_title_or,
+      dc_publisher:_rawStatusDetailData.dc_publisher || "",
+      dc_cover:_rawStatusDetailData.dc_cover || "",
+      dc_country_pub:_rawStatusDetailData.dc_country_pub || "",
+      dc_cat:_rawStatusDetailData.dc_cat,
+      dc_code:_rawStatusDetailData.dc_code,
+      dc_country:_rawStatusDetailData.dc_country,
+      dc_page: _rawStatusDetailData.dc_page || "",
+      dc_type:_rawStatusDetailData.dc_type || "",
+      dc_title_or: _rawStatusDetailData.dc_title_or || "",
       dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
-      dc_url_loc: _rawStatusDetailData.dc_url_loc,
+      dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
+      dc_link: _rawStatusDetailData.dc_link || ""
     };
     setDocs(_docs);
   };

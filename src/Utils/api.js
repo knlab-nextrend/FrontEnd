@@ -117,6 +117,14 @@ const CountrysListDataFetchApi = (continent) => {
   return axios.get(`/nextrend/countrys/${continent}`, config);
 };
 
+/* 주제 분류 리스트를 받아오는 함수 */
+const CategorysListDataFetchApi = (upperCode = null) => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params:{upperCode}
+  };
+  return axios.get(`/nextrend/categorys`, config);
+}
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -190,5 +198,6 @@ export {
   getUserInfoApi,
   modifyUserInfoApi,
   deleteUserByIdApi,
-  addUserApi
+  addUserApi,
+  CategorysListDataFetchApi
 };
