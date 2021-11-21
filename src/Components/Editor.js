@@ -18,12 +18,13 @@ import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import Heading from "@ckeditor/ckeditor5-heading/src/heading";
 import Font from "@ckeditor/ckeditor5-font/src/font";
+
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
 import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
-import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
 import ImageResizeEditing from "@ckeditor/ckeditor5-image/src/imageresize/imageresizeediting";
 import ImageResizeHandles from "@ckeditor/ckeditor5-image/src/imageresize/imageresizehandles";
 import List from "@ckeditor/ckeditor5-list/src/list";
@@ -34,6 +35,8 @@ import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformatio
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
 import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
 import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter";
+import LinkImage from "@ckeditor/ckeditor5-link/src/linkimage";
+import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
 
 import styled from "styled-components";
 
@@ -51,6 +54,7 @@ const editorConfiguration = {
     MediaEmbed,
     PasteFromOffice,
     Font,
+
     Image,
     ImageStyle,
     ImageToolbar,
@@ -59,6 +63,7 @@ const editorConfiguration = {
     ImageResize,
     ImageResizeEditing,
     ImageResizeHandles,
+    LinkImage,
     List,
     Alignment,
     Table,
@@ -68,6 +73,7 @@ const editorConfiguration = {
     IndentBlock,
     Base64UploadAdapter,
     InlineEditor,
+    HorizontalLine,
   ],
   toolbar: [
     "heading",
@@ -78,6 +84,8 @@ const editorConfiguration = {
     "strikethrough",
     "|",
     "fontSize",
+    "fontColor",
+    "fontBackgroundColor",
     "|",
     "bulletedList",
     "numberedList",
@@ -88,16 +96,14 @@ const editorConfiguration = {
     "alignment:justify",
     "|",
     "blockQuote",
+    "HorizontalLine",
     "|",
     "insertTable",
-    "|",
-    'resizeImage',
     "imageUpload",
-    "toggleImageCaption",
-    "|",
     "link",
     "mediaEmbed",
   ],
+
   heading: {
     options: [
       {
@@ -136,40 +142,46 @@ const editorConfiguration = {
     contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
   },
   image: {
-    resizeUnit: "px",
     toolbar: [
       "imageStyle:alignLeft",
       "imageStyle:full",
       "imageStyle:alignRight",
       "|",
+      "imageStyle:align-block-left",
+      "imageStyle:align-block-right",
+      "imageStyle:block",
+      "|",
       "imageTextAlternative",
+      "|",
+      "resizeImage",
+      "toggleImageCaption",
+      "linkImage",
     ],
-    styles: [
-      "full",
-      "alignLeft",
-      "alignRight",
-      "align-block-left",
-      "align-block-right",
-      "block",
+    resizeUnit: "%",
+    resizeOptions: [
+      {
+        name: "resizeImage:original",
+        value: null,
+        icon: "original",
+      },
+      {
+        name: "resizeImage:25",
+        value: "25",
+        icon: "small",
+      },
+      {
+        name: "resizeImage:50",
+        value: "50",
+        icon: "medium",
+      },
+      {
+        name: "resizeImage:75",
+        value: "75",
+        icon: "large",
+      },
     ],
   },
-  resizeOptions: [
-    {
-      name: "resizeImage:original",
-      value: null,
-      label: "Original",
-    },
-    {
-      name: "resizeImage:40",
-      value: "40",
-      label: "40%",
-    },
-    {
-      name: "resizeImage:60",
-      value: "60",
-      label: "60%",
-    },
-  ],
+
   typing: {
     transformations: {
       remove: [
@@ -214,5 +226,9 @@ function Editor() {
 
 const CustomCKEditor = styled.div`
   width: 100%;
+  .ck-editor__editable_inline {
+    height: 1000px;
+    padding: 2rem;
+  }
 `;
 export default Editor;

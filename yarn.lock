@@ -1446,6 +1446,13 @@
   dependencies:
     ckeditor5 "^31.0.0"
 
+"@ckeditor/ckeditor5-horizontal-line@^31.0.0":
+  version "31.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-horizontal-line/-/ckeditor5-horizontal-line-31.0.0.tgz#4a01738e435474f4213b7430b235912711c39724"
+  integrity sha512-QBw34CAMZ3KDr69qJ+qlPoMx7nxkv0Z9NrN/ZkguFmFFI+Wa6SvQKw5qhu9f8T6cgGlkruDtXOGBWSoiEIPfUg==
+  dependencies:
+    ckeditor5 "^31.0.0"
+
 "@ckeditor/ckeditor5-image@^31.0.0":
   version "31.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-image/-/ckeditor5-image-31.0.0.tgz#75ea102cac5909c1b2d09a1c4e7f030fc59941bc"
