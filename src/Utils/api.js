@@ -153,6 +153,26 @@ const getUserInfoApi = (uid) => {
   return axios.get(`/nextrend/user/get`, config);
 };
 
+const modifyUserInfoApi = (userInfo,uid) => {
+  const body = {
+    userInfo,
+    uid
+  };
+  return axios.post(`/nextrend/user/modify`, body, { headers: headers });
+}
+
+const deleteUserByIdApi = (uid) => {
+  const body = {
+    uid
+  };
+  return axios.post(`/nextrend/user/delete`, body, { headers: headers });
+}
+const addUserApi = (userInfo) => {
+  const body = {
+    userInfo,
+  };
+  return axios.post(`/nextrend/user/add`, body, { headers: headers });
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -167,5 +187,8 @@ export {
   ContinentsListDataFetchApi,
   CountrysListDataFetchApi,
   FetchUsersApi,
-  getUserInfoApi
+  getUserInfoApi,
+  modifyUserInfoApi,
+  deleteUserByIdApi,
+  addUserApi
 };

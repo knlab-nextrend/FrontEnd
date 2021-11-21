@@ -1,18 +1,15 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
-import { setModal, setModalData } from "../../../Modules/modal";
-import { useDispatch } from "react-redux";
+
 
 function UserManagement({
     userData,
+    openUserModifyModal,
+    deleteUser,
+    openUserAddModal
 }){
-  const dispatch = useDispatch();
-
-  const _openUserModifyModal = (user) => {
-    dispatch(setModal("UserModifyModal"));
-    dispatch(setModalData(user,"modal_user"));
-}
+  
 
     return(
     <>
@@ -52,7 +49,8 @@ function UserManagement({
                     <td>{user.CreateAt}</td>
                     <td>{user.Category}</td>
                     <td>
-                      <button onClick={()=>{_openUserModifyModal(user);}}>수정</button>
+                      <Button onClick={()=>{openUserModifyModal(user)}}>수정</Button>
+                      <Button onClick={()=>{deleteUser(user.id)}}>삭제</Button>
                     </td>
                   </tr>
                 );
@@ -60,10 +58,21 @@ function UserManagement({
             </tbody>
           </CustomTable>
         </TableWrapper>
+        <Button onClick={()=>{openUserAddModal()}}>추가</Button>
     </>
     );
 }
 
+const Button = styled.button`
+  background-color: ${(props) => props.color || "grey"};
+  cursor: pointer;
+  min-width: 5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  margin: 0 0.5rem 0 0.5rem;
+`;
 const TableWrapper = styled.div`
   width: 100%;
   max-height: 65rem;

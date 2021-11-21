@@ -5,18 +5,18 @@ import { setModal,setModalData } from "../../Modules/modal";
 /* modal Components */
 import CountryCategoryModal from "./CountryCategoryModal";
 import CodeCategoryModal from "./CodeCategoryModal";
-import UserModifyModal from "./UserModifyModal";
+import UserInfoModal from "./UserInfoModal";
 
 export const MODAL_TYPES = {
   CountryCategoryModal: "CountryCategoryModal",
   CodeCategoryModal: "CodeCategoryModal",
-  UserModifyModal: "UserModifyModal",
+  UserInfoModal: "UserInfoModal",
 };
 
 const MODAL_COMPONENTS = {
   [MODAL_TYPES.CountryCategoryModal]: CountryCategoryModal,
   [MODAL_TYPES.CodeCategoryModal]: CodeCategoryModal,
-  [MODAL_TYPES.UserModifyModal]: UserModifyModal,
+  [MODAL_TYPES.UserInfoModal]: UserInfoModal,
 };
 
 function GlobalModal() {

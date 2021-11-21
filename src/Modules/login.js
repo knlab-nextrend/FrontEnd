@@ -35,7 +35,7 @@ export default function login(state = initialState, action) {
       localStorage.setItem("token", _token);
       localStorage.setItem("refreshToken", _refreshToken);
 
-      location.href = "/";
+      window.location.href = "/";
       return {
         ...state,
         isLogin: true,

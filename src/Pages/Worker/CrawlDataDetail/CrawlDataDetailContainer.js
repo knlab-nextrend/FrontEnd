@@ -76,7 +76,7 @@ function CrawlDataDetailContainer() {
   };
 
   const dataReject = () => {
-    if (confirm("해당 데이터를 버리시겠습니까?")) {
+    if (window.confirm("해당 데이터를 버리시겠습니까?")) {
       CrawlDataRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
@@ -93,7 +93,7 @@ function CrawlDataDetailContainer() {
   };
 
   const cancel = () => {
-    if (confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
+    if (window.confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
     }
   };
