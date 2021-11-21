@@ -48,9 +48,6 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcKeywordStringHandler = (e) => {
     setDcKeywordString(e.target.value);
   };
-  const _dcCodeHandler = (e) => {
-    setDcCode(e.target.value);
-  };
   const _dcCatHandler = (e) => {
     setDcCat(e.target.value);
   };

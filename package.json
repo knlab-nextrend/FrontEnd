@@ -1,7 +1,7 @@
 {
   "name": "react-components",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
+  "proxy": "http://192.168.0.2:5000",
   "private": true,
   "dependencies": {
     "@babel/core": "7.12.3",
@@ -19,6 +19,7 @@
     "@ckeditor/ckeditor5-indent": "^31.0.0",
     "@ckeditor/ckeditor5-link": "^31.0.0",
     "@ckeditor/ckeditor5-paragraph": "^31.0.0",
+    "@ckeditor/ckeditor5-paste-from-office": "^31.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "@ckeditor/ckeditor5-table": "^31.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^31.0.0",
@@ -108,7 +109,9 @@
       "react-app/jest"
     ],
     "rules": {
-      "no-restricted-globals": ["off"]
+      "no-restricted-globals": [
+        "off"
+      ]
     }
   },
   "browserslist": {

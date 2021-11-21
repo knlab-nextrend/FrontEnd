@@ -31,6 +31,8 @@ import List from "@ckeditor/ckeditor5-list/src/list";
 import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
 import Table from "@ckeditor/ckeditor5-table/src/table";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
+import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
+import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
 import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
@@ -42,6 +44,7 @@ import styled from "styled-components";
 
 const editorConfiguration = {
   plugins: [
+    PasteFromOffice,
     Essentials,
     Paragraph,
     Bold,
@@ -52,9 +55,7 @@ const editorConfiguration = {
     BlockQuote,
     Link,
     MediaEmbed,
-    PasteFromOffice,
     Font,
-
     Image,
     ImageStyle,
     ImageToolbar,
@@ -69,11 +70,14 @@ const editorConfiguration = {
     Table,
     TableToolbar,
     TextTransformation,
+    TableProperties,
+    TableCellProperties,
     Indent,
     IndentBlock,
     Base64UploadAdapter,
     InlineEditor,
     HorizontalLine,
+    
   ],
   toolbar: [
     "heading",
@@ -86,6 +90,7 @@ const editorConfiguration = {
     "fontSize",
     "fontColor",
     "fontBackgroundColor",
+    "fontFamily",
     "|",
     "bulletedList",
     "numberedList",
@@ -196,6 +201,13 @@ const editorConfiguration = {
     },
   },
   placeholder: "본문을 입력하세요.",
+  fontFamily: {
+    options: [
+      "default",
+      "Ubuntu, Arial, sans-serif",
+      "Ubuntu Mono, Courier New, Courier, monospace",
+    ],
+  },
 };
 function Editor() {
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
