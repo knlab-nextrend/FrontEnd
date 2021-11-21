@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal, setModalData } from "../Modules/modal";
 import { MdSettings } from "react-icons/md";
+import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
 function CrawlDataForm({ docs, type }, ref) {
@@ -21,7 +22,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcCat, setDcCat] = useState(""); //dc_cat 유형분류. 그런데 아직 모호함
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
-  const [dcCodeList,setDcCodeList] = useState([]);
+  const [dcCodeList, setDcCodeList] = useState([]);
   const [dcCountryPub, setDcCountryPub] = useState([]); //dc_country_pub 발행 국가
   const [dcCover, setDcCover] = useState(""); // dc_cover 문서 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
@@ -223,7 +224,6 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {" "}
               {dcCode.map((item) => {
                 return <CustomList key={item.CODE}>{item.CT_NM}</CustomList>;
               })}
@@ -330,13 +330,14 @@ function CrawlDataForm({ docs, type }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <textarea
+            <Editor />
+            {/* <textarea
               value={dcContent}
               onChange={_dcContentHandler}
               className="form textarea"
               rows="30"
               disabled={type === "screening"}
-            />
+            /> */}
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -406,6 +407,7 @@ const CustomFormItem = styled.div`
     justify-content: left;
   }
 `;
+
 const CustomFormRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -420,5 +422,6 @@ const CustomList = styled.span`
   text-align: center;
   border-radius: 1rem;
 `;
+
 /* forwardRef를 사용하여 부모가 자식 컴포넌트 함수를 호출할 수 있도록 함*/
 export default forwardRef(CrawlDataForm);
