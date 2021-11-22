@@ -39,6 +39,7 @@ function CrawlDataScreening({
           </Button>
           <select value={listSize} onChange={_listSizeHandler} >
             <option disabled hidden>리스트 사이즈</option>
+            <option value={2}>2건</option>
             <option value={10}>10건</option>
             <option value={30}>30건</option>
             <option value={50}>50건</option>

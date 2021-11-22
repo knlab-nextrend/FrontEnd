@@ -46,6 +46,7 @@ function CrawlDataDetailContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+      console.log(res.data)
       dataCleansing(res.data);
     });
   };
@@ -60,7 +61,7 @@ function CrawlDataDetailContainer() {
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher:_rawStatusDetailData.dc_publisher || "",
-      dc_cover:_rawStatusDetailData.dc_cover || "",
+      dc_cover:_rawStatusDetailData.dc_cover,
       dc_country_pub:_rawStatusDetailData.dc_country_pub || "",
       dc_cat:_rawStatusDetailData.dc_cat,
       dc_code:_rawStatusDetailData.dc_code,

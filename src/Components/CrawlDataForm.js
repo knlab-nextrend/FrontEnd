@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal, setModalData } from "../Modules/modal";
 import { MdSettings } from "react-icons/md";
@@ -24,7 +24,8 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCodeList, setDcCodeList] = useState([]);
   const [dcCountryPub, setDcCountryPub] = useState([]); //dc_country_pub 발행 국가
-  const [dcCover, setDcCover] = useState(""); // dc_cover 문서 표지
+  const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
+  const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
   const [dcPublisher, setDcPublisher] = useState(""); // dc_publisher 발행기관, 발행자 명
   const [dcPage, setDcPage] = useState(0); // dc_page 원문 페이지 수
@@ -58,8 +59,8 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcCountryPubHandler = (e) => {
     setDcCountryPub(e.target.value);
   };
-  const _dcCoverHandler = (e) => {
-    setDcCover(e.target.value);
+  const _dcCoverSelectHandler = (e) => {
+    setDcCoverSelect(e.target.value);
   };
   const _dcSmryKrHandler = (e) => {
     setDcSmryKr(e.target.value);
@@ -106,6 +107,8 @@ function CrawlDataForm({ docs, type }, ref) {
     /* input state 값들을 객체에 담아서 반환함.*/
     getCrawlFormData() {
       let _docs = {};
+      let _dcCoverSelect = []
+      _dcCoverSelect.push(dcCoverSelect)
       _docs["dc_content"] = dcContent;
       _docs["dc_dt_collect"] = dcDtCollect;
       _docs["dc_dt_write"] = dcDtWrite;
@@ -116,7 +119,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
       _docs["dc_country_pub"] = dcCountryPub;
-      _docs["dc_cover"] = dcCover;
+      _docs["dc_cover"] = _dcCoverSelect;
       _docs["dc_smry_kr"] = dcSmryKr;
       _docs["dc_publisher"] = dcPublisher;
       _docs["dc_page"] = dcPage;
@@ -143,6 +146,7 @@ function CrawlDataForm({ docs, type }, ref) {
       dispatch(setModalData(docs.dc_country, "dc_country"));
       setDcCountryPub(docs.dc_country_pub);
       setDcCover(docs.dc_cover);
+      setDcCoverSelect(docs.dc_cover[0] || "");
       setDcSmryKr(docs.dc_smry_kr);
       setDcPublisher(docs.dc_publisher);
       setDcPage(docs.dc_page);
@@ -159,6 +163,9 @@ function CrawlDataForm({ docs, type }, ref) {
     setDcKeyword(_stringToArrayKeywordArray);
   }, [dcKeywordString]);
 
+  useEffect(() => {
+    console.log(dcCoverSelect);
+  }, [dcCoverSelect]);
   return (
     <>
       <Wrapper>
@@ -319,13 +326,36 @@ function CrawlDataForm({ docs, type }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <Editor dcContent={dcContent} _dcContentHandler={_dcContentHandler}/>
+            <Editor
+              dcContent={dcContent}
+              _dcContentHandler={_dcContentHandler}
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">표지 파일</p>
-            <div className="form notInput" />
+            <ImageContainer>
+              {dcCover.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <input
+                      type="radio"
+                      id={index}
+                      value={item}
+                      name="cover"
+                      onChange={_dcCoverSelectHandler}
+                      checked={dcCoverSelect===item}
+                    />
+                    <label htmlFor={index}>
+                      <img className="cover"
+                        src={`http://${item}`}
+                      />
+                    </label>
+                  </div>
+                );
+              })}
+            </ImageContainer>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -403,6 +433,33 @@ const CustomList = styled.span`
   min-width: 4rem;
   text-align: center;
   border-radius: 1rem;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  margin: 2rem;
+  input[type="radio"] {
+    margin: 10px;
+    display:none;
+  }
+  input:checked + label>img{
+    border:solid 2px #009999;
+  }
+  input+label>img{
+    transition:all 0.2s;
+    &:hover{
+      transform: scale(1.1);
+      border:solid 2px red;
+    }
+  }
+  
+  label {
+    margin-right: 2rem;
+    img {
+      cursor: pointer;
+      height: 20rem;
+    }
+  }
 `;
 
 /* forwardRef를 사용하여 부모가 자식 컴포넌트 함수를 호출할 수 있도록 함*/
