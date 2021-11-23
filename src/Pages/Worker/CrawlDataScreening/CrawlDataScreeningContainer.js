@@ -46,14 +46,33 @@ function CrawlDataScreeningContainer() {
         "선택되지 않은 데이터는 DB에서 삭제됩니다. 스크리닝을 진행하시겠습니까?"
       )
     ) {
-      ScreeningDataStageApi(stageDataList).then((res) => {
+      console.log(stageDataList,deleteDataList)
+      if (stageDataList.length === 0) {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {
             alert("성공적으로 스크리닝이 완료되었습니다.");
-            history.go(0);
+            history.go(0)
           }
         });
-      });
+      } else if (deleteDataList.length === 0) {
+        ScreeningDataStageApi(stageDataList).then((res) => {
+          if (res.status === 200) {
+            alert("성공적으로 스크리닝이 완료되었습니다.");
+            history.go(0)
+          }
+        });
+      } else {
+        ScreeningDataStageApi(stageDataList).then((res) => {
+          if (res.status === 200) {
+            ScreeningDataDeleteApi(deleteDataList).then((res) => {
+              if (res.status === 200) {
+                alert("성공적으로 스크리닝이 완료되었습니다.");
+                history.go(0)
+              }
+            });
+          }
+        });
+      }
     }
   };
 
@@ -88,8 +107,8 @@ function CrawlDataScreeningContainer() {
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     /* 현재 dcCount가 listSize보다 작다면 pageNo를 0으로 세팅*/
-    if(dcCount <= listSize){
-      setPageNo(1)
+    if (dcCount <= listSize) {
+      setPageNo(1);
     }
     dataFetch();
   }, [pageNo, listSize]);

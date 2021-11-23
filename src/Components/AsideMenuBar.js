@@ -29,6 +29,9 @@ function AsideMenuBar() {
   const go크롤데이터등록 = ()=>{
     history.push("/crawl/list/4") // statusCode === 2 
   }
+  const go아카이브데이터조회 = ()=>{
+    history.push("/archive/list")
+  }
   return (
     <>
       <AsideMenuBarContainer>
@@ -61,7 +64,7 @@ function AsideMenuBar() {
             <MdOutlineAdd className="icon" size="18" />
             크롤 데이터 등록
           </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          <AsideMenuBarItem onClick={go아카이브데이터조회}>
             <MdCalendarViewDay className="icon" size="18" />
             아카이브 데이터 조회
           </AsideMenuBarItem>

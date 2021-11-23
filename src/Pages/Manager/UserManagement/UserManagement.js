@@ -22,7 +22,8 @@ function UserManagement({
             <col style={{ width: "5%" }} />
             <col style={{ width: "10%" }} />
             <col style={{ width: "10%" }} />
-            <col style={{ width: "15%" }} />
+            <col style={{ width: "10%" }} />
+            <col style={{ width: "10%" }} />
             <col style={{ width: "10%" }} />
             <col style={{ width: "10%" }} />
             <col style={{ width: "15%" }} />
@@ -38,6 +39,7 @@ function UserManagement({
               <th>이메일</th>
               <th>연락처</th>
               <th>소속</th>
+              <th>직책</th>
               <th>계정 생성일</th>
               <th>사용자 권한</th>
               <th>관리</th>
@@ -53,6 +55,7 @@ function UserManagement({
                   <td>{user.Email}</td>
                   <td>{user.Tel}</td>
                   <td>{user.Company}</td>
+                  <td>{user.Position}</td>
                   <td>{user.CreateAt.substring(0, 19).replace("T", " ")}</td>
                   <td>{user.Category}</td>
                   <td>
