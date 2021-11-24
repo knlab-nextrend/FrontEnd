@@ -107,8 +107,8 @@ function CrawlDataForm({ docs, type }, ref) {
     /* input state 값들을 객체에 담아서 반환함.*/
     getCrawlFormData() {
       let _docs = {};
-      let _dcCoverSelect = []
-      _dcCoverSelect.push(dcCoverSelect)
+      let _dcCoverSelect = [];
+      _dcCoverSelect.push(dcCoverSelect);
       _docs["dc_content"] = dcContent;
       _docs["dc_dt_collect"] = dcDtCollect;
       _docs["dc_dt_write"] = dcDtWrite;
@@ -276,6 +276,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">유형 구분</p>
             <input
+              onChange={_dcTypeHandler}
               className="form"
               type="text"
               placeholder="보고서, 지침, 뉴스, 논문 등 문서의 물리적 형태 유형을 입력하세요"
@@ -295,6 +296,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">발행자/발행기관 명</p>
             <input
+              onChange={_dcPublisherHandler}
               className="form"
               type="text"
               placeholder="원문의 발행자 및 발행기관명을 입력하세요"
@@ -345,12 +347,10 @@ function CrawlDataForm({ docs, type }, ref) {
                       value={item}
                       name="cover"
                       onChange={_dcCoverSelectHandler}
-                      checked={dcCoverSelect===item}
+                      checked={dcCoverSelect === item}
                     />
                     <label htmlFor={index}>
-                      <img className="cover"
-                        src={`http://${item}`}
-                      />
+                      <img className="cover" src={`http://${item}`} />
                     </label>
                   </div>
                 );
@@ -440,19 +440,19 @@ const ImageContainer = styled.div`
   margin: 2rem;
   input[type="radio"] {
     margin: 10px;
-    display:none;
+    display: none;
   }
-  input:checked + label>img{
-    border:solid 2px #009999;
+  input:checked + label > img {
+    border: solid 2px #009999;
   }
-  input+label>img{
-    transition:all 0.2s;
-    &:hover{
+  input + label > img {
+    transition: all 0.2s;
+    &:hover {
       transform: scale(1.1);
-      border:solid 2px red;
+      border: solid 2px red;
     }
   }
-  
+
   label {
     margin-right: 2rem;
     img {

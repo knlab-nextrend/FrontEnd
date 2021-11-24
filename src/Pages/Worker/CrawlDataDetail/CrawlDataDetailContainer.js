@@ -41,6 +41,10 @@ function CrawlDataDetailContainer() {
       type: "register",
       title: "데이터 등록 진행",
     },
+    6:{
+      type:"archive",
+      title:"아카이브 데이터 조회 및 수정"
+    }
   };
 
   /* 데이터 불러오기 */
