@@ -1,5 +1,6 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
+import DataFilter from "../../../Components/DataFilter";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HiOutlineExternalLink } from "react-icons/hi";
@@ -7,6 +8,7 @@ function ArchiveDataList({ archiveDataList, statusCode }) {
   return (
     <>
       <FormHeader type="view" title={"아카이브 데이터 조회"} />
+      <DataFilter/>
       <Wrapper>
         <TableWrapper>
           <CustomTable>

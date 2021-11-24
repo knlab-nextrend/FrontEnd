@@ -207,7 +207,7 @@ function CrawlDataForm({ docs, type }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <div className="title">
-              <p>국가 설정</p>
+              <p>문서 대상 국가 설정</p>
               <button onClick={_openCountryCategoryModal}>
                 <MdSettings /> 설정
               </button>
@@ -274,7 +274,7 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">유형 구분</p>
+            <p className="title">문서 유형 구분</p>
             <input
               onChange={_dcTypeHandler}
               className="form"
