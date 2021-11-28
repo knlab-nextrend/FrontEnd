@@ -41,16 +41,16 @@ function CrawlDataDetailContainer() {
       type: "register",
       title: "데이터 등록 진행",
     },
-    6:{
-      type:"archive",
-      title:"아카이브 데이터 조회 및 수정"
-    }
+    6: {
+      type: "archive",
+      title: "아카이브 데이터 조회 및 수정",
+    },
   };
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       dataCleansing(res.data);
     });
   };
@@ -64,19 +64,19 @@ function CrawlDataDetailContainer() {
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher:_rawStatusDetailData.dc_publisher || "",
-      dc_cover:_rawStatusDetailData.dc_cover,
-      dc_country_pub:_rawStatusDetailData.dc_country_pub || "",
-      dc_cat:_rawStatusDetailData.dc_cat,
-      dc_code:_rawStatusDetailData.dc_code,
-      dc_country:_rawStatusDetailData.dc_country,
+      dc_publisher: _rawStatusDetailData.dc_publisher || "",
+      dc_cover: _rawStatusDetailData.dc_cover,
+      dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
+      dc_cat: _rawStatusDetailData.dc_cat,
+      dc_code: _rawStatusDetailData.dc_code,
+      dc_country: _rawStatusDetailData.dc_country,
       dc_page: _rawStatusDetailData.dc_page || "",
-      dc_type:_rawStatusDetailData.dc_type || "",
+      dc_type: _rawStatusDetailData.dc_type || "",
       dc_title_or: _rawStatusDetailData.dc_title_or || "",
       dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
-      dc_link: _rawStatusDetailData.dc_link || ""
+      dc_link: _rawStatusDetailData.dc_link || "",
     };
     setDocs(_docs);
   };
@@ -84,7 +84,11 @@ function CrawlDataDetailContainer() {
   const dataKeep = () => {
     CrawlDataKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 작업이 보류되었습니다.");
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      if (statusCode === "6") {
+        history.push(`/archive/list`); // 목록으로 돌아가기
+      } else {
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      }
     });
   };
 
@@ -92,7 +96,11 @@ function CrawlDataDetailContainer() {
     if (window.confirm("해당 데이터를 버리시겠습니까?")) {
       CrawlDataRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        if (statusCode === "6") {
+          history.push(`/archive/list`); // 목록으로 돌아가기
+        } else {
+          history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        }
       });
     }
   };
@@ -101,13 +109,24 @@ function CrawlDataDetailContainer() {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      if (statusCode === "6") {
+        history.push(`/archive/list`); // 목록으로 돌아가기
+      } else {
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      }
     });
   };
 
   const cancel = () => {
-    if (window.confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")) {
+    if (
+      window.confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
+    ) {
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      if (statusCode === "6") {
+        history.push(`/archive/list`); // 목록으로 돌아가기
+      } else {
+        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      }
     }
   };
 

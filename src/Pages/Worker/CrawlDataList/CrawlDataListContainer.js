@@ -85,7 +85,6 @@ function CrawlDataListContainer() {
         listSize={listSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
-        statusCode={statusCode}
         STATUS_CODE_SET={STATUS_CODE_SET}
       />
     </>

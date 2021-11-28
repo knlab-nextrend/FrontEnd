@@ -26,10 +26,10 @@ function ArchiveDataListContainer() {
         dc_hit: item.dc_hit,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
-        dc_url_loc:item.dc_url_loc.replace("%3A",":"),
-        is_crawled:item.is_crawled
+        dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
+        is_crawled: item.is_crawled,
       };
-      _archiveDataList.push(obj)
+      _archiveDataList.push(obj);
     });
 
     setDcCount(_dcCount);
@@ -50,7 +50,14 @@ function ArchiveDataListContainer() {
 
   return (
     <>
-      <ArchiveDataList archiveDataList={archiveDataList} statusCode={statusCode}/>
+      <ArchiveDataList
+        archiveDataList={archiveDataList}
+        statusCode={statusCode}
+        dcCount={dcCount}
+        listSize={listSize}
+        pageNo={pageNo}
+        setPageNo={setPageNo}
+      />
     </>
   );
 }

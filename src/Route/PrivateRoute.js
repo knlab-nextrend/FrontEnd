@@ -10,8 +10,9 @@ function PrivateRoute({ component: Component, ...rest }) {
   const isLogin = useSelector((state) => state.login.isLogin);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0,0)
   }, []);
+
   return (
     <Route
       {...rest}

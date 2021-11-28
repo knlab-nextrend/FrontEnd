@@ -1,15 +1,27 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
+import Pagenation from "../../../Components/Pagenation";
 import DataFilter from "../../../Components/DataFilter";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HiOutlineExternalLink } from "react-icons/hi";
-function ArchiveDataList({ archiveDataList, statusCode }) {
+function ArchiveDataList({
+  archiveDataList,
+  statusCode,
+  dcCount,
+  listSize,
+  pageNo,
+  setPageNo,
+}) {
   return (
     <>
       <FormHeader type="view" title={"아카이브 데이터 조회"} />
-      <DataFilter/>
+      <DataFilter />
+
       <Wrapper>
+        <SearchResultTitle>
+          <p>검색결과 ({dcCount}건)</p>
+        </SearchResultTitle>
         <TableWrapper>
           <CustomTable>
             <colgroup>
@@ -40,28 +52,27 @@ function ArchiveDataList({ archiveDataList, statusCode }) {
             <tbody>
               {archiveDataList.map((item, index) => {
                 return (
-                  <tr>
+                  <tr key={index}>
                     <td>{item.item_id}</td>
                     <td>
                       <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
                     </td>
                     <td>
-                      {item.dc_country_list.map((country) => {
-                        return <span>{country}</span>;
+                      {item.dc_country_list.map((country, countryIndex) => {
+                        return <span key={countryIndex}>{country}</span>;
                       })}
                     </td>
                     <td>
                       <CustomLink
                         to={`/crawl/detail/${statusCode}/${item.item_id}`}
-                        key={index}
                       >
                         {item.dc_title_or}
                       </CustomLink>
                     </td>
                     <td>{item.dc_title_kr}</td>
                     <td>
-                      {item.dc_code_list.map((code) => {
-                        return <span>{code}</span>;
+                      {item.dc_code_list.map((code, codeIndex) => {
+                        return <span key={codeIndex}>{code}</span>;
                       })}
                     </td>
                     <td>{item.dc_page}</td>
@@ -77,6 +88,12 @@ function ArchiveDataList({ archiveDataList, statusCode }) {
             </tbody>
           </CustomTable>
         </TableWrapper>
+        <Pagenation
+          dcCount={dcCount}
+          listSize={listSize}
+          pageNo={pageNo}
+          setPageNo={setPageNo}
+        />
       </Wrapper>
     </>
   );
@@ -126,15 +143,13 @@ const CustomTable = styled.table`
 `;
 const CustomLink = styled(Link)`
   color: black;
-  /* &:link {
-    text-decoration: none;
+`;
+const SearchResultTitle = styled.div`
+  width: 100%;
+  p {
+    font-size: 20px;
+    font-weight: bold;
   }
-  &:visited {
-    text-decoration: none;
-  }
-  &:hover {
-    text-decoration: none;
-  } */
 `;
 
 export default ArchiveDataList;
