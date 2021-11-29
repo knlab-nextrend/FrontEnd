@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaFilter } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
-import {GrPowerReset} from 'react-icons/gr'
+import { GrPowerReset } from "react-icons/gr";
 import { MdSort } from "react-icons/md";
-import { Cascader } from "antd";
-
+import { CategoryOptionFetchApi } from "../Utils/api";
 function DataFilter() {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
@@ -20,6 +19,9 @@ function DataFilter() {
   const [regiDateSort, setRegiDateSort] = useState(""); // 데이터 등록일
   const [writeDateSort, setWriteDateSort] = useState(""); // 원문 작성일
   const [collectDateSort, setCollectDateSort] = useState(""); // 원문 수집일
+
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectCategoryCode,setSelectCategoryCode] = useState(null);
 
   // 더미데이터
   const LANGUAGE_LIST = [
@@ -86,6 +88,14 @@ function DataFilter() {
     return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
   };
 
+  const getCategoryCode = (categoryCode)=>{
+    setSelectCategoryCode(categoryCode)
+  }
+  useEffect(() => {
+    CategoryOptionFetchApi().then((res) => {
+      setCategoryOptions(res.data);
+    });
+  }, []);
   return (
     <>
       <Wrapper>
@@ -184,6 +194,16 @@ function DataFilter() {
                       </OptionSelect>
                     </OptionCol>
                   </OptionRow>
+                  <OptionRow>
+                    <OptionCol>
+                      <OptionTitle>분류 선택</OptionTitle>
+                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                    </OptionCol>
+                    <OptionCol>
+                      <OptionTitle>분류 선택</OptionTitle>
+                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                    </OptionCol>
+                  </OptionRow>
                 </OptionContainer>
               </FilterBodyWrapper>
               <FilterBodyWrapper>
@@ -226,8 +246,14 @@ function DataFilter() {
                   </OptionRow>
                 </OptionContainer>
                 <FilterActions>
-                  <button><GrPowerReset/>초기화</button>
-                  <button><AiOutlineSearch/>검색</button>
+                  <button>
+                    <GrPowerReset />
+                    초기화
+                  </button>
+                  <button>
+                    <AiOutlineSearch />
+                    검색
+                  </button>
                 </FilterActions>
               </FilterBodyWrapper>
             </FilterBody>
@@ -237,6 +263,127 @@ function DataFilter() {
     </>
   );
 }
+
+function Cascader({ options,getCategoryCode }) {
+  const [optionIsOpen, setOptionIsOpen] = useState(false);
+  const _optionIsOpenHandler = () => {
+    setOptionIsOpen(!optionIsOpen);
+  };
+  const PrintValue = (e) => {
+    getCategoryCode(e.target.value)
+  };
+  return (
+    <CascaderWrapper>
+      <CascaderOpenHandler onClick={_optionIsOpenHandler}>
+        분류 선택
+      </CascaderOpenHandler>
+      {optionIsOpen && (
+        <CascaderOptions onClick={PrintValue}>
+          <ul className="depth1">
+            {options.map((item, index) => {
+              return (
+                <>
+                  <li key={index} value={item.value}>
+                    {item.label}
+                    {item.children.length !== 0 && (
+                      <>
+                        <ul className="depth2">
+                          {item.children.map((item2, index2) => {
+                            return (
+                              <>
+                                <li key={index2} value={item2.value}>
+                                  {item2.label}
+                                  {item2.children.length !== 0 && (
+                                    <>
+                                      <ul className="depth3">
+                                        {item2.children.map((item3, index3) => {
+                                          return (
+                                            <>
+                                              <li
+                                                key={index3}
+                                                value={item3.value}
+                                              >
+                                                {item3.label}
+                                              </li>
+                                            </>
+                                          );
+                                        })}
+                                      </ul>
+                                    </>
+                                  )}
+                                </li>
+                              </>
+                            );
+                          })}
+                        </ul>
+                      </>
+                    )}
+                  </li>
+                </>
+              );
+            })}
+          </ul>
+        </CascaderOptions>
+      )}
+    </CascaderWrapper>
+  );
+}
+
+const CascaderOpenHandler = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 30rem;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px #d6d6d6;
+  padding: 0 1rem 0 1rem;
+  margin: 0;
+`;
+const CascaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 0 0.5rem 0 0.5rem;
+  padding-left: 0.5rem;
+`;
+
+const CascaderOptions = styled.div`
+  z-index: 8;
+  position: relative;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    background-color: white;
+    width: 10rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px #d6d6d6;
+    word-break: keep-all;
+    text-align: center;
+  }
+  .depth1 ul {
+    display: none;
+  }
+  .depth1 li:hover {
+    cursor: pointer;
+    & > ul {
+      display: block;
+    }
+  }
+  .depth2,
+  .depth3 {
+    position: absolute;
+    left: 10rem;
+  }
+`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -283,12 +430,12 @@ const FilterBody = styled.div`
 const FilterActions = styled.div`
   padding: 1rem 0 1rem 0;
   border-top: solid 1px #d6d6d6;
-  display:flex;
-  justify-content:right;
-  button{
-    width:6rem;
-    height:3rem;
-    margin:0.5rem;
+  display: flex;
+  justify-content: right;
+  button {
+    width: 6rem;
+    height: 3rem;
+    margin: 0.5rem;
   }
 `;
 
@@ -316,7 +463,7 @@ const OptionCol = styled.div`
 `;
 
 const OptionTitle = styled.div`
-  width: 150px;
+  width: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -324,6 +471,10 @@ const OptionTitle = styled.div`
   background-color: #d6d6d6;
   font-size: 12px;
   margin-right: 0.5rem;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  word-wrap: break-word;
 `;
 
 const OptionInput = styled.input`
@@ -346,8 +497,6 @@ const OptionSelect = styled.select`
   padding-left: 0.5rem;
 `;
 
-const CustomCascader = styled(Cascader)`
-  display: flex;
-`;
+/* antd 와 비슷한 cascader 제작을 위한 inner component*/
 
 export default DataFilter;

@@ -11,9 +11,6 @@ import ArchiveDataListContainer from "./ArchiveDataList/ArchiveDataListContainer
 function WorkerAside() {
   return (
     <Switch>
-      <PrivateRoute path="/" exact>
-        <div></div>
-      </PrivateRoute>
 
       <PrivateRoute
         path="/crawl/screening"

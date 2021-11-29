@@ -15,7 +15,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 import { GrFormView } from "react-icons/gr";
-function AsideMenuBar() {
+function AsideMenuBar({ permission }) {
   const history = useHistory();
   const go사용자수정 = () => {
     history.push("/user/");
@@ -23,72 +23,107 @@ function AsideMenuBar() {
   const go크롤데이터스크리닝 = () => {
     history.push("/crawl/screening");
   };
-  const go크롤데이터정제 = ()=>{
-    history.push("/crawl/list/2") // statusCode === 2 
-  }
-  const go크롤데이터등록 = ()=>{
-    history.push("/crawl/list/4") // statusCode === 2 
-  }
-  const go아카이브데이터조회 = ()=>{
-    history.push("/archive/list")
+  const go크롤데이터정제 = () => {
+    history.push("/crawl/list/2"); // statusCode === 2
+  };
+  const go크롤데이터등록 = () => {
+    history.push("/crawl/list/4"); // statusCode === 2
+  };
+  const go아카이브데이터조회 = () => {
+    history.push("/archive/list");
+  };
+  const go사용자큐레이션조회 = ()=>{
+    history.push("/curation/list")
   }
   return (
     <>
       <AsideMenuBarContainer>
         <AsideMenuBarWrapper>
-          <AsideMenuBarItem>
-            <RiDashboardFill className="icon" size="18" />
-            대시보드
-          </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go사용자수정}>
-            <RiUserSettingsFill className="icon" size="18" />
-            사용자 관리
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdOutlineCategory className="icon" size="18" />
-            카테고리 관리
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdWebAsset className="icon" size="18" />
-            사이트 목록 관리
-          </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go크롤데이터스크리닝}>
-            <GrFormView className="icon" size="18" />
-            크롤 데이터 스크리닝
-          </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go크롤데이터정제}>
-            <MdSettings className="icon" size="18" />
-            크롤 데이터 정제
-          </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go크롤데이터등록}>
-            <MdOutlineAdd className="icon" size="18" />
-            크롤 데이터 등록
-          </AsideMenuBarItem>
-          <AsideMenuBarItem onClick={go아카이브데이터조회}>
-            <MdCalendarViewDay className="icon" size="18" />
-            아카이브 데이터 조회
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdCalendarViewDay className="icon" size="18" />
-            큐레이션 데이터 조회
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdOutlineAdd className="icon" size="18" />
-            단일 데이터 등록
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdOutlineAdd className="icon" size="18" />
-            대량 데이터 등록
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <FaBook className="icon" size="18" />
-            다국어 사전 관리
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
-            <MdSettings className="icon" size="18" />
-            맟춤형 화면 생성
-          </AsideMenuBarItem>
-          <AsideMenuBarItem>
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <RiDashboardFill className="icon" size="18" />
+              대시보드
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem onClick={go사용자수정}>
+              <RiUserSettingsFill className="icon" size="18" />
+              사용자 관리
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdOutlineCategory className="icon" size="18" />
+              카테고리 관리
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdWebAsset className="icon" size="18" />
+              사이트 목록 관리
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem onClick={go크롤데이터스크리닝}>
+              <GrFormView className="icon" size="18" />
+              크롤 데이터 스크리닝
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem onClick={go크롤데이터정제}>
+              <MdSettings className="icon" size="18" />
+              크롤 데이터 정제
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem onClick={go크롤데이터등록}>
+              <MdOutlineAdd className="icon" size="18" />
+              크롤 데이터 등록
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem onClick={go아카이브데이터조회}>
+              <MdCalendarViewDay className="icon" size="18" />
+              아카이브 데이터 조회
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdCalendarViewDay className="icon" size="18" />
+              큐레이션 데이터 조회
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdOutlineAdd className="icon" size="18" />
+              단일 데이터 등록
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdOutlineAdd className="icon" size="18" />
+              대량 데이터 등록
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <FaBook className="icon" size="18" />
+              다국어 사전 관리
+            </AsideMenuBarItem>
+          )}
+          {permission === 9 && (
+            <AsideMenuBarItem>
+              <MdSettings className="icon" size="18" />
+              맟춤형 화면 생성
+            </AsideMenuBarItem>
+          )}
+          {permission === 0 && (
+            <AsideMenuBarItem onClick={go사용자큐레이션조회}>
+              <MdOutlineAdd className="icon" size="18" />
+              큐레이션
+            </AsideMenuBarItem>
+          )}
+          <AsideMenuBarItem >
             <RiLogoutBoxRLine className="icon" size="18" />
             로그아웃
           </AsideMenuBarItem>

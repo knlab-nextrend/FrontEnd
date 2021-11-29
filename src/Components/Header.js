@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../Modules/login";
-function Header() {
+function Header({name}) {
   const dispatch = useDispatch();
 
   const goNextrendPage = () => {
@@ -23,7 +23,7 @@ function Header() {
             src={process.env.PUBLIC_URL + "/img/logo4.png"}
           />
           <LoginInfo>
-            <p className="userName">관리자</p>
+            <p className="userName">{name}</p>
             <p className="greetings">님 안녕하세요.</p>
             <button onClick={logout}>로그아웃</button>
           </LoginInfo>

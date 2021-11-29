@@ -338,7 +338,20 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">표지 파일</p>
             <ImageContainer>
-              {dcCover.map((item, index) => {
+              <div >
+                <input
+                  type="radio"
+                  id="test"
+                  value={dcCover}
+                  name="cover"
+                  onChange={_dcCoverSelectHandler}
+                  checked={dcCoverSelect === dcCover}
+                />
+                <label htmlFor="test">
+                  <img className="cover" src={`http://${dcCover}`} />
+                </label>
+              </div>
+              {/* {dcCover.map((item, index) => {
                 return (
                   <div key={index}>
                     <input
@@ -354,7 +367,7 @@ function CrawlDataForm({ docs, type }, ref) {
                     </label>
                   </div>
                 );
-              })}
+              })} */}
             </ImageContainer>
           </CustomFormItem>
         </CustomFormRow>
