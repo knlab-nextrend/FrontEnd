@@ -79,8 +79,16 @@ function CurationCard(data) {
 
 const CardWrpper = styled.div`
   display: flex;
-  padding:1rem;
-
+  padding: 1rem;
+  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
+  border-radius: 4px;
+  margin: 1rem;
+  transition: all 0.3s ease-in-out; /* 부드러운 모션을 위해 추가*/
+  &:hover {
+    transform: scale(1.02);
+    cursor:pointer;
+  }
+  background-color:white;
 `;
 const ImageContainer = styled.div`
   min-width: 12rem;
@@ -133,8 +141,8 @@ const Info = styled.div`
 
   div {
     align-items: center;
-    padding:0.5rem;
-    margin:0;
+    padding: 0.5rem;
+    margin: 0;
   }
 `;
 
@@ -194,6 +202,6 @@ const Content = styled.div`
 const CurationListWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin:2rem;
+  margin: 2rem;
 `;
 export default CurationDataList;
