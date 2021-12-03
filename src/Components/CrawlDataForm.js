@@ -23,7 +23,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCodeList, setDcCodeList] = useState([]);
-  const [dcCountryPub, setDcCountryPub] = useState([]); //dc_country_pub 발행 국가
+  const [dcCountryPubIndexList,setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
   const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
   const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
@@ -34,7 +34,8 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
   const [dcLink, setDcLink] = useState(""); //dc_link 링크..이긴 하나 무슨 링크?
 
-  const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 주제 대상 국가
+  const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 문서 대상 국가
+  const dcCountryPub = useSelector((state) => state.modal.modalData.dc_country_pub); //dc_country_pub 문서 발행 국가
   const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
 
   const _dcContentHandler = (data) => {
@@ -43,6 +44,9 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcDtCollectHandler = (e) => {
     setDcDtCollect(e.target.value);
   };
+  const _dcDtWriteHandler = (e)=>{
+    setDcDtWrite(e.target.value)
+  }
   const _dcDtRegiHandler = (e) => {
     setDcDtRegi(e.target.value);
   };
@@ -54,10 +58,6 @@ function CrawlDataForm({ docs, type }, ref) {
   };
   const _dcTypeHandler = (e) => {
     setDcType(e.target.value);
-  };
-
-  const _dcCountryPubHandler = (e) => {
-    setDcCountryPub(e.target.value);
   };
   const _dcCoverSelectHandler = (e) => {
     setDcCoverSelect(e.target.value);
@@ -88,14 +88,23 @@ function CrawlDataForm({ docs, type }, ref) {
   const _openCountryCategoryModal = () => {
     dispatch(setModal("CountryCategoryModal"));
   };
+  const _openCountryPubCategoryModal = () => {
+    dispatch(setModal("CountryPubCategoryModal"));
+  };
   const _openCodeCategoryModal = () => {
     dispatch(setModal("CodeCategoryModal"));
   };
+  
 
   useEffect(() => {
     const _dcCountryIndexList = dcCountry.map((item) => item.IDX);
     setDcCountryIndexList(_dcCountryIndexList);
   }, [dcCountry]);
+
+  useEffect(() => {
+    const _dcCountryPubIndexList = dcCountryPub.map((item) => item.IDX);
+    setDcCountryPubIndexList(_dcCountryPubIndexList);
+  }, [dcCountryPub]);
 
   useEffect(() => {
     const _dcCodeList = dcCode.map((item) => item.CODE);
@@ -222,7 +231,22 @@ function CrawlDataForm({ docs, type }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <div className="title">
-              <p>주제 분류 설정</p>{" "}
+              <p>문서 발행 국가 설정</p>
+              <button onClick={_openCountryPubCategoryModal}>
+                <MdSettings /> 설정
+              </button>
+            </div>
+            <div className="form notInput">
+              {dcCountryPub.map((item) => {
+                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
+              })}
+            </div>
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <div className="title">
+              <p>주제 분류 설정</p>
               <button onClick={_openCodeCategoryModal}>
                 <MdSettings /> 설정
               </button>
@@ -247,6 +271,8 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">원문 작성일</p>
             <input
+              value={dcDtWrite}
+              onChange={_dcDtWriteHandler}
               className="form"
               type="text"
               placeholder="원문 작성일을 입력하세요"
@@ -296,6 +322,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">발행자/발행기관 명</p>
             <input
+              value={dcPublisher}
               onChange={_dcPublisherHandler}
               className="form"
               type="text"
@@ -329,7 +356,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">내용</p>
             <Editor
-              dcContent={dcContent}
+              data={dcContent}
               _dcContentHandler={_dcContentHandler}
             />
           </CustomFormItem>
@@ -338,20 +365,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">표지 파일</p>
             <ImageContainer>
-              <div >
-                <input
-                  type="radio"
-                  id="test"
-                  value={dcCover}
-                  name="cover"
-                  onChange={_dcCoverSelectHandler}
-                  checked={dcCoverSelect === dcCover}
-                />
-                <label htmlFor="test">
-                  <img className="cover" src={`http://${dcCover}`} />
-                </label>
-              </div>
-              {/* {dcCover.map((item, index) => {
+              {dcCover.map((item, index) => {
                 return (
                   <div key={index}>
                     <input
@@ -367,7 +381,7 @@ function CrawlDataForm({ docs, type }, ref) {
                     </label>
                   </div>
                 );
-              })} */}
+              })}
             </ImageContainer>
           </CustomFormItem>
         </CustomFormRow>

@@ -5,13 +5,13 @@ import {
   CountrysListDataFetchApi,
 } from "../../Utils/api";
 import { useSelector } from "react-redux";
-function CountryCategoryModal({ closeModal, executeModal}) {
+function CountryPubCategoryModal({ closeModal, executeModal}) {
   const [selectedCountryList, setSelectedCountryList] = useState([]);
   const [countrysListData, setCountrysListData] = useState([]);
   const [continentsListData, setContinentsListData] = useState([]);
   const [currentContinentIndex, setCurrentContinentIndex] = useState(0);
 
-  const _dc_country = useSelector((state) => state.modal.modalData.dc_country);
+  const _dc_country_pub = useSelector((state) => state.modal.modalData.dc_country_pub);
 
   const countrysDataFetch = (currentContinentIndex) => {
     CountrysListDataFetchApi(currentContinentIndex).then((res) => {
@@ -48,14 +48,14 @@ function CountryCategoryModal({ closeModal, executeModal}) {
   };
 
   const saveCountry = () => {
-    executeModal(selectedCountryList, "dc_country");
+    executeModal(selectedCountryList, "dc_country_pub");
     alert("성공적으로 저장되었습니다.");
     closeModal();
   };
 
   useEffect(() => {
     continentsDataFetch();
-    setSelectedCountryList(_dc_country);
+    setSelectedCountryList(_dc_country_pub);
   }, []);
 
   useEffect(() => {
@@ -234,4 +234,4 @@ const CountryList = styled.div`
   }
 `;
 
-export default CountryCategoryModal;
+export default CountryPubCategoryModal;

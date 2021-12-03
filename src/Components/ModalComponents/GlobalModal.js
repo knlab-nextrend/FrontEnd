@@ -4,17 +4,20 @@ import styled from "styled-components";
 import { setModal,setModalData } from "../../Modules/modal";
 /* modal Components */
 import CountryCategoryModal from "./CountryCategoryModal";
+import CountryPubCategoryModal from "./CountryPubCategoryModal"
 import CodeCategoryModal from "./CodeCategoryModal";
 import UserInfoModal from "./UserInfoModal";
 
 export const MODAL_TYPES = {
   CountryCategoryModal: "CountryCategoryModal",
+  CountryPubCategoryModal:"CountryPubCategoryModal",
   CodeCategoryModal: "CodeCategoryModal",
   UserInfoModal: "UserInfoModal",
 };
 
 const MODAL_COMPONENTS = {
   [MODAL_TYPES.CountryCategoryModal]: CountryCategoryModal,
+  [MODAL_TYPES.CountryPubCategoryModal]: CountryPubCategoryModal,
   [MODAL_TYPES.CodeCategoryModal]: CodeCategoryModal,
   [MODAL_TYPES.UserInfoModal]: UserInfoModal,
 };

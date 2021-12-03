@@ -12,7 +12,7 @@ export const clearModalData = () => ({ type: CLEAR_MODAL_DATA });
 
 const initialState = {
   modalType: null,
-  modalData: { dc_country: [], dc_code: [], modal_user: [] },
+  modalData: { dc_country: [],dc_country_pub:[], dc_code: [], modal_user: [] },
 };
 
 export default function modal(state = initialState, action) {
