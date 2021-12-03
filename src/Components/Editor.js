@@ -31,8 +31,8 @@ import List from "@ckeditor/ckeditor5-list/src/list";
 import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
 import Table from "@ckeditor/ckeditor5-table/src/table";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
-import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
-import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
 import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
@@ -77,7 +77,6 @@ const editorConfiguration = {
     Base64UploadAdapter,
     InlineEditor,
     HorizontalLine,
-    
   ],
   toolbar: [
     "heading",
@@ -209,18 +208,28 @@ const editorConfiguration = {
     ],
   },
 };
-function Editor({dcContent,_dcContentHandler}) {
+function Editor({ _dcContentHandler = null, data = null, readOnly = false }) {
+  
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
   return (
     <CustomCKEditor>
       <CKEditor
+        disabled={readOnly}
         editor={ClassicEditor}
-        data={dcContent}
+        data={data}
         config={editorConfiguration}
         onChange={(event, editor) => {
-          const data = editor.getData();
-          _dcContentHandler(data)
+          if (!readOnly) {
+            const data = editor.getData();
+            _dcContentHandler(data);
+          }
+        }}
+        onReady={(editor) => {
+          const toolbarElement = editor.ui.view.toolbar.element;
+          if (readOnly) {
+            toolbarElement.style.display = "none";
+          }
         }}
       />
     </CustomCKEditor>

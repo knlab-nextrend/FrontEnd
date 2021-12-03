@@ -107,6 +107,7 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
+    console.log(_crawlDataFormDocs)
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {

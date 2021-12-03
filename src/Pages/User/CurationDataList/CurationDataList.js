@@ -1,81 +1,87 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
-import styled, { css } from "styled-components";
-function CurationDataList() {
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+function CurationDataList({ curationDataList,statusCode }) {
   return (
     <>
       <FormHeader type="view" title={"큐레이션 데이터 조회"} />
       <CurationListWrapper>
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
-        <CurationCard />
+        {curationDataList.map((item, index) => {
+          return (
+            <CustomLink
+              to={`/curation/detail/${item.item_id}`}
+              key={index}
+            >
+              <CurationCard curationDataItem={item} />
+            </CustomLink>
+          );
+        })}
       </CurationListWrapper>
     </>
   );
 }
 
-function CurationCard(data) {
+function CurationCard({ curationDataItem }) {
   return (
     <>
       <CardWrpper>
         <ImageContainer>
           <Image
-            src={process.env.PUBLIC_URL + `/img/curation_default_image.png`}
+            src={
+              curationDataItem.dc_cover.length !== 0
+                ? `http://${curationDataItem.dc_cover[0]}`
+                : process.env.PUBLIC_URL + `/img/curation_default_image.png`
+            }
           />
         </ImageContainer>
         <ContentContainer>
           <Title>
             <div>[아시아][한국]</div>
-            <div>큐레이션 데이터 한글제목</div>
+            <div>{curationDataItem.dc_title_kr}</div>
           </Title>
-          <SubTitle>
-            Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
-            consectetur, adipisci velit
-          </SubTitle>
+          <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
           <Info>
-            <CategoryBadge color="grey">{`대분류 > 중분류 > 소분류`}</CategoryBadge>
-            <CountryBadge color="grey">{`아시아 > 한국`}</CountryBadge>
-            <PublisherBadge color="grey">{`neti... 모시기 발행기관`}</PublisherBadge>
+            <CategoryBadge color="grey">
+              {curationDataItem.dc_code_list.map((code, codeIndex) => {
+                return <span key={codeIndex}>{code} </span>;
+              })}
+            </CategoryBadge>
+            <CountryBadge color="grey">
+              {" "}
+              {curationDataItem.dc_country_list.map((country, countryIndex) => {
+                return <span key={countryIndex}>{country} </span>;
+              })}
+            </CountryBadge>
+            <PublisherBadge color="grey">
+              {curationDataItem.dc_publisher}
+            </PublisherBadge>
           </Info>
           <Info>
-            <PageBadge color="grey">6쪽</PageBadge>
-            <RegiDateBadge color="grey">{`2021-11-28`}</RegiDateBadge>
+            <PageBadge color="grey">{curationDataItem.dc_page}쪽</PageBadge>
+            <RegiDateBadge color="grey">
+              {curationDataItem.dc_dt_regi}
+            </RegiDateBadge>
           </Info>
-          <Content>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            consectetur magna sed consectetur faucibus. In consectetur blandit
-            magna a vehicula. Vestibulum laoreet elementum eros, in pharetra ex
-            vestibulum sed. Phasellus non sollicitudin elit. Duis nec semper
-            tortor. Pellentesque eu condimentum mi, a efficitur tellus. Integer
-            sed libero ac orci fermentum ultricies ut convallis ante. Maecenas
-            et nibh semper, rhoncus leo id, feugiat nisl. Quisque faucibus
-            gravida arcu, eget lacinia ante. Ut facilisis viverra justo, quis
-            finibus ex sodales sit amet. Proin ut diam turpis. Integer sit amet
-            magna quis orci porttitor hendrerit vitae sit amet velit. Duis sed
-            justo quis velit egestas bibendum. Ut non ipsum nisi. Maecenas
-            scelerisque velit sit amet est interdum sagittis. Nulla dignissim
-            sodales massa eu condimentum. Phasellus rutrum, eros a aliquam
-            iaculis, diam enim eleifend libero, id vulputate magna lorem vel
-            justo. Sed a consequat sapien. Quisque gravida neque eget malesuada
-            luctus. Vivamus euismod maximus tristique. Morbi tristique nulla
-            eget laoreet dictum. Ut bibendum mattis ullamcorper. Suspendisse
-            bibendum, est non congue ornare, risus nibh vehicula nisl, nec
-            semper arcu est nec dui. Curabitur eget leo varius, mollis nunc nec,
-            vehicula diam. Aenean rhoncus ipsum ut tellus dictum, a elementum
-            lorem consectetur. Aenean non nisi ipsum.
-          </Content>
+          <Content>{curationDataItem.dc_content}</Content>
         </ContentContainer>
       </CardWrpper>
     </>
   );
 }
+
+const CustomLink = styled(Link)`
+  color: black;
+  &:link {
+    text-decoration: none;
+  }
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+`;
 
 const CardWrpper = styled.div`
   display: flex;
@@ -86,15 +92,14 @@ const CardWrpper = styled.div`
   transition: all 0.3s ease-in-out; /* 부드러운 모션을 위해 추가*/
   &:hover {
     transform: scale(1.02);
-    cursor:pointer;
+    cursor: pointer;
   }
-  background-color:white;
+  background-color: white;
 `;
 const ImageContainer = styled.div`
   min-width: 12rem;
-  min-height: 18rem;
   max-width: 12rem;
-  max-height: 18rem;
+  height: 100%;
   overflow: hidden;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
 `;
@@ -137,6 +142,7 @@ const SubTitle = styled.div`
   color: grey;
 `;
 const Info = styled.div`
+  font-size: 12px;
   display: flex;
 
   div {
@@ -152,7 +158,8 @@ const Badge = styled.div`
     color: white;
     font-weight: bold;
     font-size: 12px;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     margin-right: 5px;
     border-radius: 3px;
     background-color: ${(props) => props.color || "grey"};

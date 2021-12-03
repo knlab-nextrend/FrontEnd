@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import CurationDataDetail from "./CurationDataDetail";
 import { useParams } from "react-router-dom";
 import { CrawlDataDetailFetchApi } from "../../../Utils/api";
@@ -11,7 +11,6 @@ function CurationDataDetailContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data);
       dataCleansing(res.data);
     });
   };
@@ -30,7 +29,9 @@ function CurationDataDetailContainer() {
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat,
       dc_code: _rawStatusDetailData.dc_code,
+      dc_code_list: _rawStatusDetailData.dc_code.map((x) => x.CT_NM),
       dc_country: _rawStatusDetailData.dc_country,
+      dc_country_list: _rawStatusDetailData.dc_country.map((x) => x.CTY_NAME),
       dc_page: _rawStatusDetailData.dc_page || "",
       dc_type: _rawStatusDetailData.dc_type || "",
       dc_title_or: _rawStatusDetailData.dc_title_or || "",
@@ -39,16 +40,17 @@ function CurationDataDetailContainer() {
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
     };
+    console.log(_docs);
     setDocs(_docs);
   };
 
-//   useEffect(() => {
-//     dataFetch();
-//   }, [itemId]);
+  useEffect(() => {
+    dataFetch();
+  }, [itemId]);
 
   return (
     <>
-      <CurationDataDetail />
+      <CurationDataDetail docs={docs} />
     </>
   );
 }

@@ -23,15 +23,17 @@ function CurationDataListContainer() {
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,
-        dc_hit: item.dc_hit,
+        dc_cover:item.dc_cover,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
-        dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
-        is_crawled: item.is_crawled,
+        dc_dt_regi:item.dc_dt_regi.substring(0,10),
+        dc_publisher:item.dc_publisher,
+        dc_content:item.dc_content.replace(/(<([^>]+)>)/ig,"") // 태그 삭제 정규표현식
+
       };
       _curationDataList.push(obj);
     });
-
+    console.log(_curationDataList)
     setDcCount(_dcCount);
     setCurationDataList(_curationDataList);
   };
@@ -39,7 +41,8 @@ function CurationDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
+      console.log(res.data)
+      dataCleansing(res.data);
     });
   };
 
