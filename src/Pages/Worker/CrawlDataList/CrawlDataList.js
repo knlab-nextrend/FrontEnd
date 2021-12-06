@@ -6,8 +6,7 @@ import CrawlDataCard from "../../../Components/CrawlDataCard";
 import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";
 import Tab from "../../../Components/Tab";
-import { CgFileDocument } from "react-icons/cg";
-
+import NoData from "../../../Components/NoData";
 function CrawlDataList({
   statusCode,
   dcCount,
@@ -49,10 +48,7 @@ function CrawlDataList({
             />
           </>
         ) : (
-          <SearchResultNotthingContainer>
-            <CgFileDocument size="100" color="#d6d6d6" />
-            <div className="comment">등록된 데이터가 없습니다.</div>
-          </SearchResultNotthingContainer>
+          <NoData/>
         )}
       </Wrapper>
     </>
@@ -61,17 +57,6 @@ function CrawlDataList({
 
 /* status에 따라 라우팅을... 다르게 해야하네요 ㅎ; */
 
-const SearchResultNotthingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 10rem;
-  .comment {
-    font-size: 30px;
-    color: #d6d6d6;
-  }
-`;
 const CustomLink = styled(Link)`
   color: black;
   &:link {

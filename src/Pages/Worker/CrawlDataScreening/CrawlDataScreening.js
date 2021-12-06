@@ -3,6 +3,7 @@ import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import Button from "../../../Components/Button";
 import Pagenation from "../../../Components/Pagenation";
+import NoData from "../../../Components/NoData";
 import { AiOutlineCheck } from "react-icons/ai";
 function CrawlDataScreening({
   screeningData,
@@ -47,7 +48,7 @@ function CrawlDataScreening({
             <option value={100}>100건</option>
           </select>
         </ButtonWrapper>
-        <TableWrapper>
+        {screeningData.length !== 0 ? <><TableWrapper>
           <CustomTable>
             <colgroup>
               <col style={{ width: "10%" }} />
@@ -99,7 +100,8 @@ function CrawlDataScreening({
           listSize={listSize}
           pageNo={pageNo}
           setPageNo={setPageNo}
-        />
+        /></>:<NoData/> }
+        
       </Wrapper>
     </>
   );
