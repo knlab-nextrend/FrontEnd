@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 
 function App() {
   const isLogin = useSelector((state) => state.login.isLogin);
-  const userInfo = { permission: 9, name: "유저" };
+  const userInfo = { permission: 0, name: "유저" };
   // 일반사용자 0 , 슈퍼관리자 9
   return (
     <>

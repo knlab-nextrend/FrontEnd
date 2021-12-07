@@ -17,6 +17,7 @@ function CurationDataListContainer() {
     let _curationDataList = [];
     let _rawCurationDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
+    console.log(rawData)
     _rawCurationDataList.forEach((item) => {
       const obj = {
         item_id: item.item_id,
@@ -25,6 +26,7 @@ function CurationDataListContainer() {
         dc_page: item.dc_page,
         dc_cover:item.dc_cover,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
+        dc_country_pub_list:item.dc_country_pub.map((x) => x.CTY_NAME),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_dt_regi:item.dc_dt_regi.substring(0,10),
         dc_publisher:item.dc_publisher,

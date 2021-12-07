@@ -2,22 +2,39 @@ import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-function CurationDataList({ curationDataList,statusCode }) {
+import Pagenation from "../../../Components/Pagenation";
+import NoData from "../../../Components/NoData";
+function CurationDataList({
+  curationDataList,
+  dcCount,
+  listSize,
+  pageNo,
+  setPageNo,
+}) {
   return (
     <>
       <FormHeader type="view" title={"큐레이션 데이터 조회"} />
-      <CurationListWrapper>
-        {curationDataList.map((item, index) => {
-          return (
-            <CustomLink
-              to={`/curation/detail/${item.item_id}`}
-              key={index}
-            >
-              <CurationCard curationDataItem={item} />
-            </CustomLink>
-          );
-        })}
-      </CurationListWrapper>
+      {curationDataList.length !== 0 ? (
+        <Wrapper>
+          <CurationListWrapper>
+            {curationDataList.map((item, index) => {
+              return (
+                <CustomLink to={`/curation/detail/${item.item_id}`} key={index}>
+                  <CurationCard curationDataItem={item} />
+                </CustomLink>
+              );
+            })}
+          </CurationListWrapper>
+          <Pagenation
+            dcCount={dcCount}
+            listSize={listSize}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
+          />
+        </Wrapper>
+      ) : (
+        <NoData />
+      )}
     </>
   );
 }
@@ -37,6 +54,13 @@ function CurationCard({ curationDataItem }) {
         </ImageContainer>
         <ContentContainer>
           <Title>
+            <div>
+              `[
+              {curationDataItem.dc_country_pub_list.map((country_pub, countryPubIndex) => {
+                return <span key={countryPubIndex}>{country_pub} </span>;
+              })}
+              ]`
+            </div>
             <div>{curationDataItem.dc_title_kr}</div>
           </Title>
           <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
@@ -47,7 +71,6 @@ function CurationCard({ curationDataItem }) {
               })}
             </CategoryBadge>
             <CountryBadge color="grey">
-              {" "}
               {curationDataItem.dc_country_list.map((country, countryIndex) => {
                 return <span key={countryIndex}>{country} </span>;
               })}
@@ -68,6 +91,12 @@ function CurationCard({ curationDataItem }) {
     </>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const CustomLink = styled(Link)`
   color: black;
