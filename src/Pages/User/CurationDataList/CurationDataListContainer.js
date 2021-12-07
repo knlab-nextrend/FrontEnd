@@ -17,14 +17,13 @@ function CurationDataListContainer() {
     let _curationDataList = [];
     let _rawCurationDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
-    console.log(rawData)
     _rawCurationDataList.forEach((item) => {
       const obj = {
         item_id: item.item_id,
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,
-        dc_cover:item.dc_cover,
+        dc_cover:(item.dc_cover[0]==='') ? [] : item.dc_cover,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
         dc_country_pub_list:item.dc_country_pub.map((x) => x.CTY_NAME),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
@@ -35,7 +34,6 @@ function CurationDataListContainer() {
       };
       _curationDataList.push(obj);
     });
-    console.log(_curationDataList)
     setDcCount(_dcCount);
     setCurationDataList(_curationDataList);
   };

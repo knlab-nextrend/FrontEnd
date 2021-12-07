@@ -46,7 +46,6 @@ function CrawlDataScreeningContainer() {
         "선택되지 않은 데이터는 DB에서 삭제됩니다. 스크리닝을 진행하시겠습니까?"
       )
     ) {
-      console.log(stageDataList,deleteDataList)
       if (stageDataList.length === 0) {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {

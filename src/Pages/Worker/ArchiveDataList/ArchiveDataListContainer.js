@@ -40,7 +40,6 @@ function ArchiveDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
       dataCleansing(res.data);
     });
   };

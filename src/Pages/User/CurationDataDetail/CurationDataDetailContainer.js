@@ -25,7 +25,7 @@ function CurationDataDetailContainer() {
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher: _rawStatusDetailData.dc_publisher || "",
-      dc_cover: _rawStatusDetailData.dc_cover,
+      dc_cover: (_rawStatusDetailData.dc_cover[0]==='') ? [] : _rawStatusDetailData.dc_cover,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat,
       dc_code: _rawStatusDetailData.dc_code,
@@ -44,7 +44,6 @@ function CurationDataDetailContainer() {
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
     };
-    console.log(_docs);
     setDocs(_docs);
   };
 
