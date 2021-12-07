@@ -62,11 +62,7 @@ function ArchiveDataList({
                         <td>
                           <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
                         </td>
-                        <td>
-                          {item.dc_country_list.map((country, countryIndex) => {
-                            return <span key={countryIndex}>{country}</span>;
-                          })}
-                        </td>
+                        <td>{item.dc_country_list.join(", ")}</td>
                         <td>
                           <CustomLink
                             to={`/crawl/detail/${statusCode}/${item.item_id}`}
@@ -76,11 +72,7 @@ function ArchiveDataList({
                         </td>
                         <td>{item.dc_title_kr}</td>
                         <td>{item.dc_smry_kr}</td>
-                        <td>
-                          {item.dc_code_list.map((code, codeIndex) => {
-                            return <span key={codeIndex}>{code}</span>;
-                          })}
-                        </td>
+                        <td>{item.dc_code_list.join(", ")}</td>
                         <td>{item.dc_page}</td>
                         <td>{item.dc_hit}</td>
                         <td>

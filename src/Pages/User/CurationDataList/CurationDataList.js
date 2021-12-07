@@ -54,26 +54,16 @@ function CurationCard({ curationDataItem }) {
         </ImageContainer>
         <ContentContainer>
           <Title>
-            <div>
-              `[
-              {curationDataItem.dc_country_pub_list.map((country_pub, countryPubIndex) => {
-                return <span key={countryPubIndex}>{country_pub} </span>;
-              })}
-              ]`
-            </div>
+            <div>[{curationDataItem.dc_country_list.join(",")}]</div>
             <div>{curationDataItem.dc_title_kr}</div>
           </Title>
           <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
           <Info>
             <CategoryBadge color="grey">
-              {curationDataItem.dc_code_list.map((code, codeIndex) => {
-                return <span key={codeIndex}>{code} </span>;
-              })}
+              {curationDataItem.dc_code_list.join(", ")}
             </CategoryBadge>
             <CountryBadge color="grey">
-              {curationDataItem.dc_country_list.map((country, countryIndex) => {
-                return <span key={countryIndex}>{country} </span>;
-              })}
+              {curationDataItem.dc_country_list.join(", ")}
             </CountryBadge>
             <PublisherBadge color="grey">
               {curationDataItem.dc_publisher}
