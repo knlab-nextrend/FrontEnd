@@ -77,6 +77,7 @@ function CrawlDataDetailContainer() {
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
+      dc_lang: _rawStatusDetailData.dc_lang || "",
     };
     setDocs(_docs);
   };
@@ -107,7 +108,7 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    console.log(_crawlDataFormDocs)
+    console.log(_crawlDataFormDocs);
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {

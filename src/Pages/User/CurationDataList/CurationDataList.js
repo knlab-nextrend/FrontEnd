@@ -37,7 +37,6 @@ function CurationCard({ curationDataItem }) {
         </ImageContainer>
         <ContentContainer>
           <Title>
-            <div>[아시아][한국]</div>
             <div>{curationDataItem.dc_title_kr}</div>
           </Title>
           <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
@@ -128,11 +127,11 @@ const Title = styled.div`
     font-size: 20px;
   }
   /* p태그 첫번째 요소는 말머리 */
-  div:nth-child(1) {
+  /* div:nth-child(1) {
     color: black;
-  }
+  } */
   /* p태그 두번째 요소는 한글 제목*/
-  div:nth-child(2) {
+  div:nth-child(1) {
     color: #435269;
   }
 `;

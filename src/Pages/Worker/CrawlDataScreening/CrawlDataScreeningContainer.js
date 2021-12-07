@@ -88,7 +88,7 @@ function CrawlDataScreeningContainer() {
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,
-        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
+        dc_dt_collect: item.dc_dt_collect,
         dc_page: item.dc_page,
       };
       _screeningData.push(obj);

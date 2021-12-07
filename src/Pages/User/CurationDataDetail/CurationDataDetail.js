@@ -82,7 +82,7 @@ function CurationDataDetail({ docs }) {
           </div>
         </ContentRow>
         <ContentRow>
-          <div className="title">▶ 한글요약</div>
+          <div className="title">▶ 요약</div>
           <div className="contents">{docs.dc_smry_kr}</div>
         </ContentRow>
         <ContentRow>
