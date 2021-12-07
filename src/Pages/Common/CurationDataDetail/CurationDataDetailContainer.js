@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import CurationDataDetail from "./CurationDataDetail";
-import { useParams } from "react-router-dom";
+import { useParams,useHistory } from "react-router-dom";
 import { CrawlDataDetailFetchApi } from "../../../Utils/api";
 
 function CurationDataDetailContainer() {
   const statusCode = 7;
+  const permission = 0;
   const { itemId } = useParams();
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
-
+  const history = useHistory();
+  /* 데이터 관리로 이동 */
+  const goDataManage = ()=>{
+    history.push(`/crawl/detail/${statusCode}/${itemId}`)
+  }
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
@@ -25,7 +30,10 @@ function CurationDataDetailContainer() {
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher: _rawStatusDetailData.dc_publisher || "",
-      dc_cover: (_rawStatusDetailData.dc_cover[0]==='') ? [] : _rawStatusDetailData.dc_cover,
+      dc_cover:
+        _rawStatusDetailData.dc_cover[0] === ""
+          ? []
+          : _rawStatusDetailData.dc_cover,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat,
       dc_code: _rawStatusDetailData.dc_code,
@@ -53,7 +61,7 @@ function CurationDataDetailContainer() {
 
   return (
     <>
-      <CurationDataDetail docs={docs} />
+      <CurationDataDetail docs={docs} permission={permission} goDataManage={goDataManage}/>
     </>
   );
 }

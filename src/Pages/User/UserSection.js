@@ -6,7 +6,7 @@ import CurationDataListContainer from "../Common/CurationDataList/CurationDataLi
 import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
 
 
-function UserAside() {
+function UserSection() {
   return (
     <Switch>
       <PrivateRoute
@@ -23,4 +23,4 @@ function UserAside() {
   );
 }
 
-export default UserAside;
+export default UserSection;

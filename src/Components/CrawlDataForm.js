@@ -239,8 +239,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCountry.map((item) => {
-                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
+              {dcCountry.map((item,index) => {
+                return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -254,8 +254,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCountryPub.map((item) => {
-                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
+              {dcCountryPub.map((item,index) => {
+                return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -269,8 +269,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCode.map((item) => {
-                return <CustomList key={item.CODE}>{item.CT_NM}</CustomList>;
+              {dcCode.map((item,index) => {
+                return <CustomList key={index}>{item.CT_NM}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -363,9 +363,9 @@ function CrawlDataForm({ docs, type }, ref) {
             <p className="title">언어</p>
             <select value={dcLang} onChange={_dcLangHandler} className="form">
               <option value={""}>전체</option>
-              {LANGUAGE_LIST.map((item) => {
+              {LANGUAGE_LIST.map((item,index) => {
                 return (
-                  <option value={item.site_name}>{item.language_name}</option>
+                  <option key={index} value={item.site_name}>{item.language_name}</option>
                 );
               })}
               <option value="other">그외</option>

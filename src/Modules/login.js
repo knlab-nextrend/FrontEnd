@@ -24,7 +24,7 @@ export const setUser = (user) => ({ type: SET_USER, user });
 
 const initialState = {
   isLogin: !!localStorage.getItem("token"), // 로그인 상태를 담고 있는 state
-  user: {}, // 로그인한 유저의 정보를 담고 있는 state` 
+  user: {}, // 로그인한 유저의 정보를 담고 있는 state`
 };
 
 export default function login(state = initialState, action) {
@@ -35,15 +35,12 @@ export default function login(state = initialState, action) {
       localStorage.setItem("token", _token);
       localStorage.setItem("refreshToken", _refreshToken);
 
-      window.location.href = "/";
       return {
         ...state,
         isLogin: true,
       };
 
     case SET_LOGOUT:
-      console.log("test");
-
       if (action.type === "NORMAL_LOGOUT") {
         alert("성공적으로 로그아웃 되었습니다.");
       } else if (action.type === "EXPIRED_LOGOUT") {
@@ -52,8 +49,7 @@ export default function login(state = initialState, action) {
       localStorage.removeItem("token"); // 로컬스토리지에서 데이터 삭제
       localStorage.removeItem("refreshToken"); // 로컬스토리지에서 데이터 삭제
 
-      //location.href = "/login";
-
+      window.location.href = "/login";
       return {
         ...state,
         isLogin: false,
@@ -65,6 +61,7 @@ export default function login(state = initialState, action) {
         ...state,
         user: action.user,
       };
+
     default:
       return state;
   }

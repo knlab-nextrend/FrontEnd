@@ -5,7 +5,7 @@ import { GrFormView } from "react-icons/gr";
 import { AiOutlineLink } from "react-icons/ai";
 import Editor from "../../../Components/Editor";
 
-function CurationDataDetail({ docs }) {
+function CurationDataDetail({ docs, permission, goDataManage }) {
   return (
     <>
       <FormHeader type="view" title={"큐레이션 데이터 상세 조회"} />
@@ -30,7 +30,14 @@ function CurationDataDetail({ docs }) {
               <Title>{docs.dc_title_kr}</Title>
               <div>{docs.dc_title_or}</div>
             </ArticleHeader>
-
+            {
+              // 권한이 관리자일 경우
+              permission === 9 && (
+                <ArticleActions>
+                  <button onClick={goDataManage}>관리</button>
+                </ArticleActions>
+              )
+            }
             <ArticleInfo>
               <Info>
                 <GrFormView size="24" color="#d6d6d6" />
@@ -112,6 +119,17 @@ function CurationDataDetail({ docs }) {
     </>
   );
 }
+const ArticleActions = styled.div`
+  padding: 1rem 0 1rem 0;
+  border-bottom: solid 1px #d6d6d6;
+  button {
+    cursor: pointer;
+    margin-right: 1rem;
+    border: none;
+    width: 80px;
+    height: 35px;
+  }
+`;
 const Wrapper = styled.div`
   width: 90%;
   margin: 3rem auto;

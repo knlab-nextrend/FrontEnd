@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Login from "./Login";
 import { LoginApi } from "../../../Utils/api";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../../../Modules/login";
+import { setLogin,setUser } from "../../../Modules/login";
 
 function LoginContainer() {
   const dispatch = useDispatch();
@@ -30,11 +30,15 @@ function LoginContainer() {
           const _token = res.data.token;
           const _refreshToken = res.data.refreshToken;
           // 토큰 정보를 담는 객체
-          const tokensObj = {
+          const _tokensObj = {
             token: _token,
             refreshToken: _refreshToken,
           };
-          dispatch(setLogin(tokensObj));
+          // 유저 정보를 담는 객체
+          const _userObj = {name:res.data.name,permission:Number(res.data.permission)}
+          
+          dispatch(setLogin(_tokensObj));
+          dispatch(setUser(_userObj));
         })
         .catch((err) => {
           if (err.response.status === 401) {

@@ -45,6 +45,10 @@ function CrawlDataDetailContainer() {
       type: "archive",
       title: "아카이브 데이터 조회 및 수정",
     },
+    7: {
+      type: "curation",
+      title: "큐레이션 데이터 조회 및 수정",
+    },
   };
 
   /* 데이터 불러오기 */
@@ -98,6 +102,8 @@ function CrawlDataDetailContainer() {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         if (statusCode === "6") {
           history.push(`/archive/list`); // 목록으로 돌아가기
+        } else if (statusCode === "7") {
+          history.push(`/curation/list`);
         } else {
           history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
         }
@@ -111,6 +117,8 @@ function CrawlDataDetailContainer() {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
         history.push(`/archive/list`); // 목록으로 돌아가기
+      } else if (statusCode === "7") {
+        history.push(`/curation/list`);
       } else {
         history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       }
@@ -124,6 +132,8 @@ function CrawlDataDetailContainer() {
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       if (statusCode === "6") {
         history.push(`/archive/list`); // 목록으로 돌아가기
+      } else if (statusCode === "7") {
+        history.push(`/curation/list`);
       } else {
         history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       }

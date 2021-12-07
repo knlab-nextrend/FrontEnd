@@ -19,7 +19,10 @@ function CurationDataList({
           <CurationListWrapper>
             {curationDataList.map((item, index) => {
               return (
-                <CustomLink to={`/curation/detail/${item.item_id}`} key={index}>
+                <CustomLink
+                  to={`/curation/detail/${item.item_id}`}
+                  key={index}
+                >
                   <CurationCard curationDataItem={item} />
                 </CustomLink>
               );
