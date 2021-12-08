@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import CurationDataDetail from "./CurationDataDetail";
 import { useParams,useHistory } from "react-router-dom";
 import { CrawlDataDetailFetchApi } from "../../../Utils/api";
+import {useSelector} from "react-redux"
 
 function CurationDataDetailContainer() {
   const statusCode = 7;
-  const permission = 0;
+  const permission = useSelector((state) => state.login.user.permission);
   const { itemId } = useParams();
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
   const history = useHistory();

@@ -34,7 +34,7 @@ export default function login(state = initialState, action) {
       const _refreshToken = action.tokens.refreshToken;
       localStorage.setItem("token", _token);
       localStorage.setItem("refreshToken", _refreshToken);
-
+      window.location.href = "/";
       return {
         ...state,
         isLogin: true,

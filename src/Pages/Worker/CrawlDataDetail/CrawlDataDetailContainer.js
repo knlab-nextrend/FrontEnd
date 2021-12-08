@@ -53,9 +53,10 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      dataCleansing(res.data);
-    });
+    CrawlDataDetailFetchApi(statusCode, itemId)
+      .then((res) => {
+        dataCleansing(res.data);
+      });
   };
 
   /* 데이터 정제하기 */

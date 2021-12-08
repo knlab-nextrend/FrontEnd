@@ -3,7 +3,6 @@ const getToken = ()=>{
     return localStorage.getItem('token')
   }
 }
-
 const getRefreshToken = ()=>{
   if(!!localStorage.getItem('refreshToken')){
     return localStorage.getItem('refreshToken')

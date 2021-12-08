@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams} from "react-router-dom";
-import { CrawlDataListFetchApi} from "../../../Utils/api";
+import { useParams } from "react-router-dom";
+import { CrawlDataListFetchApi } from "../../../Utils/api";
 import CrawlDataList from "./CrawlDataList";
 
-
 function CrawlDataListContainer() {
-
   /* 현재 보여질 데이터 */
   const [crawlDataList, setCrawlDataList] = useState([]);
 
@@ -17,30 +15,28 @@ function CrawlDataListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
-  
   const STATUS_CODE_SET = {
     2: {
       type: "refine",
-      mainTitle:"크롤데이터 정제 작업 데이터 목록",
+      mainTitle: "크롤데이터 정제 작업 데이터 목록",
       title: "크롤데이터 정제 진행",
     },
     3: {
       type: "refine",
-      mainTitle:"크롤데이터 정제 작업 데이터 목록",
+      mainTitle: "크롤데이터 정제 작업 데이터 목록",
       title: "크롤데이터 정제 진행",
     },
     4: {
       type: "register",
-      mainTitle:"크롤데이터 등록 작업 데이터 목록",
+      mainTitle: "크롤데이터 등록 작업 데이터 목록",
       title: "크롤데이터 등록 진행",
     },
     5: {
       type: "register",
-      mainTitle:"크롤데이터 등록 작업 데이터 목록",
+      mainTitle: "크롤데이터 등록 작업 데이터 목록",
       title: "크롤데이터 등록 진행",
     },
   };
-
 
   const dataCleansing = (rawData) => {
     let _crawlDataList = [];
@@ -69,12 +65,15 @@ function CrawlDataListContainer() {
       .then((res) => {
         dataCleansing(res.data);
       })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
-  }, [pageNo,statusCode]);
+  }, [pageNo, statusCode]);
 
   return (
     <>

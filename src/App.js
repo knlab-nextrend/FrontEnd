@@ -15,24 +15,29 @@ import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "./Modules/login";
 import { userAuthApi } from "./Utils/api";
-
+import { setUser } from "./Modules/login";
 function App() {
+
   const dispatch = useDispatch();
+
   const isLogin = useSelector((state) => state.login.isLogin);
   const userInfo = useSelector((state) => state.login.user);
+  
+  // 일반사용자 0 , 슈퍼관리자 9
 
   useEffect(() => {
-    userAuthApi().then((res) => {
-      const _userObj = {
-        name: res.data.Name,
-        permission: Number(res.data.Category),
-      };
-      dispatch(setUser(_userObj));
-    });
+    if (isLogin) {
+      userAuthApi().then((res) => {
+        const _userObj = {
+          name: res.data.Name,
+          permission: Number(res.data.Category),
+        };
+        dispatch(setUser(_userObj));
+      });
+    }
   }, [isLogin]);
-  // 일반사용자 0 , 슈퍼관리자 9
+
 
   return (
     <>
