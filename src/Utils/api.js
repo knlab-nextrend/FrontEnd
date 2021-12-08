@@ -99,6 +99,15 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   return axios.get(`/crawl/detail/${itemId}`, config);
 };
 
+/* 본문 이미지 첨부 후 url 받아오는 함수 */
+const documentPastedImageApi = (imageForm) => {
+  return axios.post(`/crawl/docImage/`, imageForm,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 /* 대륙 리스트 전체 받아오는 함수 */
 const ContinentsListDataFetchApi = () => {
 
@@ -189,6 +198,8 @@ const addUserApi = (userInfo) => {
   };
   return axios.post(`/nextrend/user/add`, body, { headers: headers });
 }
+
+
 export {
   LoginApi,
   RefreshTokenApi,
@@ -209,4 +220,5 @@ export {
   addUserApi,
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
+  documentPastedImageApi
 };

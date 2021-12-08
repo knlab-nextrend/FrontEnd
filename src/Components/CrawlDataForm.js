@@ -153,7 +153,6 @@ function CrawlDataForm({ docs, type }, ref) {
       setDcType(docs.dc_type);
       dispatch(setModalData(docs.dc_code, "dc_code"));
       dispatch(setModalData(docs.dc_country, "dc_country"));
-      setDcCountryPub(docs.dc_country_pub);
       setDcCover(docs.dc_cover);
       setDcCoverSelect(docs.dc_cover[0] || "");
       setDcSmryKr(docs.dc_smry_kr);
