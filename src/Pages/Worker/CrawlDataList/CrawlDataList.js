@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import SearchOption from "../../../Components/SearchOption";
+import DataFilter from "../../../Components/DataFilter";
 import CrawlDataCard from "../../../Components/CrawlDataCard";
 import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";
@@ -14,14 +14,14 @@ function CrawlDataList({
   pageNo,
   setPageNo,
   crawlDataList,
-  STATUS_CODE_SET
+  STATUS_CODE_SET,
 }) {
   return (
     <>
       <FormHeader type="view" title={STATUS_CODE_SET[statusCode].mainTitle} />
+      {/* <DataFilter /> */}
       <Tab process={STATUS_CODE_SET[statusCode].type}></Tab>
       <Wrapper>
-        <SearchOption />
         {crawlDataList.length !== 0 ? (
           <>
             <SearchResultTitle>
@@ -48,7 +48,7 @@ function CrawlDataList({
             />
           </>
         ) : (
-          <NoData/>
+          <NoData />
         )}
       </Wrapper>
     </>

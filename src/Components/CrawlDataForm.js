@@ -103,16 +103,16 @@ function CrawlDataForm({ docs, type }, ref) {
 
   // 더미데이터
   const LANGUAGE_LIST = [
-    { language_name: "한국어", language_code_name: "KO" },
-    { language_name: "영어", language_code_name: "EN" },
-    { language_name: "일본어", language_code_name: "JP" },
-    { language_name: "독일어", language_code_name: "DE" },
-    { language_name: "프랑스어", language_code_name: "FR" },
-    { language_name: "중국어", language_code_name: "ZH" },
-    { language_name: "스페인어", language_code_name: "ES" },
-    { language_name: "포르투갈어", language_code_name: "PT" },
-    { language_name: "러시아어", language_code_name: "RU" },
-    { language_name: "아랍어", language_code_name: "AR" },
+    { language_name: "한국어", language_code_name: "ko" },
+    { language_name: "영어", language_code_name: "en" },
+    { language_name: "일본어", language_code_name: "ja" },
+    { language_name: "독일어", language_code_name: "de" },
+    { language_name: "프랑스어", language_code_name: "fr" },
+    { language_name: "중국어", language_code_name: "zh" },
+    { language_name: "스페인어", language_code_name: "es" },
+    { language_name: "포르투갈어", language_code_name: "pt" },
+    { language_name: "러시아어", language_code_name: "ru" },
+    { language_name: "아랍어", language_code_name: "ar" },
   ];
 
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
@@ -365,7 +365,7 @@ function CrawlDataForm({ docs, type }, ref) {
               <option value={""}>전체</option>
               {LANGUAGE_LIST.map((item,index) => {
                 return (
-                  <option key={index} value={item.site_name}>{item.language_name}</option>
+                  <option key={index} value={item.language_code_name}>{item.language_name}</option>
                 );
               })}
               <option value="other">그외</option>

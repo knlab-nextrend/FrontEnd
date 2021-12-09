@@ -2,11 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../Modules/login";
-function Header({name}) {
+import { useHistory } from "react-router-dom";
+
+function Header({ name }) {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const goNextrendPage = () => {
     window.open("http://nextrend.kr/index.php");
+  };
+  const go메인페이지 = () => {
+    history.push("/");
   };
 
   /* process.env.PUBLIC_URL 은 /public/ .... 의 경로를 절대경로로 나타냄. 환경변수에요*/
@@ -19,7 +25,7 @@ function Header({name}) {
       <HeaderContainer>
         <ContentWrapper>
           <Logo
-            onClick={goNextrendPage}
+            onClick={go메인페이지}
             src={process.env.PUBLIC_URL + "/img/logo4.png"}
           />
           <LoginInfo>

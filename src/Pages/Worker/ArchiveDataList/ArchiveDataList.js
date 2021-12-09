@@ -17,9 +17,8 @@ function ArchiveDataList({
   return (
     <>
       <FormHeader type="view" title={"아카이브 데이터 조회"} />
-
+      <DataFilter />
       <Wrapper>
-        <DataFilter />
         {archiveDataList.length !== 0 ? (
           <>
             <SearchResultTitle>

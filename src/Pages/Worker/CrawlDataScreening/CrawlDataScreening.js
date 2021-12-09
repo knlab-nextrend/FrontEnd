@@ -15,20 +15,20 @@ function CrawlDataScreening({
   listSize,
   setListSize,
   pageNo,
-  setPageNo
+  setPageNo,
 }) {
-  const _listSizeHandler = (e)=>{
-    setListSize(e.target.value)
-  }
+  const _listSizeHandler = (e) => {
+    setListSize(e.target.value);
+  };
   return (
-    
     <>
       <FormHeader type="view" title={"크롤데이터 스크리닝 진행"} />
       <Wrapper>
-        <GuideComment>
-          현재 보여지는 리스트에서 스크리닝 완료 버튼을 누르면 체크한 데이터는
-          정제 단계로 넘어가며 , 체크 하지 않은 데이터는 버려집니다.
-        </GuideComment>
+        <SearchResultTitle>
+          <p>검색결과 ({dcCount}건)</p>
+          <p>          현재 보여지는 리스트에서 스크리닝 완료 버튼을 누르면 체크한 데이터는
+          정제 단계로 넘어가며 , 체크 하지 않은 데이터는 버려집니다.</p>
+        </SearchResultTitle>
         <ButtonWrapper>
           <Button color="#435269" onClick={onChangeAll}>
             <AiOutlineCheck color="white" />
@@ -38,8 +38,10 @@ function CrawlDataScreening({
             <AiOutlineCheck color="white" />
             <p>스크리닝 완료</p>
           </Button>
-          <select value={listSize} onChange={_listSizeHandler} >
-            <option disabled hidden>리스트 사이즈</option>
+          <select value={listSize} onChange={_listSizeHandler}>
+            <option disabled hidden>
+              리스트 사이즈
+            </option>
             <option value={2}>2건</option>
             <option value={10}>10건</option>
             <option value={30}>30건</option>
@@ -48,71 +50,87 @@ function CrawlDataScreening({
             <option value={100}>100건</option>
           </select>
         </ButtonWrapper>
-        {screeningData.length !== 0 ? <><TableWrapper>
-          <CustomTable>
-            <colgroup>
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "30%" }} />
-              <col style={{ width: "15%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "15%" }} />
-              <col style={{ width: "10%" }} />
-            </colgroup>
+        {screeningData.length !== 0 ? (
+          <>
+            <TableWrapper>
+              <CustomTable>
+                <colgroup>
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "30%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "10%" }} />
+                </colgroup>
 
-            <thead>
-              <tr>
-                <th>선택</th>
-                <th>itemID</th>
-                <th>요약</th>
-                <th>발행자/발행기관</th>
-                <th>언어</th>
-                <th>수집일</th>
-                <th>페이지수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {screeningData.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        value={item.item_id}
-                        onChange={onChangeEach}
-                        checked={stageDataList.includes(item.item_id)}
-                      />
-                    </td>
-                    <td>{item.item_id}</td>
-                    <td>{item.dc_smry_kr}</td>
-                    <td>{item.dc_publisher}</td>
-                    <td>{item.dc_lang}</td>
-                    <td>{item.dc_dt_collect}</td>
-                    <td>{item.dc_page}</td>
+                <thead>
+                  <tr>
+                    <th>선택</th>
+                    <th>itemID</th>
+                    <th>요약</th>
+                    <th>발행자/발행기관</th>
+                    <th>언어</th>
+                    <th>수집일</th>
+                    <th>페이지수</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </CustomTable>
-        </TableWrapper>
-        <Pagenation
-          dcCount={dcCount}
-          listSize={listSize}
-          pageNo={pageNo}
-          setPageNo={setPageNo}
-        /></>:<NoData/> }
-        
+                </thead>
+                <tbody>
+                  {screeningData.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            value={item.item_id}
+                            onChange={onChangeEach}
+                            checked={stageDataList.includes(item.item_id)}
+                          />
+                        </td>
+                        <td>{item.item_id}</td>
+                        <td>{item.dc_smry_kr}</td>
+                        <td>{item.dc_publisher}</td>
+                        <td>{item.dc_lang}</td>
+                        <td>{item.dc_dt_collect}</td>
+                        <td>{item.dc_page}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </CustomTable>
+            </TableWrapper>
+            <Pagenation
+              dcCount={dcCount}
+              listSize={listSize}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
+            />
+          </>
+        ) : (
+          <NoData />
+        )}
       </Wrapper>
     </>
   );
 }
-
+const SearchResultTitle = styled.div`
+  width: 100%;
+  p {
+    &:nth-child(1) {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    &:nth-child(2) {
+      font-size: 14px;
+    }
+  }
+`;
 const GuideComment = styled.div`
   margin: 1rem 0 1rem 0;
 `;
 const Wrapper = styled.div`
   margin: 0 5rem 5rem 5rem;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 `;
@@ -121,7 +139,7 @@ const TableWrapper = styled.div`
   width: 100%;
   max-height: 65rem;
   overflow: auto;
-  box-shadow : rgb(9 30 66 / 25%) 0px 1px 1px;
+  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
 `;
 const CustomTable = styled.table`
   width: 100%;
@@ -153,10 +171,9 @@ const ButtonWrapper = styled.div`
   Button {
     margin-right: 1rem;
   }
-  select{
+  select {
     padding: 0 0.5rem 0 0.5rem;
   }
-  
 `;
 
 export default CrawlDataScreening;

@@ -6,7 +6,7 @@ function Footer() {
     <>
       <FooterContainer>
         <ContentWrapper>
-          <p>temp Footer</p>
+          <p>임시 footer. 여기에 회사 관련 내용을 넣으면 됨.</p>
         </ContentWrapper>
       </FooterContainer>
     </>

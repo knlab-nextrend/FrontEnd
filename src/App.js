@@ -3,13 +3,16 @@ import styled from "styled-components";
 
 /* components */
 import Header from "./Components/Header";
+import MainPage from "./Pages/Common/MainPage";
 import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
 import GlobalModal from "./Components/ModalComponents/GlobalModal";
+
 /* body */
 import LoginContainer from "./Pages/Common/Login/LoginContainer";
 import WorkerSection from "./Pages/Worker/WorkerSection";
 import UserSection from "./Pages/User/UserSection";
+
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
@@ -18,12 +21,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { userAuthApi } from "./Utils/api";
 import { setUser } from "./Modules/login";
 function App() {
-
   const dispatch = useDispatch();
-
   const isLogin = useSelector((state) => state.login.isLogin);
   const userInfo = useSelector((state) => state.login.user);
-  
+
   // 일반사용자 0 , 슈퍼관리자 9
 
   useEffect(() => {
@@ -38,7 +39,6 @@ function App() {
     }
   }, [isLogin]);
 
-
   return (
     <>
       {isLogin && <Header name={userInfo.name} />}
@@ -48,6 +48,9 @@ function App() {
           <Section>
             {userInfo.permission === 9 && <WorkerSection />}
             {userInfo.permission === 0 && <UserSection />}
+            <PrivateRoute path="/" exact>
+              <MainPage />
+            </PrivateRoute>
           </Section>
         </Body>
       )}
@@ -58,9 +61,6 @@ function App() {
         component={LoginContainer}
         exact
       />
-      <PrivateRoute path="/" exact>
-        <div></div>
-      </PrivateRoute>
       <GlobalModal /> {/* 모달 전역 제어 */}
     </>
   );
