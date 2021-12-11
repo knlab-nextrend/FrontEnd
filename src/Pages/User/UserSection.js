@@ -2,11 +2,11 @@ import React from "react";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../../Route/PrivateRoute";
 
-import CurationDataListContainer from "./CurationDataList/CurationDataListContainer"
-import CurationDataDetailContainer from "./CurationDataDetail/CurationDataDetailContainer";
+import CurationDataListContainer from "../Common/CurationDataList/CurationDataListContainer"
+import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
 
 
-function UserAside() {
+function UserSection() {
   return (
     <Switch>
       <PrivateRoute
@@ -23,4 +23,4 @@ function UserAside() {
   );
 }
 
-export default UserAside;
+export default UserSection;

@@ -18,7 +18,6 @@ function ArchiveDataList({
     <>
       <FormHeader type="view" title={"아카이브 데이터 조회"} />
       <DataFilter />
-
       <Wrapper>
         {archiveDataList.length !== 0 ? (
           <>
@@ -28,12 +27,13 @@ function ArchiveDataList({
             <TableWrapper>
               <CustomTable>
                 <colgroup>
+                  <col style={{ width: "3%" }} />
                   <col style={{ width: "5%" }} />
+                  <col style={{ width: "7%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
                   <col style={{ width: "5%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "10%" }} />
                   <col style={{ width: "5%" }} />
                   <col style={{ width: "5%" }} />
                   <col style={{ width: "5%" }} />
@@ -46,6 +46,7 @@ function ArchiveDataList({
                     <th>원문 대상 국가</th>
                     <th>원문 제목</th>
                     <th>한글 제목</th>
+                    <th>요약</th>
                     <th>주제 분류</th>
                     <th>페이지 수</th>
                     <th>열람 수</th>
@@ -60,11 +61,7 @@ function ArchiveDataList({
                         <td>
                           <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
                         </td>
-                        <td>
-                          {item.dc_country_list.map((country, countryIndex) => {
-                            return <span key={countryIndex}>{country}</span>;
-                          })}
-                        </td>
+                        <td>{item.dc_country_list.join(", ")}</td>
                         <td>
                           <CustomLink
                             to={`/crawl/detail/${statusCode}/${item.item_id}`}
@@ -73,11 +70,8 @@ function ArchiveDataList({
                           </CustomLink>
                         </td>
                         <td>{item.dc_title_kr}</td>
-                        <td>
-                          {item.dc_code_list.map((code, codeIndex) => {
-                            return <span key={codeIndex}>{code}</span>;
-                          })}
-                        </td>
+                        <td>{item.dc_smry_kr}</td>
+                        <td>{item.dc_code_list.join(", ")}</td>
                         <td>{item.dc_page}</td>
                         <td>{item.dc_hit}</td>
                         <td>

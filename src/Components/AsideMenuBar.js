@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   RiUserSettingsFill,
@@ -24,17 +24,17 @@ function AsideMenuBar({ permission }) {
     history.push("/crawl/screening");
   };
   const go크롤데이터정제 = () => {
-    history.push("/crawl/list/2"); // statusCode === 2
+    history.push("/crawl/list/2");
   };
   const go크롤데이터등록 = () => {
-    history.push("/crawl/list/4"); // statusCode === 2
+    history.push("/crawl/list/4");
   };
   const go아카이브데이터조회 = () => {
     history.push("/archive/list");
   };
-  const go사용자큐레이션조회 = ()=>{
-    history.push("/curation/list")
-  }
+  const go큐레이션조회 = () => {
+    history.push("/curation/list");
+  };
   return (
     <>
       <AsideMenuBarContainer>
@@ -88,7 +88,7 @@ function AsideMenuBar({ permission }) {
             </AsideMenuBarItem>
           )}
           {permission === 9 && (
-            <AsideMenuBarItem>
+            <AsideMenuBarItem onClick={go큐레이션조회}>
               <MdCalendarViewDay className="icon" size="18" />
               큐레이션 데이터 조회
             </AsideMenuBarItem>
@@ -118,12 +118,12 @@ function AsideMenuBar({ permission }) {
             </AsideMenuBarItem>
           )}
           {permission === 0 && (
-            <AsideMenuBarItem onClick={go사용자큐레이션조회}>
+            <AsideMenuBarItem onClick={go큐레이션조회}>
               <MdOutlineAdd className="icon" size="18" />
               큐레이션
             </AsideMenuBarItem>
           )}
-          <AsideMenuBarItem >
+          <AsideMenuBarItem>
             <RiLogoutBoxRLine className="icon" size="18" />
             로그아웃
           </AsideMenuBarItem>

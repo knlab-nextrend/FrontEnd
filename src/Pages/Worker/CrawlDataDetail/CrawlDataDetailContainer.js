@@ -45,38 +45,44 @@ function CrawlDataDetailContainer() {
       type: "archive",
       title: "아카이브 데이터 조회 및 수정",
     },
+    7: {
+      type: "curation",
+      title: "큐레이션 데이터 조회 및 수정",
+    },
   };
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      console.log(res.data);
-      dataCleansing(res.data);
-    });
+    CrawlDataDetailFetchApi(statusCode, itemId)
+      .then((res) => {
+        console.log(res.data)
+        dataCleansing(res.data);
+      });
   };
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
-      dc_content: _rawStatusDetailData.dc_content || "",
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
+      dc_content: _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content[0],
+      dc_dt_collect: _rawStatusDetailData.dc_dt_collect[0] || "",
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher: _rawStatusDetailData.dc_publisher || "",
+      dc_publisher: _rawStatusDetailData.dc_publisher && _rawStatusDetailData.dc_publisher[0],
       dc_cover: _rawStatusDetailData.dc_cover,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat,
       dc_code: _rawStatusDetailData.dc_code,
       dc_country: _rawStatusDetailData.dc_country,
-      dc_page: _rawStatusDetailData.dc_page || "",
+      dc_page: _rawStatusDetailData.dc_page && _rawStatusDetailData.dc_page[0],
       dc_type: _rawStatusDetailData.dc_type || "",
-      dc_title_or: _rawStatusDetailData.dc_title_or || "",
-      dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
-      dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
-      dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
+      dc_title_or: _rawStatusDetailData.dc_title_or && _rawStatusDetailData.dc_title_or[0],
+      dc_title_kr: _rawStatusDetailData.dc_title_kr &&  _rawStatusDetailData.dc_title_kr[0],
+      dc_smry_kr: _rawStatusDetailData.dc_smry_kr &&  _rawStatusDetailData.dc_smry_kr[0],
+      dc_url_loc: _rawStatusDetailData.dc_url_loc,
       dc_link: _rawStatusDetailData.dc_link || "",
+      dc_lang: _rawStatusDetailData.dc_lang && _rawStatusDetailData.dc_lang[0],
     };
     setDocs(_docs);
   };
@@ -98,6 +104,8 @@ function CrawlDataDetailContainer() {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         if (statusCode === "6") {
           history.push(`/archive/list`); // 목록으로 돌아가기
+        } else if (statusCode === "7") {
+          history.push(`/curation/list`);
         } else {
           history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
         }
@@ -107,11 +115,12 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    console.log(_crawlDataFormDocs)
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
         history.push(`/archive/list`); // 목록으로 돌아가기
+      } else if (statusCode === "7") {
+        history.push(`/curation/list`);
       } else {
         history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       }
@@ -125,6 +134,8 @@ function CrawlDataDetailContainer() {
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       if (statusCode === "6") {
         history.push(`/archive/list`); // 목록으로 돌아가기
+      } else if (statusCode === "7") {
+        history.push(`/curation/list`);
       } else {
         history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       }

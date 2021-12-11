@@ -22,6 +22,7 @@ function ArchiveDataListContainer() {
         item_id: item.item_id,
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
+        dc_smry_kr:item.dc_smry_kr,
         dc_page: item.dc_page,
         dc_hit: item.dc_hit || 0,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
@@ -39,7 +40,6 @@ function ArchiveDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
       dataCleansing(res.data);
     });
   };

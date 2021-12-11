@@ -10,6 +10,7 @@ import { getToken, getRefreshToken } from "./getToken";
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
 */
 const headers = { authorization: `Bearer ${getToken()}` };
+const testHeaders= { authorization: `Bearer ${localStorage.getItem('token')}`}
 const refreshHeaders = {
   authorization: `Bearer ${getToken()}`,
   refresh: getRefreshToken(),
@@ -48,13 +49,15 @@ const ScreeningDataDeleteApi = (deleteDataList) => {
 
 /* 크롤데이터 리스트 받아오기 */
 const CrawlDataListFetchApi = (statusCode, listSize, pageNo) => {
+  
   const config = {
-    headers: headers,
+    headers: testHeaders,
     params: {
       listSize: listSize,
       pageNo: pageNo,
     },
   };
+  console.log(config)
 
   return axios.get(`/crawl/list/${statusCode}`, config);
 };
@@ -110,7 +113,6 @@ const documentPastedImageApi = (imageForm) => {
 
 /* 대륙 리스트 전체 받아오는 함수 */
 const ContinentsListDataFetchApi = () => {
-
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
   };
@@ -119,7 +121,6 @@ const ContinentsListDataFetchApi = () => {
 
 /* 대륙 별 국가 리스트를 받아오는 함수 */
 const CountrysListDataFetchApi = (continent) => {
-
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
   };
@@ -130,18 +131,18 @@ const CountrysListDataFetchApi = (continent) => {
 const CategorysListDataFetchApi = (upperCode = null) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
-    params:{upperCode}
+    params: { upperCode },
   };
   return axios.get(`/nextrend/categorys`, config);
-}
+};
 
 /* 주제 분류 리스트를 모두 받아오는 함수 */
-const CategoryOptionFetchApi = ()=>{
+const CategoryOptionFetchApi = () => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
   };
-  return axios.get("/nextrend/categorys/dict",config)
-}
+  return axios.get("/nextrend/categorys/dict", config);
+};
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -178,28 +179,35 @@ const getUserInfoApi = (uid) => {
   return axios.get(`/nextrend/user/get`, config);
 };
 
-const modifyUserInfoApi = (userInfo,uid) => {
+const modifyUserInfoApi = (userInfo, uid) => {
   const body = {
     userInfo,
-    uid
+    uid,
   };
   return axios.post(`/nextrend/user/modify`, body, { headers: headers });
-}
+};
 
 const deleteUserByIdApi = (uid) => {
   const body = {
-    uid
+    uid,
   };
   return axios.post(`/nextrend/user/delete`, body, { headers: headers });
-}
+};
 const addUserApi = (userInfo) => {
   const body = {
     userInfo,
   };
   return axios.post(`/nextrend/user/add`, body, { headers: headers });
-}
+};
 
-
+/* user 토큰 인증 및 유저 정보 가져오기 */
+const userAuthApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  console.log(config)
+  return axios.get(`/nextrend/user`, config);
+};
 export {
   LoginApi,
   RefreshTokenApi,
@@ -220,5 +228,5 @@ export {
   addUserApi,
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
-  documentPastedImageApi
+  userAuthApi,
 };

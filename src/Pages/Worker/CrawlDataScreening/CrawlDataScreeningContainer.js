@@ -30,8 +30,9 @@ function CrawlDataScreeningContainer() {
 
   /* item 개별 선택*/
   const onChangeEach = (e) => {
-    // 체크할 시 CheckList에 id값 넣기
+    // 체크할 시 CheckList에 id값 
     const id = Number(e.target.value);
+    console.log(e.target.checked)
     if (e.target.checked) {
       setStageDataList([...stageDataList, id]);
     } else {
@@ -46,7 +47,6 @@ function CrawlDataScreeningContainer() {
         "선택되지 않은 데이터는 DB에서 삭제됩니다. 스크리닝을 진행하시겠습니까?"
       )
     ) {
-      console.log(stageDataList,deleteDataList)
       if (stageDataList.length === 0) {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {
@@ -84,7 +84,7 @@ function CrawlDataScreeningContainer() {
 
     _rawScreeningData.forEach((item, index) => {
       const obj = {
-        item_id: item.item_id,
+        item_id: Number(item.item_id),
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,

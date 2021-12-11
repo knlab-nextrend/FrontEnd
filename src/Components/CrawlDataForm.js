@@ -23,7 +23,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCodeList, setDcCodeList] = useState([]);
-  const [dcCountryPubIndexList,setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
+  const [dcCountryPubIndexList, setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
   const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
   const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
@@ -33,9 +33,12 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcTitleKr, setDcTitleKr] = useState(""); // dc_title_kr 한글 제목
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
   const [dcLink, setDcLink] = useState(""); //dc_link 링크..이긴 하나 무슨 링크?
+  const [dcLang, setDcLang] = useState(""); //dc_lang 문서 언어
 
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 문서 대상 국가
-  const dcCountryPub = useSelector((state) => state.modal.modalData.dc_country_pub); //dc_country_pub 문서 발행 국가
+  const dcCountryPub = useSelector(
+    (state) => state.modal.modalData.dc_country_pub
+  ); //dc_country_pub 문서 발행 국가
   const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
 
   const _dcContentHandler = (data) => {
@@ -44,9 +47,9 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcDtCollectHandler = (e) => {
     setDcDtCollect(e.target.value);
   };
-  const _dcDtWriteHandler = (e)=>{
-    setDcDtWrite(e.target.value)
-  }
+  const _dcDtWriteHandler = (e) => {
+    setDcDtWrite(e.target.value);
+  };
   const _dcDtRegiHandler = (e) => {
     setDcDtRegi(e.target.value);
   };
@@ -83,6 +86,9 @@ function CrawlDataForm({ docs, type }, ref) {
   const _dcLinkHandler = (e) => {
     setDcLink(e.target.value);
   };
+  const _dcLangHandler = (e) => {
+    setDcLang(e.target.value);
+  };
 
   const dispatch = useDispatch();
   const _openCountryCategoryModal = () => {
@@ -94,22 +100,20 @@ function CrawlDataForm({ docs, type }, ref) {
   const _openCodeCategoryModal = () => {
     dispatch(setModal("CodeCategoryModal"));
   };
-  
 
-  useEffect(() => {
-    const _dcCountryIndexList = dcCountry.map((item) => item.IDX);
-    setDcCountryIndexList(_dcCountryIndexList);
-  }, [dcCountry]);
-
-  useEffect(() => {
-    const _dcCountryPubIndexList = dcCountryPub.map((item) => item.IDX);
-    setDcCountryPubIndexList(_dcCountryPubIndexList);
-  }, [dcCountryPub]);
-
-  useEffect(() => {
-    const _dcCodeList = dcCode.map((item) => item.CODE);
-    setDcCodeList(_dcCodeList);
-  }, [dcCode]);
+  // 더미데이터
+  const LANGUAGE_LIST = [
+    { language_name: "한국어", language_code_name: "ko" },
+    { language_name: "영어", language_code_name: "en" },
+    { language_name: "일본어", language_code_name: "ja" },
+    { language_name: "독일어", language_code_name: "de" },
+    { language_name: "프랑스어", language_code_name: "fr" },
+    { language_name: "중국어", language_code_name: "zh" },
+    { language_name: "스페인어", language_code_name: "es" },
+    { language_name: "포르투갈어", language_code_name: "pt" },
+    { language_name: "러시아어", language_code_name: "ru" },
+    { language_name: "아랍어", language_code_name: "ar" },
+  ];
 
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
@@ -127,7 +131,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_cat"] = dcCat;
       _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
-      _docs["dc_country_pub"] = dcCountryPub;
+      _docs["dc_country_pub"] = dcCountryPubIndexList;
       _docs["dc_cover"] = _dcCoverSelect;
       _docs["dc_smry_kr"] = dcSmryKr;
       _docs["dc_publisher"] = dcPublisher;
@@ -136,6 +140,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_title_kr"] = dcTitleKr;
       _docs["dc_url_loc"] = dcUrlLoc;
       _docs["dc_link"] = dcLink;
+      _docs["dc_lang"] = dcLang;
 
       return _docs;
     },
@@ -153,6 +158,7 @@ function CrawlDataForm({ docs, type }, ref) {
       setDcType(docs.dc_type);
       dispatch(setModalData(docs.dc_code, "dc_code"));
       dispatch(setModalData(docs.dc_country, "dc_country"));
+      dispatch(setModalData(docs.dc_country_pub, "dc_country_pub"));
       setDcCover(docs.dc_cover);
       setDcCoverSelect(docs.dc_cover[0] || "");
       setDcSmryKr(docs.dc_smry_kr);
@@ -162,6 +168,7 @@ function CrawlDataForm({ docs, type }, ref) {
       setDcTitleKr(docs.dc_title_kr);
       setDcUrlLoc(docs.dc_url_loc);
       setDcLink(docs.dc_link);
+      setDcLang(docs.dc_lang);
     }
   }, [docs]);
 
@@ -172,8 +179,19 @@ function CrawlDataForm({ docs, type }, ref) {
   }, [dcKeywordString]);
 
   useEffect(() => {
-    console.log(dcCoverSelect);
-  }, [dcCoverSelect]);
+    const _dcCountryIndexList = dcCountry.map((item) => item.IDX);
+    setDcCountryIndexList(_dcCountryIndexList);
+  }, [dcCountry]);
+
+  useEffect(() => {
+    const _dcCountryPubIndexList = dcCountryPub.map((item) => item.IDX);
+    setDcCountryPubIndexList(_dcCountryPubIndexList);
+  }, [dcCountryPub]);
+
+  useEffect(() => {
+    const _dcCodeList = dcCode.map((item) => item.CODE);
+    setDcCodeList(_dcCodeList);
+  }, [dcCode]);
   return (
     <>
       <Wrapper>
@@ -221,8 +239,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCountry.map((item) => {
-                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
+              {dcCountry.map((item,index) => {
+                return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -236,8 +254,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCountryPub.map((item) => {
-                return <CustomList key={item.IDX}>{item.CTY_NAME}</CustomList>;
+              {dcCountryPub.map((item,index) => {
+                return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -251,8 +269,8 @@ function CrawlDataForm({ docs, type }, ref) {
               </button>
             </div>
             <div className="form notInput">
-              {dcCode.map((item) => {
-                return <CustomList key={item.CODE}>{item.CT_NM}</CustomList>;
+              {dcCode.map((item,index) => {
+                return <CustomList key={index}>{item.CT_NM}</CustomList>;
               })}
             </div>
           </CustomFormItem>
@@ -301,6 +319,7 @@ function CrawlDataForm({ docs, type }, ref) {
           <CustomFormItem>
             <p className="title">문서 유형 구분</p>
             <input
+              value={dcType}
               onChange={_dcTypeHandler}
               className="form"
               type="text"
@@ -341,6 +360,20 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
+            <p className="title">언어</p>
+            <select value={dcLang} onChange={_dcLangHandler} className="form">
+              <option value={""}>전체</option>
+              {LANGUAGE_LIST.map((item,index) => {
+                return (
+                  <option key={index} value={item.language_code_name}>{item.language_name}</option>
+                );
+              })}
+              <option value="other">그외</option>
+            </select>
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
             <p className="title">검색 키워드</p>
             <input
               value={dcKeywordString}
@@ -354,10 +387,7 @@ function CrawlDataForm({ docs, type }, ref) {
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <Editor
-              data={dcContent}
-              _dcContentHandler={_dcContentHandler}
-            />
+            <Editor data={dcContent} _dcContentHandler={_dcContentHandler} />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -382,12 +412,6 @@ function CrawlDataForm({ docs, type }, ref) {
                 );
               })}
             </ImageContainer>
-          </CustomFormItem>
-        </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <p className="title">첨부 문서</p>
-            <div className="form notInput" />
           </CustomFormItem>
         </CustomFormRow>
       </Wrapper>

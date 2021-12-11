@@ -26,9 +26,9 @@ function UserManagement({
             <col style={{ width: "10%" }} />
             <col style={{ width: "10%" }} />
             <col style={{ width: "10%" }} />
-            <col style={{ width: "15%" }} />
-            <col style={{ width: "10%" }} />
-            <col style={{ width: "15%" }} />
+            <col style={{ width: "12%" }} />
+            <col style={{ width: "8%" }} />
+            <col style={{ width: "20%" }} />
           </colgroup>
 
           <thead>
@@ -64,7 +64,6 @@ function UserManagement({
                         onClick={() => {
                           openUserModifyModal(user);
                         }}
-                        color="#6DAF44"
                       >
                         <RiUserSettingsLine size="22" color="white" />
                         <p>수정</p>
@@ -73,7 +72,6 @@ function UserManagement({
                         onClick={() => {
                           deleteUser(user.id);
                         }}
-                        color="#dc3545"
                       >
                         <AiOutlineUserDelete size="22" color="white" />
                         <p>삭제</p>

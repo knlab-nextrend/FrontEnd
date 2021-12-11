@@ -1,36 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 /* components */
 import Header from "./Components/Header";
+import MainPage from "./Pages/Common/MainPage";
 import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
 import GlobalModal from "./Components/ModalComponents/GlobalModal";
+
 /* body */
-import LoginContainer from "./Pages/Login/LoginContainer";
-import WorkerAside from "./Pages/Worker/WorkerAside";
-import UserAside from "./Pages/User/UserAside";
+import LoginContainer from "./Pages/Common/Login/LoginContainer";
+import WorkerSection from "./Pages/Worker/WorkerSection";
+import UserSection from "./Pages/User/UserSection";
+
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { userAuthApi } from "./Utils/api";
+import { setUser } from "./Modules/login";
 function App() {
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.login.isLogin);
-  //const userInfo = { permission: 0, name: "유저" };
-  const userInfo = { permission: 9, name: "유저" };
+  const userInfo = useSelector((state) => state.login.user);
+
   // 일반사용자 0 , 슈퍼관리자 9
+
+  useEffect(() => {
+    if (isLogin) {
+      userAuthApi().then((res) => {
+        const _userObj = {
+          name: res.data.Name,
+          permission: Number(res.data.Category),
+        };
+        dispatch(setUser(_userObj));
+      });
+    }
+  }, [isLogin]);
+
   return (
     <>
-      {isLogin && <Header name={userInfo.name}/>}
-      <Body isLogin={isLogin}>
-        {isLogin && <AsideMenuBar permission={userInfo.permission} />}
-        <Section>
-          {userInfo.permission === 9 && <WorkerAside />}
-          {userInfo.permission === 0 && <UserAside />}
-        </Section>
-      </Body>
+      {isLogin && <Header name={userInfo.name} />}
+      {isLogin && (
+        <Body isLogin={isLogin}>
+          {isLogin && <AsideMenuBar permission={userInfo.permission} />}
+          <Section>
+            {userInfo.permission === 9 && <WorkerSection />}
+            {userInfo.permission === 0 && <UserSection />}
+            <PrivateRoute path="/" exact>
+              <MainPage />
+            </PrivateRoute>
+          </Section>
+        </Body>
+      )}
       {isLogin && <Footer />}
       <PublicRoute
         restricted={true}
@@ -38,9 +61,6 @@ function App() {
         component={LoginContainer}
         exact
       />
-      <PrivateRoute path="/" exact>
-        <div></div>
-      </PrivateRoute>
       <GlobalModal /> {/* 모달 전역 제어 */}
     </>
   );
@@ -55,6 +75,5 @@ const Body = styled.div`
 const Section = styled.section`
   width: 100%;
 `;
-
 
 export default App;

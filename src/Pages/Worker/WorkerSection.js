@@ -7,11 +7,12 @@ import CrawlDataScreeningContainer from "./CrawlDataScreening/CrawlDataScreening
 import CrawlDataListContainer from "./CrawlDataList/CrawlDataListContainer";
 import UserManagementContainer from "../Manager/UserManagement/UserManagementContainer";
 import ArchiveDataListContainer from "./ArchiveDataList/ArchiveDataListContainer";
+import CurationDataListContainer from "../Common/CurationDataList/CurationDataListContainer";
+import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
 
-function WorkerAside() {
+function WorkerSection() {
   return (
     <Switch>
-
       <PrivateRoute
         path="/crawl/screening"
         component={CrawlDataScreeningContainer}
@@ -35,8 +36,18 @@ function WorkerAside() {
         component={ArchiveDataListContainer}
         exact
       />
+      <PrivateRoute
+        path="/curation/list"
+        component={CurationDataListContainer}
+        exact
+      />
+      <PrivateRoute
+        path="/curation/detail/:itemId"
+        component={CurationDataDetailContainer}
+        exact
+      />
     </Switch>
   );
 }
 
-export default WorkerAside;
+export default WorkerSection;

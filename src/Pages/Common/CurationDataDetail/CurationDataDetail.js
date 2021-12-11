@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import { GrFormView } from "react-icons/gr";
-import {AiOutlineLink} from "react-icons/ai"
+import { AiOutlineLink } from "react-icons/ai";
 import Editor from "../../../Components/Editor";
 
-function CurationDataDetail({ docs }) {
-  useEffect(() => {
-    console.log(docs);
-  }, [docs]);
+function CurationDataDetail({ docs, permission, goDataManage }) {
   return (
     <>
       <FormHeader type="view" title={"큐레이션 데이터 상세 조회"} />
@@ -27,11 +24,20 @@ function CurationDataDetail({ docs }) {
           </ImageContainer>
           <ArticleInfoContainer>
             <ArticleHeader>
-              <SubTitle>[글로벌]</SubTitle>
+              <SubTitle>
+                [{docs.dc_country_list && docs.dc_country_list.join(", ")}]
+              </SubTitle>
               <Title>{docs.dc_title_kr}</Title>
               <div>{docs.dc_title_or}</div>
             </ArticleHeader>
-
+            {
+              // 권한이 관리자일 경우
+              permission === 9 && (
+                <ArticleActions>
+                  <button onClick={goDataManage}>관리</button>
+                </ArticleActions>
+              )
+            }
             <ArticleInfo>
               <Info>
                 <GrFormView size="24" color="#d6d6d6" />
@@ -50,16 +56,21 @@ function CurationDataDetail({ docs }) {
                 <div className="content">{docs.dc_page}</div>
               </Info>
               <Info>
-                <div className="title">▶ 대상국가</div>
-                <div className="content">글로벌</div>
+                <div className="title">▶ 발행국가</div>
+                <div className="content">
+                  {docs.dc_country_pub_list &&
+                    docs.dc_country_pub_list.join(", ")}
+                </div>
               </Info>
               <Info>
                 <div className="title">▶ 주제분류</div>
-                <div className="content">기본정보</div>
+                <div className="content">
+                  {docs.dc_code_list && docs.dc_code_list.join(", ")}
+                </div>
               </Info>
               <Info>
                 <div className="title">▶ 유형분류</div>
-                <div className="content">뉴스</div>
+                <div className="content">{docs.dc_type}</div>
               </Info>
             </ArticleInfo>
           </ArticleInfoContainer>
@@ -69,26 +80,33 @@ function CurationDataDetail({ docs }) {
           <div className="contents">
             {docs.dc_keyword &&
               docs.dc_keyword.map((item, index) => {
-                return <div className="chip">{item}</div>;
+                return (
+                  <div className="chip" key={index}>
+                    {item}
+                  </div>
+                );
               })}
           </div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ URL</div>
           <div className="contents">
-            <a target="_blank" href="https://www.forbes.com/home_asia/">
-              https://www.forbes.com/home_asia/
+            <a target="_blank" href={docs.dc_url_loc}>
+              {docs.dc_url_loc}
             </a>
           </div>
         </ContentRow>
         <ContentRow>
-          <div className="title">▶ 한글요약</div>
+          <div className="title">▶ 요약</div>
           <div className="contents">{docs.dc_smry_kr}</div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ 연관문서 이동</div>
           <div className="contents">
-            <div className="chip"><AiOutlineLink/>연관문서 1</div>
+            <div className="chip">
+              <AiOutlineLink />
+              연관문서 1
+            </div>
           </div>
         </ContentRow>
         <ContentRow>
@@ -97,11 +115,21 @@ function CurationDataDetail({ docs }) {
         <ContentRow>
           <Editor readOnly={true} data={docs.dc_content} />
         </ContentRow>
-
       </Wrapper>
     </>
   );
 }
+const ArticleActions = styled.div`
+  padding: 1rem 0 1rem 0;
+  border-bottom: solid 1px #d6d6d6;
+  button {
+    cursor: pointer;
+    margin-right: 1rem;
+    border: none;
+    width: 80px;
+    height: 35px;
+  }
+`;
 const Wrapper = styled.div`
   width: 90%;
   margin: 3rem auto;

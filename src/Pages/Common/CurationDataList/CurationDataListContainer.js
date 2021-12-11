@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CurationDataList from "./CurationDataList";
 import { CrawlDataListFetchApi } from "../../../Utils/api";
+import { useParams } from "react-router-dom";
 
 function CurationDataListContainer() {
   const [curationDataList, setCurationDataList] = useState([]);
@@ -23,17 +24,16 @@ function CurationDataListContainer() {
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,
-        dc_cover:item.dc_cover,
+        dc_cover: item.dc_cover[0] === "" ? [] : item.dc_cover,
         dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
+        dc_country_pub_list: item.dc_country_pub.map((x) => x.CTY_NAME),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
-        dc_dt_regi:item.dc_dt_regi.substring(0,10),
-        dc_publisher:item.dc_publisher,
-        dc_content:item.dc_content.replace(/(<([^>]+)>)/ig,"") // 태그 삭제 정규표현식
-
+        dc_dt_regi: item.dc_dt_regi.substring(0, 10),
+        dc_publisher: item.dc_publisher,
+        dc_content: item.dc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
       };
       _curationDataList.push(obj);
     });
-    console.log(_curationDataList)
     setDcCount(_dcCount);
     setCurationDataList(_curationDataList);
   };
@@ -41,7 +41,7 @@ function CurationDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       dataCleansing(res.data);
     });
   };
