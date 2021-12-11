@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CurationDataDetail from "./CurationDataDetail";
-import { useParams,useHistory } from "react-router-dom";
-import { CrawlDataDetailFetchApi } from "../../../Utils/api";
-import {useSelector} from "react-redux"
+import { useParams, useHistory } from "react-router-dom";
+import { CrawlDataDetailFetchApi, RefreshTokenApi } from "../../../Utils/api";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, setLogout } from "../../../Modules/login";
 
 function CurationDataDetailContainer() {
   const statusCode = 7;
@@ -10,10 +11,11 @@ function CurationDataDetailContainer() {
   const { itemId } = useParams();
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
   const history = useHistory();
+  const dispatch = useDispatch();
   /* 데이터 관리로 이동 */
-  const goDataManage = ()=>{
-    history.push(`/crawl/detail/${statusCode}/${itemId}`)
-  }
+  const goDataManage = () => {
+    history.push(`/crawl/detail/${statusCode}/${itemId}`);
+  };
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
@@ -62,7 +64,11 @@ function CurationDataDetailContainer() {
 
   return (
     <>
-      <CurationDataDetail docs={docs} permission={permission} goDataManage={goDataManage}/>
+      <CurationDataDetail
+        docs={docs}
+        permission={permission}
+        goDataManage={goDataManage}
+      />
     </>
   );
 }

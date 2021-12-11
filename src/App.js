@@ -17,28 +17,58 @@ import UserSection from "./Pages/User/UserSection";
 import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
-import { useSelector, useDispatch } from "react-redux";
-import { userAuthApi } from "./Utils/api";
-import { setUser } from "./Modules/login";
-function App() {
-  const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.login.isLogin);
-  const userInfo = useSelector((state) => state.login.user);
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { RefreshTokenApi, userAuthApi } from "./Utils/api";
+import { setUser } from "./Modules/user";
+import { setTokens } from "./Utils/tokens";
+import { setLogout } from "./Modules/login";
 
-  // 일반사용자 0 , 슈퍼관리자 9
+function App() {
+  const isLogin = useSelector((state) => state.login.isLogin, shallowEqual);
+  const userInfo = useSelector((state) => state.user.user, shallowEqual);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLogin) {
-      userAuthApi().then((res) => {
-        const _userObj = {
-          name: res.data.Name,
-          permission: Number(res.data.Category),
-        };
-        dispatch(setUser(_userObj));
-      });
+      userAuthApi()
+        .then((res) => {
+          dispatch(
+            setUser({
+              name: res.data.Name,
+              permission: Number(res.data.Category),
+            })
+          );
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            RefreshTokenApi()
+              .then((res) => {
+                setTokens(res);
+                userAuthApi().then((res) => {
+                  dispatch(
+                    setUser({
+                      name: res.data.Name,
+                      permission: Number(res.data.Category),
+                    })
+                  );
+                });
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  alert("세션만료");
+                  localStorage.removeItem("token"); // 로컬스토리지에서 데이터 삭제
+                  localStorage.removeItem("refreshToken"); // 로컬스토리지에서 데이터 삭제
+
+                  window.location.href = "/login";
+                }
+              });
+          }
+        });
     }
   }, [isLogin]);
-
+  useEffect(() => {
+    console.log("userInfo");
+  }, [userInfo]);
   return (
     <>
       {isLogin && <Header name={userInfo.name} />}

@@ -1,6 +1,5 @@
 const SET_LOGIN = "login/SET_LOGIN";
 const SET_LOGOUT = "login/SET_LOGOUT";
-const SET_USER = "login/SET_USER";
 
 /* 
     token - 로그인한 유저의 token 정보
@@ -10,21 +9,17 @@ const SET_USER = "login/SET_USER";
     refreshToken이 만료되지 않았다면 로그인 연장.
     refreshToken이 만료되었다면 로그아웃 후 재로그인 요청
 */
-
-export const setLogin = (tokens) => ({ type: SET_LOGIN, tokens });
-
 /* 
     로그아웃 에서 일반 로그아웃과 세션만료 로그아웃을 구분함.
     normal_logout - 일반 로그아웃
     expired_logout - 세션 만료 로그아웃
 */
 
+export const setLogin = (tokens) => ({ type: SET_LOGIN, tokens });
 export const setLogout = (logout_type) => ({ type: SET_LOGOUT, logout_type });
-export const setUser = (user) => ({ type: SET_USER, user });
 
 const initialState = {
   isLogin: !!localStorage.getItem("token"), // 로그인 상태를 담고 있는 state
-  user: {}, // 로그인한 유저의 정보를 담고 있는 state`
 };
 
 export default function login(state = initialState, action) {
@@ -41,9 +36,11 @@ export default function login(state = initialState, action) {
       };
 
     case SET_LOGOUT:
-      if (action.type === "NORMAL_LOGOUT") {
+      console.log("test")
+      const _type = action.logout_type;
+      if (_type === "NORMAL_LOGOUT") {
         alert("성공적으로 로그아웃 되었습니다.");
-      } else if (action.type === "EXPIRED_LOGOUT") {
+      } else if (_type === "EXPIRED_LOGOUT") {
         alert("세션이 만료되어 로그아웃 되었습니다.");
       }
       localStorage.removeItem("token"); // 로컬스토리지에서 데이터 삭제
@@ -53,15 +50,7 @@ export default function login(state = initialState, action) {
       return {
         ...state,
         isLogin: false,
-        user: {},
       };
-
-    case SET_USER:
-      return {
-        ...state,
-        user: action.user,
-      };
-
     default:
       return state;
   }

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { FetchUsersApi, deleteUserByIdApi } from "../../../Utils/api";
+import {
+  FetchUsersApi,
+  deleteUserByIdApi,
+  RefreshTokenApi,
+} from "../../../Utils/api";
 import UserManagement from "./UserManagement";
 import { setModal, setModalData } from "../../../Modules/modal";
+import { setUser, setLogout } from "../../../Modules/login";
 
 function UserManagementContainer() {
   const history = useHistory();
