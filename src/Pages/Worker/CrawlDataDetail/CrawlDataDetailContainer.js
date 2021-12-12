@@ -72,32 +72,33 @@ function CrawlDataDetailContainer() {
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
+    console.log(_rawStatusDetailData)
     let _docs = {
       dc_content:
-        _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content[0],
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect[0] || "",
+        _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content,
+      dc_dt_collect: _rawStatusDetailData.dc_dt_collect|| "",
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher:
         _rawStatusDetailData.dc_publisher &&
-        _rawStatusDetailData.dc_publisher[0],
+        _rawStatusDetailData.dc_publisher,
       dc_cover: _rawStatusDetailData.dc_cover,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat,
       dc_code: _rawStatusDetailData.dc_code,
       dc_country: _rawStatusDetailData.dc_country,
-      dc_page: _rawStatusDetailData.dc_page && _rawStatusDetailData.dc_page[0],
+      dc_page: _rawStatusDetailData.dc_page && _rawStatusDetailData.dc_page,
       dc_type: _rawStatusDetailData.dc_type || "",
       dc_title_or:
-        _rawStatusDetailData.dc_title_or && _rawStatusDetailData.dc_title_or[0],
+        _rawStatusDetailData.dc_title_or && _rawStatusDetailData.dc_title_or,
       dc_title_kr:
-        _rawStatusDetailData.dc_title_kr && _rawStatusDetailData.dc_title_kr[0],
+        _rawStatusDetailData.dc_title_kr && _rawStatusDetailData.dc_title_kr,
       dc_smry_kr:
-        _rawStatusDetailData.dc_smry_kr && _rawStatusDetailData.dc_smry_kr[0],
+        _rawStatusDetailData.dc_smry_kr && _rawStatusDetailData.dc_smry_kr,
       dc_url_loc: _rawStatusDetailData.dc_url_loc,
       dc_link: _rawStatusDetailData.dc_link || "",
-      dc_lang: _rawStatusDetailData.dc_lang && _rawStatusDetailData.dc_lang[0],
+      dc_lang: _rawStatusDetailData.dc_lang && _rawStatusDetailData.dc_lang,
     };
     setDocs(_docs);
   };

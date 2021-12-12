@@ -31,6 +31,7 @@ function ArchiveDataListContainer() {
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
         is_crawled: item.is_crawled,
+        dc_dt_regi: item.dc_dt_regi.substring(0,10),
       };
       _archiveDataList.push(obj);
     });
@@ -39,7 +40,8 @@ function ArchiveDataListContainer() {
     setArchiveDataList(_archiveDataList);
   };
 
-  const dataFilter = (
+  /* 필터 적용 데이터 받아오기 */
+  const dataFilterFetch = (
     lang = null,
     code = null,
     keyword = null,
@@ -47,8 +49,26 @@ function ArchiveDataListContainer() {
     publisher = null,
     dateType = null,
     gte = null,
-    lte = null
-  ) => {};
+    lte = null,
+    isCrawled=null,
+  ) => {
+    const searchObj = {
+      dc_lang: lang,
+      dc_code: code,
+      dc_keyword: keyword,
+      dc_country: country,
+      dc_publisher: publisher,
+      dateType: dateType,
+      gte: gte,
+      lte: lte,
+      is_crawled:isCrawled,
+    };
+    CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj).then(
+      (res) => {
+        dataCleansing(res.data);
+      }
+    );
+  };
   /* 데이터 불러오기 */
   const dataFetch = () => {
     CrawlDataListFetchApi(statusCode, listSize, pageNo)
@@ -77,6 +97,7 @@ function ArchiveDataListContainer() {
         listSize={listSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
+        dataFilterFetch={dataFilterFetch}
       />
     </>
   );

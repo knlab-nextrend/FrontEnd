@@ -5,14 +5,14 @@ import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { MdSort } from "react-icons/md";
 import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
-function DataFilter() {
+function DataFilter({ dataFilterFetch }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
   const [endDate, setEndDate] = useState(
     new Date().toISOString().substring(0, 10)
   ); //endDate
   const [lang, setLang] = useState(""); // language
-  const [site, setSite] = useState(""); // site
+  const [publisher, setPublisher] = useState(""); // publisher
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
@@ -22,8 +22,8 @@ function DataFilter() {
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
-  const [selectCategory, setSelectCategory] = useState({});
-  const [selectCountry, setSelectCountry] = useState({});
+  const [selectCategory, setSelectCategory] = useState(0);
+  const [selectCountry, setSelectCountry] = useState(0);
 
   // 더미데이터
   const LANGUAGE_LIST = [
@@ -41,8 +41,8 @@ function DataFilter() {
   const _isCrawledHandler = (e) => {
     setIsCrawled(e.target.value);
   };
-  const _siteHandler = (e) => {
-    setSite(e.target.value);
+  const _publisherHandler = (e) => {
+    setPublisher(e.target.value);
   };
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
@@ -83,9 +83,36 @@ function DataFilter() {
     return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
   };
 
-  const selectedCode = (code) => {
-    console.log(code);
+  const selectedCategory = (code) => {
+    setSelectCategory(code)
   };
+  const selectedCountry = (country) => {
+    setSelectCountry(country)
+  };
+
+  const searchFilter = () => {
+    dataFilterFetch(
+      lang===""?null:lang,
+      selectCategory===0?null:selectCategory,
+      keyword===""?null:keyword,
+      selectCountry===0?null:selectCountry,
+      publisher===""?null:publisher,
+      null, // dateType을 추후 추가
+      startDate,
+      endDate,
+      isCrawled
+    );
+  };
+
+  const searchReset = ()=>{
+    setLang("")
+    setPublisher("")
+    setSelectCategory(0)
+    setSelectCountry(0)
+    setKeyword("")
+    setIsCrawled(true)
+
+  }
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
       console.log(res.data);
@@ -150,7 +177,7 @@ function DataFilter() {
                         <option value={""}>전체</option>
                         {LANGUAGE_LIST.map((item) => {
                           return (
-                            <option value={item.site_name}>
+                            <option value={item.language_code_name}>
                               {item.language_name}
                             </option>
                           );
@@ -160,7 +187,7 @@ function DataFilter() {
                     </OptionCol>
                     <OptionCol>
                       <OptionTitle>사이트</OptionTitle>
-                      <OptionSelect value={site} onChange={_siteHandler}>
+                      <OptionSelect value={publisher} onChange={_publisherHandler}>
                         <option value={""}>전체</option>
                         {SITE_LIST.map((item) => {
                           return (
@@ -198,7 +225,7 @@ function DataFilter() {
                     <OptionCol>
                       <OptionTitle>주제 분류 선택</OptionTitle>
                       <Cascader
-                        getCategoryCode={selectedCode}
+                        selectedCategory={selectedCategory}
                         options={categoryOptions}
                       />
                     </OptionCol>
@@ -207,7 +234,7 @@ function DataFilter() {
                     <OptionCol>
                       <OptionTitle>대상 국가 선택</OptionTitle>
                       <Cascader
-                        getCategoryCode={selectedCode}
+                        selectedCountry={selectedCountry}
                         options={countryOptions}
                       />
                     </OptionCol>
@@ -254,11 +281,11 @@ function DataFilter() {
                   </OptionRow>
                 </OptionContainer>
                 <FilterActions>
-                  <button>
+                  <button onClick={searchReset}>
                     <GrPowerReset />
                     초기화
                   </button>
-                  <button>
+                  <button onClick={searchFilter}>
                     <AiOutlineSearch />
                     검색
                   </button>
@@ -272,14 +299,19 @@ function DataFilter() {
   );
 }
 
-function Cascader({ options, selectedCode }) {
+function Cascader({ options, selectedCountry,selectedCategory }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
   };
   const PrintValue = (e) => {
-    console.log(e.target.value);
-    //selectedCode(e.target.value);
+    console.log(e.target.value)
+    if(selectedCategory){
+      selectedCategory(e.target.value)
+    }
+    if(selectedCountry){
+      selectedCountry(e.target.value)
+    }
   };
   return (
     <CascaderWrapper>
@@ -300,10 +332,7 @@ function Cascader({ options, selectedCode }) {
                           {item.children.map((item2, index2) => {
                             return (
                               <>
-                                <li
-                                  key={index2}
-                                  value={item2.value}
-                                >
+                                <li key={index2} value={item2.value}>
                                   {item2.label}
                                   {item2.children.length !== 0 && (
                                     <>
@@ -440,7 +469,7 @@ const FilterBody = styled.div`
   border-bottom: solid 2px #bfbfbf;
 `;
 const FilterActions = styled.div`
-  padding: 1rem 0 1rem 0;
+  padding: 0.5rem 0 0.5rem 0;
   border-top: solid 1px #d6d6d6;
   display: flex;
   justify-content: right;
@@ -462,7 +491,7 @@ const OptionRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 45px;
+  height: 30px;
   margin: 1rem;
 `;
 
@@ -471,7 +500,7 @@ const OptionCol = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin: 0 1rem 0 1rem;
+  margin: 0 0.5rem 0 0.5rem;
 `;
 
 const OptionTitle = styled.div`
@@ -479,7 +508,7 @@ const OptionTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px;
+  height: 30px;
   background-color: #d6d6d6;
   font-size: 12px;
   margin-right: 0.5rem;

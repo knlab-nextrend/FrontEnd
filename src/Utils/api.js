@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, getRefreshToken,setTokens } from "./tokens";
+import { getToken, getRefreshToken, setTokens } from "./tokens";
 import { setUser } from "../Modules/user";
 import { setLogout } from "../Modules/login";
 
@@ -22,7 +22,7 @@ const refreshHeaders = {
 /* 크롤데이터 스크리닝 데이터 받아오기 */
 const ScreeningDataFetchApi = (listSize, pageNo) => {
   const config = {
-    headers: { authorization: `Bearer ${localStorage.getItem('token')}` },
+    headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
@@ -51,13 +51,16 @@ const ScreeningDataDeleteApi = (deleteDataList) => {
 };
 
 /* 크롤데이터 리스트 받아오기 */
-const CrawlDataListFetchApi = (statusCode, listSize, pageNo) => {
+const CrawlDataListFetchApi = (
+  statusCode,
+  listSize,
+  pageNo,
+  searchObj = null
+) => {
+  const params = { listSize: listSize, pageNo: pageNo, ...searchObj };
   const config = {
     headers: { authorization: `Bearer ${getToken()}` },
-    params: {
-      listSize: listSize,
-      pageNo: pageNo,
-    },
+    params,
   };
   return axios.get(`/crawl/list/${statusCode}`, config);
 };
@@ -185,7 +188,7 @@ const sessionHandler = (err, dispatch) => {
                 permission: Number(res.data.Category),
               })
             );
-            resolve("세션유효")
+            resolve("세션유효");
           });
         })
         .catch((err) => {

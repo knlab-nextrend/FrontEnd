@@ -18,10 +18,8 @@ import PublicRoute from "./Route/PublicRoute";
 import PrivateRoute from "./Route/PrivateRoute";
 
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { RefreshTokenApi, userAuthApi,sessionHandler } from "./Utils/api";
+import { userAuthApi,sessionHandler } from "./Utils/api";
 import { setUser } from "./Modules/user";
-import { setTokens } from "./Utils/tokens";
-import { setLogout } from "./Modules/login";
 
 function App() {
   const isLogin = useSelector((state) => state.login.isLogin, shallowEqual);

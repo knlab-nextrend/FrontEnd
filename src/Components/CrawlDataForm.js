@@ -27,7 +27,7 @@ function CrawlDataForm({ docs, type }, ref) {
   const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
   const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
-  const [dcPublisher, setDcPublisher] = useState(""); // dc_publisher 발행기관, 발행자 명
+  const [dcPublisher, setDcPublisher] = useState(""); // dc_publisher 발행 사이트
   const [dcPage, setDcPage] = useState(0); // dc_page 원문 페이지 수
   const [dcTitleOr, setDcTitleOr] = useState(""); // dc_title_or  원문 제목
   const [dcTitleKr, setDcTitleKr] = useState(""); // dc_title_kr 한글 제목
@@ -147,6 +147,7 @@ function CrawlDataForm({ docs, type }, ref) {
   }));
   useEffect(() => {
     /* docs가 빈 객체가 아니라면 */
+    console.log(docs)
     if (Object.keys(docs).length !== 0) {
       setDcContent(docs.dc_content);
       setDcDtCollect(docs.dc_dt_collect);
@@ -338,7 +339,7 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">발행자/발행기관 명</p>
+            <p className="title">발행 사이트</p>
             <input
               value={dcPublisher}
               onChange={_dcPublisherHandler}
