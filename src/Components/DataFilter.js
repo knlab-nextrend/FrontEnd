@@ -4,7 +4,7 @@ import { FaFilter } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { MdSort } from "react-icons/md";
-import { CategoryOptionFetchApi } from "../Utils/api";
+import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
 function DataFilter() {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
@@ -21,26 +21,21 @@ function DataFilter() {
   const [collectDateSort, setCollectDateSort] = useState(""); // 원문 수집일
 
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectCategoryCode,setSelectCategoryCode] = useState(null);
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [selectCategory, setSelectCategory] = useState({});
+  const [selectCountry, setSelectCountry] = useState({});
 
   // 더미데이터
   const LANGUAGE_LIST = [
-    { language_name: "한국어", language_code_name: "KO" },
-    { language_name: "영어", language_code_name: "EN" },
-    { language_name: "일본어", language_code_name: "JP" },
-    { language_name: "독일어", language_code_name: "DE" },
-    { language_name: "프랑스어", language_code_name: "FR" },
-    { language_name: "중국어", language_code_name: "ZH" },
-    { language_name: "스페인어", language_code_name: "ES" },
-    { language_name: "포르투갈어", language_code_name: "PT" },
-    { language_name: "러시아어", language_code_name: "RU" },
-    { language_name: "아랍어", language_code_name: "AR" },
+    { language_name: "한국어", language_code_name: "ko" },
+    { language_name: "영어", language_code_name: "en" },
+    { language_name: "일본어", language_code_name: "ja" },
   ];
 
   // 더미데이터
   const SITE_LIST = [
-    { site_name: "YOUTUBE", site_link: "https://www.youtube.com/" },
-    { site_name: "NAVER", site_link: "https://www.naver.com/" },
+    { site_name: "capgemini", site_link: "www.capgemini.com" },
+    { site_name: "meti", site_link: "www.meti.go.jp" },
   ];
 
   const _isCrawledHandler = (e) => {
@@ -88,12 +83,17 @@ function DataFilter() {
     return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
   };
 
-  const getCategoryCode = (categoryCode)=>{
-    setSelectCategoryCode(categoryCode)
-  }
+  const selectedCode = (code) => {
+    console.log(code);
+  };
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
+      console.log(res.data);
       setCategoryOptions(res.data);
+    });
+    CountryOptionFetchApi().then((res) => {
+      setCountryOptions(res.data);
+      console.log(res.data);
     });
   }, []);
   return (
@@ -196,12 +196,20 @@ function DataFilter() {
                   </OptionRow>
                   <OptionRow>
                     <OptionCol>
-                      <OptionTitle>분류 선택</OptionTitle>
-                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                      <OptionTitle>주제 분류 선택</OptionTitle>
+                      <Cascader
+                        getCategoryCode={selectedCode}
+                        options={categoryOptions}
+                      />
                     </OptionCol>
+                  </OptionRow>
+                  <OptionRow>
                     <OptionCol>
-                      <OptionTitle>분류 선택</OptionTitle>
-                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                      <OptionTitle>대상 국가 선택</OptionTitle>
+                      <Cascader
+                        getCategoryCode={selectedCode}
+                        options={countryOptions}
+                      />
                     </OptionCol>
                   </OptionRow>
                 </OptionContainer>
@@ -264,13 +272,14 @@ function DataFilter() {
   );
 }
 
-function Cascader({ options,getCategoryCode }) {
+function Cascader({ options, selectedCode }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
   };
   const PrintValue = (e) => {
-    getCategoryCode(e.target.value)
+    console.log(e.target.value);
+    //selectedCode(e.target.value);
   };
   return (
     <CascaderWrapper>
@@ -291,7 +300,10 @@ function Cascader({ options,getCategoryCode }) {
                           {item.children.map((item2, index2) => {
                             return (
                               <>
-                                <li key={index2} value={item2.value}>
+                                <li
+                                  key={index2}
+                                  value={item2.value}
+                                >
                                   {item2.label}
                                   {item2.children.length !== 0 && (
                                     <>

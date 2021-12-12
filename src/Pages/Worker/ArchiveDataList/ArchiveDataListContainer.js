@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ArchiveDataList from "./ArchiveDataList";
-import { CrawlDataListFetchApi, RefreshTokenApi } from "../../../Utils/api";
+import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import { useDispatch } from "react-redux";
-import { setUser, setLogout } from "../../../Modules/login";
 
 function ArchiveDataListContainer() {
   const dispatch = useDispatch();
@@ -40,11 +39,29 @@ function ArchiveDataListContainer() {
     setArchiveDataList(_archiveDataList);
   };
 
+  const dataFilter = (
+    lang = null,
+    code = null,
+    keyword = null,
+    country = null,
+    publisher = null,
+    dateType = null,
+    gte = null,
+    lte = null
+  ) => {};
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      dataCleansing(res.data);
-    });
+    CrawlDataListFetchApi(statusCode, listSize, pageNo)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      });
   };
 
   useEffect(() => {

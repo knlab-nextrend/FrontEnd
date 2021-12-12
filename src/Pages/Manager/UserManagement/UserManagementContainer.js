@@ -4,11 +4,10 @@ import { useHistory } from "react-router";
 import {
   FetchUsersApi,
   deleteUserByIdApi,
-  RefreshTokenApi,
+  sessionHandler,
 } from "../../../Utils/api";
 import UserManagement from "./UserManagement";
 import { setModal, setModalData } from "../../../Modules/modal";
-import { setUser, setLogout } from "../../../Modules/login";
 
 function UserManagementContainer() {
   const history = useHistory();
@@ -25,9 +24,17 @@ function UserManagementContainer() {
   };
 
   const getUserList = () => {
-    FetchUsersApi().then((res) => {
-      setUserData(res.data);
-    });
+    FetchUsersApi()
+      .then((res) => {
+        setUserData(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          FetchUsersApi().then((res) => {
+            setUserData(res.data);
+          });
+        });
+      });
   };
   const deleteUser = (id) => {
     deleteUserByIdApi(id)

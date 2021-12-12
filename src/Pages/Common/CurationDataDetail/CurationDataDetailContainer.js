@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CurationDataDetail from "./CurationDataDetail";
 import { useParams, useHistory } from "react-router-dom";
-import { CrawlDataDetailFetchApi, RefreshTokenApi } from "../../../Utils/api";
+import { CrawlDataDetailFetchApi, sessionHandler } from "../../../Utils/api";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, setLogout } from "../../../Modules/login";
 
 function CurationDataDetailContainer() {
   const statusCode = 7;
@@ -18,9 +17,17 @@ function CurationDataDetailContainer() {
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-      dataCleansing(res.data);
-    });
+    CrawlDataDetailFetchApi(statusCode, itemId)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      });
   };
 
   /* 데이터 정제하기 */

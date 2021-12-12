@@ -1,5 +1,8 @@
 import axios from "axios";
-import { getToken, getRefreshToken } from "./tokens";
+import { getToken, getRefreshToken,setTokens } from "./tokens";
+import { setUser } from "../Modules/user";
+import { setLogout } from "../Modules/login";
+
 /* 
     get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
@@ -19,7 +22,7 @@ const refreshHeaders = {
 /* 크롤데이터 스크리닝 데이터 받아오기 */
 const ScreeningDataFetchApi = (listSize, pageNo) => {
   const config = {
-    headers: headers,
+    headers: { authorization: `Bearer ${localStorage.getItem('token')}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
@@ -132,6 +135,14 @@ const CategoryOptionFetchApi = () => {
   };
   return axios.get("/nextrend/categorys/dict", config);
 };
+
+/* 국가 리스트를 모두 받아오는 함수 */
+const CountryOptionFetchApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  return axios.get("/nextrend/countrys/dict", config);
+};
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -157,6 +168,33 @@ const userAuthApi = () => {
     headers: { authorization: `Bearer ${getToken()}` },
   };
   return axios.get(`/nextrend/user`, config);
+};
+
+/* 데이터 요청 시 토큰 만료 및 리프레시 토큰 만료 세션 처리 함수 */
+const sessionHandler = (err, dispatch) => {
+  /* dispatch 를 사용하기 위해서 인자로 받아옴 */
+  return new Promise((resolve, reject) => {
+    if (err.response.status === 401) {
+      RefreshTokenApi()
+        .then((res) => {
+          setTokens(res);
+          userAuthApi().then((res) => {
+            dispatch(
+              setUser({
+                name: res.data.Name,
+                permission: Number(res.data.Category),
+              })
+            );
+            resolve("세션유효")
+          });
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(setLogout("EXPIRED_LOGOUT"));
+          }
+        });
+    }
+  });
 };
 
 const FetchUsersApi = () => {
@@ -217,5 +255,7 @@ export {
   addUserApi,
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
+  CountryOptionFetchApi,
   userAuthApi,
+  sessionHandler,
 };

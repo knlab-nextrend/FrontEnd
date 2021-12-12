@@ -4,7 +4,7 @@ import {
   CrawlDataRejectApi,
   CrawlDataStageApi,
   CrawlDataKeepApi,
-  RefreshTokenApi
+  sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
@@ -60,6 +60,13 @@ function CrawlDataDetailContainer() {
       .then((res) => {
         dataCleansing(res.data);
       })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      });
   };
 
   /* 데이터 정제하기 */

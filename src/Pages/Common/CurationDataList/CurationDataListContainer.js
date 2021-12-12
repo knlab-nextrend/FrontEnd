@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CurationDataList from "./CurationDataList";
-import { CrawlDataListFetchApi } from "../../../Utils/api";
+import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function CurationDataListContainer() {
   const [curationDataList, setCurationDataList] = useState([]);
@@ -10,7 +11,8 @@ function CurationDataListContainer() {
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
-
+  
+  const  dispatch = useDispatch();
   const statusCode = 7;
 
   /* 데이터 정제하기 */
@@ -40,10 +42,18 @@ function CurationDataListContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-      console.log(res.data);
-      dataCleansing(res.data);
-    });
+    CrawlDataListFetchApi(statusCode, listSize, pageNo)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataListFetchApi(statusCode, listSize, pageNo)
+          .then((res) => {
+            dataCleansing(res.data);
+          })
+        });
+      });
   };
 
   useEffect(() => {

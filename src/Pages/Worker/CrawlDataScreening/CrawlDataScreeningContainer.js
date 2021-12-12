@@ -3,12 +3,11 @@ import {
   ScreeningDataFetchApi,
   ScreeningDataStageApi,
   ScreeningDataDeleteApi,
-  RefreshTokenApi,
+  sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
-import { setUser, setLogout } from "../../../Modules/login";
 
 function CrawlDataScreeningContainer() {
   const history = useHistory();
@@ -103,9 +102,17 @@ function CrawlDataScreeningContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    ScreeningDataFetchApi(listSize, pageNo).then((res) => {
-      dataCleansing(res.data);
-    });
+    ScreeningDataFetchApi(listSize, pageNo)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          ScreeningDataFetchApi(listSize, pageNo).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      });
   };
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */

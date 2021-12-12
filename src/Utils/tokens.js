@@ -1,7 +1,5 @@
 const getToken = () => {
-  console.log(localStorage.getItem("token"))
   if (!!localStorage.getItem("token")) {
-    console.log(localStorage.getItem("token"))
     return localStorage.getItem("token");
   }
 };
@@ -12,7 +10,10 @@ const getRefreshToken = () => {
 };
 
 const setTokens = (res) => {
-  localStorage.setItem("token", res.data.token);
-  localStorage.setItem("refreshToken", res.data.refreshToken);
+  return new Promise((resolve, reject) => {
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
+    resolve(null);
+  });
 };
 export { getToken, getRefreshToken, setTokens };
