@@ -42,7 +42,7 @@ function ArchiveDataList({
 
                 <thead>
                   <tr>
-                    <th>데이터 등록일</th>
+                    <th>원문 수집일</th>
                     <th>구분</th>
                     <th>원문 대상 국가</th>
                     <th>원문 제목</th>
@@ -58,7 +58,7 @@ function ArchiveDataList({
                   {archiveDataList.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>{item.dc_dt_regi}</td>
+                        <td>{item.dc_dt_collect}</td>
                         <td>
                           <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
                         </td>

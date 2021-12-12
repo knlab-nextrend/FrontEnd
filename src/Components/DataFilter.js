@@ -370,6 +370,7 @@ const CascaderOpenHandler = styled.div`
   margin: 0;
 `;
 const CascaderWrapper = styled.div`
+  font-size:12px;
   display: flex;
   align-items: center;
   height: 100%;
@@ -388,8 +389,8 @@ const CascaderOptions = styled.div`
   }
   li {
     background-color: white;
-    width: 10rem;
-    height: 3rem;
+    width: 8rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -409,7 +410,7 @@ const CascaderOptions = styled.div`
   .depth2,
   .depth3 {
     position: absolute;
-    left: 10rem;
+    left: 8rem;
   }
 `;
 

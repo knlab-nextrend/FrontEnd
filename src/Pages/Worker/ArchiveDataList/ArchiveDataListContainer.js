@@ -31,7 +31,7 @@ function ArchiveDataListContainer() {
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
         is_crawled: item.is_crawled,
-        dc_dt_regi: item.dc_dt_regi.substring(0, 10),
+        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
       };
       _archiveDataList.push(obj);
     });
@@ -54,7 +54,7 @@ function ArchiveDataListContainer() {
     dateSort,
     sortDateType
   ) => {
-    let searchObj = {
+    const searchObj = {
       dc_lang: lang,
       dc_code: code,
       dc_keyword: keyword,
@@ -64,8 +64,9 @@ function ArchiveDataListContainer() {
       gte: gte,
       lte: lte,
       is_crawled: isCrawled,
+      sortType:sortDateType,
+      sort:dateSort,
     };
-    searchObj[sortDateType] = dateSort;
     CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj).then(
       (res) => {
         dataCleansing(res.data);
