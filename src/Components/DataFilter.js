@@ -16,9 +16,9 @@ function DataFilter({ dataFilterFetch }) {
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
-  const [regiDateSort, setRegiDateSort] = useState(""); // 데이터 등록일
-  const [writeDateSort, setWriteDateSort] = useState(""); // 원문 작성일
-  const [collectDateSort, setCollectDateSort] = useState(""); // 원문 수집일
+  const [dateSort,setDateSort] = useState("desc")
+  const [sortDateType,setSortDateType] = useState("dc_dt_collect")
+  
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -54,14 +54,11 @@ function DataFilter({ dataFilterFetch }) {
     setKeyword(e.target.value);
   };
 
-  const _regiDateSortHandler = (e) => {
-    setRegiDateSort(e.target.value);
+  const _sortDateTypeHandler = (e) => {
+    setSortDateType(e.target.value);
   };
-  const _writeDateSortHandler = (e) => {
-    setWriteDateSort(e.target.value);
-  };
-  const _collectDateSortHandler = (e) => {
-    setCollectDateSort(e.target.value);
+  const _dateSortHandler = (e) => {
+    setDateSort(e.target.value);
   };
   const _startDateHandler = (e) => {
     setStartDate(e.target.value);
@@ -100,7 +97,9 @@ function DataFilter({ dataFilterFetch }) {
       null, // dateType을 추후 추가
       startDate,
       endDate,
-      isCrawled
+      isCrawled,
+      dateSort,
+      sortDateType,
     );
   };
 
@@ -249,33 +248,21 @@ function DataFilter({ dataFilterFetch }) {
                 <OptionContainer>
                   <OptionRow>
                     <OptionCol>
-                      <OptionTitle>원문 수집일 순서</OptionTitle>
+                      <OptionTitle>시간 순 정렬</OptionTitle>
                       <OptionSelect
-                        value={collectDateSort}
-                        onChange={_collectDateSortHandler}
+                        value={sortDateType}
+                        onChange={_sortDateTypeHandler}
                       >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
+                        <option value="dc_dt_collect">원문 수집일 기준</option>
+                        <option value="dc_dt_write">원문 작성일 기준</option>
+                        <option value="dc_dt_regi">데이터 등록일 기준</option>
                       </OptionSelect>
-                    </OptionCol>
-                    <OptionCol>
-                      <OptionTitle>원문 발행일 순서</OptionTitle>
                       <OptionSelect
-                        value={writeDateSort}
-                        onChange={_writeDateSortHandler}
+                        value={dateSort}
+                        onChange={_dateSortHandler}
                       >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
-                      </OptionSelect>
-                    </OptionCol>
-                    <OptionCol>
-                      <OptionTitle>데이터 등록일 순서</OptionTitle>
-                      <OptionSelect
-                        value={regiDateSort}
-                        onChange={_regiDateSortHandler}
-                      >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
+                        <option value="desc">최신순</option>
+                        <option value="asc">오래된 순</option>
                       </OptionSelect>
                     </OptionCol>
                   </OptionRow>
@@ -504,7 +491,7 @@ const OptionCol = styled.div`
 `;
 
 const OptionTitle = styled.div`
-  width: 140px;
+  min-width: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
