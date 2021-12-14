@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { modifyUserInfoApi, addUserApi } from "../../Utils/api";
+import permission from "../../Data/permission.json"
 
 function UserInfoModal({ closeModal, executeModal }) {
   const [id, setID] = useState("");
@@ -12,7 +13,7 @@ function UserInfoModal({ closeModal, executeModal }) {
   const [Position, setPosition] = useState("");
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
-  const [Category, setCategory] = useState("");
+  const [Category, setCategory] = useState(0);
 
   const userInfo = useSelector(
     (state) => state.modal.modalData.modal_user.user
@@ -113,7 +114,6 @@ function UserInfoModal({ closeModal, executeModal }) {
             <input
               value={userID}
               onChange={_userUserIDHandler}
-              className="form"
               type="text"
             />
           </InputContainer>
@@ -124,7 +124,6 @@ function UserInfoModal({ closeModal, executeModal }) {
                 <input
                   value={userPW}
                   onChange={_userUserPWHandler}
-                  className="form"
                   type="text"
                 />
               </>
@@ -135,7 +134,6 @@ function UserInfoModal({ closeModal, executeModal }) {
             <input
               value={Tel}
               onChange={_userTelHandler}
-              className="form"
               type="text"
             />
           </InputContainer>
@@ -144,7 +142,6 @@ function UserInfoModal({ closeModal, executeModal }) {
             <input
               value={Position}
               onChange={_userPositionHandler}
-              className="form"
               type="text"
             />
           </InputContainer>
@@ -153,7 +150,6 @@ function UserInfoModal({ closeModal, executeModal }) {
             <input
               value={Name}
               onChange={_userNameHandler}
-              className="form"
               type="text"
             />
           </InputContainer>
@@ -162,18 +158,16 @@ function UserInfoModal({ closeModal, executeModal }) {
             <input
               value={Email}
               onChange={_userEmailHandler}
-              className="form"
               type="text"
             />
           </InputContainer>
           <InputContainer>
             <p className="title">사용자 권한</p>
-            <input
-              value={Category}
-              onChange={_userCategoryHandler}
-              className="form"
-              type="text"
-            />
+            <select onChange={_userCategoryHandler} value={Category}>
+              {permission.permission.map((item,index)=>{
+                return <option value={item.permission_code} key={index} >{item.permission_name}</option>
+              })}
+            </select>
           </InputContainer>
         </ModalBody>
         <ModalActions>
@@ -234,6 +228,12 @@ const InputContainer = styled.div`
     width: 7rem;
   }
   input {
+    height: 2rem;
+    border: solid 1px #d6d6d6;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 10px;
+  }
+  select{
     height: 2rem;
     border: solid 1px #d6d6d6;
     padding: 0.5rem 1rem 0.5rem 1rem;

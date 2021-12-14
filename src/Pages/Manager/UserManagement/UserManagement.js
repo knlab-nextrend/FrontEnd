@@ -12,6 +12,7 @@ function UserManagement({
   openUserModifyModal,
   deleteUser,
   openUserAddModal,
+  PERMISSON_DATA
 }) {
   return (
     <>
@@ -57,7 +58,7 @@ function UserManagement({
                   <td>{user.Company}</td>
                   <td>{user.Position}</td>
                   <td>{user.CreateAt.substring(0, 19).replace("T", " ")}</td>
-                  <td>{user.Category}</td>
+                  <td>{PERMISSON_DATA[user.Category]}</td>
                   <td>
                     <ButtonWrapper>
                       <Button

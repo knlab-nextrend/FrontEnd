@@ -9,10 +9,20 @@ import {
 import UserManagement from "./UserManagement";
 import { setModal, setModalData } from "../../../Modules/modal";
 
+
 function UserManagementContainer() {
   const history = useHistory();
   const [userData, setUserData] = useState([]);
   const dispatch = useDispatch();
+
+  const PERMISSON_DATA = {
+    0: "사용자",
+    1: "스크리닝 작업자",
+    2: "정제 작업자",
+    3: "등록 작업자",
+    4: "큐레이션 작업자",
+    9: "관리자",
+  };
 
   const openUserModifyModal = (user) => {
     dispatch(setModal("UserInfoModal"));
@@ -61,6 +71,7 @@ function UserManagementContainer() {
         openUserModifyModal={openUserModifyModal}
         deleteUser={deleteUser}
         openUserAddModal={openUserAddModal}
+        PERMISSON_DATA={PERMISSON_DATA}
       />
     </>
   );
