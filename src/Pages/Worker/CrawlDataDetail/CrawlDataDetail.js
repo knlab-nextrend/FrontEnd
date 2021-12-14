@@ -17,7 +17,6 @@ function CrawlDataDetail({
   statusCode,
   type,
 }) {
-
   return (
     <>
       <FormHeader type="plus" title={STATUS_CODE_SET[statusCode].title} />
@@ -27,10 +26,12 @@ function CrawlDataDetail({
           <AiOutlineDelete color="white" />
           <p>데이터 버리기</p>
         </Button>
-        <Button color="#6DAF44" onClick={dataKeep}>
-          <FaRegHandPaper color="white" />
-          <p>작업 보류</p>
-        </Button>
+        {(type !== "archive") && (type !== "curation") && (
+          <Button color="#6DAF44" onClick={dataKeep}>
+            <FaRegHandPaper color="white" />
+            <p>작업 보류</p>
+          </Button>
+        )}
         <Button color="#435269" onClick={dataStage}>
           <AiOutlineArrowRight color="white" />
           <p>작업 완료</p>
