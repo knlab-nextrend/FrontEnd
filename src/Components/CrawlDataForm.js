@@ -132,7 +132,7 @@ function CrawlDataForm({ docs, type }, ref) {
       _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
       _docs["dc_country_pub"] = dcCountryPubIndexList;
-      _docs["dc_cover"] = _dcCoverSelect;
+      _docs["dc_cover"] = (type!=="screening" && type!=="refine" && type!=="register") ? _dcCoverSelect : dcCover;
       _docs["dc_smry_kr"] = dcSmryKr;
       _docs["dc_publisher"] = dcPublisher;
       _docs["dc_page"] = dcPage;
