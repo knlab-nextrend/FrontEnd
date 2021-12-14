@@ -37,16 +37,18 @@ function UserManagementContainer() {
       });
   };
   const deleteUser = (id) => {
-    deleteUserByIdApi(id)
-      .then((res) => {
-        alert("성공적으로 삭제되었습니다");
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          alert("유저 정보 변경 중 오류발생");
-        }
-      });
-    window.location.reload(); //
+    if (comfirm("삭제하시겠습니까?")) {
+      deleteUserByIdApi(id)
+        .then((res) => {
+          alert("성공적으로 삭제되었습니다");
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            alert("유저 정보 변경 중 오류발생");
+          }
+        });
+      window.location.reload(); //
+    }
   };
   useEffect(() => {
     getUserList();
