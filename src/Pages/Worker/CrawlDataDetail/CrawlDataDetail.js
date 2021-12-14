@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineArrowRight, AiOutlineDelete } from "react-icons/ai";
 import { FaRegHandPaper } from "react-icons/fa";
 import CrawlDataForm from "../../../Components/CrawlDataForm";
@@ -14,13 +14,14 @@ function CrawlDataDetail({
   dataStage,
   cancel,
   STATUS_CODE_SET,
-  statusCode
+  statusCode,
+  type,
 }) {
 
   return (
     <>
       <FormHeader type="plus" title={STATUS_CODE_SET[statusCode].title} />
-      <CrawlDataForm docs={docs} type="refine" ref={crawlDataFormRef} />
+      <CrawlDataForm docs={docs} type={type} ref={crawlDataFormRef} />
       <ButtonWrapper>
         <Button color="#dc3545" onClick={dataReject}>
           <AiOutlineDelete color="white" />

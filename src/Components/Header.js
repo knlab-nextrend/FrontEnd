@@ -12,7 +12,7 @@ function Header({ name }) {
     window.open("http://nextrend.kr/index.php");
   };
   const go메인페이지 = () => {
-    history.push("/");
+    history.push("/home");
   };
 
   /* process.env.PUBLIC_URL 은 /public/ .... 의 경로를 절대경로로 나타냄. 환경변수에요*/
