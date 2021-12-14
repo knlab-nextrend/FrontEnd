@@ -29,7 +29,7 @@ export default function login(state = initialState, action) {
       const _refreshToken = action.tokens.refreshToken;
       localStorage.setItem("token", _token);
       localStorage.setItem("refreshToken", _refreshToken);
-      window.location.href = "/";
+      window.location.href = "/home";
       return {
         ...state,
         isLogin: true,
@@ -46,7 +46,7 @@ export default function login(state = initialState, action) {
       localStorage.removeItem("token"); // 로컬스토리지에서 데이터 삭제
       localStorage.removeItem("refreshToken"); // 로컬스토리지에서 데이터 삭제
 
-      window.location.href = "/login";
+      window.location.href = "/";
       return {
         ...state,
         isLogin: false,

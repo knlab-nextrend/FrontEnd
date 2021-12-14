@@ -31,7 +31,7 @@ function ArchiveDataListContainer() {
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
         is_crawled: item.is_crawled,
-        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
+        dc_dt_collect: item.dc_dt_collect,
       };
       _archiveDataList.push(obj);
     });
@@ -80,6 +80,7 @@ function ArchiveDataListContainer() {
         dataCleansing(res.data);
       })
       .catch((err) => {
+        console.log(err)
         sessionHandler(err, dispatch).then((res) => {
           CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
             dataCleansing(res.data);
