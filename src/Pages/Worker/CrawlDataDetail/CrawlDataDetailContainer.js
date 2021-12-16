@@ -9,6 +9,8 @@ import {
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
+
 
 function CrawlDataDetailContainer() {
   /* 
@@ -56,7 +58,7 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId)
+    trackPromise(CrawlDataDetailFetchApi(statusCode, itemId)
       .then((res) => {
         dataCleansing(res.data);
       })
@@ -66,7 +68,7 @@ function CrawlDataDetailContainer() {
             dataCleansing(res.data);
           });
         });
-      });
+      }));
   };
 
   /* 데이터 정제하기 */

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ArchiveDataList from "./ArchiveDataList";
 import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
 
 function ArchiveDataListContainer() {
   const dispatch = useDispatch();
@@ -64,8 +65,8 @@ function ArchiveDataListContainer() {
       gte: gte,
       lte: lte,
       is_crawled: isCrawled,
-      sortType:sortDateType,
-      sort:dateSort,
+      sortType: sortDateType,
+      sort: dateSort,
     };
     CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj).then(
       (res) => {
@@ -75,18 +76,18 @@ function ArchiveDataListContainer() {
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataListFetchApi(statusCode, listSize, pageNo)
+    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         sessionHandler(err, dispatch).then((res) => {
           CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
             dataCleansing(res.data);
           });
         });
-      });
+      }));
   };
 
   useEffect(() => {

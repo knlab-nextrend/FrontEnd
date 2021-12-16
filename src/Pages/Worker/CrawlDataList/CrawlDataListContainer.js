@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import CrawlDataList from "./CrawlDataList";
 import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
+
 
 function CrawlDataListContainer() {
   const dispatch = useDispatch();
@@ -63,7 +65,7 @@ function CrawlDataListContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataListFetchApi(statusCode, listSize, pageNo)
+    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
       })
@@ -73,7 +75,7 @@ function CrawlDataListContainer() {
             dataCleansing(res.data);
           });
         });
-      });
+      }));
   };
 
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */

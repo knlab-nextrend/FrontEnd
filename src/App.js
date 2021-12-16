@@ -21,28 +21,30 @@ import PrivateRoute from "./Route/PrivateRoute";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { userAuthApi, sessionHandler } from "./Utils/api";
 import { setUser } from "./Modules/user";
-
+import { trackPromise } from "react-promise-tracker";
 
 function App() {
   const isLogin = useSelector((state) => state.login.isLogin, shallowEqual);
   const userInfo = useSelector((state) => state.user.user, shallowEqual);
   const dispatch = useDispatch();
 
-  // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 .... 
+  // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 ....
   useEffect(() => {
     if (isLogin) {
-      userAuthApi()
-        .then((res) => {
-          dispatch(
-            setUser({
-              name: res.data.Name,
-              permission: Number(res.data.Category),
-            })
-          );
-        })
-        .catch((err) => {
-          sessionHandler(err, dispatch);
-        });
+      trackPromise(
+        userAuthApi()
+          .then((res) => {
+            dispatch(
+              setUser({
+                name: res.data.Name,
+                permission: Number(res.data.Category),
+              })
+            );
+          })
+          .catch((err) => {
+            sessionHandler(err, dispatch);
+          })
+      );
     }
   }, [isLogin]);
 

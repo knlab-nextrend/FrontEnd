@@ -8,10 +8,9 @@ import {
 } from "../../../Utils/api";
 import UserManagement from "./UserManagement";
 import { setModal, setModalData } from "../../../Modules/modal";
-
+import { trackPromise } from "react-promise-tracker";
 
 function UserManagementContainer() {
-  const history = useHistory();
   const [userData, setUserData] = useState([]);
   const dispatch = useDispatch();
 
@@ -34,7 +33,7 @@ function UserManagementContainer() {
   };
 
   const getUserList = () => {
-    FetchUsersApi()
+    trackPromise(FetchUsersApi()
       .then((res) => {
         setUserData(res.data);
       })
@@ -44,7 +43,7 @@ function UserManagementContainer() {
             setUserData(res.data);
           });
         });
-      });
+      }));
   };
   const deleteUser = (id) => {
     if (confirm("삭제하시겠습니까?")) {
