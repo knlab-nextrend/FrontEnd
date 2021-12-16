@@ -46,6 +46,9 @@ function AsideMenuBar({ permission }) {
   const go큐레이션조회 = () => {
     history.push("/curation/list");
   };
+  const go대량데이터등록 = ()=>{
+    history.push("/excel/register");
+  }
 
   const dispatch = useDispatch();
   const logout = () => {
@@ -120,7 +123,7 @@ function AsideMenuBar({ permission }) {
             </AsideMenuBarItem>
           )}
           {PERMISSON_DATA[permission] === "관리자" && (
-            <AsideMenuBarItem>
+            <AsideMenuBarItem onClick={go대량데이터등록}>
               <MdOutlineAdd className="icon" size="18" />
               대량 데이터 등록
             </AsideMenuBarItem>

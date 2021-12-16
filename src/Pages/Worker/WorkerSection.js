@@ -5,7 +5,6 @@ import PrivateRoute from "../../Route/PrivateRoute";
 import CrawlDataDetailContainer from "./CrawlDataDetail/CrawlDataDetailContainer";
 import CrawlDataScreeningContainer from "./CrawlDataScreening/CrawlDataScreeningContainer";
 import CrawlDataListContainer from "./CrawlDataList/CrawlDataListContainer";
-import UserManagementContainer from "../Manager/UserManagement/UserManagementContainer";
 import ArchiveDataListContainer from "./ArchiveDataList/ArchiveDataListContainer";
 import CurationDataListContainer from "../Common/CurationDataList/CurationDataListContainer";
 import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
@@ -28,8 +27,6 @@ function WorkerSection() {
         component={CrawlDataDetailContainer}
         exact
       />
-
-      <PrivateRoute path="/user/" component={UserManagementContainer} exact />
 
       <PrivateRoute
         path="/archive/list"

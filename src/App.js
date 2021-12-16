@@ -12,6 +12,7 @@ import GlobalModal from "./Components/ModalComponents/GlobalModal";
 import LoginContainer from "./Pages/Common/Login/LoginContainer";
 import WorkerSection from "./Pages/Worker/WorkerSection";
 import UserSection from "./Pages/User/UserSection";
+import ManagerSection from "./Pages/Manager/ManagerSection";
 
 /* route components */
 import PublicRoute from "./Route/PublicRoute";
@@ -26,6 +27,7 @@ function App() {
   const userInfo = useSelector((state) => state.user.user, shallowEqual);
   const dispatch = useDispatch();
 
+  // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 .... 
   useEffect(() => {
     if (isLogin) {
       userAuthApi()
@@ -59,7 +61,12 @@ function App() {
           {userInfo.permission === 2 && <WorkerSection />}
           {userInfo.permission === 3 && <WorkerSection />}
           {userInfo.permission === 4 && <WorkerSection />}
-          {userInfo.permission === 9 && <WorkerSection />}
+          {userInfo.permission === 9 && (
+            <>
+              <WorkerSection />
+              <ManagerSection />
+            </>
+          )}
           {userInfo.permission === 0 && <UserSection />}
           <PrivateRoute path="/home" exact>
             <MainPage />
