@@ -14,6 +14,9 @@ import rootReducer from "./Modules";
 
 /* scroll to top */
 import ScrollToTop from "./Components/ScrollToTop";
+
+/* loading Page */
+import Loading from "./Components/Loading";
 /* redux setting */
 const store = createStore(rootReducer);
 
@@ -21,6 +24,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
+        <Loading />
         <ScrollToTop />
         <App />
       </BrowserRouter>
