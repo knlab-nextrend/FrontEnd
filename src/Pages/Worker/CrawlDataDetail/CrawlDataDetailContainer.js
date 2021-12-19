@@ -176,6 +176,7 @@ function CrawlDataDetailContainer() {
         STATUS_CODE_SET={STATUS_CODE_SET}
         statusCode={statusCode}
         type={STATUS_CODE_SET[statusCode].type}
+        itemId={itemId}
       />
     </>
   );

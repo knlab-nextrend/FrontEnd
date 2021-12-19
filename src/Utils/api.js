@@ -270,4 +270,5 @@ export {
   CountryOptionFetchApi,
   userAuthApi,
   sessionHandler,
+  documentPastedImageApi
 };

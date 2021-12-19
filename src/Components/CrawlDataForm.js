@@ -11,7 +11,7 @@ import { MdSettings } from "react-icons/md";
 import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
-function CrawlDataForm({ docs, type }, ref) {
+function CrawlDataForm({ docs, type, itemId }, ref) {
   /* 현재 보여질 데이터 정보들 */
   const [dcContent, setDcContent] = useState(""); // dc_content 크롤 데이터 내용
   const [dcDtCollect, setDcDtCollect] = useState(""); // dc_dt_collect 원문 수집 일자
@@ -392,7 +392,7 @@ function CrawlDataForm({ docs, type }, ref) {
         {(type !== "refine" && type!=="register") && (<CustomFormRow>
           <CustomFormItem>
             <p className="title">내용</p>
-            <Editor data={dcContent} _dcContentHandler={_dcContentHandler} />
+            <Editor data={dcContent} _dcContentHandler={_dcContentHandler} itemId={itemId}/>
           </CustomFormItem>
         </CustomFormRow>)}
         {(type !== "refine" && type!=="register") &&
