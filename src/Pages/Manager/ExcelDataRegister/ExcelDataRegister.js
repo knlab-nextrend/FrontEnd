@@ -11,25 +11,25 @@ import {
   AiOutlineCloseCircle,
 } from "react-icons/ai";
 
-function ExcelDataRegister({ readExcel,regiExcel }) {
-  const [filename, setFilename] = useState(null);
-  const fileHandler = (e) => {
-    setFilename(e.target.files[0].name);
+function ExcelDataRegister({
+  readExcel,
+  nextStep,
+  prevStep,
+  step,
+  setExcelData,
+}) {
+  const [excelFilename, setExcelFilename] = useState(null);
+  const [pdfFilename, setPdfFilename] = useState(null);
+  const excelFileHandler = (e) => {
+    setExcelFilename(e.target.files[0].name);
     readExcel(e);
   };
-  const [step, setStep] = useState(1);
-
-  const nextStep = () => {
-    if (step === 3) {
-      return;
-    }
-    setStep((prev) => prev + 1);
+  const pdfFileHandler = (e) => {
+    setPdfFilename(e.target.files[0].name);
   };
-  const prevStep = () => {
-    if (step === 1) {
-      return;
-    }
-    setStep((prev) => prev - 1);
+  const excelFileDelete = (e) => {
+    setExcelFilename(null);
+    setExcelData([]);
   };
   return (
     <>
@@ -51,20 +51,20 @@ function ExcelDataRegister({ readExcel,regiExcel }) {
                 <span className="emphasis">DB 제출용 포맷</span>
                 <span>에 맞추어진 </span>
                 <span className="emphasis">엑셀 파일</span>
-                <span>을 업로드 해주세요.</span>
+                <span>을 업로드 후 다음 단계를 진행해주세요.</span>
               </div>
               <div className="upload">
                 <div className="select-file">
-                  <label htmlFor="file">파일 선택</label>
+                  <label htmlFor="excelFile">파일 선택</label>
                   <input
-                    onChange={fileHandler}
+                    onChange={excelFileHandler}
                     type="file"
-                    id="file"
+                    id="excelFile"
                     accept=".csv , .xls , .xlsx"
                   />
-                  <span>{filename || "엑셀 파일을 등록해주세요."}</span>
+                  <span>{excelFilename || "엑셀 파일을 등록해주세요."}</span>
                 </div>
-                <button className="upload-button" onClick={regiExcel}>데이터 등록</button>
+                <button className="delete-button" onClick={excelFileDelete} >삭제</button>
               </div>
             </BodyContainer>
           </UploadContainer>
@@ -87,14 +87,14 @@ function ExcelDataRegister({ readExcel,regiExcel }) {
               </div>
               <div className="upload">
                 <div className="select-file">
-                  <label htmlFor="file">파일 선택</label>
+                  <label htmlFor="pdfFile">파일 선택</label>
                   <input
-                    onChange={fileHandler}
+                    onChange={pdfFileHandler}
                     type="file"
-                    id="file"
-                    accept=".csv , .xls , .xlsx"
+                    id="pdfFile"
+                    accept=".pdf"
                   />
-                  <span>{filename || "PDF 파일을 등록해주세요."}</span>
+                  <span>{pdfFilename || "PDF 파일을 등록해주세요."}</span>
                 </div>
                 <button className="upload-button">데이터 등록</button>
               </div>
@@ -153,13 +153,36 @@ function ExcelDataRegister({ readExcel,regiExcel }) {
             </BodyContainer>
           </UploadContainer>
         )}
-        <button onClick={prevStep}>PREV</button>
-        <button onClick={nextStep}>NEXT</button>
+        <ButtonContainer>
+          {step !== 1 && <button onClick={prevStep}>{"< 이전 단계"}</button>}
+          <button onClick={nextStep}>{"다음 단계 >"}</button>
+        </ButtonContainer>
       </Wrapper>
     </>
   );
 }
 
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  button {
+    background-color: grey;
+    color: white;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border: none;
+    cursor: pointer;
+    width: 10rem;
+    border-radius: 4px;
+    height: 2rem;
+    transition: 0.2s;
+    &:hover {
+      background-color: #d6d6d6;
+    }
+  }
+`;
 const FileList = styled.div`
   width: 90%;
   margin: 2rem auto;
@@ -266,7 +289,8 @@ const BodyContainer = styled.div`
     display: flex;
     height: 32px;
   }
-  .upload-button {
+  .upload-button,
+  .delete-button {
     margin-left: 1rem;
     border: none;
     padding: 0 1rem 0 1rem;

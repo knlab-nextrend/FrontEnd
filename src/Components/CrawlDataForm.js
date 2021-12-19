@@ -341,7 +341,7 @@ function CrawlDataForm({ docs, type }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">발행 사이트</p>
+            <p className="title">발행 사이트 / 발행 기관</p>
             <input
               value={dcPublisher}
               onChange={_dcPublisherHandler}
