@@ -1,5 +1,8 @@
 import axios from "axios";
-import { getToken, getRefreshToken } from "./getToken";
+import { getToken, getRefreshToken, setTokens } from "./tokens";
+import { setUser } from "../Modules/user";
+import { setLogout } from "../Modules/login";
+
 /* 
     get 요청에서 headers와 params를 동시에 보내려면 아래와 같이 config 객체를 생성한 후 얘를 담아야 함
     https://stackoverflow.com/questions/48261227/use-axios-get-with-params-and-config-together
@@ -10,7 +13,7 @@ import { getToken, getRefreshToken } from "./getToken";
   로그인에 성공하였다면 그 때 토큰을 받아와서 통신 때마다 토큰의 유효성을 검사함. 
 */
 const headers = { authorization: `Bearer ${getToken()}` };
-const testHeaders= { authorization: `Bearer ${localStorage.getItem('token')}`}
+
 const refreshHeaders = {
   authorization: `Bearer ${getToken()}`,
   refresh: getRefreshToken(),
@@ -19,7 +22,7 @@ const refreshHeaders = {
 /* 크롤데이터 스크리닝 데이터 받아오기 */
 const ScreeningDataFetchApi = (listSize, pageNo) => {
   const config = {
-    headers: headers,
+    headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
@@ -48,17 +51,17 @@ const ScreeningDataDeleteApi = (deleteDataList) => {
 };
 
 /* 크롤데이터 리스트 받아오기 */
-const CrawlDataListFetchApi = (statusCode, listSize, pageNo) => {
-  
+const CrawlDataListFetchApi = (
+  statusCode,
+  listSize,
+  pageNo,
+  searchObj = null
+) => {
+  const params = { listSize: listSize, pageNo: pageNo, ...searchObj };
   const config = {
-    headers: testHeaders,
-    params: {
-      listSize: listSize,
-      pageNo: pageNo,
-    },
+    headers: { authorization: `Bearer ${getToken()}` },
+    params,
   };
-  console.log(config)
-
   return axios.get(`/crawl/list/${statusCode}`, config);
 };
 
@@ -124,6 +127,7 @@ const CountrysListDataFetchApi = (continent) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
   };
+
   return axios.get(`/nextrend/countrys/${continent}`, config);
 };
 
@@ -143,6 +147,14 @@ const CategoryOptionFetchApi = () => {
   };
   return axios.get("/nextrend/categorys/dict", config);
 };
+
+/* 국가 리스트를 모두 받아오는 함수 */
+const CountryOptionFetchApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  return axios.get("/nextrend/countrys/dict", config);
+};
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -160,6 +172,41 @@ const RefreshTokenApi = () => {
     headers: refreshHeaders,
   };
   return axios.get(`/nextrend/refresh`, config);
+};
+
+/* user 토큰 인증 및 유저 정보 가져오기 */
+const userAuthApi = () => {
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  return axios.get(`/nextrend/user`, config);
+};
+
+/* 데이터 요청 시 토큰 만료 및 리프레시 토큰 만료 세션 처리 함수 */
+const sessionHandler = (err, dispatch) => {
+  /* dispatch 를 사용하기 위해서 인자로 받아옴 */
+  return new Promise((resolve, reject) => {
+    if (err.response.status === 401) {
+      RefreshTokenApi()
+        .then((res) => {
+          setTokens(res);
+          userAuthApi().then((res) => {
+            dispatch(
+              setUser({
+                name: res.data.Name,
+                permission: Number(res.data.Category),
+              })
+            );
+            resolve("세션유효");
+          });
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            dispatch(setLogout("EXPIRED_LOGOUT"));
+          }
+        });
+    }
+  });
 };
 
 const FetchUsersApi = () => {
@@ -200,14 +247,6 @@ const addUserApi = (userInfo) => {
   return axios.post(`/nextrend/user/add`, body, { headers: headers });
 };
 
-/* user 토큰 인증 및 유저 정보 가져오기 */
-const userAuthApi = () => {
-  let config = {
-    headers: { authorization: `Bearer ${getToken()}` },
-  };
-  console.log(config)
-  return axios.get(`/nextrend/user`, config);
-};
 export {
   LoginApi,
   RefreshTokenApi,
@@ -228,5 +267,7 @@ export {
   addUserApi,
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
+  CountryOptionFetchApi,
   userAuthApi,
+  sessionHandler,
 };

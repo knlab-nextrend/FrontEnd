@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CrawlDataListFetchApi } from "../../../Utils/api";
+import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import CrawlDataList from "./CrawlDataList";
+import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
+
 
 function CrawlDataListContainer() {
+  const dispatch = useDispatch();
   /* 현재 보여질 데이터 */
   const [crawlDataList, setCrawlDataList] = useState([]);
 
@@ -61,13 +65,17 @@ function CrawlDataListContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataListFetchApi(statusCode, listSize, pageNo)
+    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo)
       .then((res) => {
         dataCleansing(res.data);
       })
       .catch((err) => {
-        console.log(err);
-      });
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      }));
   };
 
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */

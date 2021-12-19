@@ -4,50 +4,45 @@ import { FaFilter } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { MdSort } from "react-icons/md";
-import { CategoryOptionFetchApi } from "../Utils/api";
-function DataFilter() {
+import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
+function DataFilter({ dataFilterFetch }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
   const [endDate, setEndDate] = useState(
     new Date().toISOString().substring(0, 10)
   ); //endDate
   const [lang, setLang] = useState(""); // language
-  const [site, setSite] = useState(""); // site
+  const [publisher, setPublisher] = useState(""); // publisher
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
-  const [regiDateSort, setRegiDateSort] = useState(""); // 데이터 등록일
-  const [writeDateSort, setWriteDateSort] = useState(""); // 원문 작성일
-  const [collectDateSort, setCollectDateSort] = useState(""); // 원문 수집일
+  const [dateSort,setDateSort] = useState("desc")
+  const [sortDateType,setSortDateType] = useState("dc_dt_collect")
+  
 
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectCategoryCode,setSelectCategoryCode] = useState(null);
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [selectCategory, setSelectCategory] = useState(0);
+  const [selectCountry, setSelectCountry] = useState(0);
 
   // 더미데이터
   const LANGUAGE_LIST = [
-    { language_name: "한국어", language_code_name: "KO" },
-    { language_name: "영어", language_code_name: "EN" },
-    { language_name: "일본어", language_code_name: "JP" },
-    { language_name: "독일어", language_code_name: "DE" },
-    { language_name: "프랑스어", language_code_name: "FR" },
-    { language_name: "중국어", language_code_name: "ZH" },
-    { language_name: "스페인어", language_code_name: "ES" },
-    { language_name: "포르투갈어", language_code_name: "PT" },
-    { language_name: "러시아어", language_code_name: "RU" },
-    { language_name: "아랍어", language_code_name: "AR" },
+    { language_name: "한국어", language_code_name: "ko" },
+    { language_name: "영어", language_code_name: "en" },
+    { language_name: "일본어", language_code_name: "ja" },
   ];
 
   // 더미데이터
   const SITE_LIST = [
-    { site_name: "YOUTUBE", site_link: "https://www.youtube.com/" },
-    { site_name: "NAVER", site_link: "https://www.naver.com/" },
+    { site_name: "capgemini", site_link: "www.capgemini.com" },
+    { site_name: "meti", site_link: "www.meti.go.jp" },
   ];
 
   const _isCrawledHandler = (e) => {
     setIsCrawled(e.target.value);
   };
-  const _siteHandler = (e) => {
-    setSite(e.target.value);
+  const _publisherHandler = (e) => {
+    setPublisher(e.target.value);
   };
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
@@ -59,14 +54,11 @@ function DataFilter() {
     setKeyword(e.target.value);
   };
 
-  const _regiDateSortHandler = (e) => {
-    setRegiDateSort(e.target.value);
+  const _sortDateTypeHandler = (e) => {
+    setSortDateType(e.target.value);
   };
-  const _writeDateSortHandler = (e) => {
-    setWriteDateSort(e.target.value);
-  };
-  const _collectDateSortHandler = (e) => {
-    setCollectDateSort(e.target.value);
+  const _dateSortHandler = (e) => {
+    setDateSort(e.target.value);
   };
   const _startDateHandler = (e) => {
     setStartDate(e.target.value);
@@ -88,12 +80,46 @@ function DataFilter() {
     return Date.parse(end) - Date.parse(start) >= 0 || false; // endDate가 startDate보다 과거라면 해당 날짜는 선택할 수 없음.
   };
 
-  const getCategoryCode = (categoryCode)=>{
-    setSelectCategoryCode(categoryCode)
+  const selectedCategory = (code) => {
+    setSelectCategory(code)
+  };
+  const selectedCountry = (country) => {
+    setSelectCountry(country)
+  };
+
+  const searchFilter = () => {
+    dataFilterFetch(
+      lang===""?null:lang,
+      selectCategory===0?null:selectCategory,
+      keyword===""?null:keyword,
+      selectCountry===0?null:selectCountry,
+      publisher===""?null:publisher,
+      null, // dateType을 추후 추가
+      startDate,
+      endDate,
+      isCrawled,
+      dateSort,
+      sortDateType,
+    );
+  };
+
+  const searchReset = ()=>{
+    setLang("")
+    setPublisher("")
+    setSelectCategory(0)
+    setSelectCountry(0)
+    setKeyword("")
+    setIsCrawled(true)
+
   }
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
+      console.log(res.data);
       setCategoryOptions(res.data);
+    });
+    CountryOptionFetchApi().then((res) => {
+      setCountryOptions(res.data);
+      console.log(res.data);
     });
   }, []);
   return (
@@ -150,7 +176,7 @@ function DataFilter() {
                         <option value={""}>전체</option>
                         {LANGUAGE_LIST.map((item) => {
                           return (
-                            <option value={item.site_name}>
+                            <option value={item.language_code_name}>
                               {item.language_name}
                             </option>
                           );
@@ -160,7 +186,7 @@ function DataFilter() {
                     </OptionCol>
                     <OptionCol>
                       <OptionTitle>사이트</OptionTitle>
-                      <OptionSelect value={site} onChange={_siteHandler}>
+                      <OptionSelect value={publisher} onChange={_publisherHandler}>
                         <option value={""}>전체</option>
                         {SITE_LIST.map((item) => {
                           return (
@@ -196,12 +222,20 @@ function DataFilter() {
                   </OptionRow>
                   <OptionRow>
                     <OptionCol>
-                      <OptionTitle>분류 선택</OptionTitle>
-                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                      <OptionTitle>주제 분류 선택</OptionTitle>
+                      <Cascader
+                        selectedCategory={selectedCategory}
+                        options={categoryOptions}
+                      />
                     </OptionCol>
+                  </OptionRow>
+                  <OptionRow>
                     <OptionCol>
-                      <OptionTitle>분류 선택</OptionTitle>
-                      <Cascader getCategoryCode={getCategoryCode} options={categoryOptions} />
+                      <OptionTitle>대상 국가 선택</OptionTitle>
+                      <Cascader
+                        selectedCountry={selectedCountry}
+                        options={countryOptions}
+                      />
                     </OptionCol>
                   </OptionRow>
                 </OptionContainer>
@@ -214,43 +248,31 @@ function DataFilter() {
                 <OptionContainer>
                   <OptionRow>
                     <OptionCol>
-                      <OptionTitle>원문 수집일 순서</OptionTitle>
+                      <OptionTitle>시간 순 정렬</OptionTitle>
                       <OptionSelect
-                        value={collectDateSort}
-                        onChange={_collectDateSortHandler}
+                        value={sortDateType}
+                        onChange={_sortDateTypeHandler}
                       >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
+                        <option value="dc_dt_collect">원문 수집일 기준</option>
+                        <option value="dc_dt_write">원문 작성일 기준</option>
+                        <option value="dc_dt_regi">데이터 등록일 기준</option>
                       </OptionSelect>
-                    </OptionCol>
-                    <OptionCol>
-                      <OptionTitle>원문 발행일 순서</OptionTitle>
                       <OptionSelect
-                        value={writeDateSort}
-                        onChange={_writeDateSortHandler}
+                        value={dateSort}
+                        onChange={_dateSortHandler}
                       >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
-                      </OptionSelect>
-                    </OptionCol>
-                    <OptionCol>
-                      <OptionTitle>데이터 등록일 순서</OptionTitle>
-                      <OptionSelect
-                        value={regiDateSort}
-                        onChange={_regiDateSortHandler}
-                      >
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된 순</option>
+                        <option value="desc">최신순</option>
+                        <option value="asc">오래된 순</option>
                       </OptionSelect>
                     </OptionCol>
                   </OptionRow>
                 </OptionContainer>
                 <FilterActions>
-                  <button>
+                  <button onClick={searchReset}>
                     <GrPowerReset />
                     초기화
                   </button>
-                  <button>
+                  <button onClick={searchFilter}>
                     <AiOutlineSearch />
                     검색
                   </button>
@@ -264,13 +286,19 @@ function DataFilter() {
   );
 }
 
-function Cascader({ options,getCategoryCode }) {
+function Cascader({ options, selectedCountry,selectedCategory }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
   };
   const PrintValue = (e) => {
-    getCategoryCode(e.target.value)
+    console.log(e.target.value)
+    if(selectedCategory){
+      selectedCategory(e.target.value)
+    }
+    if(selectedCountry){
+      selectedCountry(e.target.value)
+    }
   };
   return (
     <CascaderWrapper>
@@ -342,6 +370,7 @@ const CascaderOpenHandler = styled.div`
   margin: 0;
 `;
 const CascaderWrapper = styled.div`
+  font-size:12px;
   display: flex;
   align-items: center;
   height: 100%;
@@ -360,8 +389,8 @@ const CascaderOptions = styled.div`
   }
   li {
     background-color: white;
-    width: 10rem;
-    height: 3rem;
+    width: 8rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -381,7 +410,7 @@ const CascaderOptions = styled.div`
   .depth2,
   .depth3 {
     position: absolute;
-    left: 10rem;
+    left: 8rem;
   }
 `;
 
@@ -428,7 +457,7 @@ const FilterBody = styled.div`
   border-bottom: solid 2px #bfbfbf;
 `;
 const FilterActions = styled.div`
-  padding: 1rem 0 1rem 0;
+  padding: 0.5rem 0 0.5rem 0;
   border-top: solid 1px #d6d6d6;
   display: flex;
   justify-content: right;
@@ -450,7 +479,7 @@ const OptionRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 45px;
+  height: 30px;
   margin: 1rem;
 `;
 
@@ -459,15 +488,15 @@ const OptionCol = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin: 0 1rem 0 1rem;
+  margin: 0 0.5rem 0 0.5rem;
 `;
 
 const OptionTitle = styled.div`
-  width: 140px;
+  min-width: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px;
+  height: 30px;
   background-color: #d6d6d6;
   font-size: 12px;
   margin-right: 0.5rem;

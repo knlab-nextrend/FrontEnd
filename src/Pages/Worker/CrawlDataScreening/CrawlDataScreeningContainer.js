@@ -3,12 +3,16 @@ import {
   ScreeningDataFetchApi,
   ScreeningDataStageApi,
   ScreeningDataDeleteApi,
+  sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
 
 function CrawlDataScreeningContainer() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   /* 현재 보여질 데이터 */
   const [screeningData, setScreeningData] = useState([]);
@@ -30,9 +34,9 @@ function CrawlDataScreeningContainer() {
 
   /* item 개별 선택*/
   const onChangeEach = (e) => {
-    // 체크할 시 CheckList에 id값 
+    // 체크할 시 CheckList에 id값
     const id = Number(e.target.value);
-    console.log(e.target.checked)
+    console.log(e.target.checked);
     if (e.target.checked) {
       setStageDataList([...stageDataList, id]);
     } else {
@@ -51,14 +55,14 @@ function CrawlDataScreeningContainer() {
         ScreeningDataDeleteApi(deleteDataList).then((res) => {
           if (res.status === 200) {
             alert("성공적으로 스크리닝이 완료되었습니다.");
-            history.go(0)
+            history.go(0);
           }
         });
       } else if (deleteDataList.length === 0) {
         ScreeningDataStageApi(stageDataList).then((res) => {
           if (res.status === 200) {
             alert("성공적으로 스크리닝이 완료되었습니다.");
-            history.go(0)
+            history.go(0);
           }
         });
       } else {
@@ -67,7 +71,7 @@ function CrawlDataScreeningContainer() {
             ScreeningDataDeleteApi(deleteDataList).then((res) => {
               if (res.status === 200) {
                 alert("성공적으로 스크리닝이 완료되었습니다.");
-                history.go(0)
+                history.go(0);
               }
             });
           }
@@ -99,14 +103,21 @@ function CrawlDataScreeningContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    ScreeningDataFetchApi(listSize, pageNo).then((res) => {
-      dataCleansing(res.data);
-    });
+    trackPromise(ScreeningDataFetchApi(listSize, pageNo)
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          ScreeningDataFetchApi(listSize, pageNo).then((res) => {
+            dataCleansing(res.data);
+          });
+        });
+      }));
   };
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
-    /* 현재 dcCount가 listSize보다 작다면 pageNo를 0으로 세팅*/
     if (dcCount <= listSize) {
       setPageNo(1);
     }

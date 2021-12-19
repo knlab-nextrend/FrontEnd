@@ -13,11 +13,12 @@ function ArchiveDataList({
   listSize,
   pageNo,
   setPageNo,
+  dataFilterFetch
 }) {
   return (
     <>
       <FormHeader type="view" title={"아카이브 데이터 조회"} />
-      <DataFilter />
+      <DataFilter dataFilterFetch={dataFilterFetch}/>
       <Wrapper>
         {archiveDataList.length !== 0 ? (
           <>
@@ -27,11 +28,11 @@ function ArchiveDataList({
             <TableWrapper>
               <CustomTable>
                 <colgroup>
-                  <col style={{ width: "3%" }} />
+                  <col style={{ width: "5%" }} />
                   <col style={{ width: "5%" }} />
                   <col style={{ width: "7%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "8%" }} />
+                  <col style={{ width: "8%" }} />
                   <col style={{ width: "10%" }} />
                   <col style={{ width: "5%" }} />
                   <col style={{ width: "5%" }} />
@@ -41,7 +42,7 @@ function ArchiveDataList({
 
                 <thead>
                   <tr>
-                    <th>itemID</th>
+                    <th>원문 수집일</th>
                     <th>구분</th>
                     <th>원문 대상 국가</th>
                     <th>원문 제목</th>
@@ -57,7 +58,7 @@ function ArchiveDataList({
                   {archiveDataList.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>{item.item_id}</td>
+                        <td>{item.dc_dt_collect}</td>
                         <td>
                           <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
                         </td>
@@ -121,6 +122,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size:14px;
 `;
 
 const TableWrapper = styled.div`

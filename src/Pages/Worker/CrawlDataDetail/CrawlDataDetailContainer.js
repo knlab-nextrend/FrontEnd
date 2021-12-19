@@ -4,9 +4,13 @@ import {
   CrawlDataRejectApi,
   CrawlDataStageApi,
   CrawlDataKeepApi,
+  sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
+
 
 function CrawlDataDetailContainer() {
   /* 
@@ -16,6 +20,7 @@ function CrawlDataDetailContainer() {
   */
   const { itemId, statusCode } = useParams();
   const history = useHistory();
+  const dispatch = useDispatch();
   const crawlDataFormRef = useRef();
   /* 
     CrawlDataRefine > CrawlDataForm 에 있는 정보를 가져오기 위해서.
@@ -53,37 +58,50 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    CrawlDataDetailFetchApi(statusCode, itemId)
+    trackPromise(CrawlDataDetailFetchApi(statusCode, itemId)
       .then((res) => {
-        console.log(res.data)
         dataCleansing(res.data);
-      });
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+            console.log(res.data)
+            dataCleansing(res.data);
+          });
+        });
+      }));
   };
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
+    console.log(_rawStatusDetailData);
     let _docs = {
-      dc_content: _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content[0],
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect[0] || "",
+      dc_content:
+        _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content,
+      dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher: _rawStatusDetailData.dc_publisher && _rawStatusDetailData.dc_publisher[0],
-      dc_cover: _rawStatusDetailData.dc_cover,
+      dc_publisher:
+        _rawStatusDetailData.dc_publisher || "",
+      dc_cover: _rawStatusDetailData.dc_cover ,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
-      dc_cat: _rawStatusDetailData.dc_cat,
+      dc_cat: _rawStatusDetailData.dc_cat || "",
       dc_code: _rawStatusDetailData.dc_code,
       dc_country: _rawStatusDetailData.dc_country,
-      dc_page: _rawStatusDetailData.dc_page && _rawStatusDetailData.dc_page[0],
+      dc_page: _rawStatusDetailData.dc_page || 0,
       dc_type: _rawStatusDetailData.dc_type || "",
-      dc_title_or: _rawStatusDetailData.dc_title_or && _rawStatusDetailData.dc_title_or[0],
-      dc_title_kr: _rawStatusDetailData.dc_title_kr &&  _rawStatusDetailData.dc_title_kr[0],
-      dc_smry_kr: _rawStatusDetailData.dc_smry_kr &&  _rawStatusDetailData.dc_smry_kr[0],
-      dc_url_loc: _rawStatusDetailData.dc_url_loc,
+      dc_title_or:
+        _rawStatusDetailData.dc_title_or || "",
+      dc_title_kr:
+        _rawStatusDetailData.dc_title_kr || "",
+      dc_smry_kr:
+        _rawStatusDetailData.dc_smry_kr || "",
+      dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
-      dc_lang: _rawStatusDetailData.dc_lang && _rawStatusDetailData.dc_lang[0],
-    };
+      dc_lang: _rawStatusDetailData.dc_lang || ""
+    }
     setDocs(_docs);
   };
 
@@ -157,6 +175,7 @@ function CrawlDataDetailContainer() {
         crawlDataFormRef={crawlDataFormRef}
         STATUS_CODE_SET={STATUS_CODE_SET}
         statusCode={statusCode}
+        type={STATUS_CODE_SET[statusCode].type}
       />
     </>
   );
