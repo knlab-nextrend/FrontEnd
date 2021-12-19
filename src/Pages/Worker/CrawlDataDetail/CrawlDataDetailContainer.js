@@ -157,6 +157,7 @@ function CrawlDataDetailContainer() {
         crawlDataFormRef={crawlDataFormRef}
         STATUS_CODE_SET={STATUS_CODE_SET}
         statusCode={statusCode}
+        itemId={itemId}
       />
     </>
   );

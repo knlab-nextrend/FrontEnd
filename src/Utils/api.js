@@ -229,4 +229,5 @@ export {
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
   userAuthApi,
+  documentPastedImageApi
 };
