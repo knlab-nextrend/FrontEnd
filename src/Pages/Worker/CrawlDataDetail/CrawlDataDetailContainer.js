@@ -65,6 +65,7 @@ function CrawlDataDetailContainer() {
       .catch((err) => {
         sessionHandler(err, dispatch).then((res) => {
           CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+            console.log(res.data)
             dataCleansing(res.data);
           });
         });
