@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FormHeader from "../../../Components/FormHeader";
 import { HiOutlineDocumentReport, HiOutlineDocumentText } from "react-icons/hi";
@@ -17,7 +17,12 @@ function ExcelDataRegister({
   prevStep,
   step,
   setExcelData,
+  readPdf,
+  pdfMetaData,
 }) {
+  useEffect(() => {
+    console.log(pdfMetaData);
+  }, [pdfMetaData]);
   const [excelFilename, setExcelFilename] = useState(null);
   const [pdfFilename, setPdfFilename] = useState(null);
   const excelFileHandler = (e) => {
@@ -25,7 +30,15 @@ function ExcelDataRegister({
     readExcel(e);
   };
   const pdfFileHandler = (e) => {
-    setPdfFilename(e.target.files[0].name);
+    if (e.target.files.length === 1) {
+      setPdfFilename(e.target.files[0].name);
+    } else {
+      setPdfFilename(
+        `${e.target.files[0].name} 외 ${e.target.files.length - 1}건`
+      );
+    }
+
+    readPdf(e);
   };
   const excelFileDelete = (e) => {
     setExcelFilename(null);
@@ -64,7 +77,9 @@ function ExcelDataRegister({
                   />
                   <span>{excelFilename || "엑셀 파일을 등록해주세요."}</span>
                 </div>
-                <button className="delete-button" onClick={excelFileDelete} >삭제</button>
+                <button className="delete-button" onClick={excelFileDelete}>
+                  삭제
+                </button>
               </div>
             </BodyContainer>
           </UploadContainer>
@@ -93,6 +108,7 @@ function ExcelDataRegister({
                     type="file"
                     id="pdfFile"
                     accept=".pdf"
+                    multiple="multiple"
                   />
                   <span>{pdfFilename || "PDF 파일을 등록해주세요."}</span>
                 </div>
@@ -123,32 +139,28 @@ function ExcelDataRegister({
                 </span>
               </div>
               <FileList>
-                <FileCard>
-                  <div className="file-container">
-                    <HiOutlineDocumentText size="40" color="#d6d6d6" />
-                    <div className="file-info">
-                      <span>머시기머시기 대충 파일명...pdf</span>
-                      <span>10 MB</span>
+                {pdfMetaData.map((file, index) => {
+                  return( <FileCard>
+                    <div className="file-container">
+                      <HiOutlineDocumentText size="40" color="#d6d6d6" />
+                      <div className="file-info">
+                        <div>{file.name}</div>
+                        <div>{file.size}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="file-availability">
-                    <AiOutlineCheckCircle size="24" color="#6DAF44" />
-                    <div>작업 가능</div>
-                  </div>
-                </FileCard>
-                <FileCard>
-                  <div className="file-container">
-                    <HiOutlineDocumentText size="40" color="#d6d6d6" />
-                    <div className="file-info">
-                      <span>머시기머시기 대충 파일명...pdf</span>
-                      <span>10 MB</span>
-                    </div>
-                  </div>
-                  <div className="file-availability">
-                    <AiOutlineCloseCircle size="24" color="#d0021b" />
-                    <div>EXCEL과 매치 불가</div>
-                  </div>
-                </FileCard>
+                    {file.available ? (
+                      <div className="file-availability">
+                        <AiOutlineCheckCircle size="24" color="#6DAF44" />
+                        <div>작업 가능</div>
+                      </div>
+                    ) : (
+                      <div className="file-availability">
+                        <AiOutlineCloseCircle size="20" color="#d0021b" />
+                        <div>EXCEL과 매치 불가</div>
+                      </div>
+                    )}
+                  </FileCard>);
+                })}
               </FileList>
             </BodyContainer>
           </UploadContainer>
@@ -205,7 +217,7 @@ const FileCard = styled.div`
     flex-direction: column;
     div:nth-child(2) {
       color: #363636;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
   .file-availability {
@@ -213,7 +225,6 @@ const FileCard = styled.div`
     align-items: center;
     div {
       margin-left: 0.5rem;
-      font-size: 18px;
     }
   }
 `;
