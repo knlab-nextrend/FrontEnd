@@ -31,6 +31,7 @@ function App() {
   // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 ....
   useEffect(() => {
     if (isLogin) {
+      console.log(isLogin);
       trackPromise(
         userAuthApi()
           .then((res) => {

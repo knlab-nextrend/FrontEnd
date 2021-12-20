@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+
 function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
   /* 
     pageNo 현재 클릭한 페이지의 No
@@ -40,7 +41,7 @@ function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
   useEffect(() => {
     const _pageCount = Math.ceil(dcCount / listSize);
     setPageCount(_pageCount);
-  }, [dcCount,listSize]);
+  }, [dcCount, listSize]);
 
   useEffect(() => {
     const _pageNoArray = Array.from({ length: pageCount }, (v, i) => i + 1);
@@ -54,6 +55,12 @@ function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
   useEffect(() => {
     calcCurrentPageNoArray();
   }, [currentPage]);
+
+  useEffect(()=>{
+    if(pageNo>pageCount){
+      setPageNo(1);
+    }
+  },[listSize,pageCount])
 
   return (
     <>
@@ -84,26 +91,26 @@ const PagenationContainer = styled.div`
 `;
 const PagenationButton = styled.button`
   margin: 0.5rem;
-  color:white;
-  font-weight:bold;
+  color: white;
+  font-weight: bold;
   padding: 1rem;
   background-color: ${(props) => (props.active ? "#113241" : "#32677F")};
   cursor: pointer;
-  border:none;
-  border-radius:10px;
-  font-size:14px;
-  &:hover{
-    filter:brightness(150%);
-    transition : all 0.5s;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  &:hover {
+    filter: brightness(150%);
+    transition: all 0.5s;
   }
-  &:active{
-    filter:brightness(50%);
-    transition : all 0.2s;
+  &:active {
+    filter: brightness(50%);
+    transition: all 0.2s;
   }
 `;
 
 const NextPrevButton = styled(PagenationButton)`
   background-color: #d6d6d6;
-  color:black;
+  color: black;
 `;
 export default Pagenation;
