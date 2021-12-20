@@ -13,6 +13,14 @@ function ExcelDataRegisterContainer() {
     return (x / Math.pow(1024, e)).toFixed(2) + " " + s[e];
   }
 
+  const deletePdf = (name) => {
+    if (confirm("해당 PDF파일을 목록에서 제거하시겠습니까?")) {
+      const _newPdfData = pdfData.filter((file) => file.name !== name);
+      const _newPdfMetaData = pdfMetaData.filter((file) => file.name !== name);
+      setPdfData(_newPdfData);
+      setPdfMetaData(_newPdfMetaData);
+    }
+  };
   const readPdf = (e) => {
     console.log(e.target.files);
     const files = e.target.files;
@@ -25,14 +33,14 @@ function ExcelDataRegisterContainer() {
       const _obj = {
         size: getfileSize(file.size),
         name: file.name,
-        available:available.length!==0
+        available: available.length !== 0,
       };
       _pdfData.push(file);
       _pdfMetaData.push(_obj);
     }
-    
+
     setPdfData(_pdfData);
-    setPdfMetaData(_pdfMetaData)
+    setPdfMetaData(_pdfMetaData);
   };
   const readExcel = (e) => {
     let _excelData = [];
@@ -107,6 +115,7 @@ function ExcelDataRegisterContainer() {
         prevStep={prevStep}
         step={step}
         pdfMetaData={pdfMetaData}
+        deletePdf={deletePdf}
       />
     </>
   );

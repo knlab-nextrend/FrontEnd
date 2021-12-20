@@ -3,7 +3,7 @@ import styled from "styled-components";
 import FormHeader from "../../../Components/FormHeader";
 import { HiOutlineDocumentReport, HiOutlineDocumentText } from "react-icons/hi";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { RiFileExcel2Line } from "react-icons/ri";
+import { RiFileExcel2Line, RiDeleteBinLine } from "react-icons/ri";
 import {
   AiOutlineFilePdf,
   AiOutlineSearch,
@@ -19,6 +19,7 @@ function ExcelDataRegister({
   setExcelData,
   readPdf,
   pdfMetaData,
+  deletePdf
 }) {
   useEffect(() => {
     console.log(pdfMetaData);
@@ -140,26 +141,31 @@ function ExcelDataRegister({
               </div>
               <FileList>
                 {pdfMetaData.map((file, index) => {
-                  return( <FileCard>
-                    <div className="file-container">
-                      <HiOutlineDocumentText size="40" color="#d6d6d6" />
-                      <div className="file-info">
-                        <div>{file.name}</div>
-                        <div>{file.size}</div>
+                  return (
+                    <FileCard>
+                      <div className="file-container">
+                        <HiOutlineDocumentText size="40" color="#d6d6d6" />
+                        <div className="file-info">
+                          <div>{file.name}</div>
+                          <div>{file.size}</div>
+                        </div>
                       </div>
-                    </div>
-                    {file.available ? (
-                      <div className="file-availability">
-                        <AiOutlineCheckCircle size="24" color="#6DAF44" />
-                        <div>작업 가능</div>
-                      </div>
-                    ) : (
-                      <div className="file-availability">
-                        <AiOutlineCloseCircle size="20" color="#d0021b" />
-                        <div>EXCEL과 매치 불가</div>
-                      </div>
-                    )}
-                  </FileCard>);
+                      {file.available ? (
+                        <div className="file-availability">
+                          <AiOutlineCheckCircle size="24" color="#6DAF44" />
+                          <div>작업 가능</div>
+                        </div>
+                      ) : (
+                        <div className="file-availability">
+                          <AiOutlineCloseCircle size="20" color="#d0021b" />
+                          <div>EXCEL과 매치 불가</div>
+                        </div>
+                      )}
+                      <button onClick={()=>{deletePdf(file.name)}}className="file-delete-button">
+                        <RiDeleteBinLine color="#fff" size="20" />
+                      </button>
+                    </FileCard>
+                  );
                 })}
               </FileList>
             </BodyContainer>
@@ -169,6 +175,22 @@ function ExcelDataRegister({
           {step !== 1 && <button onClick={prevStep}>{"< 이전 단계"}</button>}
           <button onClick={nextStep}>{"다음 단계 >"}</button>
         </ButtonContainer>
+        <UploadContainer>
+          <HeaderContainer color="#565656">
+            <div className="title">
+              <HiOutlineDocumentReport size="30" color="#fff" />
+              <div>데이터 등록</div>
+              <div className="bold">진행 상황</div>
+            </div>
+          </HeaderContainer>
+          <BodyContainer>
+            <div className="explain">
+              <span>
+                등록한 PDF파일과 EXCEL파일의 데이터 등록 진행상황을 확인하세요.
+              </span>
+            </div>
+          </BodyContainer>
+        </UploadContainer>
       </Wrapper>
     </>
   );
@@ -225,6 +247,23 @@ const FileCard = styled.div`
     align-items: center;
     div {
       margin-left: 0.5rem;
+    }
+  }
+  .file-delete-button {
+    background-color: #d0021b;
+    border: none;
+    width: 0;
+    border-radius: 40px;
+    display: none;
+    cursor:pointer;
+  }
+  &:hover {
+    .file-delete-button {
+      display: block;
+      width: 2.5rem;
+    }
+    .file-availability{
+      display:none;
     }
   }
 `;
@@ -286,7 +325,7 @@ const HeaderContainer = styled.div`
 const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   padding: 2rem;
   min-height: 20rem;
