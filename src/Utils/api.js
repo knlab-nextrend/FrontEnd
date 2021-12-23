@@ -105,6 +105,23 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
   return axios.get(`/crawl/detail/${itemId}`, config);
 };
 
+/* 본문 이미지 첨부 후 url 받아오는 함수 */
+const documentPastedImageApi = (imageForm) => {
+  return axios.post(`/file/docImageAttach/`, imageForm,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+const documentDetachImageApi = (itemId) =>{
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: { itemId },
+  };
+  return axios.get(`/file/docImageDetach/`,config);
+}
+
 /* 대륙 리스트 전체 받아오는 함수 */
 const ContinentsListDataFetchApi = () => {
   let config = {
@@ -261,4 +278,6 @@ export {
   CountryOptionFetchApi,
   userAuthApi,
   sessionHandler,
+  documentPastedImageApi,
+  documentDetachImageApi
 };
