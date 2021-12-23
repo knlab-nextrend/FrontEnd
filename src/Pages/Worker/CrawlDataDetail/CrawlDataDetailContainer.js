@@ -5,6 +5,7 @@ import {
   CrawlDataStageApi,
   CrawlDataKeepApi,
   sessionHandler,
+  documentDetachImageApi,
 } from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
 import { useParams, useHistory } from "react-router-dom";
@@ -149,6 +150,7 @@ function CrawlDataDetailContainer() {
     if (
       window.confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
     ) {
+      //documentDetachImageApi(itemId);
       history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
       if (statusCode === "6") {
         history.push(`/archive/list`); // 목록으로 돌아가기

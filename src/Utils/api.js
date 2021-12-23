@@ -107,11 +107,19 @@ const CrawlDataDetailFetchApi = (statusCode, itemId) => {
 
 /* 본문 이미지 첨부 후 url 받아오는 함수 */
 const documentPastedImageApi = (imageForm) => {
-  return axios.post(`/crawl/docImage/`, imageForm,{
+  return axios.post(`/file/docImageAttach/`, imageForm,{
     headers: {
       'Content-Type': 'multipart/form-data'
     }
   });
+}
+
+const documentDetachImageApi = (itemId) =>{
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: { itemId },
+  };
+  return axios.get(`/file/docImageDetach/`,config);
 }
 
 /* 대륙 리스트 전체 받아오는 함수 */
@@ -270,5 +278,6 @@ export {
   CountryOptionFetchApi,
   userAuthApi,
   sessionHandler,
-  documentPastedImageApi
+  documentPastedImageApi,
+  documentDetachImageApi
 };

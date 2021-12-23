@@ -21,7 +21,7 @@ function CrawlDataDetail({
   return (
     <>
       <FormHeader type="plus" title={STATUS_CODE_SET[statusCode].title} />
-      <CrawlDataForm docs={docs} type="refine" ref={crawlDataFormRef} itemId={itemId} />
+      <CrawlDataForm docs={docs} type={type} ref={crawlDataFormRef} itemId={itemId} />
       <ButtonWrapper>
         <Button color="#dc3545" onClick={dataReject}>
           <AiOutlineDelete color="white" />
