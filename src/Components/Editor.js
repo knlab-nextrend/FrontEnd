@@ -46,7 +46,7 @@ import UpcastWriter from "@ckeditor/ckeditor5-engine/src/view/upcastwriter";
 import styled from "styled-components";
 
 import FormData from 'form-data';
-import { documentPastedImageApi } from "../Utils/api";
+import { documentPastedImageApi,documentDetachImageApi } from "../Utils/api";
 
 const editorConfiguration = {
   plugins: [
