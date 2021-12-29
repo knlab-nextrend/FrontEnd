@@ -49,6 +49,9 @@ function AsideMenuBar({ permission }) {
   const go대량데이터등록 = ()=>{
     history.push("/excel/register");
   }
+  const go대시보드 = ()=>{
+    history.push("/dashboard")
+  }
 
   const dispatch = useDispatch();
   const logout = () => {
@@ -59,7 +62,7 @@ function AsideMenuBar({ permission }) {
       <AsideMenuBarContainer>
         <AsideMenuBarWrapper>
           {PERMISSON_DATA[permission] === "관리자" && (
-            <AsideMenuBarItem>
+            <AsideMenuBarItem onClick={go대시보드}>
               <RiDashboardFill className="icon" size="18" />
               대시보드
             </AsideMenuBarItem>
