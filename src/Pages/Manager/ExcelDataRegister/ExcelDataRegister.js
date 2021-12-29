@@ -19,8 +19,10 @@ function ExcelDataRegister({
   setExcelData,
   readPdf,
   pdfMetaData,
-  deletePdf
+  deletePdf,
+  excelData
 }) {
+  console.log('excel',excelData);
   useEffect(() => {
     console.log(pdfMetaData);
   }, [pdfMetaData]);

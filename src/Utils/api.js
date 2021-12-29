@@ -114,6 +114,15 @@ const documentPastedImageApi = (imageForm) => {
   });
 }
 
+const uploadExcelDataApi = (formData) => {
+  return axios.post(`/file/uploadExcelData/`, formData,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: `Bearer ${getToken()}`
+    }
+  });
+}
+
 const documentDetachImageApi = (itemId) =>{
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
@@ -279,5 +288,6 @@ export {
   userAuthApi,
   sessionHandler,
   documentPastedImageApi,
-  documentDetachImageApi
+  documentDetachImageApi,
+  uploadExcelDataApi
 };

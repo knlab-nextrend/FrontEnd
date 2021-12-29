@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ExcelDataRegister from "./ExcelDataRegister";
 import XLSX from "xlsx";
+import {uploadExcelDataApi} from "../../../Utils/api";
+
 function ExcelDataRegisterContainer() {
   const [excelData, setExcelData] = useState([]);
   const [pdfData, setPdfData] = useState([]);
@@ -57,6 +59,7 @@ function ExcelDataRegisterContainer() {
         rows.forEach((item, index) => {
           let _obj = {
             dc_keyword: item["키워드(태그)"],
+            dc_domain: item["발행기관도메인"],
             dc_cat: item["유형분류"],
             dc_country: item["대상국가"],
             dc_title_kr: item["한글제목"],
@@ -83,6 +86,18 @@ function ExcelDataRegisterContainer() {
       alert("성공적으로 엑셀 데이터가 로딩되었습니다.");
     }
   };
+  const upload = () => {
+    console.log(pdfData,excelData);
+    const files = new FormData(); 
+    pdfData.forEach(pdf=>{
+      files.append("files", pdf);
+    });
+    files.append("meta", JSON.stringify(excelData));
+    uploadExcelDataApi(files).then((res)=>{
+      // 파일 전송이 완료 되었을 때...
+      console.log(res);
+    })
+  }
   const nextStep = () => {
     if (step === 1 && excelData.length === 0) {
       alert("엑셀 데이터 등록 해주세요.");
@@ -93,6 +108,7 @@ function ExcelDataRegisterContainer() {
       return;
     }
     if (step === 3) {
+      upload();
       return;
     }
     setStep((prev) => prev + 1);
@@ -116,6 +132,8 @@ function ExcelDataRegisterContainer() {
         step={step}
         pdfMetaData={pdfMetaData}
         deletePdf={deletePdf}
+        excelData={excelData}
+        pdfData={pdfData}
       />
     </>
   );
