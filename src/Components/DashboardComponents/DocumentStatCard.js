@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { GrDocumentText } from "react-icons/gr";
 
 function DocumentStatCard() {
   return (
