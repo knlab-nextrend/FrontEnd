@@ -8,10 +8,9 @@ import {
   documentDetachImageApi,
 } from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Prompt } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
-
 
 function CrawlDataDetailContainer() {
   /* 
@@ -29,6 +28,7 @@ function CrawlDataDetailContainer() {
     CrawlDataForm 에 ref를.. 걸고자 함. 
   */
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
+  const [isLeave, setIsLeave] = useState(false); // 페이지 이동 및 나가기 여부
 
   const STATUS_CODE_SET = {
     2: {
@@ -59,18 +59,20 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    trackPromise(CrawlDataDetailFetchApi(statusCode, itemId)
-      .then((res) => {
-        dataCleansing(res.data);
-      })
-      .catch((err) => {
-        sessionHandler(err, dispatch).then((res) => {
-          CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-            console.log(res.data)
-            dataCleansing(res.data);
+    trackPromise(
+      CrawlDataDetailFetchApi(statusCode, itemId)
+        .then((res) => {
+          dataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
+              console.log(res.data);
+              dataCleansing(res.data);
+            });
           });
-        });
-      }));
+        })
+    );
   };
 
   /* 데이터 정제하기 */
@@ -84,25 +86,21 @@ function CrawlDataDetailContainer() {
       dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
       dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher:
-        _rawStatusDetailData.dc_publisher || "",
-      dc_cover: _rawStatusDetailData.dc_cover ,
+      dc_publisher: _rawStatusDetailData.dc_publisher || "",
+      dc_cover: _rawStatusDetailData.dc_cover,
       dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
       dc_cat: _rawStatusDetailData.dc_cat || "",
       dc_code: _rawStatusDetailData.dc_code,
       dc_country: _rawStatusDetailData.dc_country,
       dc_page: _rawStatusDetailData.dc_page || 0,
       dc_type: _rawStatusDetailData.dc_type || "",
-      dc_title_or:
-        _rawStatusDetailData.dc_title_or || "",
-      dc_title_kr:
-        _rawStatusDetailData.dc_title_kr || "",
-      dc_smry_kr:
-        _rawStatusDetailData.dc_smry_kr || "",
+      dc_title_or: _rawStatusDetailData.dc_title_or || "",
+      dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
+      dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
-      dc_lang: _rawStatusDetailData.dc_lang || ""
-    }
+      dc_lang: _rawStatusDetailData.dc_lang || "",
+    };
     setDocs(_docs);
   };
 
@@ -163,28 +161,35 @@ function CrawlDataDetailContainer() {
   };
 
   /* 이미지 핸들러 */
-  const imageDetachHandler = ()=>{
-    if(confirm("변경사항은 저장되지 않습니다. 페이지를 닫겠습니까?")){
-      documentDetachImageApi(itemId).then((res)=>{
-        console.log(res)
-      })
-    }
-  }
+  const imageDetachHandler = () => {
+    // if (confirm("변경사항은 저장되지 않습니다. 페이지를 닫겠습니까?")) {
+    //   documentDetachImageApi(itemId).then((res) => {
+    //   });
+    // }
+    console.log("꺼지는지 테스트...")
+    documentDetachImageApi(itemId).then((res) => {
+    });
+  };
+  const leaveSetting = (e) => {
+    // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다.
+    e.preventDefault();
+    // 대표적으로 Chrome에서는 returnValue 설정이 필요합니다.
+    e.returnValue = "";
+  };
 
   useEffect(() => {
-    window.addEventListener('beforeunload', imageDetachHandler)
-    window.addEventListener('unload', imageDetachHandler)
+    window.addEventListener("beforeunload", leaveSetting);
+    window.addEventListener("unload", imageDetachHandler);
     return () => {
-      window.removeEventListener('beforeunload', imageDetachHandler)
-      window.removeEventListener('unload', imageDetachHandler)
-    }
-  }, [])
+      window.removeEventListener("beforeunload", leaveSetting);
+      window.removeEventListener("unload", imageDetachHandler);
+      imageDetachHandler();
+    }; 
+  }, []);
 
   useEffect(() => {
     dataFetch();
   }, [itemId]);
-
-  
 
   return (
     <>

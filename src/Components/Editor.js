@@ -235,7 +235,6 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,itemI
           }
         }}
         onReady={(editor) => {
-          CKEditorInspector.attach(editor);
           const documentView = editor.editing.view.document
           documentView.on('paste', async (event, data) => {
             if (data.dataTransfer.files.length > 0) {
