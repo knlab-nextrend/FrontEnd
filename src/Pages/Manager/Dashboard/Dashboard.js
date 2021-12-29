@@ -23,6 +23,7 @@ const Wrapper = styled.div`
   padding: 1rem;
 `;
 const CountryContentWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 8fr 2fr;
 `;
 export default Dashboard;

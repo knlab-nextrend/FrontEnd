@@ -11,20 +11,20 @@ function DocumentStatCard() {
       </div>
       <div className="stat-list">
         <div className="stat">
-            <div className="stat-title">스크리닝 문서 수</div>
-            <div className="stat-count">14870</div>
+          <div className="stat-title">스크리닝 문서 수</div>
+          <div className="stat-count">14870</div>
         </div>
         <div className="stat">
-            <div className="stat-title">정제 문서 수</div>
-            <div className="stat-count">1480</div>
+          <div className="stat-title">정제 문서 수</div>
+          <div className="stat-count">1480</div>
         </div>
         <div className="stat">
-            <div className="stat-title">등록 문서 수</div>
-            <div className="stat-count">140</div>
+          <div className="stat-title">등록 문서 수</div>
+          <div className="stat-count">140</div>
         </div>
         <div className="stat">
-            <div className="stat-title">큐레이션 문서 수</div>
-            <div className="stat-count">14</div>
+          <div className="stat-title">큐레이션 문서 수</div>
+          <div className="stat-count">14</div>
         </div>
       </div>
     </CardWrapper>
@@ -32,6 +32,7 @@ function DocumentStatCard() {
 }
 
 const CardWrapper = styled.div`
+  margin: 1rem 0.5rem 1rem 0.5rem ;
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   background-color: white;

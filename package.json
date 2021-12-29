@@ -4,6 +4,8 @@
   "proxy": "http://192.168.0.2:5000",
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts5": "^5.0.19",
+    "@amcharts/amcharts5-geodata": "^5.0.2",
     "@babel/core": "7.12.3",
     "@ckeditor/ckeditor5-alignment": "^31.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^31.0.0",
