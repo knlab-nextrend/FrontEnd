@@ -49,7 +49,7 @@ function ExcelDataRegister({
   };
   return (
     <>
-      <FormHeader type={"view"} title={"대량 엑셀 데이터 등록"} />
+      <FormHeader type={"view"} title={"엑셀 데이터 등록"} />
       <Wrapper>
         {step === 1 && (
           <UploadContainer>

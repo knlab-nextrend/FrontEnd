@@ -11,6 +11,7 @@ import {
   MdCalendarViewDay,
   MdOutlineAdd,
   MdSettings,
+  MdUpload
 } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
@@ -46,7 +47,7 @@ function AsideMenuBar({ permission }) {
   const go큐레이션조회 = () => {
     history.push("/curation/list");
   };
-  const go대량데이터등록 = ()=>{
+  const go엑셀데이터등록 = ()=>{
     history.push("/excel/register");
   }
 
@@ -117,15 +118,9 @@ function AsideMenuBar({ permission }) {
             </AsideMenuBarItem>
           )}
           {PERMISSON_DATA[permission] === "관리자" && (
-            <AsideMenuBarItem>
-              <MdOutlineAdd className="icon" size="18" />
-              단일 데이터 등록
-            </AsideMenuBarItem>
-          )}
-          {PERMISSON_DATA[permission] === "관리자" && (
-            <AsideMenuBarItem onClick={go대량데이터등록}>
-              <MdOutlineAdd className="icon" size="18" />
-              대량 데이터 등록
+            <AsideMenuBarItem onClick={go엑셀데이터등록}>
+              <MdUpload className="icon" size="18" />
+              엑셀 데이터 등록
             </AsideMenuBarItem>
           )}
           {PERMISSON_DATA[permission] === "관리자" && (
