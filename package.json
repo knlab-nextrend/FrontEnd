@@ -29,6 +29,7 @@
     "@ckeditor/ckeditor5-typing": "^31.0.0",
     "@ckeditor/ckeditor5-upload": "^31.0.0",
     "@nivo/core": "^0.76.0",
+    "@nivo/geo": "^0.76.0",
     "@nivo/pie": "^0.76.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",

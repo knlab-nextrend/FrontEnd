@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-function TitleCard({children}) {
+
+function Menu() {
   return (
     <CardWrapper>
       <div className="title">
@@ -10,14 +11,19 @@ function TitleCard({children}) {
         </div>
       </div>
       <div className="content">
-        {children}
+        <ul>
+          <li>전체</li>
+          <li>스크리닝</li>
+          <li>정제</li>
+          <li>아카이빙(등록)</li>
+          <li>큐레이션</li>
+        </ul>
       </div>
     </CardWrapper>
   );
 }
-
 const CardWrapper = styled.div`
-  margin: 1rem 0.5rem 1rem 0.5rem ;
+  margin: 1rem 0.5rem 1rem 0.5rem;
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   background-color: white;
@@ -34,8 +40,9 @@ const CardWrapper = styled.div`
     font-size: 12px;
     color: #939ba2;
   }
-  .content{
-    height:100% ;
+  .content {
+    height: 100%;
   }
 `;
-export default TitleCard;
+
+export default Menu;
