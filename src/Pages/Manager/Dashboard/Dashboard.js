@@ -3,6 +3,7 @@ import TitleCard from "../../../Components/DashboardComponents/TitleCard";
 import DocumentStatCard from "../../../Components/DashboardComponents/DocumentStatCard";
 import FormHeader from "../../../Components/FormHeader";
 import ChartCard from "../../../Components/DashboardComponents/ChartCard";
+import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu"
 import styled from "styled-components";
 
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
@@ -13,6 +14,7 @@ function Dashboard({ data }) {
     <>
       <FormHeader type={"view"} title={"대시보드"} />
       <Wrapper>
+      <ProcessMenu/>
         <CountryContentWrapper>
           <TitleCard>
           </TitleCard>
