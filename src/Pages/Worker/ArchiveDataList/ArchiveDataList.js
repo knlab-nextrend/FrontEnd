@@ -17,7 +17,7 @@ function ArchiveDataList({
 }) {
   return (
     <>
-      <FormHeader type="view" title={"아카이브 데이터 조회"} />
+      <FormHeader type="view" title={"큐레이션 데이터 등록(아카이브 데이터 조회)"} />
       <DataFilter dataFilterFetch={dataFilterFetch}/>
       <Wrapper>
         {archiveDataList.length !== 0 ? (

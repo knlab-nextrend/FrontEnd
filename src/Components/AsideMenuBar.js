@@ -100,14 +100,14 @@ function AsideMenuBar({ permission }) {
             PERMISSON_DATA[permission] !== "정제 작업자" && (
               <AsideMenuBarItem onClick={go크롤데이터등록}>
                 <MdOutlineAdd className="icon" size="18" />
-                크롤 데이터 등록
+                크롤 데이터 등록 (아카이빙)
               </AsideMenuBarItem>
             )}
           {(PERMISSON_DATA[permission] === "관리자" ||
             PERMISSON_DATA[permission] === "큐레이션 작업자") && (
             <AsideMenuBarItem onClick={go아카이브데이터조회}>
               <MdCalendarViewDay className="icon" size="18" />
-              아카이브 데이터 조회
+                큐레이션 데이터 등록 (아카이브 데이터 조회)
             </AsideMenuBarItem>
           )}
           {(PERMISSON_DATA[permission] === "관리자" ||

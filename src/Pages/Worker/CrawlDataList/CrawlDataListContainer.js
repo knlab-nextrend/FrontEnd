@@ -32,13 +32,13 @@ function CrawlDataListContainer() {
     },
     4: {
       type: "register",
-      mainTitle: "크롤데이터 등록 작업 데이터 목록",
-      title: "크롤데이터 등록 진행",
+      mainTitle: "크롤데이터 등록(아카이빙) 작업 데이터 목록",
+      title: "크롤데이터 등록(아카이빙) 진행",
     },
     5: {
       type: "register",
-      mainTitle: "크롤데이터 등록 작업 데이터 목록",
-      title: "크롤데이터 등록 진행",
+      mainTitle: "크롤데이터 등록(아카이빙) 작업 데이터 목록",
+      title: "크롤데이터 등록(아카이빙) 진행",
     },
   };
 
