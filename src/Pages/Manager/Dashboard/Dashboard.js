@@ -19,10 +19,8 @@ function Dashboard({ data }) {
       {/* <FormHeader type={"view"} title={"대시보드"} /> */}
       <Wrapper>
         <UserSelectCard />
-        <Row1>
           <ProcessMenu />
           <WorkStatCard/>
-        </Row1>
 
         <CountryContentWrapper>
           <TitleCard></TitleCard>
@@ -161,10 +159,7 @@ const Wrapper = styled.div`
   background-color: #eee;
   padding: 1rem;
 `;
-const Row1 = styled.div`
-  display: grid;
-  grid-template-columns: 7fr 3fr;
-`;
+
 const CountryContentWrapper = styled.div`
   display: grid;
   grid-template-columns: 7fr 3fr;
