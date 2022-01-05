@@ -4,9 +4,10 @@ import styled, { css } from "styled-components";
 function ProcessMenu() {
   /* 
     all : 전체
+    collect : 수집
     screening : 스크리닝
     refine : 정제
-    register : 아카이빙(등록)
+    archive : 등록(아카이브)
     curation : 큐레이션
 
   */
@@ -22,58 +23,64 @@ function ProcessMenu() {
   return (
     <CardWrapper>
       <div className="title">
-        <div className="title-main">공정 선택</div>
-        <div className="title-sub">통계를 확인할 공정을 선택하세요.</div>
+        <div className="title-main">단계 선택</div>
+        <div className="title-sub">통계를 확인할 단계를 선택하세요.</div>
       </div>
-      <div>
-        <ul>
-          <MenuItem
-            onClick={() => {
-              _processHandler("all");
-            }}
-            active={process === "all" ? 1 : 0}
-          >
-            전체
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              _processHandler("screening");
-            }}
-            active={process === "screening" ? 1 : 0}
-          >
-            스크리닝
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              _processHandler("refine");
-            }}
-            active={process === "refine" ? 1 : 0}
-          >
-            정제
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              _processHandler("register");
-            }}
-            active={process === "register" ? 1 : 0}
-          >
-            아카이브(등록)
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              _processHandler("curation");
-            }}
-            active={process === "curation" ? 1 : 0}
-          >
-            큐레이션
-          </MenuItem>
-        </ul>
-      </div>
+      <ul>
+        <MenuItem
+          onClick={() => {
+            _processHandler("all");
+          }}
+          active={process === "all"}
+        >
+          전체
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            _processHandler("collect");
+          }}
+          active={process === "collect"}
+        >
+          수집
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            _processHandler("screening");
+          }}
+          active={process === "screening"}
+        >
+          스크리닝
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            _processHandler("refine");
+          }}
+          active={process === "refine"}
+        >
+          정제
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            _processHandler("register");
+          }}
+          active={process === "register"}
+        >
+          등록(아카이브)
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            _processHandler("curation");
+          }}
+          active={process === "curation"}
+        >
+          큐레이션
+        </MenuItem>
+      </ul>
     </CardWrapper>
   );
 }
 const CardWrapper = styled.div`
-  margin: 1rem 0.5rem 1rem 0.5rem;
+  margin: 1rem 0.5rem 0 0.5rem;
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   background-color: white;
@@ -89,9 +96,6 @@ const CardWrapper = styled.div`
   .title-sub {
     font-size: 12px;
     color: #939ba2;
-  }
-  .content {
-    height: 100%;
   }
   ul {
     display: flex;

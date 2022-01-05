@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-function TitleCard({children}) {
+function TitleCard({ children }) {
   return (
     <CardWrapper>
       <div className="title">
@@ -9,15 +9,13 @@ function TitleCard({children}) {
           국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다.
         </div>
       </div>
-      <div className="content">
-        {children}
-      </div>
+      <div className="content">{children}</div>
     </CardWrapper>
   );
 }
 
 const CardWrapper = styled.div`
-  margin: 1rem 0.5rem 1rem 0.5rem ;
+  margin: 1rem 0.5rem 1rem 0.5rem;
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   background-color: white;
@@ -34,8 +32,8 @@ const CardWrapper = styled.div`
     font-size: 12px;
     color: #939ba2;
   }
-  .content{
-    height:100% ;
+  .content {
+    height: 100%;
   }
 `;
 export default TitleCard;

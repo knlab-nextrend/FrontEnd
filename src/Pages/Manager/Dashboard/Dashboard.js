@@ -2,8 +2,10 @@ import React from "react";
 import TitleCard from "../../../Components/DashboardComponents/TitleCard";
 import DocumentStatCard from "../../../Components/DashboardComponents/DocumentStatCard";
 import FormHeader from "../../../Components/FormHeader";
+import UserSelectCard from "../../../Components/DashboardComponents/UserSelectCard"
 import ChartCard from "../../../Components/DashboardComponents/ChartCard";
-import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu"
+import TableCard from "../../../Components/DashboardComponents/TableCard"
+import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu";
 import styled from "styled-components";
 
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
@@ -12,12 +14,12 @@ import { ResponsiveGeoMap } from "@nivo/geo"; // 세계지도!
 function Dashboard({ data }) {
   return (
     <>
-      <FormHeader type={"view"} title={"대시보드"} />
+      {/* <FormHeader type={"view"} title={"대시보드"} /> */}
       <Wrapper>
-      <ProcessMenu/>
+        <UserSelectCard/>
+        <ProcessMenu />
         <CountryContentWrapper>
-          <TitleCard>
-          </TitleCard>
+          <TitleCard></TitleCard>
           <div>
             <ChartCard>
               <ResponsivePie
@@ -138,6 +140,7 @@ function Dashboard({ data }) {
             <DocumentStatCard></DocumentStatCard>
           </div>
         </CountryContentWrapper>
+        <TableCard title={"작업자 작업 현황"} subtitle={"작업자 작업 현황입니다. 맨 위의 대시보드 대상을 변경하면 해당 작업자의 자세한 작업 로그를 확인할 수 있습니다."}/>
       </Wrapper>
     </>
   );
