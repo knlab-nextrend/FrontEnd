@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { RiUserSettingsFill, RiLogoutBoxRLine } from "react-icons/ri";
+import { RiUserSettingsFill} from "react-icons/ri";
 import {
   MdOutlineDashboard,
   MdOutlineCategory,
   MdWebAsset,
-  MdCalendarViewDay,
   MdOutlineAdd,
   MdSettings,
   MdUpload,
+  MdManageSearch,
+  MdCalendarViewDay
 } from "react-icons/md";
 import { useHistory, NavLink } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
-import { GrFormView } from "react-icons/gr";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../Modules/login";
 
@@ -27,7 +27,7 @@ function AsideMenuBar({ permission }) {
   };
   const history = useHistory();
   const go사용자수정 = () => {
-    history.push("/user/");
+    history.push("/user");
   };
   const go크롤데이터스크리닝 = () => {
     history.push("/crawl/screening");
@@ -61,9 +61,9 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/">
+                  <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <MdOutlineDashboard color="#435269" size="16" />
+                      <MdOutlineDashboard size="16" />
                     </div>
                     대시보드
                   </AsideMenuBarItem>
@@ -76,9 +76,12 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/excel/register">
+                  <AsideMenuBarItem
+                    to="/excel/register"
+                    activeClassName="active"
+                  >
                     <div className="icon-container">
-                      <MdUpload className="icon" size="16" color="#435269" />
+                      <MdUpload className="icon" size="16" />
                     </div>
                     엑셀 데이터 등록
                   </AsideMenuBarItem>
@@ -92,9 +95,12 @@ function AsideMenuBar({ permission }) {
               {PERMISSON_DATA[permission] !== "사용자" &&
                 PERMISSON_DATA[permission] !== "정제 작업자" && (
                   <li>
-                    <AsideMenuBarItem to="/crawl/screening">
+                    <AsideMenuBarItem
+                      to="/crawl/screening"
+                      activeClassName="active"
+                    >
                       <div className="icon-container">
-                        <GrFormView color="#435269" size="16" />
+                        <MdManageSearch size="16" />
                       </div>
                       크롤 데이터 스크리닝
                     </AsideMenuBarItem>
@@ -102,9 +108,9 @@ function AsideMenuBar({ permission }) {
                 )}
               {PERMISSON_DATA[permission] !== "사용자" && (
                 <li>
-                  <AsideMenuBarItem onClick={go크롤데이터정제}>
+                  <AsideMenuBarItem to="/crawl/list/2" activeClassName="active">
                     <div className="icon-container">
-                      <MdSettings color="#435269" size="16" />
+                      <MdSettings size="16" />
                     </div>
                     크롤 데이터 정제
                   </AsideMenuBarItem>
@@ -113,9 +119,12 @@ function AsideMenuBar({ permission }) {
               {PERMISSON_DATA[permission] !== "사용자" &&
                 PERMISSON_DATA[permission] !== "정제 작업자" && (
                   <li>
-                    <AsideMenuBarItem onClick={go크롤데이터등록}>
+                    <AsideMenuBarItem
+                      to="/crawl/list/4"
+                      activeClassName="active"
+                    >
                       <div className="icon-container">
-                        <MdOutlineAdd color="#435269" size="16" />
+                        <MdOutlineAdd size="16" />
                       </div>
                       크롤 데이터 등록 (아카이빙)
                     </AsideMenuBarItem>
@@ -124,9 +133,9 @@ function AsideMenuBar({ permission }) {
               {(PERMISSON_DATA[permission] === "관리자" ||
                 PERMISSON_DATA[permission] === "큐레이션 작업자") && (
                 <li>
-                  <AsideMenuBarItem onClick={go아카이브데이터조회}>
+                  <AsideMenuBarItem to="/archive/list" activeClassName="active">
                     <div className="icon-container">
-                      <MdCalendarViewDay size="16" color="#435269" />
+                      <MdCalendarViewDay size="16" />
                     </div>
                     큐레이션 데이터 등록 (아카이브 데이터 조회)
                   </AsideMenuBarItem>
@@ -135,9 +144,12 @@ function AsideMenuBar({ permission }) {
               {(PERMISSON_DATA[permission] === "관리자" ||
                 PERMISSON_DATA[permission] === "큐레이션 작업자") && (
                 <li>
-                  <AsideMenuBarItem onClick={go큐레이션조회}>
+                  <AsideMenuBarItem
+                    to="/curation/list"
+                    activeClassName="active"
+                  >
                     <div className="icon-container">
-                      <MdOutlineAdd size="16" color="#435269" />
+                      <MdOutlineAdd size="16" />
                     </div>
                     큐레이션
                   </AsideMenuBarItem>
@@ -150,9 +162,9 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem>
+                  <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <MdOutlineCategory color="#435269" size="16" />
+                      <MdOutlineCategory  size="16" />
                     </div>
                     카테고리 관리
                   </AsideMenuBarItem>
@@ -160,9 +172,9 @@ function AsideMenuBar({ permission }) {
               )}
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem>
+                  <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <MdWebAsset color="#435269" size="16" />
+                      <MdWebAsset size="16" />
                     </div>
                     사이트 목록 관리
                   </AsideMenuBarItem>
@@ -170,9 +182,9 @@ function AsideMenuBar({ permission }) {
               )}
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem>
+                  <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <FaBook size="16" color="#435269" />
+                      <FaBook size="16" />
                     </div>
                     다국어 사전 관리
                   </AsideMenuBarItem>
@@ -185,9 +197,9 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem onClick={go사용자수정}>
+                  <AsideMenuBarItem to="/user" activeClassName="active">
                     <div className="icon-container">
-                      <RiUserSettingsFill color="#435269" size="16" />
+                      <RiUserSettingsFill size="16" />
                     </div>
                     사용자 관리
                   </AsideMenuBarItem>
@@ -196,9 +208,9 @@ function AsideMenuBar({ permission }) {
 
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem>
+                  <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <MdSettings size="16" color="#435269" />
+                      <MdSettings size="16" />
                     </div>
                     맟춤형 화면 생성
                   </AsideMenuBarItem>
@@ -209,9 +221,9 @@ function AsideMenuBar({ permission }) {
 
           {PERMISSON_DATA[permission] === "사용자" && (
             <li>
-              <AsideMenuBarItem onClick={go큐레이션조회}>
+              <AsideMenuBarItem to="/curation/list" activeClassName="active">
                 <div className="icon-container">
-                  <MdOutlineAdd size="16" color="#435269" />
+                  <MdOutlineAdd size="16" />
                 </div>
                 큐레이션
               </AsideMenuBarItem>
@@ -230,11 +242,10 @@ const AsideMenuBarWrapper = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  background-color: #eee;
+  background-color: #435269;
   height: 100%;
 `;
 const AsideMenuGroup = styled.div`
-  background-color: #435269;
   padding: 1rem;
 
   .group-title {
@@ -259,6 +270,7 @@ const AsideMenuBarItem = styled(NavLink)`
   transition: all 0.2s;
   color: #eee;
   word-break: keep-all;
+  text-decoration: none;
 
   .icon-container {
     display: flex;
@@ -269,10 +281,21 @@ const AsideMenuBarItem = styled(NavLink)`
     border-radius: 32px;
     background-color: white;
     margin-right: 1rem;
+    color:#435269;
   }
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
+  }
+
+  &.active {
+    border-radius: 4px;
+    background-color: white;
+    color:#435269;
+    .icon-container{
+      color:white;
+      background-color:#435269;
+    }
   }
 `;
 
