@@ -86,9 +86,11 @@ function App() {
 const Body = styled.div`
   display: ${(props) => (props.isLogin ? "grid" : "none")};
   padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: minmax(260px, 1fr) 8fr;
   min-height: 1280px;
+
 `;
+
 const Section = styled.section`
   width: 100%;
 `;
