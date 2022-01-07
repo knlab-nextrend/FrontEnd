@@ -18,28 +18,27 @@ function WorkerSection() {
         exact
       />
       <PrivateRoute
-        path="/crawl/list/:statusCode"
+        path="/crawl/:statusCode"
         component={CrawlDataListContainer}
         exact
       />
       <PrivateRoute
-        path="/crawl/detail/:statusCode/:itemId"
-        component={CrawlDataDetailContainer}
-        exact
-      />
-
-      <PrivateRoute
-        path="/archive/list"
+        path="/archive"
         component={ArchiveDataListContainer}
         exact
       />
       <PrivateRoute
-        path="/curation/list"
+        path="/crawl/:statusCode/:itemId"
+        component={CrawlDataDetailContainer}
+        exact
+      />
+      <PrivateRoute
+        path="/curation"
         component={CurationDataListContainer}
         exact
       />
       <PrivateRoute
-        path="/curation/detail/:itemId"
+        path="/curation/:itemId"
         component={CurationDataDetailContainer}
         exact
       />

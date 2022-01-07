@@ -32,7 +32,7 @@ function CrawlDataList({
               {crawlDataList.map((item, i) => {
                 return (
                   <CustomLink
-                    to={`/crawl/detail/${statusCode}/${item.item_id}`}
+                    to={`/crawl/${statusCode}/${item.item_id}`}
                     key={i}
                   >
                     <CrawlDataCard crawlDataItem={item} />

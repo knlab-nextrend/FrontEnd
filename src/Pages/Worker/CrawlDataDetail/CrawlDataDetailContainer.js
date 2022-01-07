@@ -28,6 +28,8 @@ function CrawlDataDetailContainer() {
     부모 컴포넌트에서 자식 컴포넌트의 함수를 호출하는 상황임.
     CrawlDataForm 에 ref를.. 걸고자 함. 
   */
+
+  
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
 
   const STATUS_CODE_SET = {
@@ -110,9 +112,9 @@ function CrawlDataDetailContainer() {
     CrawlDataKeepApi(itemId, statusCode).then((res) => {
       alert("해당 데이터에 대한 작업이 보류되었습니다.");
       if (statusCode === "6") {
-        history.push(`/archive/list`); // 목록으로 돌아가기
+        history.push(`/archive`); // 목록으로 돌아가기
       } else {
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
       }
     });
   };
@@ -122,11 +124,11 @@ function CrawlDataDetailContainer() {
       CrawlDataRejectApi(itemId, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         if (statusCode === "6") {
-          history.push(`/archive/list`); // 목록으로 돌아가기
+          history.push(`/archive`); // 목록으로 돌아가기
         } else if (statusCode === "7") {
-          history.push(`/curation/list`);
+          history.push(`/curation`);
         } else {
-          history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+          history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
         }
       });
     }
@@ -137,11 +139,11 @@ function CrawlDataDetailContainer() {
     CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
-        history.push(`/archive/list`); // 목록으로 돌아가기
+        history.push(`/archive`); // 목록으로 돌아가기
       } else if (statusCode === "7") {
-        history.push(`/curation/list`);
+        history.push(`/curation`);
       } else {
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
       }
     });
   };
@@ -151,13 +153,13 @@ function CrawlDataDetailContainer() {
       window.confirm("작업을 중단하시겠습니까?\n변경사항은 저장되지 않습니다.")
     ) {
       //documentDetachImageApi(itemId);
-      history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+      history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
       if (statusCode === "6") {
-        history.push(`/archive/list`); // 목록으로 돌아가기
+        history.push(`/archive`); // 목록으로 돌아가기
       } else if (statusCode === "7") {
-        history.push(`/curation/list`);
+        history.push(`/curation`);
       } else {
-        history.push(`/crawl/list/${statusCode}`); // 목록으로 돌아가기
+        history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
       }
     }
   };

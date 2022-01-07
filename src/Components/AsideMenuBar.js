@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { RiUserSettingsFill} from "react-icons/ri";
+import { RiUserSettingsFill } from "react-icons/ri";
 import {
   MdOutlineDashboard,
   MdOutlineCategory,
@@ -9,7 +9,7 @@ import {
   MdSettings,
   MdUpload,
   MdManageSearch,
-  MdCalendarViewDay
+  MdCalendarViewDay,
 } from "react-icons/md";
 import { useHistory, NavLink } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
@@ -108,7 +108,11 @@ function AsideMenuBar({ permission }) {
                 )}
               {PERMISSON_DATA[permission] !== "사용자" && (
                 <li>
-                  <AsideMenuBarItem to="/crawl/list/2" activeClassName="active">
+                  <AsideMenuBarItem
+                    to="/crawl/2"
+                    activeClassName="active"
+                    
+                  >
                     <div className="icon-container">
                       <MdSettings size="16" />
                     </div>
@@ -120,7 +124,7 @@ function AsideMenuBar({ permission }) {
                 PERMISSON_DATA[permission] !== "정제 작업자" && (
                   <li>
                     <AsideMenuBarItem
-                      to="/crawl/list/4"
+                      to="/crawl/4"
                       activeClassName="active"
                     >
                       <div className="icon-container">
@@ -133,7 +137,7 @@ function AsideMenuBar({ permission }) {
               {(PERMISSON_DATA[permission] === "관리자" ||
                 PERMISSON_DATA[permission] === "큐레이션 작업자") && (
                 <li>
-                  <AsideMenuBarItem to="/archive/list" activeClassName="active">
+                  <AsideMenuBarItem to="/archive" activeClassName="active">
                     <div className="icon-container">
                       <MdCalendarViewDay size="16" />
                     </div>
@@ -145,7 +149,7 @@ function AsideMenuBar({ permission }) {
                 PERMISSON_DATA[permission] === "큐레이션 작업자") && (
                 <li>
                   <AsideMenuBarItem
-                    to="/curation/list"
+                    to="/curation"
                     activeClassName="active"
                   >
                     <div className="icon-container">
@@ -164,7 +168,7 @@ function AsideMenuBar({ permission }) {
                 <li>
                   <AsideMenuBarItem to="/home" activeClassName="active">
                     <div className="icon-container">
-                      <MdOutlineCategory  size="16" />
+                      <MdOutlineCategory size="16" />
                     </div>
                     카테고리 관리
                   </AsideMenuBarItem>
@@ -221,7 +225,7 @@ function AsideMenuBar({ permission }) {
 
           {PERMISSON_DATA[permission] === "사용자" && (
             <li>
-              <AsideMenuBarItem to="/curation/list" activeClassName="active">
+              <AsideMenuBarItem to="/curation" activeClassName="active">
                 <div className="icon-container">
                   <MdOutlineAdd size="16" />
                 </div>
@@ -281,7 +285,7 @@ const AsideMenuBarItem = styled(NavLink)`
     border-radius: 32px;
     background-color: white;
     margin-right: 1rem;
-    color:#435269;
+    color: #435269;
   }
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -291,10 +295,10 @@ const AsideMenuBarItem = styled(NavLink)`
   &.active {
     border-radius: 4px;
     background-color: white;
-    color:#435269;
-    .icon-container{
-      color:white;
-      background-color:#435269;
+    color: #435269;
+    .icon-container {
+      color: white;
+      background-color: #435269;
     }
   }
 `;

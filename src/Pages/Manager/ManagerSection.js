@@ -7,7 +7,7 @@ import UserManagementContainer from "../Manager/UserManagement/UserManagementCon
 function UserSection() {
   return (
     <Switch>
-      <PrivateRoute path="/user/" component={UserManagementContainer} exact />
+      <PrivateRoute path="/user" component={UserManagementContainer} exact />
       <PrivateRoute
         path="/excel/register"
         component={ExcelDataRegisterContainer}

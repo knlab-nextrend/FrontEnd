@@ -65,7 +65,7 @@ function ArchiveDataList({
                         <td>{item.dc_country_list.join(", ")}</td>
                         <td>
                           <CustomLink
-                            to={`/crawl/detail/${statusCode}/${item.item_id}`}
+                            to={`/crawl/${statusCode}/${item.item_id}`}
                           >
                             {item.dc_title_or}
                           </CustomLink>

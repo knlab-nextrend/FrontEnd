@@ -6,12 +6,12 @@ function Tab({ process }) {
   const { statusCode } = useParams();
   const MenuList = {
     refine: [
-      { status: 2, name: "정제 대기",router:"/crawl/list/2" },
-      { status: 3, name: "정제 보류",router:"/crawl/list/3"},
+      { status: 2, name: "정제 대기",router:"/crawl/2" },
+      { status: 3, name: "정제 보류",router:"/crawl/3"},
     ],
     register: [
-      { status: 4, name: "등록 대기", router:"/crawl/list/4" },
-      { status: 5, name: "등록 보류" ,router:"/crawl/list/5"},
+      { status: 4, name: "등록 대기", router:"/crawl/4" },
+      { status: 5, name: "등록 보류" ,router:"/crawl/5" },
     ],
   };
   const [index, setIndex] = useState(2);

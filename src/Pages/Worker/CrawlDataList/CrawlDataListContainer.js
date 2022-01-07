@@ -5,19 +5,19 @@ import CrawlDataList from "./CrawlDataList";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
-
 function CrawlDataListContainer() {
   const dispatch = useDispatch();
   /* 현재 보여질 데이터 */
   const [crawlDataList, setCrawlDataList] = useState([]);
 
-  /* [1차 스크리닝, 1차스크리닝 보류, 2차정제, 2차정제 보류] 진행상황을 나타내기 위한 상태코드 */
+  /* refine, register 를 router로 부터 받아와서 구분하도록 함.... */
   const { statusCode } = useParams();
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
+
 
   const STATUS_CODE_SET = {
     2: {
@@ -65,24 +65,27 @@ function CrawlDataListContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo)
-      .then((res) => {
-        dataCleansing(res.data);
-      })
-      .catch((err) => {
-        sessionHandler(err, dispatch).then((res) => {
-          CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-            dataCleansing(res.data);
+    trackPromise(
+      CrawlDataListFetchApi(statusCode, listSize, pageNo)
+        .then((res) => {
+          dataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+              dataCleansing(res.data);
+            });
           });
-        });
-      }));
+        })
+    );
   };
+
+
 
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
   }, [pageNo, statusCode]);
-
   return (
     <>
       <CrawlDataList
