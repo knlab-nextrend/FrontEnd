@@ -131,6 +131,7 @@ const documentDetachImageApi = (itemId) =>{
   return axios.get(`/file/docImageDetach/`,config);
 }
 
+
 /* 대륙 리스트 전체 받아오는 함수 */
 const ContinentsListDataFetchApi = () => {
   let config = {

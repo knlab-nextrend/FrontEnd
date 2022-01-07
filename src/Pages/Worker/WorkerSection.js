@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import React from "react";
+import { Switch } from "react-router-dom";
 import PrivateRoute from "../../Route/PrivateRoute";
 
 import CrawlDataDetailContainer from "./CrawlDataDetail/CrawlDataDetailContainer";

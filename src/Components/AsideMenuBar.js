@@ -61,7 +61,7 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/home" activeClassName="active">
+                  <AsideMenuBarItem to="/dashboard" activeClassName="active">
                     <div className="icon-container">
                       <MdOutlineDashboard size="16" />
                     </div>

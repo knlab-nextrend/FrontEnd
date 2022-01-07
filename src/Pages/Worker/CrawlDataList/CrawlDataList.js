@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import DataFilter from "../../../Components/DataFilter";
 import CrawlDataCard from "../../../Components/CrawlDataCard";
 import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";

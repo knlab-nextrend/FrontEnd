@@ -164,9 +164,29 @@ function CrawlDataDetailContainer() {
     }
   };
 
+  /* 이미지 핸들러 */
+  const imageDetachHandler = ()=>{
+    if(confirm("변경사항은 저장되지 않습니다. 페이지를 닫겠습니까?")){
+      documentDetachImageApi(itemId).then((res)=>{
+        console.log(res)
+      })
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', imageDetachHandler)
+    window.addEventListener('unload', imageDetachHandler)
+    return () => {
+      window.removeEventListener('beforeunload', imageDetachHandler)
+      window.removeEventListener('unload', imageDetachHandler)
+    }
+  }, [])
+
   useEffect(() => {
     dataFetch();
   }, [itemId]);
+
+  
 
   return (
     <>

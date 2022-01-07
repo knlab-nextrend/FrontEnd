@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React  from "react";
 import { AiOutlineArrowRight, AiOutlineDelete } from "react-icons/ai";
 import { FaRegHandPaper } from "react-icons/fa";
 import CrawlDataForm from "../../../Components/CrawlDataForm";
