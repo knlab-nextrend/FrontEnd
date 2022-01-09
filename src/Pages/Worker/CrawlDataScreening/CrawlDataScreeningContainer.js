@@ -25,6 +25,7 @@ function CrawlDataScreeningContainer() {
   const [checkedAll, setCheckedAll] = useState(false);
   const [itemIdList, setItemIdList] = useState([]);
   const [deleteDataList, setDeleteDataList] = useState([]);
+  const [keepDataList,setKeepDataList] = useState([]);
   const [stageDataList, setStageDataList] = useState([]);
 
   /* item 전체 선택 */
@@ -92,7 +93,7 @@ function CrawlDataScreeningContainer() {
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,
-        dc_dt_collect: item.dc_dt_collect,
+        dc_dt_collect: item.dc_dt_collect.substring(0,10),
         dc_page: item.dc_page,
       };
       _screeningData.push(obj);
@@ -105,6 +106,7 @@ function CrawlDataScreeningContainer() {
   const dataFetch = () => {
     trackPromise(ScreeningDataFetchApi(listSize, pageNo)
       .then((res) => {
+        console.log(res.data)
         dataCleansing(res.data);
       })
       .catch((err) => {

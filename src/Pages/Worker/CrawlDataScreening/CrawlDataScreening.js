@@ -26,8 +26,6 @@ function CrawlDataScreening({
       <Wrapper>
         <SearchResultTitle>
           <p>검색결과 ({dcCount}건)</p>
-          <p>          현재 보여지는 리스트에서 스크리닝 완료 버튼을 누르면 체크한 데이터는
-          정제 단계로 넘어가며 , 체크 하지 않은 데이터는 버려집니다.</p>
         </SearchResultTitle>
         <ButtonWrapper>
           <Button color="#435269" onClick={onChangeAll}>
@@ -50,49 +48,57 @@ function CrawlDataScreening({
             <option value={100}>100건</option>
           </select>
         </ButtonWrapper>
+        <div>검색결과 {dcCount} 건</div>
         {screeningData.length !== 0 ? (
           <>
             <TableWrapper>
               <CustomTable>
                 <colgroup>
+                  <col style={{ width: "45%" }} />
                   <col style={{ width: "10%" }} />
                   <col style={{ width: "10%" }} />
-                  <col style={{ width: "30%" }} />
-                  <col style={{ width: "15%" }} />
                   <col style={{ width: "10%" }} />
-                  <col style={{ width: "15%" }} />
                   <col style={{ width: "10%" }} />
+                  <col style={{ width: "5%" }} />
+                  <col style={{ width: "5%" }} />
+                  <col style={{ width: "5%" }} />
                 </colgroup>
-
                 <thead>
                   <tr>
-                    <th>선택</th>
-                    <th>itemID</th>
                     <th>요약</th>
                     <th>발행자/발행기관</th>
                     <th>언어</th>
                     <th>수집일</th>
                     <th>페이지수</th>
+                    <th>완료</th>
+                    <th>보류</th>
+                    <th>삭제</th>
                   </tr>
                 </thead>
                 <tbody>
                   {screeningData.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            value={item.item_id}
-                            onChange={onChangeEach}
-                            checked={stageDataList.includes(item.item_id)}
-                          />
-                        </td>
-                        <td>{item.item_id}</td>
                         <td>{item.dc_smry_kr}</td>
                         <td>{item.dc_publisher}</td>
                         <td>{item.dc_lang}</td>
                         <td>{item.dc_dt_collect}</td>
                         <td>{item.dc_page}</td>
+                        <td>
+                          <CustomRadio
+                            type="radio"
+                            name={item.item_id}
+                            value={item.item_id}
+                            onChange={onChangeEach}
+                            checked={stageDataList.includes(item.item_id)}
+                          />
+                        </td>
+                        <td>
+                          <CustomRadio type="radio" name={item.item_id} />
+                        </td>
+                        <td>
+                          <CustomRadio type="radio" name={item.item_id} />
+                        </td>
                       </tr>
                     );
                   })}
@@ -115,15 +121,7 @@ function CrawlDataScreening({
 }
 const SearchResultTitle = styled.div`
   width: 100%;
-  p {
-    &:nth-child(1) {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    &:nth-child(2) {
-      font-size: 14px;
-    }
-  }
+  
 `;
 const GuideComment = styled.div`
   margin: 1rem 0 1rem 0;
@@ -139,23 +137,32 @@ const TableWrapper = styled.div`
   width: 100%;
   max-height: 65rem;
   overflow: auto;
+  font-size: 14px;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
+  border-radius: 4px;
+  border: solid 1px #eee;
 `;
 const CustomTable = styled.table`
   width: 100%;
-  text-align: center;
+  text-align: left;
   border-collapse: collapse;
   thead {
-    border-bottom: solid 1px #d6d6d6;
     position: sticky;
     top: 0px;
-    background-color: white;
+    background-color: #d8dee6;
+    color: #323d4d;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #f4f5f8;
   }
   tr {
     height: 2.5rem;
+    border-bottom: solid 1px #eee;
   }
-  tr:nth-child(2n) {
-    background-color: #eee;
+  th,
+  td {
+    padding-left: 1rem;
   }
   input[type="checkbox"] {
     width: 20px; /*Desired width*/
@@ -174,6 +181,13 @@ const ButtonWrapper = styled.div`
   select {
     padding: 0 0.5rem 0 0.5rem;
   }
+`;
+
+const CustomRadio = styled.input`
+  font-size: 1em;
+  width: 1.25em; /* 너비 설정 */
+  height: 1.25em; /* 높이 설정 */
+  vertical-align: middle;
 `;
 
 export default CrawlDataScreening;
