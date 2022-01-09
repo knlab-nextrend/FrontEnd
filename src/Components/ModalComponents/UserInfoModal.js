@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { modifyUserInfoApi, addUserApi } from "../../Utils/api";
+import { modifyUserInfoApi, addUserApi, verifyUserIdApi } from "../../Utils/api";
 import permission from "../../Data/permission.json"
 
 function UserInfoModal({ closeModal, executeModal }) {
@@ -14,6 +14,7 @@ function UserInfoModal({ closeModal, executeModal }) {
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
   const [Category, setCategory] = useState(0);
+  const [Confirm, setConfirm] = useState(false);
 
   const userInfo = useSelector(
     (state) => state.modal.modalData.modal_user.user
@@ -51,6 +52,7 @@ function UserInfoModal({ closeModal, executeModal }) {
     setEmail(userInfo.Email || "");
     setCategory(userInfo.Category || "");
     setSalt(userInfo.salt || "");
+    setConfirm(userInfo.Confirm || "");
   }, []);
 
   const _addUser = () => {
@@ -64,18 +66,33 @@ function UserInfoModal({ closeModal, executeModal }) {
       Category,
       salt,
     };
-    addUserApi(userInfo)
-      .then(() => alert("성공적으로 생성되었습니다."))
-      .catch((err) => {
-        if (err.response.status === 400) {
-          alert("추가 중 오류발생");
-        } else {
-          console.log(err.response);
-        }
-      });
-    closeModal();
-    window.location.reload();
+    if (Confirm) {
+      addUserApi(userInfo)
+        .then(() => alert("성공적으로 생성되었습니다."))
+        .catch((err) => {
+          if (err.response.status === 400) {
+            alert("추가 중 오류발생");
+          } else {
+            console.log(err.response);
+          }
+        });
+      closeModal();
+      window.location.reload();
+    } else {
+      alert("아이디 중복확인을 수행하여야 합니다.");
+    }
+
   };
+  const _verifyUserId = () => {
+    verifyUserIdApi(userID,id)
+      .then(() => {
+        alert("사용가능한 ID입니다.");
+        setConfirm(true);
+      })
+      .catch((err) => {
+        alert("사용불가한 ID입니다.");
+      })
+  }
 
   const _modifyUser = () => {
     let userInfo = {
@@ -88,15 +105,19 @@ function UserInfoModal({ closeModal, executeModal }) {
       Category,
       salt,
     };
-    modifyUserInfoApi(userInfo, id)
-      .then(() => alert("성공적으로 저장되었습니다."))
-      .catch((err) => {
-        if (err.response.status === 400) {
-          alert("변경 중 오류발생");
-        }
-      });
-    closeModal();
-    window.location.reload();
+    if (Confirm) {
+      modifyUserInfoApi(userInfo, id)
+        .then(() => alert("성공적으로 저장되었습니다."))
+        .catch((err) => {
+          if (err.response.status === 400) {
+            alert("변경 중 오류발생");
+          }
+        });
+      closeModal();
+      window.location.reload();
+    } else {
+      alert("아이디 중복확인을 수행하여야 합니다.");
+    }
   };
 
   return (
@@ -116,18 +137,16 @@ function UserInfoModal({ closeModal, executeModal }) {
               onChange={_userUserIDHandler}
               type="text"
             />
+            <Button onClick={_verifyUserId}>중복확인</Button>
           </InputContainer>
           <InputContainer>
-            {type && (
-              <>
-                <p className="title">비밀번호</p>
-                <input
-                  value={userPW}
-                  onChange={_userUserPWHandler}
-                  type="text"
-                />
-              </>
-            )}
+            <>
+              {type ? (<p className="title">비밀번호</p>) : (<p className="title">새 비밀번호</p>)}
+              <input
+                onChange={_userUserPWHandler}
+                type="text"
+              />
+            </>
           </InputContainer>
           <InputContainer>
             <p className="title">전화번호</p>
@@ -164,7 +183,7 @@ function UserInfoModal({ closeModal, executeModal }) {
           <InputContainer>
             <p className="title">사용자 권한</p>
             <select onChange={_userCategoryHandler} value={Category}>
-              {permission.permission.map((item,index)=>{
+              {permission.permission.map((item, index) => {
                 return <option value={item.permission_code} key={index} >{item.permission_name}</option>
               })}
             </select>

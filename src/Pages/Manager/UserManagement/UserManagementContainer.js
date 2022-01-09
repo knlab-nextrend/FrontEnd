@@ -5,6 +5,7 @@ import {
   FetchUsersApi,
   deleteUserByIdApi,
   sessionHandler,
+  restrictUserApi,
 } from "../../../Utils/api";
 import UserManagement from "./UserManagement";
 import { setModal, setModalData } from "../../../Modules/modal";
@@ -35,6 +36,7 @@ function UserManagementContainer() {
   const getUserList = () => {
     trackPromise(FetchUsersApi()
       .then((res) => {
+        console.log(res.data);
         setUserData(res.data);
       })
       .catch((err) => {
@@ -59,6 +61,19 @@ function UserManagementContainer() {
       window.location.reload(); //
     }
   };
+  const restrictUser = (id,restrict) => {
+    restrictUserApi(id,restrict)
+    .then(()=>{
+      alert("성공적으로 수행되었습니다");
+    })
+    .catch((err)=>{
+      if (err.response.status === 400) {
+        alert("유저 정보 변경 중 오류발생");
+      }
+    })
+    window.location.reload();
+  }
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -69,6 +84,7 @@ function UserManagementContainer() {
         userData={userData}
         openUserModifyModal={openUserModifyModal}
         deleteUser={deleteUser}
+        restrictUser={restrictUser}
         openUserAddModal={openUserAddModal}
         PERMISSON_DATA={PERMISSON_DATA}
       />
