@@ -127,7 +127,7 @@ function DataFilter({ dataFilterFetch }) {
       <Wrapper>
         <FilterHeader>
           <Title>
-            <FaFilter size="24" color="#435269" />
+            <FaFilter color="#435269" />
             <p>검색 필터</p>
           </Title>
           <CustomButton onClick={_optionIsOpenHandler}>
@@ -417,28 +417,26 @@ const CascaderOptions = styled.div`
 const Wrapper = styled.div`
   width: 100%;
   flex-direction: column;
+  font-size: 14px;
 `;
 
 const FilterHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: solid 2px #bfbfbf;
 `;
 const Title = styled.div`
   display: flex;
   align-items: center;
-  padding: 1rem;
 
   p {
     margin: 0 0 0 0.5rem;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: bold;
     color: #435269;
   }
 `;
 const SubTitle = styled.div`
-  font-size: 18px;
   font-weight: bold;
   padding: 1rem;
   border-bottom: solid 1px #d6d6d6;
@@ -446,15 +444,12 @@ const SubTitle = styled.div`
 const CustomButton = styled.button`
   border: none;
   cursor: pointer;
-  height: 4rem;
-  padding: 0 1rem 0 1rem;
-  min-width: 15rem;
+  padding: 0.5rem;
   color: white;
   background-color: #435269;
 `;
 const FilterBody = styled.div`
   padding: 1rem 0 1rem 0;
-  border-bottom: solid 2px #bfbfbf;
 `;
 const FilterActions = styled.div`
   padding: 0.5rem 0 0.5rem 0;
@@ -469,7 +464,7 @@ const FilterActions = styled.div`
 `;
 
 const FilterBodyWrapper = styled.div`
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
 `;
 

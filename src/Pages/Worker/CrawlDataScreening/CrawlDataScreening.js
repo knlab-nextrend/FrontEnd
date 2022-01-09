@@ -5,6 +5,9 @@ import Button from "../../../Components/Button";
 import Pagenation from "../../../Components/Pagenation";
 import NoData from "../../../Components/NoData";
 import { AiOutlineCheck } from "react-icons/ai";
+import { FaFilter } from "react-icons/fa";
+import { HiOutlineDocumentSearch } from "react-icons/hi";
+import DataFilter from "../../../Components/DataFilter";
 function CrawlDataScreening({
   screeningData,
   onChangeEach,
@@ -24,31 +27,36 @@ function CrawlDataScreening({
     <>
       <FormHeader type="view" title={"크롤데이터 스크리닝 진행"} />
       <Wrapper>
-        <SearchResultTitle>
-          <p>검색결과 ({dcCount}건)</p>
-        </SearchResultTitle>
-        <ButtonWrapper>
-          <Button color="#435269" onClick={onChangeAll}>
-            <AiOutlineCheck color="white" />
-            <p>전체선택</p>
-          </Button>
-          <Button color="#435269" onClick={stageScreeningData}>
-            <AiOutlineCheck color="white" />
-            <p>스크리닝 완료</p>
-          </Button>
-          <select value={listSize} onChange={_listSizeHandler}>
-            <option disabled hidden>
-              리스트 사이즈
-            </option>
-            <option value={2}>2건</option>
-            <option value={10}>10건</option>
-            <option value={30}>30건</option>
-            <option value={50}>50건</option>
-            <option value={75}>75건</option>
-            <option value={100}>100건</option>
-          </select>
-        </ButtonWrapper>
-        <div>검색결과 {dcCount} 건</div>
+        <RowContainer>
+          <Row>
+            <div className="result-count">
+              <HiOutlineDocumentSearch />
+              검색 결과 ({dcCount}건)
+            </div>
+            <div className="action-group">
+              <button className="screening-button" onClick={stageScreeningData}>
+                <AiOutlineCheck />
+                스크리닝 완료
+              </button>
+              <select
+                className="list-size"
+                value={listSize}
+                onChange={_listSizeHandler}
+              >
+                <option disabled>리스트 사이즈</option>
+                <option value={2}>2건</option>
+                <option value={10}>10건</option>
+                <option value={30}>30건</option>
+                <option value={50}>50건</option>
+                <option value={75}>75건</option>
+                <option value={100}>100건</option>
+              </select>
+            </div>
+          </Row>
+          <Row>
+            <DataFilter />
+          </Row>
+        </RowContainer>
         {screeningData.length !== 0 ? (
           <>
             <TableWrapper>
@@ -70,9 +78,18 @@ function CrawlDataScreening({
                     <th>언어</th>
                     <th>수집일</th>
                     <th>페이지수</th>
-                    <th>완료</th>
-                    <th>보류</th>
-                    <th>삭제</th>
+                    <th>
+                      완료
+                      <input type="radio" name="allcheck" />
+                    </th>
+                    <th>
+                      보류
+                      <input type="radio" name="allcheck" />
+                    </th>
+                    <th>
+                      삭제
+                      <input type="radio" name="allcheck" />
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -119,25 +136,63 @@ function CrawlDataScreening({
     </>
   );
 }
-const SearchResultTitle = styled.div`
-  width: 100%;
-  
-`;
-const GuideComment = styled.div`
-  margin: 1rem 0 1rem 0;
-`;
 const Wrapper = styled.div`
   margin: 0 5rem 5rem 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 14px;
+`;
+
+const RowContainer = styled.div`
+  border: solid 1px #d6d6d6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  width: 100%;
+`;
+const Row = styled.div`
+  display: flex;
+  color: rgb(59, 59, 59);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: solid 1px #d6d6d6;
+  &:last-child {
+    border: none;
+  }
+
+  .result-count {
+    font-size: 16px;
+    font-weight: bold;
+    * {
+      padding-right: 0.5rem;
+    }
+  }
+  .action-group {
+    display: flex;
+  }
+  .screening-button {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    background-color: #435269;
+    border: none;
+    border-radius: 4px;
+  }
+  .list-size {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #d6d6d6;
+  }
 `;
 
 const TableWrapper = styled.div`
+  margin-top: 1rem;
   width: 100%;
   max-height: 65rem;
   overflow: auto;
-  font-size: 14px;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
   border-radius: 4px;
   border: solid 1px #eee;
@@ -167,19 +222,6 @@ const CustomTable = styled.table`
   input[type="checkbox"] {
     width: 20px; /*Desired width*/
     height: 20px; /*Desired height*/
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 1rem 0 1rem 0;
-
-  Button {
-    margin-right: 1rem;
-  }
-  select {
-    padding: 0 0.5rem 0 0.5rem;
   }
 `;
 
