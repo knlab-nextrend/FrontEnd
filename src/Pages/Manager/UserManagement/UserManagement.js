@@ -4,12 +4,15 @@ import styled from "styled-components";
 import {
   AiOutlineUserDelete,
   AiOutlineUserAdd,
+  AiOutlineStop,
+  AiOutlineStepForward,
 } from "react-icons/ai";
 import { RiUserSettingsLine } from "react-icons/ri";
 function UserManagement({
   userData,
   openUserModifyModal,
   deleteUser,
+  restrictUser,
   openUserAddModal,
   PERMISSON_DATA
 }) {
@@ -76,6 +79,27 @@ function UserManagement({
                         <AiOutlineUserDelete size="22" color="white" />
                         <p>삭제</p>
                       </Button>
+                      {user.stat ? (
+                        <>
+                        <Button
+                          onClick={() => {
+                            restrictUser(user.id,false);
+                          }}
+                        >
+                        <AiOutlineStepForward size="22" color="white" />
+                          <p>재개</p>
+                        </Button></>
+                      ) : (
+                        <>
+                        <Button
+                          onClick={() => {
+                            restrictUser(user.id,true);
+                          }}
+                        >
+                        <AiOutlineStop size="22" color="white" />
+                          <p>중지</p>
+                        </Button></>
+                      )}
                     </ButtonWrapper>
                   </td>
                 </tr>

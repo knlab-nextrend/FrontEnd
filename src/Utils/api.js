@@ -258,12 +258,26 @@ const deleteUserByIdApi = (uid) => {
   };
   return axios.post(`/nextrend/user/delete`, body, { headers: headers });
 };
+const verifyUserIdApi = (userId,id) => {
+  const body = {
+    userId,id
+  }
+  return axios.post(`/nextrend/user/verify`, body, { headers: headers });
+}
+
 const addUserApi = (userInfo) => {
   const body = {
     userInfo,
   };
   return axios.post(`/nextrend/user/add`, body, { headers: headers });
 };
+
+const restrictUserApi = (uid,restrict) => {
+  const body = {
+    uid,restrict
+  };
+  return axios.post(`/nextrend/user/restrict`, body, { headers: headers });
+}
 
 export {
   LoginApi,
@@ -290,5 +304,7 @@ export {
   sessionHandler,
   documentPastedImageApi,
   documentDetachImageApi,
-  uploadExcelDataApi
+  uploadExcelDataApi,
+  restrictUserApi,
+  verifyUserIdApi
 };
