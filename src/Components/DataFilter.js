@@ -268,14 +268,13 @@ function DataFilter({ dataFilterFetch }) {
                   </OptionRow>
                 </OptionContainer>
                 <FilterActions>
-                  <button onClick={searchReset}>
-                    <GrPowerReset />
+                  <CustomButton onClick={searchReset} >
                     초기화
-                  </button>
-                  <button onClick={searchFilter}>
+                  </CustomButton>
+                  <CustomButton onClick={searchFilter}>
                     <AiOutlineSearch />
                     검색
-                  </button>
+                  </CustomButton>
                 </FilterActions>
               </FilterBodyWrapper>
             </FilterBody>
@@ -444,9 +443,13 @@ const SubTitle = styled.div`
 const CustomButton = styled.button`
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   color: white;
   background-color: #435269;
+  font-weight:bold;
+  font-size:14px;
+  border-radius:4px;
+  
 `;
 const FilterBody = styled.div`
   padding: 1rem 0 1rem 0;
@@ -457,8 +460,6 @@ const FilterActions = styled.div`
   display: flex;
   justify-content: right;
   button {
-    width: 6rem;
-    height: 3rem;
     margin: 0.5rem;
   }
 `;

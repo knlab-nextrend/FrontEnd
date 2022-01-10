@@ -9,16 +9,19 @@ import { FaFilter } from "react-icons/fa";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import DataFilter from "../../../Components/DataFilter";
 function CrawlDataScreening({
-  screeningData,
-  onChangeEach,
-  stageScreeningData,
-  onChangeAll,
-  stageDataList,
   dcCount,
   listSize,
   setListSize,
   pageNo,
   setPageNo,
+  screeningData,
+  stageScreeningData,
+  stageDataList,
+  keepDataList,
+  deleteDataList,
+  onChangeCheckedAll,
+  checkedAll,
+  onChangeEach,
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -34,10 +37,10 @@ function CrawlDataScreening({
               검색 결과 ({dcCount}건)
             </div>
             <div className="action-group">
-              <button className="screening-button" onClick={stageScreeningData}>
+              <ScreeningButton className="screening-button" onClick={stageScreeningData}>
                 <AiOutlineCheck />
                 스크리닝 완료
-              </button>
+              </ScreeningButton>
               <select
                 className="list-size"
                 value={listSize}
@@ -80,15 +83,30 @@ function CrawlDataScreening({
                     <th>페이지수</th>
                     <th>
                       완료
-                      <input type="radio" name="allcheck" />
+                      <input
+                        type="checkbox"
+                        value="stage"
+                        onChange={onChangeCheckedAll}
+                        checked={checkedAll === "stage"}
+                      />
                     </th>
                     <th>
                       보류
-                      <input type="radio" name="allcheck" />
+                      <input
+                        type="checkbox"
+                        value="keep"
+                        onChange={onChangeCheckedAll}
+                        checked={checkedAll === "keep"}
+                      />
                     </th>
                     <th>
                       삭제
-                      <input type="radio" name="allcheck" />
+                      <input
+                        type="checkbox"
+                        value="delete"
+                        onChange={onChangeCheckedAll}
+                        checked={checkedAll === "delete"}
+                      />
                     </th>
                   </tr>
                 </thead>
@@ -96,7 +114,11 @@ function CrawlDataScreening({
                   {screeningData.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>{item.dc_smry_kr}</td>
+                        <td>
+                          <a href={item.dc_url_loc} target="_blank">
+                            {item.dc_smry_kr}
+                          </a>
+                        </td>
                         <td>{item.dc_publisher}</td>
                         <td>{item.dc_lang}</td>
                         <td>{item.dc_dt_collect}</td>
@@ -106,15 +128,33 @@ function CrawlDataScreening({
                             type="radio"
                             name={item.item_id}
                             value={item.item_id}
-                            onChange={onChangeEach}
                             checked={stageDataList.includes(item.item_id)}
+                            onChange={(e) => {
+                              onChangeEach(e, "stage");
+                            }}
                           />
                         </td>
                         <td>
-                          <CustomRadio type="radio" name={item.item_id} />
+                          <CustomRadio
+                            type="radio"
+                            name={item.item_id}
+                            value={item.item_id}
+                            checked={keepDataList.includes(item.item_id)}
+                            onChange={(e) => {
+                              onChangeEach(e, "keep");
+                            }}
+                          />
                         </td>
                         <td>
-                          <CustomRadio type="radio" name={item.item_id} />
+                          <CustomRadio
+                            type="radio"
+                            name={item.item_id}
+                            value={item.item_id}
+                            checked={deleteDataList.includes(item.item_id)}
+                            onChange={(e) => {
+                              onChangeEach(e, "delete");
+                            }}
+                          />
                         </td>
                       </tr>
                     );
@@ -122,6 +162,16 @@ function CrawlDataScreening({
                 </tbody>
               </CustomTable>
             </TableWrapper>
+            <BottomWrap>
+            <ScreeningButton
+              className="screening-button"
+              onClick={stageScreeningData}
+            >
+              <AiOutlineCheck />
+              스크리닝 완료
+            </ScreeningButton>
+            </BottomWrap>
+           
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}
@@ -144,6 +194,22 @@ const Wrapper = styled.div`
   font-size: 14px;
 `;
 
+const ScreeningButton = styled.button` 
+      margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    background-color: #435269;
+    border: none;
+    border-radius: 4px;
+    cursor:pointer;
+`
+const BottomWrap = styled.div` 
+  width:100%;
+  display:flex;
+  justify-content:right;
+  margin-top:1rem;
+`
 const RowContainer = styled.div`
   border: solid 1px #d6d6d6;
   margin-top: 1rem;
@@ -171,15 +237,6 @@ const Row = styled.div`
   }
   .action-group {
     display: flex;
-  }
-  .screening-button {
-    margin: 0 0.5rem 0 0.5rem;
-    padding: 0.5rem;
-    color: white;
-    font-weight: bold;
-    background-color: #435269;
-    border: none;
-    border-radius: 4px;
   }
   .list-size {
     margin: 0 0.5rem 0 0.5rem;
@@ -218,6 +275,14 @@ const CustomTable = styled.table`
   th,
   td {
     padding-left: 1rem;
+    a {
+      color: black;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+        color: #435269;
+      }
+    }
   }
   input[type="checkbox"] {
     width: 20px; /*Desired width*/

@@ -39,6 +39,13 @@ const ScreeningDataStageApi = (stageDataList) => {
   return axios.put(`/crawl/screening`, body, { headers: headers });
 };
 
+/* 크롤데이터 스크리닝 단계에서 보류하기 */
+const ScreeningDataKeepApi = (keepDataList) =>{
+  let body = {
+    list: keepDataList,
+  };
+  return axios.post(`/crawl/screening`, body, { headers: headers });
+}
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
   const config = {
@@ -274,6 +281,7 @@ export {
   CrawlDataStageApi,
   CrawlDataKeepApi,
   ScreeningDataDeleteApi,
+  ScreeningDataKeepApi,
   ScreeningDataStageApi,
   ScreeningDataFetchApi,
   ContinentsListDataFetchApi,
