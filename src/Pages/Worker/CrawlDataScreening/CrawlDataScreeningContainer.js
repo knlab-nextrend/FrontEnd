@@ -7,7 +7,7 @@ import {
   sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
@@ -25,12 +25,17 @@ function CrawlDataScreeningContainer() {
 
   /* 완료, 보류, 삭제 전체선택 구현하기 */
 
+  const [isKeep,setIsKeep] = useState(false);
   const [itemList, setItemList] = useState([]); // {id,status} 객체 리스트로 구성되어 있음.
   const [checkedAll, setCheckedAll] = useState("delete"); // 전체선택 기본값은 delete
   const [stageDataList, setStageDataList] = useState([]);
   const [keepDataList, setKeepDataList] = useState([]);
   const [deleteDataList, setDeleteDataList] = useState([]); // 기본 값은 delete
 
+
+  const onChangeKeepToggle = ()=>{
+    setIsKeep(!isKeep)
+  }
   const onChangeCheckedAll = (e) => {
     if (e.target.checked) {
       setCheckedAll(e.target.value);
@@ -38,7 +43,6 @@ function CrawlDataScreeningContainer() {
   };
 
   const onChangeEach = (e, type) => {
-    console.log(e.target.value, type);
     const _id = e.target.value;
     const _index = itemList.findIndex((item) => item.id === Number(_id));
     const _newItemList = [...itemList];
@@ -71,22 +75,16 @@ function CrawlDataScreeningContainer() {
   }, [itemList]);
 
   /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
-  const stageScreeningData = () => {
+  const stageScreeningData = async () => {
     if (window.confirm("선택 하신 대로 스크리닝을 진행하시겠습니까?")) {
-      ScreeningDataStageApi(stageDataList).then((res) => {
-        if (res.status === 200) {
-          ScreeningDataKeepApi(keepDataList).then((res) => {
-            if (res.status === 200) {
-              ScreeningDataDeleteApi(deleteDataList).then((res) => {
-                if (res.status === 200) {
-                  alert("성공적으로 스크리닝이 완료되었습니다.");
-                  history.go(0);
-                }
-              });
-            }
-          });
-        }
-      });
+
+      await ScreeningDataStageApi(stageDataList);
+      await ScreeningDataKeepApi(keepDataList);
+      if(deleteDataList.length !== 0) {
+         await ScreeningDataDeleteApi(deleteDataList);
+      }
+      alert("스크리닝이 성공적으로 완료되었습니다.");
+      history.go(0)
     }
   };
 
@@ -115,9 +113,8 @@ function CrawlDataScreeningContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     trackPromise(
-      ScreeningDataFetchApi(listSize, pageNo)
+      ScreeningDataFetchApi(listSize, pageNo,isKeep)
         .then((res) => {
-          console.log(res.data);
           dataCleansing(res.data);
         })
         .catch((err) => {
@@ -133,7 +130,7 @@ function CrawlDataScreeningContainer() {
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
-  }, [pageNo, listSize]);
+  }, [pageNo, listSize,isKeep]);
 
   /* 데이터를 불러오는데 성공하였을 경우 각 데이터의 id값과 해당 데이터의 status를 list에 먼저 세팅해줌*/
   useEffect(() => {
@@ -160,6 +157,8 @@ function CrawlDataScreeningContainer() {
         stageDataList={stageDataList}
         keepDataList={keepDataList}
         deleteDataList={deleteDataList}
+        isKeep={isKeep}
+        onChangeKeepToggle={onChangeKeepToggle}
       />
     </>
   );

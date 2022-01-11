@@ -20,14 +20,17 @@ const refreshHeaders = {
 };
 
 /* 크롤데이터 스크리닝 데이터 받아오기 */
-const ScreeningDataFetchApi = (listSize, pageNo) => {
-  const config = {
+const ScreeningDataFetchApi = (listSize, pageNo,isKeep) => {
+  let config = {
     headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
     },
   };
+  if(isKeep){
+    config.params.keep = 1
+  }
   return axios.get(`/crawl/screening`, config);
 };
 
@@ -48,6 +51,7 @@ const ScreeningDataKeepApi = (keepDataList) =>{
 }
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
+  console.log(deleteDataList)
   const config = {
     headers: headers,
     params: {

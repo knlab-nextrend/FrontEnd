@@ -174,9 +174,9 @@ function DataFilter({ dataFilterFetch }) {
                       <OptionTitle>언어</OptionTitle>
                       <OptionSelect value={lang} onChange={_langHandler}>
                         <option value={""}>전체</option>
-                        {LANGUAGE_LIST.map((item) => {
+                        {LANGUAGE_LIST.map((item,index) => {
                           return (
-                            <option value={item.language_code_name}>
+                            <option value={item.language_code_name} key={index}>
                               {item.language_name}
                             </option>
                           );
@@ -188,9 +188,9 @@ function DataFilter({ dataFilterFetch }) {
                       <OptionTitle>사이트</OptionTitle>
                       <OptionSelect value={publisher} onChange={_publisherHandler}>
                         <option value={""}>전체</option>
-                        {SITE_LIST.map((item) => {
+                        {SITE_LIST.map((item,index) => {
                           return (
-                            <option value={item.site_link}>
+                            <option value={item.site_link}  key={index}>
                               {item.site_name}
                             </option>
                           );

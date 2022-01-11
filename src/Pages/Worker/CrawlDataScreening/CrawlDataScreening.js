@@ -8,6 +8,8 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { FaFilter } from "react-icons/fa";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import DataFilter from "../../../Components/DataFilter";
+import DataTable from "../../../Components/DataTable";
+import ToggleButton from "../../../Components/ToggleButton";
 function CrawlDataScreening({
   dcCount,
   listSize,
@@ -22,6 +24,8 @@ function CrawlDataScreening({
   onChangeCheckedAll,
   checkedAll,
   onChangeEach,
+  isKeep,
+  onChangeKeepToggle,
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -37,7 +41,16 @@ function CrawlDataScreening({
               검색 결과 ({dcCount}건)
             </div>
             <div className="action-group">
-              <ScreeningButton className="screening-button" onClick={stageScreeningData}>
+              <ToggleButton
+                mode1={"스크리닝 대기 "}
+                mode2={"스크리닝 보류"}
+                action={onChangeKeepToggle}
+                checked={isKeep}
+              />
+              <ScreeningButton
+                className="screening-button"
+                onClick={stageScreeningData}
+              >
                 <AiOutlineCheck />
                 스크리닝 완료
               </ScreeningButton>
@@ -62,116 +75,25 @@ function CrawlDataScreening({
         </RowContainer>
         {screeningData.length !== 0 ? (
           <>
-            <TableWrapper>
-              <CustomTable>
-                <colgroup>
-                  <col style={{ width: "45%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>요약</th>
-                    <th>발행자/발행기관</th>
-                    <th>언어</th>
-                    <th>수집일</th>
-                    <th>페이지수</th>
-                    <th>
-                      완료
-                      <input
-                        type="checkbox"
-                        value="stage"
-                        onChange={onChangeCheckedAll}
-                        checked={checkedAll === "stage"}
-                      />
-                    </th>
-                    <th>
-                      보류
-                      <input
-                        type="checkbox"
-                        value="keep"
-                        onChange={onChangeCheckedAll}
-                        checked={checkedAll === "keep"}
-                      />
-                    </th>
-                    <th>
-                      삭제
-                      <input
-                        type="checkbox"
-                        value="delete"
-                        onChange={onChangeCheckedAll}
-                        checked={checkedAll === "delete"}
-                      />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {screeningData.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <a href={item.dc_url_loc} target="_blank">
-                            {item.dc_smry_kr}
-                          </a>
-                        </td>
-                        <td>{item.dc_publisher}</td>
-                        <td>{item.dc_lang}</td>
-                        <td>{item.dc_dt_collect}</td>
-                        <td>{item.dc_page}</td>
-                        <td>
-                          <CustomRadio
-                            type="radio"
-                            name={item.item_id}
-                            value={item.item_id}
-                            checked={stageDataList.includes(item.item_id)}
-                            onChange={(e) => {
-                              onChangeEach(e, "stage");
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <CustomRadio
-                            type="radio"
-                            name={item.item_id}
-                            value={item.item_id}
-                            checked={keepDataList.includes(item.item_id)}
-                            onChange={(e) => {
-                              onChangeEach(e, "keep");
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <CustomRadio
-                            type="radio"
-                            name={item.item_id}
-                            value={item.item_id}
-                            checked={deleteDataList.includes(item.item_id)}
-                            onChange={(e) => {
-                              onChangeEach(e, "delete");
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </CustomTable>
-            </TableWrapper>
+            <DataTable
+              tableData={screeningData}
+              stageDataList={stageDataList}
+              keepDataList={keepDataList}
+              deleteDataList={deleteDataList}
+              onChangeCheckedAll={onChangeCheckedAll}
+              checkedAll={checkedAll}
+              onChangeEach={onChangeEach}
+            />
             <BottomWrap>
-            <ScreeningButton
-              className="screening-button"
-              onClick={stageScreeningData}
-            >
-              <AiOutlineCheck />
-              스크리닝 완료
-            </ScreeningButton>
+              <ScreeningButton
+                className="screening-button"
+                onClick={stageScreeningData}
+              >
+                <AiOutlineCheck />
+                스크리닝 완료
+              </ScreeningButton>
             </BottomWrap>
-           
+
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}
@@ -194,22 +116,22 @@ const Wrapper = styled.div`
   font-size: 14px;
 `;
 
-const ScreeningButton = styled.button` 
-      margin: 0 0.5rem 0 0.5rem;
-    padding: 0.5rem;
-    color: white;
-    font-weight: bold;
-    background-color: #435269;
-    border: none;
-    border-radius: 4px;
-    cursor:pointer;
-`
-const BottomWrap = styled.div` 
-  width:100%;
-  display:flex;
-  justify-content:right;
-  margin-top:1rem;
-`
+const ScreeningButton = styled.button`
+  margin: 0 0.5rem 0 0.5rem;
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+  background-color: #435269;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+const BottomWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-top: 1rem;
+`;
 const RowContainer = styled.div`
   border: solid 1px #d6d6d6;
   margin-top: 1rem;
@@ -243,58 +165,6 @@ const Row = styled.div`
     padding: 0.5rem;
     border: solid 1px #d6d6d6;
   }
-`;
-
-const TableWrapper = styled.div`
-  margin-top: 1rem;
-  width: 100%;
-  max-height: 65rem;
-  overflow: auto;
-  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
-  border-radius: 4px;
-  border: solid 1px #eee;
-`;
-const CustomTable = styled.table`
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-  thead {
-    position: sticky;
-    top: 0px;
-    background-color: #d8dee6;
-    color: #323d4d;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  }
-  tbody tr:nth-child(odd) {
-    background-color: #f4f5f8;
-  }
-  tr {
-    height: 2.5rem;
-    border-bottom: solid 1px #eee;
-  }
-  th,
-  td {
-    padding-left: 1rem;
-    a {
-      color: black;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-        color: #435269;
-      }
-    }
-  }
-  input[type="checkbox"] {
-    width: 20px; /*Desired width*/
-    height: 20px; /*Desired height*/
-  }
-`;
-
-const CustomRadio = styled.input`
-  font-size: 1em;
-  width: 1.25em; /* 너비 설정 */
-  height: 1.25em; /* 높이 설정 */
-  vertical-align: middle;
 `;
 
 export default CrawlDataScreening;
