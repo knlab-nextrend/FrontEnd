@@ -70,7 +70,7 @@ function CrawlDataScreening({
             </div>
           </Row>
           <Row>
-            <DataFilter />
+            <DataFilter type={"screening"}/>
           </Row>
         </RowContainer>
         {screeningData.length !== 0 ? (

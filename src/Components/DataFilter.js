@@ -5,7 +5,7 @@ import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import { MdSort } from "react-icons/md";
 import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
-function DataFilter({ dataFilterFetch }) {
+function DataFilter({ dataFilterFetch = null, type }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const [startDate, setStartDate] = useState("1970-01-01"); // startDate
   const [endDate, setEndDate] = useState(
@@ -16,9 +16,8 @@ function DataFilter({ dataFilterFetch }) {
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
-  const [dateSort,setDateSort] = useState("default")
-  const [sortDateType,setSortDateType] = useState("dc_dt_collect")
-  
+  const [dateSort, setDateSort] = useState("default");
+  const [sortDateType, setSortDateType] = useState("dc_dt_collect");
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -68,37 +67,36 @@ function DataFilter({ dataFilterFetch }) {
   };
 
   const selectedCategory = (code) => {
-    setSelectCategory(code)
+    setSelectCategory(code);
   };
   const selectedCountry = (country) => {
-    setSelectCountry(country)
+    setSelectCountry(country);
   };
 
   const searchFilter = () => {
     dataFilterFetch(
-      lang===""?null:lang,
-      selectCategory===0?null:selectCategory,
-      keyword===""?null:keyword,
-      selectCountry===0?null:selectCountry,
-      publisher===""?null:publisher,
+      lang === "" ? null : lang,
+      selectCategory === 0 ? null : selectCategory,
+      keyword === "" ? null : keyword,
+      selectCountry === 0 ? null : selectCountry,
+      publisher === "" ? null : publisher,
       null, // dateType을 추후 추가
       startDate,
       endDate,
       isCrawled,
       dateSort,
-      sortDateType,
+      sortDateType
     );
   };
 
-  const searchReset = ()=>{
-    setLang("")
-    setPublisher("")
-    setSelectCategory(0)
-    setSelectCountry(0)
-    setKeyword("")
-    setIsCrawled(true)
-
-  }
+  const searchReset = () => {
+    setLang("");
+    setPublisher("");
+    setSelectCategory(0);
+    setSelectCountry(0);
+    setKeyword("");
+    setIsCrawled(true);
+  };
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
       console.log(res.data);
@@ -144,8 +142,16 @@ function DataFilter({ dataFilterFetch }) {
                         onChange={_sortDateTypeHandler}
                       >
                         <option value="dc_dt_collect">원문 수집일 기준</option>
-                        <option value="dc_dt_write">원문 작성일 기준</option>
-                        <option value="dc_dt_regi">데이터 등록일 기준</option>
+                        {type !== "screening" && (
+                          <>
+                            <option value="dc_dt_write">
+                              원문 작성일 기준
+                            </option>
+                            <option value="dc_dt_regi">
+                              데이터 등록일 기준
+                            </option>
+                          </>
+                        )}
                       </OptionSelect>
                       <OptionInput
                         onChange={_startDateHandler}
@@ -158,12 +164,12 @@ function DataFilter({ dataFilterFetch }) {
                         last
                         type="date"
                       ></OptionInput>
-                      
+
                       <OptionSelect
                         value={dateSort}
                         onChange={_dateSortHandler}
                       >
-                         <option value="default">기본</option>
+                        <option value="default">기본</option>
                         <option value="desc">최신순</option>
                         <option value="asc">오래된 순</option>
                       </OptionSelect>
@@ -202,41 +208,45 @@ function DataFilter({ dataFilterFetch }) {
                         placeholder="페이지 수 범위 끝 (ex. 50 )"
                       ></OptionInput>
                     </OptionCol>
-                    <OptionCol>
-                      <OptionTitle>데이터 유형</OptionTitle>
-                      <OptionSelect
-                        value={isCrawled}
-                        onChange={_isCrawledHandler}
-                      >
-                        <option value={null}>전체</option>
-                        <option value={true}>크롤데이터</option>
-                        <option value={false}>수기데이터</option>
-                      </OptionSelect>
-                    </OptionCol>
+                    {type === "register" && (
+                      <OptionCol>
+                        <OptionTitle>데이터 유형</OptionTitle>
+                        <OptionSelect
+                          value={isCrawled}
+                          onChange={_isCrawledHandler}
+                        >
+                          <option value={null}>전체</option>
+                          <option value={true}>크롤데이터</option>
+                          <option value={false}>수기데이터</option>
+                        </OptionSelect>
+                      </OptionCol>
+                    )}
                   </OptionRow>
-                  <OptionRow>
-                    <OptionCol>
-                      <OptionTitle>주제 분류 선택</OptionTitle>
-                      <Cascader
-                        selectedCategory={selectedCategory}
-                        options={categoryOptions}
-                      />
-                    </OptionCol>
-                  </OptionRow>
-                  <OptionRow>
-                    <OptionCol>
-                      <OptionTitle>대상 국가 선택</OptionTitle>
-                      <Cascader
-                        selectedCountry={selectedCountry}
-                        options={countryOptions}
-                      />
-                    </OptionCol>
-                  </OptionRow>
+                  {type === "register" && (
+                    <>
+                      <OptionRow>
+                        <OptionCol>
+                          <OptionTitle>주제 분류 선택</OptionTitle>
+                          <Cascader
+                            selectedCategory={selectedCategory}
+                            options={categoryOptions}
+                          />
+                        </OptionCol>
+                      </OptionRow>
+                      <OptionRow>
+                        <OptionCol>
+                          <OptionTitle>대상 국가 선택</OptionTitle>
+                          <Cascader
+                            selectedCountry={selectedCountry}
+                            options={countryOptions}
+                          />
+                        </OptionCol>
+                      </OptionRow>
+                    </>
+                  )}
                 </OptionContainer>
                 <FilterActions>
-                  <CustomButton onClick={searchReset} >
-                    초기화
-                  </CustomButton>
+                  <CustomButton onClick={searchReset}>초기화</CustomButton>
                   <CustomButton onClick={searchFilter}>
                     <AiOutlineSearch />
                     검색
@@ -251,18 +261,18 @@ function DataFilter({ dataFilterFetch }) {
   );
 }
 
-function Cascader({ options, selectedCountry,selectedCategory }) {
+function Cascader({ options, selectedCountry, selectedCategory }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
   };
   const PrintValue = (e) => {
-    console.log(e.target.value)
-    if(selectedCategory){
-      selectedCategory(e.target.value)
+    console.log(e.target.value);
+    if (selectedCategory) {
+      selectedCategory(e.target.value);
     }
-    if(selectedCountry){
-      selectedCountry(e.target.value)
+    if (selectedCountry) {
+      selectedCountry(e.target.value);
     }
   };
   return (
@@ -335,7 +345,7 @@ const CascaderOpenHandler = styled.div`
   margin: 0;
 `;
 const CascaderWrapper = styled.div`
-  font-size:12px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   height: 100%;
@@ -407,10 +417,9 @@ const CustomButton = styled.button`
   padding: 0.5rem 1rem 0.5rem 1rem;
   color: white;
   background-color: #435269;
-  font-weight:bold;
-  font-size:14px;
-  border-radius:4px;
-  
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px;
 `;
 const FilterBody = styled.div`
   padding: 1rem 0 1rem 0;

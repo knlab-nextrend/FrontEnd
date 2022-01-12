@@ -45,7 +45,7 @@ function CrawlDataList({
             </div>
           </Row>
           <Row>
-            <DataFilter />
+            <DataFilter type={STATUS_CODE_SET[statusCode].type}/>
           </Row>
         </RowContainer>
         {crawlDataList.length !== 0 ? (
