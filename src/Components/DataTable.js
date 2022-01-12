@@ -19,12 +19,20 @@ function DataTable({
         <CustomTable>
           <thead>
             <tr>
+              {type === "archive" && (
+                <>
+                  <th>구분</th>
+                  <th>원문 대상 국가</th>
+                  <th>주제 분류</th>
+                </>
+              )}
               {type === "register" && <th>한글제목</th>}
               {type !== "screening" && <th>원제목</th>}
               <th>요약</th>
               <th>HOST 명</th>
+
               <th className="lang">언어</th>
-              <th className="dc_dt_collect">수집일</th>
+              <th className="dc_dt_collect">원문 수집일</th>
               <th className="dc_page">페이지 수</th>
 
               {type === "screening" && (
@@ -65,6 +73,11 @@ function DataTable({
             {tableData.map((item, index) => {
               return (
                 <tr key={index}>
+                  {type === "archive" && (<>
+                    <td className="is_crawled">{item.is_crawled ? <Badge is_crawled>크롤</Badge> : <Badge>업로드</Badge>}</td>
+                    <td>{item.dc_country_list.join(", ")}</td>
+                    <td>{item.dc_code_list.join(", ")}</td>
+                  </>)}
                   {type === "register" && <td>{item.dc_title_kr}</td>}
                   {type !== "screening" && (
                     <td>
@@ -142,6 +155,14 @@ const TableWrapper = styled.div`
   font-size: 14px;
 `;
 
+const Badge = styled.div`
+  background-color:${(props) => (props.is_crawled ? "rgba(67,82,105,0.5)" : "rgba(112,173,70,0.5)")};
+  font-weight:bold;
+  color:${(props) => (props.is_crawled ? "rgba(67,82,105,1)" : "rgba(112,173,70,1)")};
+  border-radius:2px;
+  padding:2px;
+  text-align:center;
+`
 const CustomTable = styled.table`
   width: 100%;
   text-align: left;
@@ -149,11 +170,14 @@ const CustomTable = styled.table`
   .lang {
     width: 2rem;
   }
+  .is_crawled{
+    width: 3rem;
+  }
   .dc_dt_collect {
     width: 6rem;
   }
   .dc_page,
-  .dc_url_loc {
+  .dc_url_loc{
     width: 4rem;
   }
 
