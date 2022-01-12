@@ -16,7 +16,7 @@ function DataFilter({ dataFilterFetch }) {
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
-  const [dateSort,setDateSort] = useState("desc")
+  const [dateSort,setDateSort] = useState("default")
   const [sortDateType,setSortDateType] = useState("dc_dt_collect")
   
 
@@ -24,19 +24,6 @@ function DataFilter({ dataFilterFetch }) {
   const [countryOptions, setCountryOptions] = useState([]);
   const [selectCategory, setSelectCategory] = useState(0);
   const [selectCountry, setSelectCountry] = useState(0);
-
-  // 더미데이터
-  const LANGUAGE_LIST = [
-    { language_name: "한국어", language_code_name: "ko" },
-    { language_name: "영어", language_code_name: "en" },
-    { language_name: "일본어", language_code_name: "ja" },
-  ];
-
-  // 더미데이터
-  const SITE_LIST = [
-    { site_name: "capgemini", site_link: "www.capgemini.com" },
-    { site_name: "meti", site_link: "www.meti.go.jp" },
-  ];
 
   const _isCrawledHandler = (e) => {
     setIsCrawled(e.target.value);
@@ -148,14 +135,18 @@ function DataFilter({ dataFilterFetch }) {
           <>
             <FilterBody>
               <FilterBodyWrapper>
-                <SubTitle>
-                  <AiOutlineSearch />
-                  검색 필터 설정
-                </SubTitle>
                 <OptionContainer>
                   <OptionRow>
                     <OptionCol>
                       <OptionTitle>기간</OptionTitle>
+                      <OptionSelect
+                        value={sortDateType}
+                        onChange={_sortDateTypeHandler}
+                      >
+                        <option value="dc_dt_collect">원문 수집일 기준</option>
+                        <option value="dc_dt_write">원문 작성일 기준</option>
+                        <option value="dc_dt_regi">데이터 등록일 기준</option>
+                      </OptionSelect>
                       <OptionInput
                         onChange={_startDateHandler}
                         value={startDate}
@@ -167,45 +158,48 @@ function DataFilter({ dataFilterFetch }) {
                         last
                         type="date"
                       ></OptionInput>
+                      
+                      <OptionSelect
+                        value={dateSort}
+                        onChange={_dateSortHandler}
+                      >
+                         <option value="default">기본</option>
+                        <option value="desc">최신순</option>
+                        <option value="asc">오래된 순</option>
+                      </OptionSelect>
                     </OptionCol>
                   </OptionRow>
                   <OptionRow>
                     <OptionCol>
                       <OptionTitle>언어</OptionTitle>
-                      <OptionSelect value={lang} onChange={_langHandler}>
-                        <option value={""}>전체</option>
-                        {LANGUAGE_LIST.map((item,index) => {
-                          return (
-                            <option value={item.language_code_name} key={index}>
-                              {item.language_name}
-                            </option>
-                          );
-                        })}
-                        <option value="other">그외</option>
-                      </OptionSelect>
+                      <OptionInput
+                        placeholder="검색하고자 하는 언어 코드를 입력하세요 ( ex. ko, ja, en ... )"
+                        type="text"
+                      ></OptionInput>
                     </OptionCol>
                     <OptionCol>
-                      <OptionTitle>사이트</OptionTitle>
-                      <OptionSelect value={publisher} onChange={_publisherHandler}>
-                        <option value={""}>전체</option>
-                        {SITE_LIST.map((item,index) => {
-                          return (
-                            <option value={item.site_link}  key={index}>
-                              {item.site_name}
-                            </option>
-                          );
-                        })}
-                        <option value="other">그외</option>
-                      </OptionSelect>
+                      <OptionTitle>HOST 명</OptionTitle>
+                      <OptionInput
+                        type="text"
+                        placeholder="검색하고자 하는 HOST명을 입력하세요 ( ex. www.meti.go.jp )"
+                      ></OptionInput>
                     </OptionCol>
                   </OptionRow>
                   <OptionRow>
                     <OptionCol>
-                      <OptionTitle>키워드</OptionTitle>
+                      <OptionTitle>페이지 수</OptionTitle>
                       <OptionInput
-                        onChange={_keywordHandler}
-                        value={keyword}
-                        type="text"
+                        onChange={_startDateHandler}
+                        value={startDate}
+                        type="number"
+                        placeholder="페이지 수 범위 시작 (ex. 10 )"
+                      ></OptionInput>
+                      <OptionInput
+                        onChange={_endDateHandler}
+                        value={endDate}
+                        last
+                        type="number"
+                        placeholder="페이지 수 범위 끝 (ex. 50 )"
                       ></OptionInput>
                     </OptionCol>
                     <OptionCol>
@@ -236,34 +230,6 @@ function DataFilter({ dataFilterFetch }) {
                         selectedCountry={selectedCountry}
                         options={countryOptions}
                       />
-                    </OptionCol>
-                  </OptionRow>
-                </OptionContainer>
-              </FilterBodyWrapper>
-              <FilterBodyWrapper>
-                <SubTitle>
-                  <MdSort />
-                  정렬
-                </SubTitle>
-                <OptionContainer>
-                  <OptionRow>
-                    <OptionCol>
-                      <OptionTitle>시간 순 정렬</OptionTitle>
-                      <OptionSelect
-                        value={sortDateType}
-                        onChange={_sortDateTypeHandler}
-                      >
-                        <option value="dc_dt_collect">원문 수집일 기준</option>
-                        <option value="dc_dt_write">원문 작성일 기준</option>
-                        <option value="dc_dt_regi">데이터 등록일 기준</option>
-                      </OptionSelect>
-                      <OptionSelect
-                        value={dateSort}
-                        onChange={_dateSortHandler}
-                      >
-                        <option value="desc">최신순</option>
-                        <option value="asc">오래된 순</option>
-                      </OptionSelect>
                     </OptionCol>
                   </OptionRow>
                 </OptionContainer>
@@ -434,11 +400,6 @@ const Title = styled.div`
     font-weight: bold;
     color: #435269;
   }
-`;
-const SubTitle = styled.div`
-  font-weight: bold;
-  padding: 1rem;
-  border-bottom: solid 1px #d6d6d6;
 `;
 const CustomButton = styled.button`
   border: none;

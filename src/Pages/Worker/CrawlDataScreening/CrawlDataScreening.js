@@ -42,7 +42,7 @@ function CrawlDataScreening({
             </div>
             <div className="action-group">
               <ToggleButton
-                mode1={"스크리닝 대기 "}
+                mode1={"스크리닝 대기"}
                 mode2={"스크리닝 보류"}
                 action={onChangeKeepToggle}
                 checked={isKeep}
@@ -83,6 +83,7 @@ function CrawlDataScreening({
               onChangeCheckedAll={onChangeCheckedAll}
               checkedAll={checkedAll}
               onChangeEach={onChangeEach}
+              type="screening"
             />
             <BottomWrap>
               <ScreeningButton

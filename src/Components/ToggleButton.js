@@ -21,7 +21,7 @@ function ToggleButton({mode1,mode2,action,checked}) {
         onChange={action}
         checked={checked}
       />
-      <label htmlFor={mode2}>{mode1}</label>
+      <label htmlFor={mode2}>{mode2}</label>
     </ToggleButtonWrapper>
   );
 }
