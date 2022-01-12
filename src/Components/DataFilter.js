@@ -222,7 +222,7 @@ function DataFilter({ dataFilterFetch = null, type }) {
                       </OptionCol>
                     )}
                   </OptionRow>
-                  {type === "register" && (
+                  {((type === "archive")||(type === "curation")) && (
                     <>
                       <OptionRow>
                         <OptionCol>
