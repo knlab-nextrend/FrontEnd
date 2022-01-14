@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 
-function ProcessMenu() {
+function ProcessMenu({process,processHandler}) {
   /* 
     all : 전체
     collect : 수집
@@ -9,17 +9,10 @@ function ProcessMenu() {
     refine : 정제
     archive : 등록(아카이브)
     curation : 큐레이션
-
   */
-  const [process, setProcess] = useState("all");
   const _processHandler = (value) => {
-    console.log(value);
-    setProcess(value, process);
+    processHandler(value);
   };
-
-  useEffect(() => {
-    console.log(process);
-  }, [process]);
   return (
     <CardWrapper>
       <div className="title">

@@ -1,7 +1,20 @@
-import React from "react";
+import React , {useState}from "react";
 import Dashboard from "./Dashboard";
 
 function DashboardContainer() {
+
+  // docs 문서 통계
+  // work 작업자 작업 통계
+  // crawl 크롤러 현황
+  const [menuType,setMenuType] = useState("docs")
+  
+  const [process,setProcess] = useState("all")
+  const menuHandler = (e)=>{
+    setMenuType(e.target.value)
+  }
+  const processHandler = (select)=>{
+    setProcess(select)
+  }
   const data = [
     {
       id: "sass",
@@ -36,7 +49,7 @@ function DashboardContainer() {
   ];
   return (
     <>
-      <Dashboard data={data}/>
+      <Dashboard data={data} menuHandler={menuHandler} menuType={menuType} processHandler={processHandler} process={process}/>
     </>
   );
 }

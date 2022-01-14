@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-function TitleCard({ children }) {
+function TitleCard({ children, title, subtitle }) {
   return (
     <CardWrapper>
       <div className="title">
-        <div className="title-main">국가별 문서 현황</div>
-        <div className="title-sub">
-          국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다.
-        </div>
+        <div className="title-main">{title}</div>
+        <div className="title-sub">{subtitle}</div>
       </div>
       <div className="content">{children}</div>
     </CardWrapper>
@@ -34,6 +32,7 @@ const CardWrapper = styled.div`
   }
   .content {
     height: 100%;
+    padding:1rem;
   }
 `;
 export default TitleCard;
