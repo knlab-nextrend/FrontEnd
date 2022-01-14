@@ -55,18 +55,6 @@ function CurationDataList({
                     <RiFileList2Line />
                     목록형
                   </label>
-                  <input
-                    onChange={viewTypeHandler}
-                    type="radio"
-                    value="album"
-                    id="album"
-                    name="view-type"
-                    checked={viewType === "album"}
-                  />
-                  <label htmlFor="album">
-                    <HiPhotograph />
-                    앨범형
-                  </label>
                 </ViewType>
                 <select className="list-size">
                   <option disabled>리스트 사이즈</option>
@@ -83,12 +71,22 @@ function CurationDataList({
               <DataFilter type={"curation"} />
             </Row>
           </RowContainer>
-          <CurationListWrapper>
-            <CurationList
-              curationData={curationDataList}
-              handleRowClick={handleRowClick}
-            />
-          </CurationListWrapper>
+          {viewType === "list" && (
+            <CurationListWrapper>
+              <CurationList
+                curationData={curationDataList}
+                handleRowClick={handleRowClick}
+              />
+            </CurationListWrapper>
+          )}
+          {viewType === "card" && (
+            <CurationCardWrapper>
+              {curationDataList.map((item,index)=>{
+                return (<CustomLink to={`/curation/${item.item_id}`} ><CurationCard curationDataItem={item}></CurationCard></CustomLink>)
+              })}
+            </CurationCardWrapper>
+          )}
+
           <Pagenation
             dcCount={dcCount}
             listSize={listSize}
@@ -282,7 +280,8 @@ const CurationListTable = styled.table`
 
   tr {
     height: 2.5rem;
-    border-bottom: solid 1px #d6d6d6;
+    cursor: pointer;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   }
   td,
   td {
@@ -290,7 +289,10 @@ const CurationListTable = styled.table`
     word-break: break-all;
   }
   thead {
-    text-align: center;
+    background-color: #d8dee6;
+    color: #323d4d;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    text-align:center;
   }
   .center {
     text-align: center;
@@ -324,6 +326,12 @@ const CurationListTable = styled.table`
   }
 `;
 
+const CustomLink = styled(Link)`
+
+  text-decoration:none;
+  color:black;
+
+`
 const CardWrapper = styled.div`
   display: flex;
   padding: 1rem;
@@ -453,4 +461,9 @@ const CurationListWrapper = styled.div`
   font-size: 14px;
   width: 100%;
 `;
+
+const CurationCardWrapper=styled.div` 
+  display:grid;
+  grid-template-columns:1fr 1fr;
+`
 export default CurationDataList;
