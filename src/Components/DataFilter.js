@@ -208,7 +208,7 @@ function DataFilter({ dataFilterFetch = null, type }) {
                         placeholder="페이지 수 범위 끝 (ex. 50 )"
                       ></OptionInput>
                     </OptionCol>
-                    {type === "register" && (
+                    {type === "archive" && (
                       <OptionCol>
                         <OptionTitle>데이터 유형</OptionTitle>
                         <OptionSelect
@@ -222,6 +222,16 @@ function DataFilter({ dataFilterFetch = null, type }) {
                       </OptionCol>
                     )}
                   </OptionRow>
+                  {((type === "archive")||(type === "curation")) && (
+                  <OptionRow>
+                      <OptionCol>
+                        <OptionTitle>유형 분류</OptionTitle>
+                        <OptionInput
+                        type="text"
+                        placeholder="유형 분류 ( ex. 보고서, 뉴스 ... )"
+                      ></OptionInput>
+                      </OptionCol>
+                  </OptionRow>)}
                   {((type === "archive")||(type === "curation")) && (
                     <>
                       <OptionRow>

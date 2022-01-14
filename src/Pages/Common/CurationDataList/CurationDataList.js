@@ -3,6 +3,10 @@ import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Pagenation from "../../../Components/Pagenation";
+import { HiOutlineDocumentSearch, HiPhotograph } from "react-icons/hi";
+import { MdCalendarViewDay } from "react-icons/md";
+import { RiFileList2Line } from "react-icons/ri";
+import DataFilter from "../../../Components/DataFilter";
 import NoData from "../../../Components/NoData";
 function CurationDataList({
   curationDataList,
@@ -10,23 +14,80 @@ function CurationDataList({
   listSize,
   pageNo,
   setPageNo,
+  viewType,
+  viewTypeHandler,
+  handleRowClick,
 }) {
   return (
     <>
       <FormHeader type="view" title={"큐레이션 데이터 조회"} />
       {curationDataList.length !== 0 ? (
         <Wrapper>
+          <RowContainer>
+            <Row>
+              <div className="result-count">
+                <HiOutlineDocumentSearch />
+                검색 결과 ({dcCount}건)
+              </div>
+              <div className="action-group">
+                <ViewType>
+                  <input
+                    onChange={viewTypeHandler}
+                    type="radio"
+                    value="card"
+                    id="card"
+                    name="view-type"
+                    checked={viewType === "card"}
+                  />
+                  <label htmlFor="card">
+                    <MdCalendarViewDay />
+                    카드형
+                  </label>
+                  <input
+                    onChange={viewTypeHandler}
+                    type="radio"
+                    value="list"
+                    id="list"
+                    name="view-type"
+                    checked={viewType === "list"}
+                  />
+                  <label htmlFor="list">
+                    <RiFileList2Line />
+                    목록형
+                  </label>
+                  <input
+                    onChange={viewTypeHandler}
+                    type="radio"
+                    value="album"
+                    id="album"
+                    name="view-type"
+                    checked={viewType === "album"}
+                  />
+                  <label htmlFor="album">
+                    <HiPhotograph />
+                    앨범형
+                  </label>
+                </ViewType>
+                <select className="list-size">
+                  <option disabled>리스트 사이즈</option>
+                  <option value={2}>2건</option>
+                  <option value={10}>10건</option>
+                  <option value={30}>30건</option>
+                  <option value={50}>50건</option>
+                  <option value={75}>75건</option>
+                  <option value={100}>100건</option>
+                </select>
+              </div>
+            </Row>
+            <Row>
+              <DataFilter type={"curation"} />
+            </Row>
+          </RowContainer>
           <CurationListWrapper>
-            {curationDataList.map((item, index) => {
-              return (
-                <CustomLink
-                  to={`/curation/${item.item_id}`}
-                  key={index}
-                >
-                  <CurationCard curationDataItem={item} />
-                </CustomLink>
-              );
-            })}
+            <CurationList
+              curationData={curationDataList}
+              handleRowClick={handleRowClick}
+            />
           </CurationListWrapper>
           <Pagenation
             dcCount={dcCount}
@@ -42,10 +103,75 @@ function CurationDataList({
   );
 }
 
+function CurationList({ curationData, handleRowClick }) {
+  return (
+    <>
+      <CurationListTable>
+        <colgroup>
+          <col style={{ width: "40%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "10%" }} />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>제목</th>
+            <th>대상 국가</th>
+            <th>주제 분류</th>
+            <th>문서 분류</th>
+            <th>HOST 명</th>
+            <th>페이지 수</th>
+            <th>데이터 등록일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {curationData.map((item, index) => {
+            return (
+              <tr
+                onClick={() => {
+                  handleRowClick(item.item_id);
+                }}
+              >
+                <td>
+                  <div className="content">
+                    <div className="img-container">
+                      <img
+                        src={
+                          item.dc_cover.length !== 0
+                            ? `http://${item.dc_cover[0]}`
+                            : process.env.PUBLIC_URL +
+                              `/img/curation_default_image.png`
+                        }
+                      />
+                    </div>
+                    <div className="title-container">
+                      <td className="dc_title_kr">{item.dc_title_kr}</td>
+                      <td className="dc_title_or">{item.dc_title_or}</td>
+                    </div>
+                  </div>
+                </td>
+                <td className="center">{item.dc_country_list.join(",")}</td>
+                <td className="center">{item.dc_code_list.join(", ")}</td>
+                <td className="center">{item.dc_type}</td>
+                <td className="center">{item.dc_publisher}</td>
+
+                <td className="center">{item.dc_page}쪽</td>
+                <td className="center">{item.dc_dt_regi}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </CurationListTable>
+    </>
+  );
+}
 function CurationCard({ curationDataItem }) {
   return (
     <>
-      <CardWrpper>
+      <CardWrapper>
         <ImageContainer>
           <Image
             src={
@@ -80,7 +206,7 @@ function CurationCard({ curationDataItem }) {
           </Info>
           <Content>{curationDataItem.dc_content}</Content>
         </ContentContainer>
-      </CardWrpper>
+      </CardWrapper>
     </>
   );
 }
@@ -89,22 +215,116 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 5rem 0 5rem;
 `;
 
-const CustomLink = styled(Link)`
-  color: black;
-  &:link {
-    text-decoration: none;
+const RowContainer = styled.div`
+  border: solid 1px #d6d6d6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  width: 100%;
+`;
+const Row = styled.div`
+  display: flex;
+  color: rgb(59, 59, 59);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: solid 1px #d6d6d6;
+  &:last-child {
+    border: none;
   }
-  &:visited {
-    text-decoration: none;
+
+  .result-count {
+    font-size: 16px;
+    font-weight: bold;
+    * {
+      padding-right: 0.5rem;
+    }
   }
-  &:hover {
-    text-decoration: none;
+  .action-group {
+    display: flex;
+  }
+  .list-size {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #d6d6d6;
   }
 `;
 
-const CardWrpper = styled.div`
+const ViewType = styled.div`
+  display: flex;
+
+  font-size: 14px;
+  input[type="radio"] {
+    display: none;
+    &:checked + label {
+      color: white;
+      font-weight: bold;
+      background-color: #435269;
+    }
+  }
+  label {
+    display: flex;
+    align-items: center;
+    margin: 0.25rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+`;
+
+const CurationListTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border: solid 1px #d6d6d6;
+
+  tr {
+    height: 2.5rem;
+    border-bottom: solid 1px #d6d6d6;
+  }
+  td,
+  td {
+    padding: 0.5rem;
+    word-break: break-all;
+  }
+  thead {
+    text-align: center;
+  }
+  .center {
+    text-align: center;
+  }
+  .content {
+    display: flex;
+    .img-container {
+      max-width: 5rem;
+      max-height: 5rem;
+      overflow: hidden;
+      border-radius: 4px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .title-container {
+      display: flex;
+      flex-direction: column;
+      .dc_title_kr {
+        color: #009999;
+
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .dc_title_or {
+        color: rgb(59, 59, 59);
+      }
+    }
+  }
+`;
+
+const CardWrapper = styled.div`
   display: flex;
   padding: 1rem;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
@@ -204,7 +424,7 @@ const PageBadge = styled(Badge)`
 `;
 const PublisherBadge = styled(Badge)`
   &:before {
-    content: "발행 기관";
+    content: "발행 HOST";
   }
 `;
 const RegiDateBadge = styled(Badge)`
@@ -228,10 +448,9 @@ const Content = styled.div`
 `;
 
 const CurationListWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 2rem;
-  width:90%;
-  margin:0 auto;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  width: 100%;
 `;
 export default CurationDataList;

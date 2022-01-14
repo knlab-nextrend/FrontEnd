@@ -44,11 +44,11 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 <div className="content">{docs.dc_hits || 0}</div>
               </Info>
               <Info>
-                <div className="title">▶ 발행일</div>
+                <div className="title">▶ 원문 발행일</div>
                 <div className="content">{docs.dc_dt_write}</div>
               </Info>
               <Info>
-                <div className="title">▶ 발행기관</div>
+                <div className="title">▶ 발행 HOST</div>
                 <div className="content">{docs.dc_publisher}</div>
               </Info>
               <Info>

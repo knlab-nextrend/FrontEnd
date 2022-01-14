@@ -56,16 +56,6 @@ function CrawlDataList({
                 type={STATUS_CODE_SET[statusCode].type}
                 statusCode={statusCode}
               />
-              {/* {crawlDataList.map((item, i) => {
-                return (
-                  <CustomLink
-                    to={`/crawl/${statusCode}/${item.item_id}`}
-                    key={i}
-                  >
-                    <CrawlDataCard crawlDataItem={item} />
-                  </CustomLink>
-                );
-              })} */}
             </SearchResult>
             <Pagenation
               dcCount={dcCount}

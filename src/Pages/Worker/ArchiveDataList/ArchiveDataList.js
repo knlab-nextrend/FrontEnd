@@ -48,69 +48,8 @@ function ArchiveDataList({
         </RowContainer>
         {archiveDataList.length !== 0 ? (
           <>
-            {/* <TableWrapper>
-              <CustomTable>
-                <colgroup>
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "7%" }} />
-                  <col style={{ width: "8%" }} />
-                  <col style={{ width: "8%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                </colgroup>
-
-                <thead>
-                  <tr>
-                    <th>원문 수집일</th>
-                    <th>구분</th>
-                    <th>원문 대상 국가</th>
-                    <th>원문 제목</th>
-                    <th>한글 제목</th>
-                    <th>요약</th>
-                    <th>주제 분류</th>
-                    <th>페이지 수</th>
-                    <th>열람 수</th>
-                    <th>원문 링크</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  {archiveDataList.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{item.dc_dt_collect}</td>
-                        <td>
-                          <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
-                        </td>
-                        <td>{item.dc_country_list.join(", ")}</td>
-                        <td>
-                          <CustomLink
-                            to={`/crawl/${statusCode}/${item.item_id}`}
-                          >
-                            {item.dc_title_or}
-                          </CustomLink>
-                        </td>
-                        <td>{item.dc_title_kr}</td>
-                        <td>{item.dc_smry_kr}</td>
-                        <td>{item.dc_code_list.join(", ")}</td>
-                        <td>{item.dc_page}</td>
-                        <td>{item.dc_hit}</td>
-                        <td>
-                          <a href={item.dc_url_loc} target="_blank">
-                            <HiOutlineExternalLink size="24" color="black" />
-                          </a>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </CustomTable>
-            </TableWrapper> */}
-            <DataTable type="archive" tableData={archiveDataList} />
+            
+            <DataTable type="archive" tableData={archiveDataList} statusCode={statusCode}/>
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CurationDataList from "./CurationDataList";
 import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
-import { useParams } from "react-router-dom";
+import { useParams , useHistory} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
@@ -15,6 +15,17 @@ function CurationDataListContainer() {
 
   const dispatch = useDispatch();
   const statusCode = 7;
+
+  const [viewType , setViewType] = useState("list");
+
+  const viewTypeHandler = (e)=>{
+    setViewType(e.target.value)
+  }
+
+  const history = useHistory();
+  const handleRowClick = (item_id) => {
+    history.push(`/curation/${item_id}`);
+  }  
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
@@ -33,6 +44,7 @@ function CurationDataListContainer() {
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_dt_regi: item.dc_dt_regi.substring(0, 10),
         dc_publisher: item.dc_publisher,
+        dc_type:item.dc_type,
         dc_content: item.dc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
       };
       _curationDataList.push(obj);
@@ -46,11 +58,13 @@ function CurationDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(statusCode, listSize, pageNo)
         .then((res) => {
+          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
             CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+
               dataCleansing(res.data);
             });
           });
@@ -71,6 +85,9 @@ function CurationDataListContainer() {
         listSize={listSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
+        viewTypeHandler={viewTypeHandler}
+        viewType={viewType}
+        handleRowClick={handleRowClick}
       />
     </>
   );

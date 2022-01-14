@@ -26,10 +26,10 @@ function DataTable({
                   <th>주제 분류</th>
                 </>
               )}
-              {type === "register" && <th>한글제목</th>}
-              {type !== "screening" && <th>원제목</th>}
+              {(type === "register" || type==="archive") && <th>한글제목</th>}
+              {type !== "screening" && <th className="dc_title_or">원제목</th>}
               <th>요약</th>
-              <th>HOST 명</th>
+              <th className="dc_publisher">HOST 명</th>
 
               <th className="lang">언어</th>
               <th className="dc_dt_collect">원문 수집일</th>
@@ -73,12 +73,20 @@ function DataTable({
             {tableData.map((item, index) => {
               return (
                 <tr key={index}>
-                  {type === "archive" && (<>
-                    <td className="is_crawled">{item.is_crawled ? <Badge is_crawled>크롤</Badge> : <Badge>업로드</Badge>}</td>
-                    <td>{item.dc_country_list.join(", ")}</td>
-                    <td>{item.dc_code_list.join(", ")}</td>
-                  </>)}
-                  {type === "register" && <td>{item.dc_title_kr}</td>}
+                  {type === "archive" && (
+                    <>
+                      <td className="is_crawled">
+                        {item.is_crawled ? (
+                          <Badge is_crawled>크롤</Badge>
+                        ) : (
+                          <Badge>업로드</Badge>
+                        )}
+                      </td>
+                      <td>{item.dc_country_list.join(", ")}</td>
+                      <td>{item.dc_code_list.join(", ")}</td>
+                    </>
+                  )}
+                  {(type === "register" || type==="archive") && <td>{item.dc_title_kr}</td>}
                   {type !== "screening" && (
                     <td>
                       <Link to={`/crawl/${statusCode}/${item.item_id}`}>
@@ -90,7 +98,7 @@ function DataTable({
                   <td>{item.dc_publisher}</td>
                   <td>{item.dc_lang}</td>
                   <td>{item.dc_dt_collect}</td>
-                  <td>{item.dc_page}</td>
+                  <td>{item.dc_page}쪽</td>
                   {type === "screening" && (
                     <>
                       <td>
@@ -153,31 +161,35 @@ const TableWrapper = styled.div`
   border-radius: 4px;
   border: solid 1px #eee;
   font-size: 14px;
+  text-align:center;
 `;
 
 const Badge = styled.div`
-  background-color:${(props) => (props.is_crawled ? "rgba(67,82,105,0.5)" : "rgba(112,173,70,0.5)")};
-  font-weight:bold;
-  color:${(props) => (props.is_crawled ? "rgba(67,82,105,1)" : "rgba(112,173,70,1)")};
-  border-radius:2px;
-  padding:2px;
-  text-align:center;
-`
+  background-color: ${(props) =>
+    props.is_crawled ? "rgba(67,82,105,0.5)" : "rgba(112,173,70,0.5)"};
+  font-weight: bold;
+  color: ${(props) =>
+    props.is_crawled ? "rgba(67,82,105,1)" : "rgba(112,173,70,1)"};
+  border-radius: 2px;
+  padding: 2px;
+`;
 const CustomTable = styled.table`
   width: 100%;
-  text-align: left;
   border-collapse: collapse;
   .lang {
     width: 2rem;
   }
-  .is_crawled{
+  .is_crawled {
     width: 3rem;
   }
   .dc_dt_collect {
     width: 6rem;
   }
+  .dc_publisher{
+    width:10rem;
+  }
   .dc_page,
-  .dc_url_loc{
+  .dc_url_loc {
     width: 4rem;
   }
 
@@ -197,6 +209,7 @@ const CustomTable = styled.table`
   }
   th,
   td {
+    word-break:break-all;
     padding-left: 1rem;
     a {
       color: black;
