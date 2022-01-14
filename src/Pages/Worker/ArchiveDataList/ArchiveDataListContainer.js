@@ -33,6 +33,8 @@ function ArchiveDataListContainer() {
         dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
         is_crawled: item.is_crawled,
         dc_dt_collect: item.dc_dt_collect,
+        dc_lang:item.dc_lang,
+        dc_publisher:item.dc_publisher,
       };
       _archiveDataList.push(obj);
     });

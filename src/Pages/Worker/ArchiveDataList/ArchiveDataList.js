@@ -2,9 +2,10 @@ import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";
 import DataFilter from "../../../Components/DataFilter";
+import DataTable from "../../../Components/DataTable"
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { HiOutlineExternalLink } from "react-icons/hi";
+import { HiOutlineExternalLink, HiOutlineDocumentSearch } from "react-icons/hi";
 import { CgFileDocument } from "react-icons/cg";
 function ArchiveDataList({
   archiveDataList,
@@ -13,79 +14,42 @@ function ArchiveDataList({
   listSize,
   pageNo,
   setPageNo,
-  dataFilterFetch
+  dataFilterFetch,
 }) {
   return (
     <>
-      <FormHeader type="view" title={"큐레이션 데이터 등록(아카이브 데이터 조회)"} />
-      <DataFilter dataFilterFetch={dataFilterFetch}/>
+      <FormHeader
+        type="view"
+        title={"큐레이션 데이터 등록(아카이브 데이터 조회)"}
+      />
+
       <Wrapper>
+        <RowContainer>
+          <Row>
+            <div className="result-count">
+              <HiOutlineDocumentSearch />
+              검색 결과 ({dcCount}건)
+            </div>
+            <div className="action-group">
+              <select className="list-size">
+                <option disabled>리스트 사이즈</option>
+                <option value={2}>2건</option>
+                <option value={10}>10건</option>
+                <option value={30}>30건</option>
+                <option value={50}>50건</option>
+                <option value={75}>75건</option>
+                <option value={100}>100건</option>
+              </select>
+            </div>
+          </Row>
+          <Row>
+            <DataFilter dataFilterFetch={dataFilterFetch} type="archive" />
+          </Row>
+        </RowContainer>
         {archiveDataList.length !== 0 ? (
           <>
-            <SearchResultTitle>
-              <p>검색결과 ({dcCount}건)</p>
-            </SearchResultTitle>
-            <TableWrapper>
-              <CustomTable>
-                <colgroup>
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "7%" }} />
-                  <col style={{ width: "8%" }} />
-                  <col style={{ width: "8%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                  <col style={{ width: "5%" }} />
-                </colgroup>
-
-                <thead>
-                  <tr>
-                    <th>원문 수집일</th>
-                    <th>구분</th>
-                    <th>원문 대상 국가</th>
-                    <th>원문 제목</th>
-                    <th>한글 제목</th>
-                    <th>요약</th>
-                    <th>주제 분류</th>
-                    <th>페이지 수</th>
-                    <th>열람 수</th>
-                    <th>원문 링크</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {archiveDataList.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{item.dc_dt_collect}</td>
-                        <td>
-                          <p>{item.is_crawled ? "크롤데이터" : "수기데이터"}</p>
-                        </td>
-                        <td>{item.dc_country_list.join(", ")}</td>
-                        <td>
-                          <CustomLink
-                            to={`/crawl/${statusCode}/${item.item_id}`}
-                          >
-                            {item.dc_title_or}
-                          </CustomLink>
-                        </td>
-                        <td>{item.dc_title_kr}</td>
-                        <td>{item.dc_smry_kr}</td>
-                        <td>{item.dc_code_list.join(", ")}</td>
-                        <td>{item.dc_page}</td>
-                        <td>{item.dc_hit}</td>
-                        <td>
-                          <a href={item.dc_url_loc} target="_blank">
-                            <HiOutlineExternalLink size="24" color="black" />
-                          </a>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </CustomTable>
-            </TableWrapper>
+            
+            <DataTable type="archive" tableData={archiveDataList} statusCode={statusCode}/>
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}
@@ -105,6 +69,7 @@ function ArchiveDataList({
     </>
   );
 }
+
 const SearchResultNotthingContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -117,12 +82,47 @@ const SearchResultNotthingContainer = styled.div`
   }
 `;
 
+const RowContainer = styled.div`
+  border: solid 1px #d6d6d6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  width: 100%;
+`;
+const Row = styled.div`
+  display: flex;
+  color: rgb(59, 59, 59);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: solid 1px #d6d6d6;
+  &:last-child {
+    border: none;
+  }
+
+  .result-count {
+    font-size: 16px;
+    font-weight: bold;
+    * {
+      padding-right: 0.5rem;
+    }
+  }
+  .action-group {
+    display: flex;
+  }
+  .list-size {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #d6d6d6;
+  }
+`;
+
 const Wrapper = styled.div`
   margin: 0 5rem 5rem 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size:14px;
+  font-size: 14px;
 `;
 
 const TableWrapper = styled.div`

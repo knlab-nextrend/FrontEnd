@@ -20,14 +20,17 @@ const refreshHeaders = {
 };
 
 /* 크롤데이터 스크리닝 데이터 받아오기 */
-const ScreeningDataFetchApi = (listSize, pageNo) => {
-  const config = {
+const ScreeningDataFetchApi = (listSize, pageNo,isKeep) => {
+  let config = {
     headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
     },
   };
+  if(isKeep){
+    config.params.keep = 1
+  }
   return axios.get(`/crawl/screening`, config);
 };
 
@@ -39,8 +42,16 @@ const ScreeningDataStageApi = (stageDataList) => {
   return axios.put(`/crawl/screening`, body, { headers: headers });
 };
 
+/* 크롤데이터 스크리닝 단계에서 보류하기 */
+const ScreeningDataKeepApi = (keepDataList) =>{
+  let body = {
+    list: keepDataList,
+  };
+  return axios.post(`/crawl/screening`, body, { headers: headers });
+}
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
+  console.log(deleteDataList)
   const config = {
     headers: headers,
     params: {
@@ -288,6 +299,7 @@ export {
   CrawlDataStageApi,
   CrawlDataKeepApi,
   ScreeningDataDeleteApi,
+  ScreeningDataKeepApi,
   ScreeningDataStageApi,
   ScreeningDataFetchApi,
   ContinentsListDataFetchApi,

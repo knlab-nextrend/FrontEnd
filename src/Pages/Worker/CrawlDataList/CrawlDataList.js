@@ -6,6 +6,10 @@ import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";
 import Tab from "../../../Components/Tab";
 import NoData from "../../../Components/NoData";
+import DataFilter from "../../../Components/DataFilter";
+import { HiOutlineDocumentSearch } from "react-icons/hi";
+import ToggleButton from "../../../Components/ToggleButton";
+import DataTable from "../../../Components/DataTable";
 function CrawlDataList({
   statusCode,
   dcCount,
@@ -14,30 +18,44 @@ function CrawlDataList({
   setPageNo,
   crawlDataList,
   STATUS_CODE_SET,
+  onChangeKeepToggle,
+  isKeep
 }) {
   return (
     <>
       <FormHeader type="view" title={STATUS_CODE_SET[statusCode].mainTitle} />
-      {/* <DataFilter /> */}
-      <Tab process={STATUS_CODE_SET[statusCode].type}></Tab>
       <Wrapper>
+        <RowContainer>
+          <Row>
+            <div className="result-count">
+              <HiOutlineDocumentSearch />
+              검색 결과 ({dcCount}건)
+            </div>
+            <div className="action-group">
+              <ToggleButton mode1={"대기"} mode2={"보류"} action={onChangeKeepToggle} checked={isKeep}/>
+              <select className="list-size">
+                <option disabled>리스트 사이즈</option>
+                <option value={2}>2건</option>
+                <option value={10}>10건</option>
+                <option value={30}>30건</option>
+                <option value={50}>50건</option>
+                <option value={75}>75건</option>
+                <option value={100}>100건</option>
+              </select>
+            </div>
+          </Row>
+          <Row>
+            <DataFilter type={STATUS_CODE_SET[statusCode].type}/>
+          </Row>
+        </RowContainer>
         {crawlDataList.length !== 0 ? (
           <>
-            <SearchResultTitle>
-              <p>검색결과 ({dcCount}건)</p>
-              <p>카드 클릭 시 편집 화면이 뜹니다.</p>
-            </SearchResultTitle>
             <SearchResult>
-              {crawlDataList.map((item, i) => {
-                return (
-                  <CustomLink
-                    to={`/crawl/${statusCode}/${item.item_id}`}
-                    key={i}
-                  >
-                    <CrawlDataCard crawlDataItem={item} />
-                  </CustomLink>
-                );
-              })}
+              <DataTable
+                tableData={crawlDataList}
+                type={STATUS_CODE_SET[statusCode].type}
+                statusCode={statusCode}
+              />
             </SearchResult>
             <Pagenation
               dcCount={dcCount}
@@ -88,6 +106,41 @@ const SearchResultTitle = styled.div`
 `;
 const SearchResult = styled.div`
   width: 100%;
+`;
+
+const RowContainer = styled.div`
+  border: solid 1px #d6d6d6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  width: 100%;
+`;
+const Row = styled.div`
+  display: flex;
+  color: rgb(59, 59, 59);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: solid 1px #d6d6d6;
+  &:last-child {
+    border: none;
+  }
+
+  .result-count {
+    font-size: 16px;
+    font-weight: bold;
+    * {
+      padding-right: 0.5rem;
+    }
+  }
+  .action-group {
+    display: flex;
+  }
+  .list-size {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #d6d6d6;
+  }
 `;
 
 export default CrawlDataList;

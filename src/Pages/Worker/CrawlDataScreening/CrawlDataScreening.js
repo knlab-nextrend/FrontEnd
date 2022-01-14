@@ -5,17 +5,27 @@ import Button from "../../../Components/Button";
 import Pagenation from "../../../Components/Pagenation";
 import NoData from "../../../Components/NoData";
 import { AiOutlineCheck } from "react-icons/ai";
+import { FaFilter } from "react-icons/fa";
+import { HiOutlineDocumentSearch } from "react-icons/hi";
+import DataFilter from "../../../Components/DataFilter";
+import DataTable from "../../../Components/DataTable";
+import ToggleButton from "../../../Components/ToggleButton";
 function CrawlDataScreening({
-  screeningData,
-  onChangeEach,
-  stageScreeningData,
-  onChangeAll,
-  stageDataList,
   dcCount,
   listSize,
   setListSize,
   pageNo,
   setPageNo,
+  screeningData,
+  stageScreeningData,
+  stageDataList,
+  keepDataList,
+  deleteDataList,
+  onChangeCheckedAll,
+  checkedAll,
+  onChangeEach,
+  isKeep,
+  onChangeKeepToggle,
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -24,81 +34,67 @@ function CrawlDataScreening({
     <>
       <FormHeader type="view" title={"크롤데이터 스크리닝 진행"} />
       <Wrapper>
-        <SearchResultTitle>
-          <p>검색결과 ({dcCount}건)</p>
-          <p>          현재 보여지는 리스트에서 스크리닝 완료 버튼을 누르면 체크한 데이터는
-          정제 단계로 넘어가며 , 체크 하지 않은 데이터는 버려집니다.</p>
-        </SearchResultTitle>
-        <ButtonWrapper>
-          <Button color="#435269" onClick={onChangeAll}>
-            <AiOutlineCheck color="white" />
-            <p>전체선택</p>
-          </Button>
-          <Button color="#435269" onClick={stageScreeningData}>
-            <AiOutlineCheck color="white" />
-            <p>스크리닝 완료</p>
-          </Button>
-          <select value={listSize} onChange={_listSizeHandler}>
-            <option disabled hidden>
-              리스트 사이즈
-            </option>
-            <option value={2}>2건</option>
-            <option value={10}>10건</option>
-            <option value={30}>30건</option>
-            <option value={50}>50건</option>
-            <option value={75}>75건</option>
-            <option value={100}>100건</option>
-          </select>
-        </ButtonWrapper>
+        <RowContainer>
+          <Row>
+            <div className="result-count">
+              <HiOutlineDocumentSearch />
+              검색 결과 ({dcCount}건)
+            </div>
+            <div className="action-group">
+              <ToggleButton
+                mode1={"스크리닝 대기"}
+                mode2={"스크리닝 보류"}
+                action={onChangeKeepToggle}
+                checked={isKeep}
+              />
+              <ScreeningButton
+                className="screening-button"
+                onClick={stageScreeningData}
+              >
+                <AiOutlineCheck />
+                스크리닝 완료
+              </ScreeningButton>
+              <select
+                className="list-size"
+                value={listSize}
+                onChange={_listSizeHandler}
+              >
+                <option disabled>리스트 사이즈</option>
+                <option value={2}>2건</option>
+                <option value={10}>10건</option>
+                <option value={30}>30건</option>
+                <option value={50}>50건</option>
+                <option value={75}>75건</option>
+                <option value={100}>100건</option>
+              </select>
+            </div>
+          </Row>
+          <Row>
+            <DataFilter type={"screening"}/>
+          </Row>
+        </RowContainer>
         {screeningData.length !== 0 ? (
           <>
-            <TableWrapper>
-              <CustomTable>
-                <colgroup>
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "30%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "10%" }} />
-                </colgroup>
+            <DataTable
+              tableData={screeningData}
+              stageDataList={stageDataList}
+              keepDataList={keepDataList}
+              deleteDataList={deleteDataList}
+              onChangeCheckedAll={onChangeCheckedAll}
+              checkedAll={checkedAll}
+              onChangeEach={onChangeEach}
+              type="screening"
+            />
+            <BottomWrap>
+              <ScreeningButton
+                className="screening-button"
+                onClick={stageScreeningData}
+              >
+                <AiOutlineCheck />
+                스크리닝 완료
+              </ScreeningButton>
+            </BottomWrap>
 
-                <thead>
-                  <tr>
-                    <th>선택</th>
-                    <th>itemID</th>
-                    <th>요약</th>
-                    <th>발행자/발행기관</th>
-                    <th>언어</th>
-                    <th>수집일</th>
-                    <th>페이지수</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {screeningData.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            value={item.item_id}
-                            onChange={onChangeEach}
-                            checked={stageDataList.includes(item.item_id)}
-                          />
-                        </td>
-                        <td>{item.item_id}</td>
-                        <td>{item.dc_smry_kr}</td>
-                        <td>{item.dc_publisher}</td>
-                        <td>{item.dc_lang}</td>
-                        <td>{item.dc_dt_collect}</td>
-                        <td>{item.dc_page}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </CustomTable>
-            </TableWrapper>
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}
@@ -113,66 +109,62 @@ function CrawlDataScreening({
     </>
   );
 }
-const SearchResultTitle = styled.div`
-  width: 100%;
-  p {
-    &:nth-child(1) {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    &:nth-child(2) {
-      font-size: 14px;
-    }
-  }
-`;
-const GuideComment = styled.div`
-  margin: 1rem 0 1rem 0;
-`;
 const Wrapper = styled.div`
   margin: 0 5rem 5rem 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 14px;
 `;
 
-const TableWrapper = styled.div`
-  width: 100%;
-  max-height: 65rem;
-  overflow: auto;
-  box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
+const ScreeningButton = styled.button`
+  margin: 0 0.5rem 0 0.5rem;
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+  background-color: #435269;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 `;
-const CustomTable = styled.table`
+const BottomWrap = styled.div`
   width: 100%;
-  text-align: center;
-  border-collapse: collapse;
-  thead {
-    border-bottom: solid 1px #d6d6d6;
-    position: sticky;
-    top: 0px;
-    background-color: white;
-  }
-  tr {
-    height: 2.5rem;
-  }
-  tr:nth-child(2n) {
-    background-color: #eee;
-  }
-  input[type="checkbox"] {
-    width: 20px; /*Desired width*/
-    height: 20px; /*Desired height*/
-  }
-`;
-
-const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  margin: 1rem 0 1rem 0;
-
-  Button {
-    margin-right: 1rem;
+  justify-content: right;
+  margin-top: 1rem;
+`;
+const RowContainer = styled.div`
+  border: solid 1px #d6d6d6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  width: 100%;
+`;
+const Row = styled.div`
+  display: flex;
+  color: rgb(59, 59, 59);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: solid 1px #d6d6d6;
+  &:last-child {
+    border: none;
   }
-  select {
-    padding: 0 0.5rem 0 0.5rem;
+
+  .result-count {
+    font-size: 16px;
+    font-weight: bold;
+    * {
+      padding-right: 0.5rem;
+    }
+  }
+  .action-group {
+    display: flex;
+  }
+  .list-size {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #d6d6d6;
   }
 `;
 

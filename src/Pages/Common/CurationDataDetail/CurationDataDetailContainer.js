@@ -14,7 +14,7 @@ function CurationDataDetailContainer() {
   const dispatch = useDispatch();
   /* 데이터 관리로 이동 */
   const goDataManage = () => {
-    history.push(`/crawl/detail/${statusCode}/${itemId}`);
+    history.push(`/crawl/${statusCode}/${itemId}`);
   };
   /* 데이터 불러오기 */
   const dataFetch = () => {
@@ -37,8 +37,7 @@ function CurationDataDetailContainer() {
     let _docs = {
       dc_content: _rawStatusDetailData.dc_content || "",
       dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
-      dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
-      dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
+      dc_dt_write: _rawStatusDetailData.dc_dt_write.substring(0,10) || "",
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher: _rawStatusDetailData.dc_publisher || "",
       dc_cover:

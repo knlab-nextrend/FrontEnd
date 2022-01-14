@@ -12,11 +12,22 @@ function CrawlDataListContainer() {
 
   /* refine, register 를 router로 부터 받아와서 구분하도록 함.... */
   const { statusCode } = useParams();
+  const [currentCode, setCurrentCode] = useState(statusCode);
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
+
+  const [isKeep, setIsKeep] = useState(false);
+  const onChangeKeepToggle = () => {
+    setIsKeep(!isKeep);
+  };
+
+  useEffect(() => {
+    const code = isKeep ? Number(statusCode) + 1 : Number(statusCode)
+    setCurrentCode(code);
+  }, [isKeep]);
 
 
   const STATUS_CODE_SET = {
@@ -52,9 +63,14 @@ function CrawlDataListContainer() {
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_keyword: item.dc_keyword,
-        dc_dt_collect: item.dc_dt_collect,
+        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
         item_id: Number(item.item_id),
+        dc_publisher: item.dc_publisher,
         stat: item.stat,
+        dc_lang: item.dc_lang,
+        dc_page: item.dc_page,
+        dc_url_loc: item.dc_url_loc,
+        dc_smry_kr: item.dc_smry_kr,
       };
 
       _crawlDataList.push(obj);
@@ -66,13 +82,14 @@ function CrawlDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     trackPromise(
-      CrawlDataListFetchApi(statusCode, listSize, pageNo)
+      CrawlDataListFetchApi(currentCode, listSize, pageNo)
         .then((res) => {
+          console.log(res.data);
           dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
-            CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+            CrawlDataListFetchApi(currentCode, listSize, pageNo).then((res) => {
               dataCleansing(res.data);
             });
           });
@@ -80,12 +97,10 @@ function CrawlDataListContainer() {
     );
   };
 
-
-
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
     dataFetch();
-  }, [pageNo, statusCode]);
+  }, [pageNo, currentCode]);
   return (
     <>
       <CrawlDataList
@@ -96,6 +111,8 @@ function CrawlDataListContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         STATUS_CODE_SET={STATUS_CODE_SET}
+        onChangeKeepToggle={onChangeKeepToggle}
+        isKeep={isKeep}
       />
     </>
   );
