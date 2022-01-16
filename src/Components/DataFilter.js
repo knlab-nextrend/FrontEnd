@@ -7,18 +7,22 @@ import { MdSort } from "react-icons/md";
 import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
 function DataFilter({ dataFilterFetch = null, type }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState("1970-01-01"); // startDate
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().substring(0, 10)
-  ); //endDate
-  const [lang, setLang] = useState(""); // language
-  const [publisher, setPublisher] = useState(""); // publisher
+
   const [keyword, setKeyword] = useState(""); // keyword
   const [isCrawled, setIsCrawled] = useState(true); // is_crawled 여부
 
-  const [dateSort, setDateSort] = useState("default");
-  const [sortDateType, setSortDateType] = useState("dc_dt_collect");
+  // 스크리닝 부터 사용되는 필터들
+  const [sort, setSort] = useState("");
+  const [sortType, setSortType] = useState("dc_dt_collect");
+  const [dateGte, setDateGte] = useState("2019-01-01"); // 임시 값. 현재 시각 기준 3년 전으로 설정 할 예정...
+  const [dateLte, setDateLte] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
+  const [pageGte, setPageGte] = useState(0);
+  const [pageLte, setPageLte] = useState(0);
 
+  const [host, setHost] = useState("");
+  const [lang, setLang] = useState(""); // language
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const [selectCategory, setSelectCategory] = useState(0);
@@ -27,35 +31,38 @@ function DataFilter({ dataFilterFetch = null, type }) {
   const _isCrawledHandler = (e) => {
     setIsCrawled(e.target.value);
   };
-  const _publisherHandler = (e) => {
-    setPublisher(e.target.value);
-  };
   const _optionIsOpenHandler = () => {
     setOptionIsOpen(!optionIsOpen);
   };
   const _langHandler = (e) => {
     setLang(e.target.value);
   };
-  const _keywordHandler = (e) => {
-    setKeyword(e.target.value);
+  const _hostHandler = (e) => {
+    setHost(e.target.value);
   };
 
-  const _sortDateTypeHandler = (e) => {
-    setSortDateType(e.target.value);
+  const _sortTypeHandler = (e) => {
+    setSortType(e.target.value);
   };
-  const _dateSortHandler = (e) => {
-    setDateSort(e.target.value);
+  const _sortHandler = (e) => {
+    setSort(e.target.value);
   };
-  const _startDateHandler = (e) => {
-    setStartDate(e.target.value);
+  const _dateGteHandler = (e) => {
+    setDateGte(e.target.value);
   };
-  const _endDateHandler = (e) => {
-    if (_calcDateDifference(startDate, e.target.value)) {
-      setEndDate(e.target.value);
+  const _dateLteHandler = (e) => {
+    if (_calcDateDifference(dateLte, e.target.value)) {
+      setDateLte(e.target.value);
     } else {
       alert("시간 선택이 잘못되었습니다.");
-      setEndDate(new Date().toISOString().substring(0, 10));
+      setDateLte(new Date().toISOString().substring(0, 10));
     }
+  };
+  const _pageGteHandler = (e) => {
+    setPageGte(e.target.value);
+  };
+  const _pageLteHandler = (e) => {
+    setPageLte(e.target.value);
   };
 
   const _calcDateDifference = (start, end) => {
@@ -79,19 +86,20 @@ function DataFilter({ dataFilterFetch = null, type }) {
       selectCategory === 0 ? null : selectCategory,
       keyword === "" ? null : keyword,
       selectCountry === 0 ? null : selectCountry,
-      publisher === "" ? null : publisher,
-      null, // dateType을 추후 추가
-      startDate,
-      endDate,
+      dateGte,
+      dateLte,
+      pageGte === 0 && pageLte === 0 ? null : pageGte, //Gte, Lte 둘 다 0이라면 보낼 이유가 없다. .. 
+      pageGte === 0 && pageLte === 0 ? null : pageLte,
       isCrawled,
-      dateSort,
-      sortDateType
+      sort === "" ? null : sort, // 정렬 순서
+      sortType, // 정렬 날짜 타입
+      host === "" ? null : host
     );
   };
 
+  // 설정 완료 해야함 
   const searchReset = () => {
     setLang("");
-    setPublisher("");
     setSelectCategory(0);
     setSelectCountry(0);
     setKeyword("");
@@ -99,12 +107,10 @@ function DataFilter({ dataFilterFetch = null, type }) {
   };
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
-      console.log(res.data);
       setCategoryOptions(res.data);
     });
     CountryOptionFetchApi().then((res) => {
       setCountryOptions(res.data);
-      console.log(res.data);
     });
   }, []);
   return (
@@ -138,8 +144,8 @@ function DataFilter({ dataFilterFetch = null, type }) {
                     <OptionCol>
                       <OptionTitle>기간</OptionTitle>
                       <OptionSelect
-                        value={sortDateType}
-                        onChange={_sortDateTypeHandler}
+                        value={sortType}
+                        onChange={_sortTypeHandler}
                       >
                         <option value="dc_dt_collect">원문 수집일 기준</option>
                         {type !== "screening" && (
@@ -147,28 +153,25 @@ function DataFilter({ dataFilterFetch = null, type }) {
                             <option value="dc_dt_write">
                               원문 작성일 기준
                             </option>
-                            <option value="dc_dt_regi">
-                              데이터 등록일 기준
-                            </option>
+                            <option value="dc_dt_pub">원문 공개일 기준</option>
+                            <option value="dc_dt_regi">문서 등록일 기준</option>
+                            <option value="dc_dt_modi">문서 수정일 기준</option>
                           </>
                         )}
                       </OptionSelect>
                       <OptionInput
-                        onChange={_startDateHandler}
-                        value={startDate}
+                        onChange={_dateGteHandler}
+                        value={dateGte}
                         type="date"
                       ></OptionInput>
                       <OptionInput
-                        onChange={_endDateHandler}
-                        value={endDate}
+                        onChange={_dateLteHandler}
+                        value={dateLte}
                         last
                         type="date"
                       ></OptionInput>
 
-                      <OptionSelect
-                        value={dateSort}
-                        onChange={_dateSortHandler}
-                      >
+                      <OptionSelect value={sort} onChange={_sortHandler}>
                         <option value="default">기본</option>
                         <option value="desc">최신순</option>
                         <option value="asc">오래된 순</option>
@@ -179,6 +182,7 @@ function DataFilter({ dataFilterFetch = null, type }) {
                     <OptionCol>
                       <OptionTitle>언어</OptionTitle>
                       <OptionInput
+                        onChange={_langHandler}
                         placeholder="검색하고자 하는 언어 코드를 입력하세요 ( ex. ko, ja, en ... )"
                         type="text"
                       ></OptionInput>
@@ -187,6 +191,7 @@ function DataFilter({ dataFilterFetch = null, type }) {
                       <OptionTitle>HOST 명</OptionTitle>
                       <OptionInput
                         type="text"
+                        onChange={_hostHandler}
                         placeholder="검색하고자 하는 HOST명을 입력하세요 ( ex. www.meti.go.jp )"
                       ></OptionInput>
                     </OptionCol>
@@ -195,17 +200,19 @@ function DataFilter({ dataFilterFetch = null, type }) {
                     <OptionCol>
                       <OptionTitle>페이지 수</OptionTitle>
                       <OptionInput
-                        onChange={_startDateHandler}
-                        value={startDate}
+                        onChange={_pageGteHandler}
+                        value={pageGte}
                         type="number"
                         placeholder="페이지 수 범위 시작 (ex. 10 )"
+                        min="0"
                       ></OptionInput>
                       <OptionInput
-                        onChange={_endDateHandler}
-                        value={endDate}
+                        onChange={_pageLteHandler}
+                        value={pageLte}
                         last
                         type="number"
                         placeholder="페이지 수 범위 끝 (ex. 50 )"
+                        min="0"
                       ></OptionInput>
                     </OptionCol>
                     {type === "archive" && (
@@ -222,17 +229,18 @@ function DataFilter({ dataFilterFetch = null, type }) {
                       </OptionCol>
                     )}
                   </OptionRow>
-                  {((type === "archive")||(type === "curation")) && (
-                  <OptionRow>
+                  {(type === "archive" || type === "curation") && (
+                    <OptionRow>
                       <OptionCol>
                         <OptionTitle>유형 분류</OptionTitle>
                         <OptionInput
-                        type="text"
-                        placeholder="유형 분류 ( ex. 보고서, 뉴스 ... )"
-                      ></OptionInput>
+                          type="text"
+                          placeholder="유형 분류 ( ex. 보고서, 뉴스 ... )"
+                        ></OptionInput>
                       </OptionCol>
-                  </OptionRow>)}
-                  {((type === "archive")||(type === "curation")) && (
+                    </OptionRow>
+                  )}
+                  {(type === "archive" || type === "curation") && (
                     <>
                       <OptionRow>
                         <OptionCol>

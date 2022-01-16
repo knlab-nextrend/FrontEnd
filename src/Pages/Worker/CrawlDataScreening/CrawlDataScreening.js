@@ -26,6 +26,7 @@ function CrawlDataScreening({
   onChangeEach,
   isKeep,
   onChangeKeepToggle,
+  dataFilterFetch
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -70,7 +71,7 @@ function CrawlDataScreening({
             </div>
           </Row>
           <Row>
-            <DataFilter type={"screening"}/>
+            <DataFilter type={"screening"} dataFilterFetch={dataFilterFetch}/>
           </Row>
         </RowContainer>
         {screeningData.length !== 0 ? (
