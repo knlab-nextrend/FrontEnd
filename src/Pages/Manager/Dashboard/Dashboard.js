@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
+import { Component } from "react";
 import TitleCard from "../../../Components/DashboardComponents/TitleCard";
 import DocumentStatCard from "../../../Components/DashboardComponents/DocumentStatCard";
 import FormHeader from "../../../Components/FormHeader";
@@ -13,8 +14,53 @@ import styled from "styled-components";
 
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
 import { ResponsiveGeoMap } from "@nivo/geo"; // 세계지도!
+import * as am5 from "@amcharts/amcharts5";
+import * as am5map from "@amcharts/amcharts5/map";
+import * as am5xy from "@amcharts/amcharts5/xy";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
 
-function Dashboard({ data, menuType, menuHandler, process, processHandler }) {
+
+function Map(props) {
+  useLayoutEffect(() => {
+    
+    let root = am5.Root.new("chartdiv");
+
+    root.setThemes([
+      am5themes_Animated.new(root)
+    ]);
+
+    let chart = root.container.children.push( 
+      am5map.MapChart.new(root, {
+        //panX: "rotateX",
+        projection: am5map.geoEquirectangular()
+      })
+    );
+    let polygonSeries = chart.series.push(
+      am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_worldLow,
+        exclude: ["AQ"]
+      })
+    );
+
+    polygonSeries.mapPolygons.template.setAll({
+      tooltipText: "{name}",
+      interactive: true
+    });
+    polygonSeries.mapPolygons.template.states.create("hover", {
+      fill: am5.color(0x677935)
+    });
+    chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+    return () => {
+      root.dispose();
+    };
+  }, []);
+
+  return (
+    <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+  );
+}
+function Dashboard({ data, menuType, menuHandler, process, processHandler  }) {
   return (
     <>
       {/* <FormHeader type={"view"} title={"대시보드"} /> */}
@@ -57,7 +103,7 @@ function Dashboard({ data, menuType, menuHandler, process, processHandler }) {
                     subtitle={
                       "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
                     }
-                  ></TitleCard>
+                  ><Map></Map></TitleCard>
                   <div>
                     <ChartCard>
                       <ResponsivePie
