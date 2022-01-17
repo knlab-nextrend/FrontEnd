@@ -9,6 +9,7 @@ function CrawlDataListContainer() {
   const dispatch = useDispatch();
   /* 현재 보여질 데이터 */
   const [crawlDataList, setCrawlDataList] = useState([]);
+  const [searchObj, setSearchObj] = useState(null); // 검색 옵션
 
   /* refine, register 를 router로 부터 받아와서 구분하도록 함.... */
   const { statusCode } = useParams();
@@ -25,10 +26,9 @@ function CrawlDataListContainer() {
   };
 
   useEffect(() => {
-    const code = isKeep ? Number(statusCode) + 1 : Number(statusCode)
+    const code = isKeep ? Number(statusCode) + 1 : Number(statusCode);
     setCurrentCode(code);
   }, [isKeep]);
-
 
   const STATUS_CODE_SET = {
     2: {
@@ -80,16 +80,21 @@ function CrawlDataListContainer() {
   };
 
   /* 데이터 불러오기 */
-  const dataFetch = () => {
+  const dataFetch = (searchObj = null) => {
+    console.log(searchObj)
     trackPromise(
-      CrawlDataListFetchApi(currentCode, listSize, pageNo)
+      CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {
-          console.log(res.data);
           dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
-            CrawlDataListFetchApi(currentCode, listSize, pageNo).then((res) => {
+            CrawlDataListFetchApi(
+              currentCode,
+              listSize,
+              pageNo,
+              searchObj
+            ).then((res) => {
               dataCleansing(res.data);
             });
           });
@@ -97,10 +102,41 @@ function CrawlDataListContainer() {
     );
   };
 
+  const dataFilterFetch = (
+    lang = null,
+    code = null,
+    keyword = null,
+    country = null,
+    dateGte = null,
+    dateLte = null,
+    pageGte = null,
+    pageLte = null,
+    isCrawled = null,
+    sort = null,
+    sortType = null,
+    host = null
+  ) => {
+    const searchObj = {
+      lang: lang,
+      code: code,
+      keyword: keyword,
+      country: country,
+      is_crawled: isCrawled,
+      dateLte,
+      dateGte,
+      pageGte,
+      pageLte,
+      sort,
+      sortType,
+      host,
+    };
+    setSearchObj(searchObj);
+  };
+
   /* pageNo, statusCode 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
-    dataFetch();
-  }, [pageNo, currentCode]);
+    dataFetch(searchObj);
+  }, [pageNo, currentCode, listSize, searchObj]);
   return (
     <>
       <CrawlDataList
@@ -108,11 +144,13 @@ function CrawlDataListContainer() {
         crawlDataList={crawlDataList}
         dcCount={dcCount}
         listSize={listSize}
+        setListSize={setListSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
         STATUS_CODE_SET={STATUS_CODE_SET}
         onChangeKeepToggle={onChangeKeepToggle}
         isKeep={isKeep}
+        dataFilterFetch={dataFilterFetch}
       />
     </>
   );

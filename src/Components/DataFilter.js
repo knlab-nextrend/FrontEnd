@@ -13,6 +13,18 @@ function DataFilter({ dataFilterFetch = null, type }) {
 
   // 스크리닝 부터 사용되는 필터들
   const [sort, setSort] = useState("");
+  const [dateRange, setDateRange] = useState("all"); // 날짜 범위를 지정할 수 있도록 함. 기본 값은 전체
+  /* 
+    all : 전체 범위
+    past_week : 최근 1주
+    past_month : 최근 1달
+    past_3_month : 최근 3달
+    past_6_month : 최근 6달
+    past_year : 최근 1년
+    past_3_year : 최근 3년
+    custom_range : 직접 설정
+  */
+  const [isDateRange, setIsDateRange] = useState(false); // 날짜 범위를 직접 설정할 것인지 아닌지 ...
   const [sortType, setSortType] = useState("dc_dt_collect");
   const [dateGte, setDateGte] = useState("2019-01-01"); // 임시 값. 현재 시각 기준 3년 전으로 설정 할 예정...
   const [dateLte, setDateLte] = useState(
@@ -65,6 +77,11 @@ function DataFilter({ dataFilterFetch = null, type }) {
     setPageLte(e.target.value);
   };
 
+  const _dateRangeHandler = (e) => {
+    setDateRange(e.target.value);
+    setIsDateRange(e.target.value === "custom_range" ? true : false); // 직접 설정일 경우 ..
+  };
+
   const _calcDateDifference = (start, end) => {
     if (Date.parse(new Date()) - Date.parse(end) < 0) {
       // 현재 시점에서 미래의 날짜는 선택할 수 없음
@@ -86,18 +103,18 @@ function DataFilter({ dataFilterFetch = null, type }) {
       selectCategory === 0 ? null : selectCategory,
       keyword === "" ? null : keyword,
       selectCountry === 0 ? null : selectCountry,
-      dateGte,
-      dateLte,
-      pageGte === 0 && pageLte === 0 ? null : pageGte, //Gte, Lte 둘 다 0이라면 보낼 이유가 없다. .. 
+      dateRange==="all" ?  null : dateGte, // 전체 범위 제외 하고는 날짜 범위를 주어야 한다. 
+      dateRange==="all" ? null : dateLte, // 전체 범위 제외하고는 날짜 범위를 주어야 한다. 
+      pageGte === 0 && pageLte === 0 ? null : pageGte, //Gte, Lte 둘 다 0이라면 보낼 이유가 없다. ..
       pageGte === 0 && pageLte === 0 ? null : pageLte,
-      isCrawled,
+      type === "archive" ? isCrawled : null,
       sort === "" ? null : sort, // 정렬 순서
       sortType, // 정렬 날짜 타입
       host === "" ? null : host
     );
   };
 
-  // 설정 완료 해야함 
+  // 설정 완료 해야함
   const searchReset = () => {
     setLang("");
     setSelectCategory(0);
@@ -105,6 +122,31 @@ function DataFilter({ dataFilterFetch = null, type }) {
     setKeyword("");
     setIsCrawled(true);
   };
+
+  useEffect(()=>{
+    const _dateGte = new Date(); // 오늘 날짜
+    if(dateRange === "past_week"){
+      _dateGte.setDate(_dateGte.getDate() - 7); // 7일. 1주일 전
+    }
+    else if(dateRange === "past_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 1); // 1달 전
+    }
+    else if(dateRange === "past_3_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 3); // 3달 전
+    }
+    else if(dateRange === "past_6_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 6); // 6달 전
+    }
+    else if(dateRange === "past_year"){
+      _dateGte.setFullYear(_dateGte.getFullYear() - 1); // 1년 전
+    }
+    else if(dateRange === "past_3_year"){
+      _dateGte.setFullYear(_dateGte.getFullYear() - 3); // 3년 전
+    }
+    setDateGte(_dateGte.toISOString().substring(0,10));
+
+    console.log(_dateGte.toISOString().substring(0,10))
+  },[dateRange])
   useEffect(() => {
     CategoryOptionFetchApi().then((res) => {
       setCategoryOptions(res.data);
@@ -159,17 +201,35 @@ function DataFilter({ dataFilterFetch = null, type }) {
                           </>
                         )}
                       </OptionSelect>
-                      <OptionInput
-                        onChange={_dateGteHandler}
-                        value={dateGte}
-                        type="date"
-                      ></OptionInput>
-                      <OptionInput
-                        onChange={_dateLteHandler}
-                        value={dateLte}
-                        last
-                        type="date"
-                      ></OptionInput>
+
+                      <OptionSelect value={dateRange} onChange={_dateRangeHandler}>
+                        <option disabled default>
+                          기간 설정
+                        </option>
+                        <option value="all">전체</option>
+                        <option value="past_week" >최근 1주</option>
+                        <option value="past_month">최근 1개월</option>
+                        <option value="past_3_month">최근 3개월</option>
+                        <option value="past_6_month">최근 6개월</option>
+                        <option value="past_year">최근 1년</option>
+                        <option value="past_3_year">최근 3년</option>
+                        <option value="custom_range">직접 설정</option>
+                      </OptionSelect>
+                      {isDateRange && (
+                        <>
+                          <OptionInput
+                            onChange={_dateGteHandler}
+                            value={dateGte}
+                            type="date"
+                          ></OptionInput>
+                          <OptionInput
+                            onChange={_dateLteHandler}
+                            value={dateLte}
+                            last
+                            type="date"
+                          ></OptionInput>
+                        </>
+                      )}
 
                       <OptionSelect value={sort} onChange={_sortHandler}>
                         <option value="default">기본</option>

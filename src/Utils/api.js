@@ -20,7 +20,7 @@ const refreshHeaders = {
 };
 
 /* 크롤데이터 스크리닝 데이터 받아오기 */
-const ScreeningDataFetchApi = (listSize, pageNo,isKeep,searchObj) => {
+const ScreeningDataFetchApi = (listSize, pageNo,isKeep,searchObj=null) => {
   let config = {
     headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {

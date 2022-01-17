@@ -2,7 +2,7 @@ import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import Pagenation from "../../../Components/Pagenation";
 import DataFilter from "../../../Components/DataFilter";
-import DataTable from "../../../Components/DataTable"
+import DataTable from "../../../Components/DataTable";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HiOutlineExternalLink, HiOutlineDocumentSearch } from "react-icons/hi";
@@ -11,11 +11,15 @@ function ArchiveDataList({
   archiveDataList,
   statusCode,
   dcCount,
+  setListSize,
   listSize,
   pageNo,
   setPageNo,
   dataFilterFetch,
 }) {
+  const _listSizeHandler = (e) => {
+    setListSize(e.target.value);
+  };
   return (
     <>
       <FormHeader
@@ -31,7 +35,11 @@ function ArchiveDataList({
               검색 결과 ({dcCount}건)
             </div>
             <div className="action-group">
-              <select className="list-size">
+              <select
+                className="list-size"
+                value={listSize}
+                onChange={_listSizeHandler}
+              >
                 <option disabled>리스트 사이즈</option>
                 <option value={2}>2건</option>
                 <option value={10}>10건</option>
@@ -48,8 +56,11 @@ function ArchiveDataList({
         </RowContainer>
         {archiveDataList.length !== 0 ? (
           <>
-            
-            <DataTable type="archive" tableData={archiveDataList} statusCode={statusCode}/>
+            <DataTable
+              type="archive"
+              tableData={archiveDataList}
+              statusCode={statusCode}
+            />
             <Pagenation
               dcCount={dcCount}
               listSize={listSize}

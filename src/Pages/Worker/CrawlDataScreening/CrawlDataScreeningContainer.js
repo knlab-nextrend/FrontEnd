@@ -17,6 +17,7 @@ function CrawlDataScreeningContainer() {
 
   /* 현재 보여질 데이터 */
   const [screeningData, setScreeningData] = useState([]);
+  const [searchObj, setSearchObj] = useState(null); // 검색 옵션
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
@@ -59,9 +60,9 @@ function CrawlDataScreeningContainer() {
     pageGte = null,
     pageLte = null,
     isCrawled = null,
-    sort,
-    sortType,
-    host
+    sort = null,
+    sortType = null,
+    host = null
   ) => {
     const searchObj = {
       lang: lang,
@@ -77,19 +78,7 @@ function CrawlDataScreeningContainer() {
       sortType,
       host,
     };
-    trackPromise(
-      ScreeningDataFetchApi(listSize, pageNo, isKeep,searchObj)
-        .then((res) => {
-          dataCleansing(res.data);
-        })
-        .catch((err) => {
-          sessionHandler(err, dispatch).then((res) => {
-            ScreeningDataFetchApi(listSize, pageNo).then((res) => {
-              dataCleansing(res.data);
-            });
-          });
-        })
-    );
+    setSearchObj(searchObj);
   };
 
   /* 전체선택 */
@@ -152,9 +141,9 @@ function CrawlDataScreeningContainer() {
   };
 
   /* 데이터 불러오기 */
-  const dataFetch = () => {
+  const dataFetch = (searchObj = null) => {
     trackPromise(
-      ScreeningDataFetchApi(listSize, pageNo, isKeep)
+      ScreeningDataFetchApi(listSize, pageNo, isKeep, searchObj)
         .then((res) => {
           dataCleansing(res.data);
         })
@@ -170,8 +159,8 @@ function CrawlDataScreeningContainer() {
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
-    dataFetch();
-  }, [pageNo, listSize, isKeep]);
+    dataFetch(searchObj);
+  }, [pageNo, listSize, isKeep, searchObj]);
 
   /* 데이터를 불러오는데 성공하였을 경우 각 데이터의 id값과 해당 데이터의 status를 list에 먼저 세팅해줌*/
   useEffect(() => {

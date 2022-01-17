@@ -8,7 +8,7 @@ function ArchiveDataListContainer() {
   const dispatch = useDispatch();
   /* 현재 보여질 데이터 */
   const [archiveDataList, setArchiveDataList] = useState([]);
-
+  const [searchObj, setSearchObj] = useState(null); // 검색 옵션 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
@@ -44,48 +44,50 @@ function ArchiveDataListContainer() {
   };
 
   /* 필터 적용 데이터 받아오기 */
+
   const dataFilterFetch = (
     lang = null,
     code = null,
     keyword = null,
     country = null,
-    publisher = null,
-    dateType = null,
-    gte = null,
-    lte = null,
+    dateGte = null,
+    dateLte = null,
+    pageGte = null,
+    pageLte = null,
     isCrawled = null,
-    dateSort,
-    sortDateType
+    sort = null,
+    sortType = null,
+    host = null
   ) => {
     const searchObj = {
-      dc_lang: lang,
-      dc_code: code,
-      dc_keyword: keyword,
-      dc_country: country,
-      dc_publisher: publisher,
-      dateType: dateType,
-      gte: gte,
-      lte: lte,
+      lang,
+      code,
+      keyword,
+      country,
       is_crawled: isCrawled,
-      sortType: sortDateType,
-      sort: dateSort,
+      dateLte,
+      dateGte,
+      pageGte,
+      pageLte,
+      sort,
+      sortType,
+      host,
     };
-    CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj).then(
-      (res) => {
-        dataCleansing(res.data);
-      }
-    );
+    console.log(searchObj)
+    setSearchObj(searchObj);
   };
+
+  
   /* 데이터 불러오기 */
-  const dataFetch = () => {
-    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo)
+  const dataFetch = (searchObj=null) => {
+    trackPromise(CrawlDataListFetchApi(statusCode, listSize, pageNo,searchObj)
       .then((res) => {
         dataCleansing(res.data);
       })
       .catch((err) => {
         console.log(err);
         sessionHandler(err, dispatch).then((res) => {
-          CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+          CrawlDataListFetchApi(statusCode, listSize, pageNo,searchObj).then((res) => {
             dataCleansing(res.data);
           });
         });
@@ -93,8 +95,8 @@ function ArchiveDataListContainer() {
   };
 
   useEffect(() => {
-    dataFetch();
-  }, [pageNo]);
+    dataFetch(searchObj);
+  }, [pageNo,listSize,searchObj]);
 
   return (
     <>
@@ -103,6 +105,7 @@ function ArchiveDataListContainer() {
         statusCode={statusCode}
         dcCount={dcCount}
         listSize={listSize}
+        setListSize={setListSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
         dataFilterFetch={dataFilterFetch}
