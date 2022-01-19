@@ -17,6 +17,7 @@ function CrawlDataScreeningContainer() {
 
   /* 현재 보여질 데이터 */
   const [screeningData, setScreeningData] = useState([]);
+  const [searchObj, setSearchObj] = useState(null); // 검색 옵션
 
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
@@ -25,17 +26,16 @@ function CrawlDataScreeningContainer() {
 
   /* 완료, 보류, 삭제 전체선택 구현하기 */
 
-  const [isKeep,setIsKeep] = useState(false);
+  const [isKeep, setIsKeep] = useState(false);
   const [itemList, setItemList] = useState([]); // {id,status} 객체 리스트로 구성되어 있음.
   const [checkedAll, setCheckedAll] = useState("delete"); // 전체선택 기본값은 delete
   const [stageDataList, setStageDataList] = useState([]);
   const [keepDataList, setKeepDataList] = useState([]);
   const [deleteDataList, setDeleteDataList] = useState([]); // 기본 값은 delete
 
-
-  const onChangeKeepToggle = ()=>{
-    setIsKeep(!isKeep)
-  }
+  const onChangeKeepToggle = () => {
+    setIsKeep(!isKeep);
+  };
   const onChangeCheckedAll = (e) => {
     if (e.target.checked) {
       setCheckedAll(e.target.value);
@@ -48,6 +48,37 @@ function CrawlDataScreeningContainer() {
     const _newItemList = [...itemList];
     _newItemList[_index].status = type;
     setItemList(_newItemList);
+  };
+
+  const dataFilterFetch = (
+    lang = null,
+    code = null,
+    keyword = null,
+    country = null,
+    dateGte = null,
+    dateLte = null,
+    pageGte = null,
+    pageLte = null,
+    isCrawled = null,
+    sort = null,
+    sortType = null,
+    host = null
+  ) => {
+    const searchObj = {
+      lang: lang,
+      code: code,
+      keyword: keyword,
+      country: country,
+      is_crawled: isCrawled,
+      dateLte,
+      dateGte,
+      pageGte,
+      pageLte,
+      sort,
+      sortType,
+      host,
+    };
+    setSearchObj(searchObj);
   };
 
   /* 전체선택 */
@@ -77,14 +108,13 @@ function CrawlDataScreeningContainer() {
   /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
   const stageScreeningData = async () => {
     if (window.confirm("선택 하신 대로 스크리닝을 진행하시겠습니까?")) {
-
       await ScreeningDataStageApi(stageDataList);
       await ScreeningDataKeepApi(keepDataList);
-      if(deleteDataList.length !== 0) {
-         await ScreeningDataDeleteApi(deleteDataList);
+      if (deleteDataList.length !== 0) {
+        await ScreeningDataDeleteApi(deleteDataList);
       }
       alert("스크리닝이 성공적으로 완료되었습니다.");
-      history.go(0)
+      history.go(0);
     }
   };
 
@@ -111,9 +141,9 @@ function CrawlDataScreeningContainer() {
   };
 
   /* 데이터 불러오기 */
-  const dataFetch = () => {
+  const dataFetch = (searchObj = null) => {
     trackPromise(
-      ScreeningDataFetchApi(listSize, pageNo,isKeep)
+      ScreeningDataFetchApi(listSize, pageNo, isKeep, searchObj)
         .then((res) => {
           dataCleansing(res.data);
         })
@@ -129,8 +159,8 @@ function CrawlDataScreeningContainer() {
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
-    dataFetch();
-  }, [pageNo, listSize,isKeep]);
+    dataFetch(searchObj);
+  }, [pageNo, listSize, isKeep, searchObj]);
 
   /* 데이터를 불러오는데 성공하였을 경우 각 데이터의 id값과 해당 데이터의 status를 list에 먼저 세팅해줌*/
   useEffect(() => {
@@ -159,6 +189,7 @@ function CrawlDataScreeningContainer() {
         deleteDataList={deleteDataList}
         isKeep={isKeep}
         onChangeKeepToggle={onChangeKeepToggle}
+        dataFilterFetch={dataFilterFetch}
       />
     </>
   );

@@ -13,14 +13,19 @@ import DataTable from "../../../Components/DataTable";
 function CrawlDataList({
   statusCode,
   dcCount,
+  setListSize,
   listSize,
   pageNo,
   setPageNo,
   crawlDataList,
   STATUS_CODE_SET,
   onChangeKeepToggle,
-  isKeep
+  isKeep,
+  dataFilterFetch,
 }) {
+  const _listSizeHandler = (e) => {
+    setListSize(e.target.value);
+  };
   return (
     <>
       <FormHeader type="view" title={STATUS_CODE_SET[statusCode].mainTitle} />
@@ -32,8 +37,17 @@ function CrawlDataList({
               검색 결과 ({dcCount}건)
             </div>
             <div className="action-group">
-              <ToggleButton mode1={"대기"} mode2={"보류"} action={onChangeKeepToggle} checked={isKeep}/>
-              <select className="list-size">
+              <ToggleButton
+                mode1={"대기"}
+                mode2={"보류"}
+                action={onChangeKeepToggle}
+                checked={isKeep}
+              />
+              <select
+                className="list-size"
+                value={listSize}
+                onChange={_listSizeHandler}
+              >
                 <option disabled>리스트 사이즈</option>
                 <option value={2}>2건</option>
                 <option value={10}>10건</option>
@@ -45,7 +59,10 @@ function CrawlDataList({
             </div>
           </Row>
           <Row>
-            <DataFilter type={STATUS_CODE_SET[statusCode].type}/>
+            <DataFilter
+              type={STATUS_CODE_SET[statusCode].type}
+              dataFilterFetch={dataFilterFetch}
+            />
           </Row>
         </RowContainer>
         {crawlDataList.length !== 0 ? (
