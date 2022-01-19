@@ -78,43 +78,43 @@ const CrawlDataListFetchApi = (
 };
 
 /* 크롤데이터 버리기 */
-const CrawlDataRejectApi = (itemId, statusCode) => {
+const CrawlDataRejectApi = (_id, statusCode) => {
   const config = {
     headers: headers,
     params: {
       statusCode,
     },
   };
-  return axios.delete(`/crawl/detail/${itemId}`, config);
+  return axios.delete(`/crawl/detail/${_id}`, config);
 };
 
 /* 크롤데이터 보류 하기*/
 
-const CrawlDataKeepApi = (itemId, statusCode) => {
+const CrawlDataKeepApi = (_id, statusCode) => {
   let body = {
     statusCode,
   };
-  return axios.put(`/crawl/detail/${itemId}`, body, { headers: headers });
+  return axios.put(`/crawl/detail/${_id}`, body, { headers: headers });
 };
 /* 크롤데이터 넘기기*/
-const CrawlDataStageApi = (statusCode, itemId, docs) => {
+const CrawlDataStageApi = (statusCode, _id, docs) => {
   const body = {
     statusCode,
-    itemId,
+    _id,
     docs,
   };
-  return axios.post(`/crawl/detail/${itemId}`, body, { headers: headers });
+  return axios.post(`/crawl/detail/${_id}`, body, { headers: headers });
 };
 
 /* 크롤데이터 상세조회에서 사용하는 통신 함수 */
-const CrawlDataDetailFetchApi = (statusCode, itemId) => {
+const CrawlDataDetailFetchApi = (statusCode, _id) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
     params: {
       statusCode: statusCode,
     },
   };
-  return axios.get(`/crawl/detail/${itemId}`, config);
+  return axios.get(`/crawl/detail/${_id}`, config);
 };
 
 /* 본문 이미지 첨부 후 url 받아오는 함수 */
@@ -135,10 +135,10 @@ const uploadExcelDataApi = (formData) => {
   });
 }
 
-const documentDetachImageApi = (itemId) =>{
+const documentDetachImageApi = (_id) =>{
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
-    params: { itemId },
+    params: { _id },
   };
   return axios.get(`/file/docImageDetach/`,config);
 }

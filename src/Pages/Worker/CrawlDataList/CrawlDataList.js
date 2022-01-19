@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import CrawlDataCard from "../../../Components/CrawlDataCard";
+import CrawlDataCard from "../../../Components/LegacyComponents/CrawlDataCard";
 import FormHeader from "../../../Components/FormHeader";
-import Pagenation from "../../../Components/Pagenation";
-import Tab from "../../../Components/Tab";
+import Pagination from "../../../Components/Pagination";
+import Tab from "../../../Components/LegacyComponents/Tab";
 import NoData from "../../../Components/NoData";
 import DataFilter from "../../../Components/DataFilter";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
@@ -74,7 +74,7 @@ function CrawlDataList({
                 statusCode={statusCode}
               />
             </SearchResult>
-            <Pagenation
+            <Pagination
               dcCount={dcCount}
               listSize={listSize}
               pageNo={pageNo}

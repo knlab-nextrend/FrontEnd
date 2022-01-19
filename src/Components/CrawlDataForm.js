@@ -11,7 +11,7 @@ import { MdSettings, MdOutlineLink } from "react-icons/md";
 import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
-function CrawlDataForm({ docs, type, itemId }, ref) {
+function CrawlDataForm({ docs, type, _id }, ref) {
   /* 현재 보여질 데이터 정보들 */
   const [dcContent, setDcContent] = useState(""); // dc_content 크롤 데이터 내용
 
@@ -172,7 +172,6 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
   }));
   useEffect(() => {
     /* docs가 빈 객체가 아니라면 */
-    console.log(docs);
     if (Object.keys(docs).length !== 0) {
       setDcContent(docs.dc_content);
       setDcDtWrite(docs.dc_dt_write.substring(0, 10)); // date 객체에 넣어주기
@@ -525,7 +524,7 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
               <Editor
                 data={dcContent}
                 _dcContentHandler={_dcContentHandler}
-                itemId={itemId}
+                _id={_id}
               />
             </CustomFormItem>
           </CustomFormRow>

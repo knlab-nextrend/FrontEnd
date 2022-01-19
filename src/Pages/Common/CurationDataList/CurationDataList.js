@@ -2,7 +2,7 @@ import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Pagenation from "../../../Components/Pagenation";
+import Pagination from "../../../Components/Pagination";
 import { HiOutlineDocumentSearch, HiPhotograph } from "react-icons/hi";
 import { MdCalendarViewDay } from "react-icons/md";
 import { RiFileList2Line } from "react-icons/ri";
@@ -81,13 +81,17 @@ function CurationDataList({
           )}
           {viewType === "card" && (
             <CurationCardWrapper>
-              {curationDataList.map((item,index)=>{
-                return (<CustomLink to={`/curation/${item.item_id}`} ><CurationCard curationDataItem={item}></CurationCard></CustomLink>)
+              {curationDataList.map((item, index) => {
+                return (
+                  <CustomLink to={`/curation/${item._id}`}>
+                    <CurationCard curationDataItem={item}></CurationCard>
+                  </CustomLink>
+                );
               })}
             </CurationCardWrapper>
           )}
 
-          <Pagenation
+          <Pagination
             dcCount={dcCount}
             listSize={listSize}
             pageNo={pageNo}
@@ -130,7 +134,7 @@ function CurationList({ curationData, handleRowClick }) {
             return (
               <tr
                 onClick={() => {
-                  handleRowClick(item.item_id);
+                  handleRowClick(item._id);
                 }}
               >
                 <td>
@@ -292,7 +296,7 @@ const CurationListTable = styled.table`
     background-color: #d8dee6;
     color: #323d4d;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-    text-align:center;
+    text-align: center;
   }
   .center {
     text-align: center;
@@ -327,11 +331,9 @@ const CurationListTable = styled.table`
 `;
 
 const CustomLink = styled(Link)`
-
-  text-decoration:none;
-  color:black;
-
-`
+  text-decoration: none;
+  color: black;
+`;
 const CardWrapper = styled.div`
   display: flex;
   padding: 1rem;
@@ -462,8 +464,8 @@ const CurationListWrapper = styled.div`
   width: 100%;
 `;
 
-const CurationCardWrapper=styled.div` 
-  display:grid;
-  grid-template-columns:1fr 1fr;
-`
+const CurationCardWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
 export default CurationDataList;

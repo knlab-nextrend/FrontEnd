@@ -8,9 +8,6 @@ function Header({ name }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const goNextrendPage = () => {
-    window.open("http://nextrend.kr/index.php");
-  };
   const go메인페이지 = () => {
     history.push("/home");
   };

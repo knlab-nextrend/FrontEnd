@@ -89,7 +89,7 @@ function DataTable({
                   {(type === "register" || type==="archive") && <td>{item.dc_title_kr}</td>}
                   {type !== "screening" && (
                     <td>
-                      <Link to={`/crawl/${statusCode}/${item.item_id}`}>
+                      <Link to={`/crawl/${statusCode}/${item._id}`}>
                         {item.dc_title_or}
                       </Link>
                     </td>
@@ -104,9 +104,9 @@ function DataTable({
                       <td>
                         <CustomRadio
                           type="radio"
-                          name={item.item_id}
-                          value={item.item_id}
-                          checked={stageDataList.includes(item.item_id)}
+                          name={item._id}
+                          value={item._id}
+                          checked={stageDataList.includes(item._id)}
                           onChange={(e) => {
                             onChangeEach(e, "stage");
                           }}
@@ -115,9 +115,9 @@ function DataTable({
                       <td>
                         <CustomRadio
                           type="radio"
-                          name={item.item_id}
-                          value={item.item_id}
-                          checked={keepDataList.includes(item.item_id)}
+                          name={item._id}
+                          value={item._id}
+                          checked={keepDataList.includes(item._id)}
                           onChange={(e) => {
                             onChangeEach(e, "keep");
                           }}
@@ -126,9 +126,9 @@ function DataTable({
                       <td>
                         <CustomRadio
                           type="radio"
-                          name={item.item_id}
-                          value={item.item_id}
-                          checked={deleteDataList.includes(item.item_id)}
+                          name={item._id}
+                          value={item._id}
+                          checked={deleteDataList.includes(item._id)}
                           onChange={(e) => {
                             onChangeEach(e, "delete");
                           }}

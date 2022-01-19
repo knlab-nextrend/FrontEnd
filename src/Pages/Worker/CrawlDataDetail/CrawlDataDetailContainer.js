@@ -15,10 +15,10 @@ import { trackPromise } from "react-promise-tracker";
 function CrawlDataDetailContainer() {
   /* 
     라우터에서 받아온 정보. 
-    itemId - 해당 크롤 데이터의 id
+    _id - 해당 크롤 데이터의 id
     screeningStatus - 단계 상태 코드
   */
-  const { itemId, statusCode } = useParams();
+  const { _id, statusCode } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
   const crawlDataFormRef = useRef();
@@ -62,14 +62,15 @@ function CrawlDataDetailContainer() {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     trackPromise(
-      CrawlDataDetailFetchApi(statusCode, itemId)
+      CrawlDataDetailFetchApi(statusCode, _id)
         .then((res) => {
           dataCleansing(res.data);
         })
         .catch((err) => {
+          
+          console.log(err.status)
           sessionHandler(err, dispatch).then((res) => {
-            CrawlDataDetailFetchApi(statusCode, itemId).then((res) => {
-              console.log(res.data);
+            CrawlDataDetailFetchApi(statusCode, _id).then((res) => {
               dataCleansing(res.data);
             });
           });
@@ -107,7 +108,7 @@ function CrawlDataDetailContainer() {
   };
 
   const dataKeep = () => {
-    CrawlDataKeepApi(itemId, statusCode).then((res) => {
+    CrawlDataKeepApi(_id, statusCode).then((res) => {
       alert("해당 데이터에 대한 작업이 보류되었습니다.");
       if (statusCode === "6") {
         history.push(`/archive`); // 목록으로 돌아가기
@@ -119,7 +120,7 @@ function CrawlDataDetailContainer() {
 
   const dataReject = () => {
     if (window.confirm("해당 데이터를 버리시겠습니까?")) {
-      CrawlDataRejectApi(itemId, statusCode).then((res) => {
+      CrawlDataRejectApi(_id, statusCode).then((res) => {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         if (statusCode === "6") {
           history.push(`/archive`); // 목록으로 돌아가기
@@ -134,7 +135,7 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    CrawlDataStageApi(statusCode, itemId, _crawlDataFormDocs).then((res) => {
+    CrawlDataStageApi(statusCode, _id, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
         history.push(`/archive`); // 목록으로 돌아가기
@@ -169,7 +170,7 @@ function CrawlDataDetailContainer() {
     //   });
     // }
     console.log("꺼지는지 테스트...")
-    documentDetachImageApi(itemId).then((res) => {
+    documentDetachImageApi(_id).then((res) => {
     });
   };
   const leaveSetting = (e) => {
@@ -191,7 +192,7 @@ function CrawlDataDetailContainer() {
 
   useEffect(() => {
     dataFetch();
-  }, [itemId]);
+  }, [_id]);
 
   return (
     <>
@@ -205,7 +206,7 @@ function CrawlDataDetailContainer() {
         STATUS_CODE_SET={STATUS_CODE_SET}
         statusCode={statusCode}
         type={STATUS_CODE_SET[statusCode].type}
-        itemId={itemId}
+        _id={_id}
       />
     </>
   );

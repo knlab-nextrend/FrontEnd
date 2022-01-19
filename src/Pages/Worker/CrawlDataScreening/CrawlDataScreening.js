@@ -2,7 +2,7 @@ import React from "react";
 import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import Button from "../../../Components/Button";
-import Pagenation from "../../../Components/Pagenation";
+import Pagination from "../../../Components/Pagination";
 import NoData from "../../../Components/NoData";
 import { AiOutlineCheck } from "react-icons/ai";
 import { FaFilter } from "react-icons/fa";
@@ -26,7 +26,7 @@ function CrawlDataScreening({
   onChangeEach,
   isKeep,
   onChangeKeepToggle,
-  dataFilterFetch
+  dataFilterFetch,
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -71,7 +71,7 @@ function CrawlDataScreening({
             </div>
           </Row>
           <Row>
-            <DataFilter type={"screening"} dataFilterFetch={dataFilterFetch}/>
+            <DataFilter type={"screening"} dataFilterFetch={dataFilterFetch} />
           </Row>
         </RowContainer>
         {screeningData.length !== 0 ? (
@@ -96,7 +96,7 @@ function CrawlDataScreening({
               </ScreeningButton>
             </BottomWrap>
 
-            <Pagenation
+            <Pagination
               dcCount={dcCount}
               listSize={listSize}
               pageNo={pageNo}

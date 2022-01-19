@@ -64,7 +64,7 @@ function CrawlDataListContainer() {
         dc_title_kr: item.dc_title_kr,
         dc_keyword: item.dc_keyword,
         dc_dt_collect: item.dc_dt_collect.substring(0, 10),
-        item_id: Number(item.item_id),
+        _id: item._id,
         dc_publisher: item.dc_publisher,
         stat: item.stat,
         dc_lang: item.dc_lang,
@@ -72,7 +72,6 @@ function CrawlDataListContainer() {
         dc_url_loc: item.dc_url_loc,
         dc_smry_kr: item.dc_smry_kr,
       };
-
       _crawlDataList.push(obj);
     });
     setDcCount(_dcCount);
@@ -81,7 +80,6 @@ function CrawlDataListContainer() {
 
   /* 데이터 불러오기 */
   const dataFetch = (searchObj = null) => {
-    console.log(searchObj)
     trackPromise(
       CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {

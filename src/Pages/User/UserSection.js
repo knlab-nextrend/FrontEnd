@@ -15,13 +15,8 @@ function UserSection() {
         exact
       />
       <PrivateRoute
-        path="/curation/:itemId"
+        path="/curation/:_id"
         component={CurationDataDetailContainer}
-        exact
-      />
-        <PrivateRoute
-        path="/curation/:itemId"
-        component={CrawlDataDetailContainer}
         exact
       />
     </Switch>

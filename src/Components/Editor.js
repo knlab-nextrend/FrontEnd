@@ -216,7 +216,7 @@ const editorConfiguration = {
     ],
   },
 };
-function Editor({ _dcContentHandler = null, data = null, readOnly = false ,itemId=null}) {
+function Editor({ _dcContentHandler = null, data = null, readOnly = false ,_id=null}) {
 
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
@@ -226,7 +226,7 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,itemI
         disabled={readOnly}
         editor={ClassicEditor}
         data={data}
-        itemId={itemId}
+        _id={_id}
         config={editorConfiguration}
         onChange={(event, editor) => {
           if (!readOnly) {
@@ -245,7 +245,7 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,itemI
               const file = data.dataTransfer.files[0];
               const images = new FormData();
               images.append('file',file);
-              images.append('itemId',itemId);
+              images.append('_id',_id);
 
               // 객체 생성
               const result = await documentPastedImageApi(images);

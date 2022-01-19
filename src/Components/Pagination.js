@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-
-function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
+function Pagination({ dcCount, listSize, pageNo, setPageNo }) {
   /* 
     pageNo 현재 클릭한 페이지의 No
     listSize 한 페이지에 보여질 document의 개수
@@ -56,40 +55,40 @@ function Pagenation({ dcCount, listSize, pageNo, setPageNo }) {
     calcCurrentPageNoArray();
   }, [currentPage]);
 
-  useEffect(()=>{
-    if(pageNo>pageCount){
+  useEffect(() => {
+    if (pageNo > pageCount) {
       setPageNo(1);
     }
-  },[listSize,pageCount])
+  }, [listSize, pageCount]);
 
   return (
     <>
-      <PagenationContainer>
+      <PaginationContainer>
         <NextPrevButton onClick={prevCurrentPage}>{"<"}</NextPrevButton>
         {currentPageNoArray.map((item, i) => {
           return (
-            <PagenationButton
+            <PaginationButton
               key={i}
               value={item}
               onClick={_handlerPageNo}
               active={item === pageNo}
             >
               {item}
-            </PagenationButton>
+            </PaginationButton>
           );
         })}
         <NextPrevButton onClick={nextCurrentPage}>{">"}</NextPrevButton>
-      </PagenationContainer>
+      </PaginationContainer>
     </>
   );
 }
 
-const PagenationContainer = styled.div`
+const PaginationContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 1rem;
 `;
-const PagenationButton = styled.button`
+const PaginationButton = styled.button`
   margin: 0.5rem;
   color: white;
   font-weight: bold;
@@ -109,8 +108,8 @@ const PagenationButton = styled.button`
   }
 `;
 
-const NextPrevButton = styled(PagenationButton)`
+const NextPrevButton = styled(PaginationButton)`
   background-color: #d6d6d6;
   color: black;
 `;
-export default Pagenation;
+export default Pagination;

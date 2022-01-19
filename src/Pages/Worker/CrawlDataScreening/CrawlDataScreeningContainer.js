@@ -44,7 +44,7 @@ function CrawlDataScreeningContainer() {
 
   const onChangeEach = (e, type) => {
     const _id = e.target.value;
-    const _index = itemList.findIndex((item) => item.id === Number(_id));
+    const _index = itemList.findIndex((item) => item._id === _id);
     const _newItemList = [...itemList];
     _newItemList[_index].status = type;
     setItemList(_newItemList);
@@ -126,7 +126,7 @@ function CrawlDataScreeningContainer() {
 
     _rawScreeningData.forEach((item, index) => {
       const obj = {
-        item_id: Number(item.item_id),
+        _id: item._id,
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,
@@ -166,7 +166,7 @@ function CrawlDataScreeningContainer() {
   useEffect(() => {
     let _itemList = [];
     screeningData.forEach((item) => {
-      _itemList.push({ id: item.item_id, status: "delete" });
+      _itemList.push({ id: item._id, status: "delete" });
     });
     setItemList(_itemList);
   }, [screeningData]);

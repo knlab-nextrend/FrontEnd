@@ -30,7 +30,7 @@ function WorkerSection() {
         exact
       />
       <PrivateRoute
-        path="/crawl/:statusCode/:itemId"
+        path="/crawl/:statusCode/:_id"
         component={CrawlDataDetailContainer}
         exact
       />
@@ -40,7 +40,7 @@ function WorkerSection() {
         exact
       />
       <PrivateRoute
-        path="/curation/:itemId"
+        path="/curation/:_id"
         component={CurationDataDetailContainer}
         exact
       />

@@ -23,8 +23,8 @@ function CurationDataListContainer() {
   }
 
   const history = useHistory();
-  const handleRowClick = (item_id) => {
-    history.push(`/curation/${item_id}`);
+  const handleRowClick = (_id) => {
+    history.push(`/curation/${_id}`);
   }  
 
   /* 데이터 정제하기 */
@@ -34,7 +34,7 @@ function CurationDataListContainer() {
     let _dcCount = rawData.dcCount;
     _rawCurationDataList.forEach((item) => {
       const obj = {
-        item_id: item.item_id,
+        iid: item._id,
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,

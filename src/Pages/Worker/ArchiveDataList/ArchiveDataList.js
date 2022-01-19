@@ -1,6 +1,6 @@
 import React from "react";
 import FormHeader from "../../../Components/FormHeader";
-import Pagenation from "../../../Components/Pagenation";
+import Pagination from "../../../Components/Pagination";
 import DataFilter from "../../../Components/DataFilter";
 import DataTable from "../../../Components/DataTable";
 import styled from "styled-components";
@@ -61,7 +61,7 @@ function ArchiveDataList({
               tableData={archiveDataList}
               statusCode={statusCode}
             />
-            <Pagenation
+            <Pagination
               dcCount={dcCount}
               listSize={listSize}
               pageNo={pageNo}
