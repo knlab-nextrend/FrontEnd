@@ -7,33 +7,56 @@ import React, {
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal, setModalData } from "../Modules/modal";
-import { MdSettings } from "react-icons/md";
+import { MdSettings, MdOutlineLink } from "react-icons/md";
 import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
 function CrawlDataForm({ docs, type, itemId }, ref) {
   /* 현재 보여질 데이터 정보들 */
   const [dcContent, setDcContent] = useState(""); // dc_content 크롤 데이터 내용
-  const [dcDtCollect, setDcDtCollect] = useState(""); // dc_dt_collect 원문 수집 일자
-  const [dcDtWrite, setDcDtWrite] = useState(""); // dc_dt_write 원문 작성(등록) 일자
-  const [dcDtRegi, setDcDtRegi] = useState(""); // dc_dt_regi 데이터 등록 일자
+
+  // dc_dt_collect 와 dc_dt_modi 는 프론트 단에서 관리할 필요 없기에 따로 관리 안함.
+  const [dcDtWrite, setDcDtWrite] = useState(""); // dc_dt_write 원문 작성 일자
+  const [dcDtPub, setDcDtPub] = useState(""); // dc_dt_pub 원문 공개 일자
+  const [dcDtRegi, setDcDtRegi] = useState(""); // dc_dt_regi 문서 등록 일자
+
   const [dcKeyword, setDcKeyword] = useState([]); // dc_keyword 키워드 검색 단어. 받아올 땐 배열이나, 관리는 문자열로 할 예정
   const [dcKeywordString, setDcKeywordString] = useState(""); // dc_keyword 를 문자열 형태로 표시하기 위해서 .
   const [dcCat, setDcCat] = useState(""); //dc_cat 유형분류. 그런데 아직 모호함
   const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
+
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCodeList, setDcCodeList] = useState([]);
   const [dcCountryPubIndexList, setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
+
   const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
   const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
+
   const [dcSmryKr, setDcSmryKr] = useState(""); // dc_smry_kr 한글 요약
-  const [dcPublisher, setDcPublisher] = useState(""); // dc_publisher 발행 사이트
+  const [dcSmryOr, setDcSmryOr] = useState(""); // dc_smry_kr 원문 언어 요약
+  const [dcPublisher, setDcPublisher] = useState(""); // dc_publisher 원문 발행 기관명
+  const [dcHost, setDcHost] = useState(""); // dc_host 원문 발행 기관 사이트 도메인
+
   const [dcPage, setDcPage] = useState(0); // dc_page 원문 페이지 수
+
   const [dcTitleOr, setDcTitleOr] = useState(""); // dc_title_or  원문 제목
   const [dcTitleKr, setDcTitleKr] = useState(""); // dc_title_kr 한글 제목
+
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
-  const [dcLink, setDcLink] = useState(""); //dc_link 링크..이긴 하나 무슨 링크?
-  const [dcLang, setDcLang] = useState(""); //dc_lang 문서 언어
+  const [dcUrlIntro, setDcUrlIntro] = useState(""); // dc_url_intro 위의 원문 문서 위치로 이동할 수 있는 도메인 안내 링크
+
+  const [dcLink, setDcLink] = useState(""); //dc_link 문서가 참조하는 다른 내부 문서 id list
+
+  const [dcLanguage, setDcLanguage] = useState(""); //dc_language 문서 언어
+
+  const [dcBiblio, setDcBiblio] = useState(""); // dc_biblio 문서 서지 사항
+  const [dcTypeDoc, setDcTypeDoc] = useState(""); // dc_type_doc 문서의 유형 분류
+  const [dcTypeContent, setDcTypeContent] = useState(""); // dc_type_content 문서 내용의 성격(장르) 분류
+  const [dcTopic, setDcTopic] = useState(""); // 문서내용의 이슈(신산업,기술 등) 주제분류
+  const [dcProject, setDcProject] = useState(""); // 문서가 활용된 주문형 조사과제명
+  const [dcPublishing, setDcPublishing] = useState(""); // 주문형 조사과제명의 세부과업명
+  const [dcRecomm, setDcRecomm] = useState(""); // 큐레이션 추천문서
+  const [dcMemo, setDcMemo] = useState(""); // 관리자만 작성 및 조회가 가능한 기타 메모사항
 
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 문서 대상 국가
   const dcCountryPub = useSelector(
@@ -44,8 +67,8 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
   const _dcContentHandler = (data) => {
     setDcContent(data);
   };
-  const _dcDtCollectHandler = (e) => {
-    setDcDtCollect(e.target.value);
+  const _dcDtPubtHandler = (e) => {
+    setDcDtPub(e.target.value);
   };
   const _dcDtWriteHandler = (e) => {
     setDcDtWrite(e.target.value);
@@ -86,8 +109,8 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
   const _dcLinkHandler = (e) => {
     setDcLink(e.target.value);
   };
-  const _dcLangHandler = (e) => {
-    setDcLang(e.target.value);
+  const _dcLanguageHandler = (e) => {
+    setDcLanguage(e.target.value);
   };
 
   const dispatch = useDispatch();
@@ -123,7 +146,6 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
       let _dcCoverSelect = [];
       _dcCoverSelect.push(dcCoverSelect);
       _docs["dc_content"] = dcContent;
-      _docs["dc_dt_collect"] = dcDtCollect;
       _docs["dc_dt_write"] = dcDtWrite;
       _docs["dc_dt_regi"] = dcDtRegi;
       _docs["dc_keyword"] = dcKeyword;
@@ -132,7 +154,10 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
       _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
       _docs["dc_country_pub"] = dcCountryPubIndexList;
-      _docs["dc_cover"] = (type!=="screening" && type!=="refine" && type!=="register") ? _dcCoverSelect : dcCover;
+      _docs["dc_cover"] =
+        type !== "screening" && type !== "refine" && type !== "register"
+          ? _dcCoverSelect
+          : dcCover;
       _docs["dc_smry_kr"] = dcSmryKr;
       _docs["dc_publisher"] = dcPublisher;
       _docs["dc_page"] = dcPage;
@@ -140,7 +165,7 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
       _docs["dc_title_kr"] = dcTitleKr;
       _docs["dc_url_loc"] = dcUrlLoc;
       _docs["dc_link"] = dcLink;
-      _docs["dc_lang"] = dcLang;
+      _docs["dc_lang"] = dcLanguage;
 
       return _docs;
     },
@@ -150,9 +175,8 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
     console.log(docs);
     if (Object.keys(docs).length !== 0) {
       setDcContent(docs.dc_content);
-      setDcDtCollect(docs.dc_dt_collect);
-      setDcDtWrite(docs.dc_dt_write);
-      setDcDtRegi(docs.dc_dt_regi);
+      setDcDtWrite(docs.dc_dt_write.substring(0, 10)); // date 객체에 넣어주기
+      setDcDtRegi(docs.dc_dt_regi.substring(0, 10));
       setDcKeyword(docs.dc_keyword);
       setDcKeywordString(docs.dc_keyword.join(", "));
       setDcCat(docs.dc_cat);
@@ -169,7 +193,7 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
       setDcTitleKr(docs.dc_title_kr);
       setDcUrlLoc(docs.dc_url_loc);
       setDcLink(docs.dc_link);
-      setDcLang(docs.dc_lang);
+      setDcLanguage(docs.dc_lang);
     }
   }, [docs]);
 
@@ -221,13 +245,23 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">요약</p>
+            <p className="title">한글 요약</p>
             <input
               value={dcSmryKr}
               onChange={_dcSmryKrHandler}
               className="form"
               type="text"
               placeholder="한글 요약을 입력하세요"
+            />
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <p className="title">원문 요약</p>
+            <input
+              className="form"
+              type="text"
+              placeholder="원문 요약을 입력하세요"
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -246,38 +280,49 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
                 })}
               </div>
             </CustomFormItem>
+            <CustomFormItem>
+              <div className="title">
+                <p>문서 발행 국가 설정</p>
+                <button onClick={_openCountryPubCategoryModal}>
+                  <MdSettings /> 설정
+                </button>
+              </div>
+              <div className="form notInput">
+                {dcCountryPub.map((item, index) => {
+                  return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
+                })}
+              </div>
+            </CustomFormItem>
           </CustomFormRow>
         )}
-        {type !== "refine" && (<CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 발행 국가 설정</p>
-              <button onClick={_openCountryPubCategoryModal}>
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {dcCountryPub.map((item, index) => {
-                return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>)}
-        {type !== "refine" && (<CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>주제 분류 설정</p>
-              <button onClick={_openCodeCategoryModal}>
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {dcCode.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>)}
+        {type !== "refine" && (
+          <CustomFormRow>
+            <CustomFormItem>
+              <div className="title">
+                <p>정책 분류 설정</p>
+                <button onClick={_openCodeCategoryModal}>
+                  <MdSettings /> 설정
+                </button>
+              </div>
+              <div className="form notInput">
+                {dcCode.map((item, index) => {
+                  return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                })}
+              </div>
+            </CustomFormItem>
+            <CustomFormItem>
+              <div className="title">
+                <p>문서 토픽 분류</p>
+                <button>
+                  <MdSettings /> 설정
+                </button>
+              </div>
+              <div className="form notInput">
+                <CustomList>메타버스</CustomList>
+              </div>
+            </CustomFormItem>
+          </CustomFormRow>
+        )}
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">문서 위치 URL</p>
@@ -286,6 +331,7 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
               onChange={_dcUrlLocHandler}
               className="form"
               type="text"
+              placeholder="문서 위치의 URL을 입력하세요."
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -294,8 +340,8 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
               value={dcDtWrite}
               onChange={_dcDtWriteHandler}
               className="form"
-              type="text"
-              placeholder="원문 작성일을 입력하세요"
+              type="date"
+              placeholder="원문 작성일을 입력하세요."
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -305,49 +351,55 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
             <input
               className="form"
               type="text"
-              placeholder="원문의 안내가 적힌 링크를 입력하세요"
+              placeholder="원문의 안내가 적힌 링크를 입력하세요."
             />
           </CustomFormItem>
           <CustomFormItem>
-            <p className="title">데이터 수집일</p>
+            <p className="title">원문 공개일</p>
             <input
-              value={dcDtCollect}
-              onChange={_dcDtCollectHandler}
+              value={dcDtPub}
+              onChange={_dcDtPubtHandler}
               className="form"
-              type="text"
+              type="date"
             />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">문서 유형 구분</p>
+            <div className="title">
+              <p>언어</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
             <input
-              value={dcType}
-              onChange={_dcTypeHandler}
+              value={dcLanguage}
+              onChange={_dcLanguageHandler}
               className="form"
               type="text"
-              placeholder="보고서, 지침, 뉴스, 논문 등 문서의 물리적 형태 유형을 입력하세요"
+              disable
+              placeholder="문서의 언어를 선택하세요."
             />
           </CustomFormItem>
           <CustomFormItem>
-            <p className="title">데이터 등록일</p>
+            <p className="title">문서 등록일</p>
             <input
               onChange={_dcDtRegiHandler}
               value={dcDtRegi}
               className="form"
-              type="text"
+              type="date"
             />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">발행 사이트 / 발행 기관</p>
+            <p className="title">발행 기관</p>
             <input
               value={dcPublisher}
               onChange={_dcPublisherHandler}
               className="form"
               type="text"
-              placeholder="원문의 발행자 및 발행기관명을 입력하세요"
+              placeholder="원문의 발행자 및 발행기관 명을 입력하세요."
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -363,20 +415,97 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">언어</p>
-            <select value={dcLang} onChange={_dcLangHandler} className="form">
-              <option value={""}>전체</option>
-              {LANGUAGE_LIST.map((item, index) => {
-                return (
-                  <option key={index} value={item.language_code_name}>
-                    {item.language_name}
-                  </option>
-                );
-              })}
-              <option value="other">그외</option>
-            </select>
+            <p className="title">발행 HOST</p>
+            <input
+              value={dcHost}
+              className="form"
+              type="text"
+              placeholder="발행 기관 사이트의 HOST 도메인 주소를 입력하세요."
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <p className="title">서지사항</p>
+            <input
+              value={dcBiblio}
+              className="form"
+              type="text"
+              placeholder="문서의 서지사항을 입력하세요."
+            />
           </CustomFormItem>
         </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <p className="title">과제명</p>
+            <input
+              value={dcProject}
+              className="form"
+              type="text"
+              placeholder="문서가 활용된 주문형 조사과제명을 입력하세요."
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <p className="title">발간정보</p>
+            <input
+              value={dcPublishing}
+              className="form"
+              type="text"
+              placeholder="주문형 조사과제명의 세부과업명을 입력하세요."
+            />
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <div className="title">
+              <p>문서 유형</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <input
+              value={dcHost}
+              className="form"
+              type="text"
+              disable
+              placeholder=".문서의 유형 분류를 선택하세요."
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <div className="title">
+              <p>내용구분</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <input
+              value={dcBiblio}
+              className="form"
+              type="text"
+              disable
+              placeholder="문서 내용의 성격(장르) 분류를 선택하세요."
+            />
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <p className="title">추천문서</p>
+            <input
+              value={dcHost}
+              className="form"
+              type="text"
+              placeholder="큐레이션 추천 문서를 입력하세요."
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <p className="title">메모</p>
+            <input
+              value={dcBiblio}
+              className="form"
+              type="text"
+              placeholder="관리자 전용 메모를 입력하세요."
+            />
+          </CustomFormItem>
+        </CustomFormRow>
+
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">검색 키워드</p>
@@ -389,37 +518,60 @@ function CrawlDataForm({ docs, type, itemId }, ref) {
             />
           </CustomFormItem>
         </CustomFormRow>
-        {(type !== "refine" && type!=="register") && (<CustomFormRow>
+        {type !== "refine" && type !== "register" && (
+          <CustomFormRow>
+            <CustomFormItem>
+              <p className="title">내용</p>
+              <Editor
+                data={dcContent}
+                _dcContentHandler={_dcContentHandler}
+                itemId={itemId}
+              />
+            </CustomFormItem>
+          </CustomFormRow>
+        )}
+        {type !== "refine" && type !== "register" && (
+          <CustomFormRow>
+            <CustomFormItem>
+              <p className="title">표지 파일</p>
+              <ImageContainer>
+                {dcCover.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <input
+                        type="radio"
+                        id={index}
+                        value={item}
+                        name="cover"
+                        onChange={_dcCoverSelectHandler}
+                        checked={dcCoverSelect === item}
+                      />
+                      <label htmlFor={index}>
+                        <img className="cover" src={`http://${item}`} />
+                      </label>
+                    </div>
+                  );
+                })}
+              </ImageContainer>
+            </CustomFormItem>
+          </CustomFormRow>
+        )}
+        <CustomFormRow>
           <CustomFormItem>
-            <p className="title">내용</p>
-            <Editor data={dcContent} _dcContentHandler={_dcContentHandler} itemId={itemId}/>
+            <div className="title">
+              <p>내부 문서 링크</p>
+              <button>
+                <MdSettings /> 설정
+              </button>
+            </div>
+            <div className="form notInput">
+              <CustomList>
+                <MdOutlineLink size="18" />
+                회계연도 2019년 재무지표 ...{" "}
+              </CustomList>
+            </div>
           </CustomFormItem>
-        </CustomFormRow>)}
-        {(type !== "refine" && type!=="register") &&
-        (<CustomFormRow>
-          <CustomFormItem>
-            <p className="title">표지 파일</p>
-            <ImageContainer>
-              {dcCover.map((item, index) => {
-                return (
-                  <div key={index}>
-                    <input
-                      type="radio"
-                      id={index}
-                      value={item}
-                      name="cover"
-                      onChange={_dcCoverSelectHandler}
-                      checked={dcCoverSelect === item}
-                    />
-                    <label htmlFor={index}>
-                      <img className="cover" src={`http://${item}`} />
-                    </label>
-                  </div>
-                );
-              })}
-            </ImageContainer>
-          </CustomFormItem>
-        </CustomFormRow>)}
+        </CustomFormRow>
       </Wrapper>
     </>
   );
@@ -482,13 +634,16 @@ const CustomFormRow = styled.div`
   width: 100%;
 `;
 
-const CustomList = styled.span`
+const CustomList = styled.div`
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   background-color: #eee;
   min-width: 4rem;
   text-align: center;
   border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ImageContainer = styled.div`
