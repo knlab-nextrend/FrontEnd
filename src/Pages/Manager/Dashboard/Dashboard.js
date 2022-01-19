@@ -266,7 +266,7 @@ const CountryContentWrapper = styled.div`
 
 const Tab = styled.div`
   width: 100%;
-  height: 5rem;
+  height: 4rem;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
   align-items: bottom;
   display: flex;
