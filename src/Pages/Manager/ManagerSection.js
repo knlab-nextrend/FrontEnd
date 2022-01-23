@@ -4,7 +4,8 @@ import PrivateRoute from "../../Route/PrivateRoute";
 
 import ExcelDataRegisterContainer from "../Manager/ExcelDataRegister/ExcelDataRegisterContainer";
 import UserManagementContainer from "../Manager/UserManagement/UserManagementContainer";
-import DashboardContainer  from "./Dashboard/DashboardContainer";
+import DashboardContainer from "./Dashboard/DashboardContainer";
+import CategoryManagementContainer from "./CategoryManagement/CategoryManagementContainer"
 function UserSection() {
   return (
     <Switch>
@@ -13,6 +14,11 @@ function UserSection() {
       <PrivateRoute
         path="/excel/register"
         component={ExcelDataRegisterContainer}
+        exact
+      />
+      <PrivateRoute
+        path="/category"
+        component={CategoryManagementContainer}
         exact
       />
     </Switch>

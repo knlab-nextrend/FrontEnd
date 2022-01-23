@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { RiUserSettingsFill } from "react-icons/ri";
 import {
@@ -14,8 +14,6 @@ import {
 import { useHistory, NavLink } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { setLogout } from "../Modules/login";
-
 function AsideMenuBar({ permission }) {
   const PERMISSON_DATA = {
     0: "사용자",
@@ -24,33 +22,6 @@ function AsideMenuBar({ permission }) {
     3: "등록 작업자",
     4: "큐레이션 작업자",
     9: "관리자",
-  };
-  const history = useHistory();
-  const go사용자수정 = () => {
-    history.push("/user");
-  };
-  const go크롤데이터스크리닝 = () => {
-    history.push("/crawl/screening");
-  };
-  const go크롤데이터정제 = () => {
-    history.push("/crawl/list/2");
-  };
-  const go크롤데이터등록 = () => {
-    history.push("/crawl/list/4");
-  };
-  const go아카이브데이터조회 = () => {
-    history.push("/archive/list");
-  };
-  const go큐레이션조회 = () => {
-    history.push("/curation/list");
-  };
-  const go엑셀데이터등록 = () => {
-    history.push("/excel/register");
-  };
-
-  const dispatch = useDispatch();
-  const logout = () => {
-    dispatch(setLogout("NORMAL_LOGOUT"));
   };
   return (
     <>
@@ -166,7 +137,7 @@ function AsideMenuBar({ permission }) {
             <div className="group-menu">
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/home" activeClassName="active">
+                  <AsideMenuBarItem to="/category" activeClassName="active">
                     <div className="icon-container">
                       <MdOutlineCategory size="16" />
                     </div>
@@ -180,7 +151,7 @@ function AsideMenuBar({ permission }) {
                     <div className="icon-container">
                       <MdWebAsset size="16" />
                     </div>
-                    사이트 목록 관리
+                    HOST 목록 관리
                   </AsideMenuBarItem>
                 </li>
               )}

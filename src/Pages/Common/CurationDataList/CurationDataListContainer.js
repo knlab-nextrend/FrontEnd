@@ -34,7 +34,7 @@ function CurationDataListContainer() {
     let _dcCount = rawData.dcCount;
     _rawCurationDataList.forEach((item) => {
       const obj = {
-        iid: item._id,
+        _id: item._id,
         dc_title_or: item.dc_title_or,
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,

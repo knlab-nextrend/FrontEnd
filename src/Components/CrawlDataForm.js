@@ -324,15 +324,41 @@ function CrawlDataForm({ docs, type, _id }, ref) {
         )}
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">문서 위치 URL</p>
-            <input
-              value={dcUrlLoc}
-              onChange={_dcUrlLocHandler}
-              className="form"
-              type="text"
-              placeholder="문서 위치의 URL을 입력하세요."
-            />
+            <div className="title">
+              <p>문서 유형</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <div className="form notInput">
+              <CustomList>유형 분류...</CustomList>
+            </div>
           </CustomFormItem>
+          <CustomFormItem>
+            <div className="title">
+              <p>내용구분</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <div className="form notInput">
+              <CustomList>성격(장르)...</CustomList>
+            </div>
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <div className="title">
+              <p>언어</p>
+              <button>
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <div className="form notInput">
+              <CustomList>한국어</CustomList>
+            </div>
+          </CustomFormItem>
+
           <CustomFormItem>
             <p className="title">원문 작성일</p>
             <input
@@ -365,19 +391,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <div className="title">
-              <p>언어</p>
-              <button>
-                <MdSettings /> 선택
-              </button>
-            </div>
+            <p className="title">문서 위치 URL</p>
             <input
-              value={dcLanguage}
-              onChange={_dcLanguageHandler}
+              value={dcUrlLoc}
+              onChange={_dcUrlLocHandler}
               className="form"
               type="text"
-              disable
-              placeholder="문서의 언어를 선택하세요."
+              placeholder="문서 위치의 URL을 입력하세요."
             />
           </CustomFormItem>
           <CustomFormItem>
@@ -452,38 +472,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
         </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 유형</p>
-              <button>
-                <MdSettings /> 선택
-              </button>
-            </div>
-            <input
-              value={dcHost}
-              className="form"
-              type="text"
-              disable
-              placeholder=".문서의 유형 분류를 선택하세요."
-            />
-          </CustomFormItem>
-          <CustomFormItem>
-            <div className="title">
-              <p>내용구분</p>
-              <button>
-                <MdSettings /> 선택
-              </button>
-            </div>
-            <input
-              value={dcBiblio}
-              className="form"
-              type="text"
-              disable
-              placeholder="문서 내용의 성격(장르) 분류를 선택하세요."
-            />
-          </CustomFormItem>
-        </CustomFormRow>
+
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">추천문서</p>
