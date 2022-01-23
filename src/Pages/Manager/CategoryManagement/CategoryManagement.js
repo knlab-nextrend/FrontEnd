@@ -8,11 +8,12 @@ import {
   MdClose,
 } from "react-icons/md";
 function CategoryManagement({
+  CATEGOROY_CODE_LIST,
   managementType,
   _managementTypeHandler,
   categoryEdit,
   editableCode,
-  dummy,
+  categoryList,
   onChangeEditInput,
   onChangeAddInput,
   categoryEditCancel,
@@ -26,40 +27,41 @@ function CategoryManagement({
           <Menu>
             <li
               onClick={() => {
-                _managementTypeHandler("정책분류");
+                _managementTypeHandler(CATEGOROY_CODE_LIST.정책분류);
               }}
-              className={managementType === "정책분류" ? "active" : null}
+              className={managementType === CATEGOROY_CODE_LIST.정책분류 ? "active" : null}
             >
               정책 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler("유형분류");
+                _managementTypeHandler(CATEGOROY_CODE_LIST.유형분류);
               }}
-              className={managementType === "유형분류" ? "active" : null}
+              className={managementType === CATEGOROY_CODE_LIST.유형분류 ? "active" : null}
             >
               유형 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler("언어");
+                _managementTypeHandler(CATEGOROY_CODE_LIST.국가분류);
               }}
-              className={managementType === "언어" ? "active" : null}
+              className={managementType === CATEGOROY_CODE_LIST.국가분류 ? "active" : null}
             >
-              언어
+              국가 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler("국가");
+                _managementTypeHandler(CATEGOROY_CODE_LIST.언어);
               }}
-              className={managementType === "국가" ? "active" : null}
+              className={managementType === CATEGOROY_CODE_LIST.언어 ? "active" : null}
             >
-              국가
+              언어
             </li>
+
           </Menu>
         </MenuContainer>
         <ContentContainer>
-          <div className="content-title">{managementType} 카테고리 관리</div>
+          <div className="content-title">카테고리 관리</div>
           <div className="content-body">
             <div>
               <ListBody>
@@ -77,10 +79,10 @@ function CategoryManagement({
                       />
                       <button>등록</button>
                     </AddItem>
-                    {dummy.map((item, index) => {
+                    {categoryList.map((item, index) => {
                       return (
                         <>
-                          {editableCode === item.CT_CODE ? (
+                          {editableCode === item.CODE ? (
                             <EditItem>
                               <input
                                 type="text"

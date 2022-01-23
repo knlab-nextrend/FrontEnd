@@ -293,6 +293,30 @@ const restrictUserApi = (uid,restrict) => {
 
 /* 카테고리 관리 */
 
+/* 카테고리 데이터 받아오기 */
+const categoryListFetchApi = (type,length,code=null)=>{
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: {
+      type,
+      length,
+      code
+    },
+  };
+  return axios.get(`/nextrend/cat`, config);
+}
+/* 카테고리 추가하기 */
+const categoryItemAddApi = (type,length,code=null,ct_nm) =>{
+
+}
+/* 카테고리 수정하기 */
+const categoryItemEditApi = (type,length,code,ct_nm) =>{
+
+}
+/* 카테고리 삭제하기 */
+const categoryItemDeleteApi = (type,code)=>{
+
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -321,5 +345,6 @@ export {
   documentDetachImageApi,
   uploadExcelDataApi,
   restrictUserApi,
-  verifyUserIdApi
+  verifyUserIdApi,
+  categoryListFetchApi
 };
