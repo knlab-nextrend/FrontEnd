@@ -20,17 +20,17 @@ const refreshHeaders = {
 };
 
 /* 크롤데이터 스크리닝 데이터 받아오기 */
-const ScreeningDataFetchApi = (listSize, pageNo,isKeep,searchObj=null) => {
+const ScreeningDataFetchApi = (listSize, pageNo, isKeep, searchObj = null) => {
   let config = {
     headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
     params: {
       listSize: listSize,
       pageNo: pageNo,
-      ...searchObj
+      ...searchObj,
     },
   };
-  if(isKeep){
-    config.params.keep = 1
+  if (isKeep) {
+    config.params.keep = 1;
   }
   return axios.get(`/crawl/screening`, config);
 };
@@ -44,15 +44,15 @@ const ScreeningDataStageApi = (stageDataList) => {
 };
 
 /* 크롤데이터 스크리닝 단계에서 보류하기 */
-const ScreeningDataKeepApi = (keepDataList) =>{
+const ScreeningDataKeepApi = (keepDataList) => {
   let body = {
     list: keepDataList,
   };
   return axios.post(`/crawl/screening`, body, { headers: headers });
-}
+};
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
-  console.log(deleteDataList)
+  console.log(deleteDataList);
   const config = {
     headers: headers,
     params: {
@@ -119,30 +119,29 @@ const CrawlDataDetailFetchApi = (statusCode, _id) => {
 
 /* 본문 이미지 첨부 후 url 받아오는 함수 */
 const documentPastedImageApi = (imageForm) => {
-  return axios.post(`/file/docImageAttach/`, imageForm,{
+  return axios.post(`/file/docImageAttach/`, imageForm, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
-}
+};
 
 const uploadExcelDataApi = (formData) => {
-  return axios.post(`/file/uploadExcelData/`, formData,{
+  return axios.post(`/file/uploadExcelData/`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
-      authorization: `Bearer ${getToken()}`
-    }
+      "Content-Type": "multipart/form-data",
+      authorization: `Bearer ${getToken()}`,
+    },
   });
-}
+};
 
-const documentDetachImageApi = (_id) =>{
+const documentDetachImageApi = (_id) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
     params: { _id },
   };
-  return axios.get(`/file/docImageDetach/`,config);
-}
-
+  return axios.get(`/file/docImageDetach/`, config);
+};
 
 /* 대륙 리스트 전체 받아오는 함수 */
 const ContinentsListDataFetchApi = () => {
@@ -270,12 +269,13 @@ const deleteUserByIdApi = (uid) => {
   };
   return axios.post(`/nextrend/user/delete`, body, { headers: headers });
 };
-const verifyUserIdApi = (userId,id) => {
+const verifyUserIdApi = (userId, id) => {
   const body = {
-    userId,id
-  }
+    userId,
+    id,
+  };
   return axios.post(`/nextrend/user/verify`, body, { headers: headers });
-}
+};
 
 const addUserApi = (userInfo) => {
   const body = {
@@ -284,39 +284,57 @@ const addUserApi = (userInfo) => {
   return axios.post(`/nextrend/user/add`, body, { headers: headers });
 };
 
-const restrictUserApi = (uid,restrict) => {
+const restrictUserApi = (uid, restrict) => {
   const body = {
-    uid,restrict
+    uid,
+    restrict,
   };
   return axios.post(`/nextrend/user/restrict`, body, { headers: headers });
-}
+};
 
 /* 카테고리 관리 */
 
 /* 카테고리 데이터 받아오기 */
-const categoryListFetchApi = (type,length,code=null)=>{
+const categoryListFetchApi = (type, length, code = null) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
     params: {
       type,
       length,
-      code
+      code,
     },
   };
   return axios.get(`/nextrend/cat`, config);
-}
+};
 /* 카테고리 추가하기 */
-const categoryItemAddApi = (type,length,code=null,ct_nm) =>{
-
-}
+const categoryItemAddApi = (type, length, ct_nm,code=null) => {
+  const body = {
+    type,
+    length,
+    ct_nm,
+    code
+  };
+  return axios.post(`/nextrend/cat`, body, { headers: headers });
+};
 /* 카테고리 수정하기 */
-const categoryItemEditApi = (type,length,code,ct_nm) =>{
-
-}
+const categoryItemEditApi = (type, code, ct_nm) => {
+  let body = {
+    type,code,ct_nm
+  };
+  return axios.put(`/nextrend/cat`, body, { headers: headers });
+};
 /* 카테고리 삭제하기 */
-const categoryItemDeleteApi = (type,code)=>{
+const categoryItemDeleteApi = (type, code) => {
+  const config = {
+    headers: headers,
+    params: {
+      type,
+      code
+    },
+  };
+  return axios.delete(`/nextrend/cat`, config);
 
-}
+};
 export {
   LoginApi,
   RefreshTokenApi,
@@ -346,5 +364,8 @@ export {
   uploadExcelDataApi,
   restrictUserApi,
   verifyUserIdApi,
-  categoryListFetchApi
+  categoryListFetchApi,
+  categoryItemAddApi,
+  categoryItemDeleteApi,
+  categoryItemEditApi
 };

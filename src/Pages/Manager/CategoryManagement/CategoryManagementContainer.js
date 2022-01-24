@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import CategoryManagement from "./CategoryManagement";
-import { categoryListFetchApi,sessionHandler } from "../../../Utils/api";
+import {
+  categoryListFetchApi,
+  categoryItemAddApi,
+  categoryItemDeleteApi,
+  categoryItemEditApi,
+  sessionHandler,
+} from "../../../Utils/api";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 function CategoryManagementContainer() {
-
   const dispatch = useDispatch();
-  /* 정책분류 , 유형구분 , 국가 분류, 언어 */
-  const [managementType, setManagementType] = useState(1);
-  const [categoryList,setCategoryList] = useState([]);
+
   const [editableCode, setEditableCode] = useState(0);
-  const [text, setText] = useState("");
   /* 수정할 항목의 코드를 저장한다.
   0일 경우 수정 할 항목이 지정되지 않은 상태이다.
   그러므로, 수정 확인 또는 수정 취소 시 해당 값을 0으로 다시 지정해 주어야 한다.
@@ -23,62 +25,146 @@ function CategoryManagementContainer() {
     언어: 4,
   };
 
-  const [addCategoryName, setAddCategoryName] = useState(""); // 새롭게 등록할 카테고리 이름...
+  const [addCategoryName, setAddCategoryName] = useState(""); // 새롭게 등록할 카테고리 이름
+  const [editCategoryName, setEditCategoryName] = useState(""); // 수정할 카테고리 이름
 
-  // 수정할 항목의 code값을 받아옴.
-  const categoryEdit = (item) => {
-    setEditableCode(item.CODE);
-    setText(item.CT_NM);
-  };
-  const categoryEditCancel = () => {
-    setEditableCode(0);
-    setText("");
-  };
-  const _managementTypeHandler = (type) => {
-    setManagementType(type);
-    console.log(type);
-  };
+  const [type, setType] = useState(1); // 정책분류 , 유형구분 , 국가 분류, 언어
+  const [categoryList, setCategoryList] = useState([
+    { length: 2, list: [] },
+    { length: 4, list: [] },
+    { length: 6, list: [] },
+  ]);
+  const [upperCode, setUpperCode] = useState({ 2: null, 4: null, 6: null });
+  const [length, setLength] = useState(2); // 대분류 (2) 중분류 (4) 소분류 (6)
 
+  const typeHandler = (type) => {
+    setCategoryList([
+      { length: 2, list: [] },
+      { length: 4, list: [] },
+      { length: 6, list: [] },
+    ]);
+    setUpperCode({ 2: null, 4: null, 6: null });
+    setLength(2);
+    setType(type);
+  };
   const onChangeEditInput = (e) => {
-    setText(e.target.value);
+    setEditCategoryName(e.target.value);
   };
   const onChangeAddInput = (e) => {
     setAddCategoryName(e.target.value);
   };
 
+  const upperCodeHandler = (code, length) => {
+    let _upperCode = { ...upperCode };
+    _upperCode[length] = code;
+    setUpperCode(_upperCode);
+    console.log(_upperCode);
+  };
+  const lengthHandler = (length) => {
+    setLength(length);
+  };
+
+  const categoryEdit = (item) => {
+    setEditableCode(item.CODE);
+    setEditCategoryName(item.CT_NM);
+  };
+  const categoryEditConfirm = (code) => {
+    categoryItemEditApi(type, code, editCategoryName).then((res) => {
+      if (res.status === 200) {
+        alert("성공적으로 수정되었습니다.");
+        dataFetch();
+        categoryEditCancel();
+      }
+    });
+  };
+  const categoryEditCancel = () => {
+    setEditableCode(0);
+    setEditCategoryName("");
+  };
+  const categoryAdd = (length) => {
+    if (addCategoryName === "") {
+      alert("카테고리 이름을 입력해주세요");
+      return;
+    }
+    if (length === 4 && upperCode[2] === null) {
+      alert("대분류를 먼저 선택해주세요.");
+      return;
+    } else if (length === 6 && upperCode[4] === null) {
+      alert("중분류를 먼저 선택해주세요.");
+      return;
+    } else {
+      console.log(upperCode[length - 2]);
+      categoryItemAddApi(
+        type,
+        length,
+        addCategoryName,
+        upperCode[length - 2]
+      ).then((res) => {
+        if (res.status === 200) {
+          alert("성공적으로 등록되었습니다.");
+          dataFetch();
+        }
+      });
+    }
+  };
+  const categoryDelete = (code) => {
+    if (confirm("해당 카테고리를 삭제하시겠습니까?")) {
+      categoryItemDeleteApi(type, code).then((res) => {
+        if (res.status === 200) {
+          alert("성공적으로 삭제되었습니다.");
+          dataFetch();
+        }
+      });
+    }
+  };
   /* 데이터 불러오기 */
   const dataFetch = () => {
     trackPromise(
-      categoryListFetchApi(managementType, 2)
+      categoryListFetchApi(type, length, upperCode[length - 2])
         .then((res) => {
-          setCategoryList(res.data);
+          dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
-            categoryListFetchApi(managementType,2).then((res) => {
-              setCategoryList(res.data);
-            });
+            categoryListFetchApi(type, length, upperCode[length - 2]).then(
+              (res) => {
+                dataCleansing(res.data);
+              }
+            );
           });
         })
     );
   };
-  useEffect(()=>{
+  const dataCleansing = (rawData) => {
+    const index = categoryList.findIndex((i) => i.length == length);
+    let _categoryList = [...categoryList];
+    _categoryList[index] = { length, list: rawData };
+    console.log(_categoryList);
+    setCategoryList(_categoryList);
+  };
+
+  useEffect(() => {
     dataFetch();
-  },[managementType])
+  }, [type, length, upperCode]);
 
   return (
     <>
       <CategoryManagement
         CATEGOROY_CODE_LIST={CATEGOROY_CODE_LIST}
-        managementType={managementType}
-        _managementTypeHandler={_managementTypeHandler}
-        editableCode={editableCode}
-        categoryEdit={categoryEdit}
-        categoryEditCancel={categoryEditCancel}
         categoryList={categoryList}
+        type={type}
+        typeHandler={typeHandler}
+        editableCode={editableCode}
+        editCategoryName={editCategoryName}
+        categoryEdit={categoryEdit}
+        categoryEditConfirm={categoryEditConfirm}
+        categoryEditCancel={categoryEditCancel}
         onChangeEditInput={onChangeEditInput}
-        text={text}
+        upperCodeHandler={upperCodeHandler}
+        lengthHandler={lengthHandler}
         onChangeAddInput={onChangeAddInput}
+        categoryAdd={categoryAdd}
+        categoryDelete={categoryDelete}
       />
     </>
   );

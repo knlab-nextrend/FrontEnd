@@ -9,15 +9,20 @@ import {
 } from "react-icons/md";
 function CategoryManagement({
   CATEGOROY_CODE_LIST,
-  managementType,
-  _managementTypeHandler,
-  categoryEdit,
-  editableCode,
   categoryList,
-  onChangeEditInput,
-  onChangeAddInput,
+  type,
+  typeHandler,
+  editableCode,
+  editCategoryName,
+  categoryEdit,
+  categoryEditConfirm,
   categoryEditCancel,
-  text,
+  onChangeEditInput,
+  upperCodeHandler,
+  lengthHandler,
+  onChangeAddInput,
+  categoryAdd,
+  categoryDelete,
 }) {
   return (
     <>
@@ -27,37 +32,42 @@ function CategoryManagement({
           <Menu>
             <li
               onClick={() => {
-                _managementTypeHandler(CATEGOROY_CODE_LIST.정책분류);
+                typeHandler(CATEGOROY_CODE_LIST.정책분류);
               }}
-              className={managementType === CATEGOROY_CODE_LIST.정책분류 ? "active" : null}
+              className={
+                type === CATEGOROY_CODE_LIST.정책분류 ? "active" : null
+              }
             >
               정책 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler(CATEGOROY_CODE_LIST.유형분류);
+                typeHandler(CATEGOROY_CODE_LIST.유형분류);
               }}
-              className={managementType === CATEGOROY_CODE_LIST.유형분류 ? "active" : null}
+              className={
+                type === CATEGOROY_CODE_LIST.유형분류 ? "active" : null
+              }
             >
               유형 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler(CATEGOROY_CODE_LIST.국가분류);
+                typeHandler(CATEGOROY_CODE_LIST.국가분류);
               }}
-              className={managementType === CATEGOROY_CODE_LIST.국가분류 ? "active" : null}
+              className={
+                type === CATEGOROY_CODE_LIST.국가분류 ? "active" : null
+              }
             >
               국가 분류
             </li>
             <li
               onClick={() => {
-                _managementTypeHandler(CATEGOROY_CODE_LIST.언어);
+                typeHandler(CATEGOROY_CODE_LIST.언어);
               }}
-              className={managementType === CATEGOROY_CODE_LIST.언어 ? "active" : null}
+              className={type === CATEGOROY_CODE_LIST.언어 ? "active" : null}
             >
               언어
             </li>
-
           </Menu>
         </MenuContainer>
         <ContentContainer>
@@ -70,83 +80,106 @@ function CategoryManagement({
                   <div>중분류</div>
                   <div>소분류</div>
                 </ListHeader>
+                <ListHeader>
+                  <AddItem>
+                    <input
+                      placeholder="등록할 카테고리의 이름을 입력해주세요."
+                      onChange={onChangeAddInput}
+                    />
+                    <button
+                      onClick={() => {
+                        categoryAdd(2);
+                      }}
+                    >
+                      등록
+                    </button>
+                  </AddItem>
+                  <AddItem>
+                    <input
+                      placeholder="등록할 카테고리의 이름을 입력해주세요."
+                      onChange={onChangeAddInput}
+                    />
+                    <button
+                      onClick={() => {
+                        categoryAdd(4);
+                      }}
+                    >
+                      등록
+                    </button>
+                  </AddItem>
+                  <AddItem>
+                    <input
+                      placeholder="등록할 카테고리의 이름을 입력해주세요."
+                      onChange={onChangeAddInput}
+                    />
+                    <button
+                      onClick={() => {
+                        categoryAdd(6);
+                      }}
+                    >
+                      등록
+                    </button>
+                  </AddItem>
+                </ListHeader>
                 <ListContainer>
-                  <ListWrapper>
-                    <AddItem>
-                      <input
-                        onChange={onChangeAddInput}
-                        placeholder="등록할 카테고리의 이름을 입력해주세요."
-                      />
-                      <button>등록</button>
-                    </AddItem>
-                    {categoryList.map((item, index) => {
-                      return (
-                        <>
-                          {editableCode === item.CODE ? (
-                            <EditItem>
-                              <input
-                                type="text"
-                                onChange={onChangeEditInput}
-                                value={text}
-                              />
-                              <div className="actions">
-                                <button className="confirm">
-                                  <MdOutlineCheck />
-                                </button>
-                                <button
-                                  className="cancel"
-                                  onClick={categoryEditCancel}
-                                >
-                                  <MdClose />
-                                </button>
-                              </div>
-                            </EditItem>
-                          ) : (
-                            <ViewItem>
-                              <div className="title">{item.CT_NM}</div>
-                              <div className="actions">
-                                <button
-                                  className="edit"
-                                  onClick={() => {
-                                    categoryEdit(item);
-                                  }}
-                                >
-                                  <MdOutlineModeEditOutline />
-                                </button>
-                                <button className="delete">
-                                  <MdOutlineDeleteOutline />
-                                </button>
-                              </div>
-                            </ViewItem>
-                          )}
-                        </>
-                      );
-                    })}
-                  </ListWrapper>
-                  <ListWrapper>
-                    <AddItem>
-                      <input
-                        onChange={onChangeAddInput}
-                        placeholder="등록할 카테고리의 이름을 입력해주세요."
-                      />
-                      <button>등록</button>
-                    </AddItem>
-                    <ListItem>
-                      <div className="title">대분류를 먼저 선택하세요</div>
-                    </ListItem>
-                  </ListWrapper>
-                  <ListWrapper>
-                    <AddItem>
-                      <input
-                        onChange={onChangeAddInput}
-                        placeholder="등록할 카테고리의 이름을 입력해주세요."
-                      />
-                      <button>등록</button>
-                    </AddItem>
-                    <ListItem>
-                      <div className="title">중분류를 먼저 선택하세요</div>
-                    </ListItem>
-                  </ListWrapper>
+                  {categoryList.map((category, index) => {
+                    return (
+                      <ListWrapper>
+                        {category.list.map((item, index) => {
+                          return (
+                            <>
+                              {editableCode === item.CODE ? (
+                                <EditItem>
+                                  <input
+                                    type="text"
+                                    onChange={onChangeEditInput}
+                                    value={editCategoryName}
+                                  />
+                                  <div className="actions">
+                                    <button className="confirm" onClick={()=>{categoryEditConfirm(item.CODE)}}>
+                                      <MdOutlineCheck />
+                                    </button>
+                                    <button
+                                      className="cancel"
+                                      onClick={categoryEditCancel}
+                                    >
+                                      <MdClose />
+                                    </button>
+                                  </div>
+                                </EditItem>
+                              ) : (
+                                <ViewItem>
+                                  <div
+                                    className="title"
+                                    value={item.CODE}
+                                    onClick={() => {
+                                      upperCodeHandler(item.CODE, category.length);
+                                      lengthHandler(category.length+2);
+                                    }}
+                                  >
+                                    {item.CT_NM}
+                                  </div>
+                                  <div className="actions">
+                                    <button
+                                      className="edit"
+                                      onClick={() => {
+                                        categoryEdit(item);
+                                      }}
+                                    >
+                                      <MdOutlineModeEditOutline />
+                                    </button>
+                                    <button className="delete" onClick={()=>{categoryDelete(item.CODE)}}>
+                                      <MdOutlineDeleteOutline />
+                                    </button>
+                                  </div>
+                                </ViewItem>
+                              )}
+                            </>
+                          );
+                        })}
+                      </ListWrapper>
+                    );
+                  })}
                 </ListContainer>
               </ListBody>
             </div>
@@ -245,10 +278,6 @@ const ListWrapper = styled.ul`
 `;
 const ListItem = styled.li`
   background-color: white;
-  &:first-child {
-    position: sticky;
-    top: 0;
-  }
   display: flex;
   min-height: 1.5rem;
   border-bottom: dotted 1px #eeeeee;
@@ -300,19 +329,23 @@ const EditItem = styled(ListItem)`
   }
 `;
 const AddItem = styled(ListItem)`
+  width: 100%;
   display: flex;
   border-bottom: solid 1px #d6d6d6;
   input {
+    width: 100%;
     align-items: center;
     border: solid 1px #d6d6d6;
     padding-left: 0.5rem;
     border-radius: 4px;
-    min-width: 18rem;
     &:focus {
       outline: none;
     }
   }
   button {
+    cursor: pointer;
+    min-width: 5rem;
+    margin-left: 0.5rem;
     background-color: #435269;
     color: white;
     border: solid 1px rgba(0, 0, 0, 0.1);

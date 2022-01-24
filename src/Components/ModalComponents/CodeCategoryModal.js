@@ -4,6 +4,7 @@ import { CategorysListDataFetchApi } from "../../Utils/api";
 import { useSelector } from "react-redux";
 
 function CodeCategoryModal({ executeModal, closeModal }) {
+
   const [selectedCategoryList, setSelectedCategoryList] = useState([]);
   const [sectionCategoryList, setSectionCategoryList] = useState([]); // 대분류
   const [divisionCategoryList, setDivisionCategoryList] = useState([]); // 중분류
