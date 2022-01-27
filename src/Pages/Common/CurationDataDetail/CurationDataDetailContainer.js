@@ -38,7 +38,7 @@ function CurationDataDetailContainer() {
     let _docs = {
       dc_content: _rawStatusDetailData.dc_content || "",
       dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
-      dc_dt_write: _rawStatusDetailData.dc_dt_write.substring(0,10) || "",
+      dc_dt_write: _rawStatusDetailData.dc_dt_write && (_rawStatusDetailData.dc_dt_write.substring(0,10) || ""),
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher: _rawStatusDetailData.dc_publisher || "",
       dc_cover:

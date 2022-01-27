@@ -43,8 +43,10 @@ function CrawlDataScreeningContainer() {
   };
 
   const onChangeEach = (e, type) => {
+    console.log(e.target.value)
     const _item_id = e.target.value;
-    const _index = itemList.findIndex((item) => item.item_id === _item_id);
+    const _index = itemList.findIndex((item) => item.item_id === Number(_item_id));
+    console.log(itemList)
     const _newItemList = [...itemList];
     _newItemList[_index].status = type;
     setItemList(_newItemList);
@@ -95,13 +97,13 @@ function CrawlDataScreeningContainer() {
   /* itemList 의 status가 변경되었을 경우 */
   useEffect(() => {
     setStageDataList(
-      itemList.filter((item) => item.status === "stage").map((item) => item.id)
+      itemList.filter((item) => item.status === "stage").map((item) => item.item_id)
     );
     setKeepDataList(
-      itemList.filter((item) => item.status === "keep").map((item) => item.id)
+      itemList.filter((item) => item.status === "keep").map((item) => item.item_id)
     );
     setDeleteDataList(
-      itemList.filter((item) => item.status === "delete").map((item) => item.id)
+      itemList.filter((item) => item.status === "delete").map((item) => item.item_id)
     );
   }, [itemList]);
 
@@ -167,7 +169,7 @@ function CrawlDataScreeningContainer() {
   useEffect(() => {
     let _itemList = [];
     screeningData.forEach((item) => {
-      _itemList.push({ id: item.item_id, status: "delete" });
+      _itemList.push({ item_id: item.item_id, status: "delete" });
     });
     setItemList(_itemList);
   }, [screeningData]);
