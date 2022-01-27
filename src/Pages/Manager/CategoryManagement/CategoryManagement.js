@@ -71,7 +71,10 @@ function CategoryManagement({
           </Menu>
         </MenuContainer>
         <ContentContainer>
-          <div className="content-title">카테고리 관리</div>
+          <div className="content-title">
+            <div className="main-title">카테고리 관리</div>
+            <div className="sub-title">서브..</div>
+          </div>
           <div className="content-body">
             <div>
               <ListBody>
@@ -136,7 +139,12 @@ function CategoryManagement({
                                     value={editCategoryName}
                                   />
                                   <div className="actions">
-                                    <button className="confirm" onClick={()=>{categoryEditConfirm(item.CODE)}}>
+                                    <button
+                                      className="confirm"
+                                      onClick={() => {
+                                        categoryEditConfirm(item.CODE);
+                                      }}
+                                    >
                                       <MdOutlineCheck />
                                     </button>
                                     <button
@@ -153,8 +161,11 @@ function CategoryManagement({
                                     className="title"
                                     value={item.CODE}
                                     onClick={() => {
-                                      upperCodeHandler(item.CODE, category.length);
-                                      lengthHandler(category.length+2);
+                                      upperCodeHandler(
+                                        item.CODE,
+                                        category.length
+                                      );
+                                      lengthHandler(category.length + 2);
                                     }}
                                   >
                                     {item.CT_NM}
@@ -168,7 +179,12 @@ function CategoryManagement({
                                     >
                                       <MdOutlineModeEditOutline />
                                     </button>
-                                    <button className="delete" onClick={()=>{categoryDelete(item.CODE)}}>
+                                    <button
+                                      className="delete"
+                                      onClick={() => {
+                                        categoryDelete(item.CODE);
+                                      }}
+                                    >
                                       <MdOutlineDeleteOutline />
                                     </button>
                                   </div>
@@ -234,8 +250,14 @@ const ContentContainer = styled(LineBox)`
   .content-title {
     border-bottom: 1px solid #d6d6d6;
     padding: 1rem;
-    font-size: 16px;
-    font-weight: bold;
+    .main-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom:8px;
+    }
+    .sub-title{
+      font-size:14px;
+    }
   }
   .content-body {
     height: 100%;

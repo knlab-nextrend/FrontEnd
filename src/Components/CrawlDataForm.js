@@ -12,6 +12,7 @@ import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */
 function CrawlDataForm({ docs, type, _id }, ref) {
+  const [itemId, setItemId] = useState("");
   /* 현재 보여질 데이터 정보들 */
   const [dcContent, setDcContent] = useState(""); // dc_content 크롤 데이터 내용
 
@@ -124,20 +125,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     dispatch(setModal("CodeCategoryModal"));
   };
 
-  // 더미데이터
-  const LANGUAGE_LIST = [
-    { language_name: "한국어", language_code_name: "ko" },
-    { language_name: "영어", language_code_name: "en" },
-    { language_name: "일본어", language_code_name: "ja" },
-    { language_name: "독일어", language_code_name: "de" },
-    { language_name: "프랑스어", language_code_name: "fr" },
-    { language_name: "중국어", language_code_name: "zh" },
-    { language_name: "스페인어", language_code_name: "es" },
-    { language_name: "포르투갈어", language_code_name: "pt" },
-    { language_name: "러시아어", language_code_name: "ru" },
-    { language_name: "아랍어", language_code_name: "ar" },
-  ];
-
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
     /* input state 값들을 객체에 담아서 반환함.*/
@@ -166,6 +153,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["dc_url_loc"] = dcUrlLoc;
       _docs["dc_link"] = dcLink;
       _docs["dc_lang"] = dcLanguage;
+      _docs["item_id"] = itemId;
 
       return _docs;
     },
@@ -193,6 +181,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDcUrlLoc(docs.dc_url_loc);
       setDcLink(docs.dc_link);
       setDcLanguage(docs.dc_lang);
+      setItemId(docs.item_id);
     }
   }, [docs]);
 

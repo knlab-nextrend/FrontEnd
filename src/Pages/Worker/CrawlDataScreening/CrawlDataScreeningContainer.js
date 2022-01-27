@@ -43,8 +43,8 @@ function CrawlDataScreeningContainer() {
   };
 
   const onChangeEach = (e, type) => {
-    const _id = e.target.value;
-    const _index = itemList.findIndex((item) => item._id === _id);
+    const _item_id = e.target.value;
+    const _index = itemList.findIndex((item) => item.item_id === _item_id);
     const _newItemList = [...itemList];
     _newItemList[_index].status = type;
     setItemList(_newItemList);
@@ -126,7 +126,7 @@ function CrawlDataScreeningContainer() {
 
     _rawScreeningData.forEach((item, index) => {
       const obj = {
-        _id: item._id,
+        item_id: item.item_id,
         dc_smry_kr: item.dc_smry_kr,
         dc_publisher: item.dc_publisher,
         dc_lang: item.dc_lang,
@@ -145,6 +145,7 @@ function CrawlDataScreeningContainer() {
     trackPromise(
       ScreeningDataFetchApi(listSize, pageNo, isKeep, searchObj)
         .then((res) => {
+          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
@@ -166,7 +167,7 @@ function CrawlDataScreeningContainer() {
   useEffect(() => {
     let _itemList = [];
     screeningData.forEach((item) => {
-      _itemList.push({ id: item._id, status: "delete" });
+      _itemList.push({ id: item.item_id, status: "delete" });
     });
     setItemList(_itemList);
   }, [screeningData]);

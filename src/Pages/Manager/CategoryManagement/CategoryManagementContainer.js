@@ -58,7 +58,6 @@ function CategoryManagementContainer() {
     let _upperCode = { ...upperCode };
     _upperCode[length] = code;
     setUpperCode(_upperCode);
-    console.log(_upperCode);
   };
   const lengthHandler = (length) => {
     setLength(length);
@@ -93,13 +92,8 @@ function CategoryManagementContainer() {
       alert("중분류를 먼저 선택해주세요.");
       return;
     } else {
-      console.log(upperCode[length - 2]);
-      categoryItemAddApi(
-        type,
-        length,
-        addCategoryName,
-        upperCode[length - 2]
-      ).then((res) => {
+      const code = length === 2 ? null : upperCode[length - 2];
+      categoryItemAddApi(type, length, addCategoryName, code).then((res) => {
         if (res.status === 200) {
           alert("성공적으로 등록되었습니다.");
           dataFetch();
@@ -139,7 +133,6 @@ function CategoryManagementContainer() {
     const index = categoryList.findIndex((i) => i.length == length);
     let _categoryList = [...categoryList];
     _categoryList[index] = { length, list: rawData };
-    console.log(_categoryList);
     setCategoryList(_categoryList);
   };
 

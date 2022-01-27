@@ -65,6 +65,7 @@ function CrawlDataListContainer() {
         dc_keyword: item.dc_keyword,
         dc_dt_collect: item.dc_dt_collect.substring(0, 10),
         _id: item._id,
+        item_id:item.item_id,
         dc_publisher: item.dc_publisher,
         stat: item.stat,
         dc_lang: item.dc_lang,

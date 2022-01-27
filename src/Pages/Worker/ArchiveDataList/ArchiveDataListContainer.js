@@ -73,7 +73,6 @@ function ArchiveDataListContainer() {
       sortType,
       host,
     };
-    console.log(searchObj);
     setSearchObj(searchObj);
   };
 
@@ -82,6 +81,7 @@ function ArchiveDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj)
         .then((res) => {
+          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {

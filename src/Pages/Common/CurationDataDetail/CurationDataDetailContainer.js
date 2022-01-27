@@ -20,6 +20,7 @@ function CurationDataDetailContainer() {
   const dataFetch = () => {
     trackPromise(CrawlDataDetailFetchApi(statusCode, _id)
       .then((res) => {
+        console.log(res.data)
         dataCleansing(res.data);
       })
       .catch((err) => {

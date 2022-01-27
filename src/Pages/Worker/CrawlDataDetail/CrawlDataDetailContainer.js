@@ -103,6 +103,7 @@ function CrawlDataDetailContainer() {
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
       dc_link: _rawStatusDetailData.dc_link || "",
       dc_lang: _rawStatusDetailData.dc_lang || "",
+      item_id:_rawStatusDetailData.item_id
     };
     setDocs(_docs);
   };
