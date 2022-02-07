@@ -1,55 +1,56 @@
-import React,{useState,useEffect} from "react";
-import { useSelector,useDispatch} from "react-redux";
-import {sessionHandler,categoryListFetchApi} from "../../Utils/api"
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { sessionHandler, categoryListFetchApi } from "../../Utils/api";
 import { trackPromise } from "react-promise-tracker";
 
 import styled from "styled-components";
 
 function CategoryModal({ executeModal, closeModal }) {
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
   const categoryModalType = useSelector(
     (state) => state.modal.categoryModalType
   );
   const CATEGORY_TYPE_DATA = {
-    dcCode: {
-      type:1,
+    dc_code: {
+      type: 1,
       title: "정책 분류 설정",
       subTitle:
-        "해당 문서의 정책 분류를 선택해주세요. 추가된 정책 분류는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
+        "해당 문서의 정책 분류를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 정책 분류는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dcCountry: {
-      type:3,
+    dc_country: {
+      type: 3,
       title: "문서 대상 국가 설정",
       subTitle:
-        "해당 문서의 대상 국가를 선택해주세요. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
+        "해당 문서의 대상 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dcCountryPub: {
-      type:3,
+    dc_country_pub: {
+      type: 3,
       title: "문서 발행 국가 설정",
       subTitle:
-        "해당 문서의 발행 국가를 선택해주세요. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
+        "해당 문서의 발행 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dcTopic: {
-      type:5,
+    dc_topic: {
+      type: 5,
       title: "토픽 분류 설정",
       subTitle: "해당 문서의 토픽 분류를 선택해주세요.",
     },
-    dcTypeDoc: {
-      type:4,
+    dc_type_doc: {
+      type: 2,
       title: "문서 유형 설정",
       subTitle: "해당 문서의 유형을 선택해주세요.",
     },
-    dcTypeContent: {
-      type:4,
+    dc_type_content: {
+      type: 2,
       title: "내용 구분 설정",
       subTitle: "해당 문서의 내용 구분을 선택해주세요.",
     },
-    dcLanguage: {
-      type:4,
+    dc_language: {
+      type: 4,
       title: "언어 설정",
-      subTitle: "해당 문서의 언어를 선택해주세요.",
+      subTitle: "해당 문서의 언어를 선택해주세요. 항목을 더블클릭하면 추가되며, 하나의 언어만 선택 가능합니다.",
     },
   };
+
   const [categoryList, setCategoryList] = useState([
     { length: 2, list: [] },
     { length: 4, list: [] },
@@ -57,6 +58,8 @@ function CategoryModal({ executeModal, closeModal }) {
   ]);
   const [upperCode, setUpperCode] = useState({ 2: null, 4: null, 6: null });
   const [length, setLength] = useState(2); // 대분류 (2) 중분류 (4) 소분류 (6)
+
+  const [selectedCategoryList, setSelectedCategoryList] = useState([]);
 
   const upperCodeHandler = (code, length) => {
     let _upperCode = { ...upperCode };
@@ -66,32 +69,86 @@ function CategoryModal({ executeModal, closeModal }) {
   const lengthHandler = (length) => {
     setLength(length);
   };
+  const clickHandler = (e, item, code, length) => {
+    //console.log(e.detail) // 1 : 원클릭 2: 더블클릭
+    if (e.detail === 1 && categoryModalType !== "dc_language") {
+      upperCodeHandler(code, length);
+      lengthHandler(length + 2);
+    } else if (e.detail === 2) {
+      addCategory(item);
+    }
+  };
+
+  const addCategory = (item) => {
+    if (
+      selectedCategoryList.some((ele) => {
+        return ele.CODE === item.CODE;
+      })
+    ) {
+      alert("이미 선택된 항목 입니다.");
+    } 
+    else if (categoryModalType === ("dc_language" || "dc_country_pub") ){
+      setSelectedCategoryList([item])
+    }
+    else {
+      setSelectedCategoryList([...selectedCategoryList, item]);
+    }
+  };
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
     const type = CATEGORY_TYPE_DATA[categoryModalType].type;
-    trackPromise(
-      categoryListFetchApi(type, length, upperCode[length - 2])
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          sessionHandler(err, dispatch).then((res) => {
-            categoryListFetchApi(type, length, upperCode[length - 2]).then(
-              (res) => {
-                 console.log(res.data)
-              }
-            );
-          });
-        })
+    categoryListFetchApi(type, length, upperCode[length - 2])
+      .then((res) => {
+        dataCleansing(res.data);
+      })
+      .catch((err) => {
+        sessionHandler(err, dispatch).then((res) => {
+          categoryListFetchApi(type, length, upperCode[length - 2]).then(
+            (res) => {
+              dataCleansing(res.data);
+            }
+          );
+        });
+      });
+  };
+  const saveCategory = () => {
+    executeModal(selectedCategoryList, categoryModalType);
+    alert("성공적으로 저장되었습니다.");
+    closeModal();
+  };
+  const deleteCategory = (code) => {
+    setSelectedCategoryList(
+      selectedCategoryList.filter((item) => item.CODE !== code)
     );
   };
 
-  useEffect(() => {
-    
-    dataFetch();
-  }, [categoryModalType]);
+  const dataCleansing = (rawData) => {
+    if (categoryModalType === "dc_language") {
+      setCategoryList([{ length: 2, list: rawData }]);
+    } else {
+      const index = categoryList.findIndex((i) => i.length == length);
+      let _categoryList = [...categoryList];
+      _categoryList[index] = { length, list: rawData };
+      setCategoryList(_categoryList);
+    }
+  };
 
+  const listInit = () => {
+    setCategoryList([
+      { length: 2, list: [] },
+      { length: 4, list: [] },
+      { length: 6, list: [] },
+    ]);
+    setUpperCode({ 2: null, 4: null, 6: null });
+    setLength(2);
+  };
+  useEffect(() => {
+    listInit();
+  }, [categoryModalType]);
+  useEffect(() => {
+    dataFetch();
+  }, [length, upperCode]);
   return (
     <>
       <ModalWrapper>
@@ -101,9 +158,64 @@ function CategoryModal({ executeModal, closeModal }) {
             {CATEGORY_TYPE_DATA[categoryModalType].subTitle}
           </ModalSubTitle>
         </Modalheader>
-        <ModalBody></ModalBody>
+        <ModalBody>
+          <ListContainer>
+            <ListHeader>
+              <div>대분류</div>
+              {categoryModalType !== "dc_language" && <div>중분류</div>}
+              {categoryModalType !== "dc_language" && <div>소분류</div>}
+            </ListHeader>
+            <ListBody>
+              {categoryList.map((category, index) => {
+                return (
+                  <ListWrapper>
+                    {category.list.length === 0 ? (
+                      <ListItem>상위분류를 먼저 선택하세요</ListItem>
+                    ):category.list.map((item, index) => {
+                      return (
+                        <>
+                          <ListItem>
+                            <div
+                              className="title"
+                              value={item.CODE}
+                              onClick={(e) => {
+                                clickHandler(
+                                  e,
+                                  item,
+                                  item.CODE,
+                                  category.length
+                                );
+                              }}
+                            >
+                              {item.CT_NM}
+                            </div>
+                          </ListItem>
+                        </>
+                      );
+                    })}
+                    
+                  </ListWrapper>
+                );
+              })}
+            </ListBody>
+          </ListContainer>
+          <CategoryList>
+            {selectedCategoryList.map((item) => {
+              return (
+                <div
+                  key={item.IDX}
+                  onClick={() => {
+                    deleteCategory(item.CODE);
+                  }}
+                >
+                  {item.CT_NM}
+                </div>
+              );
+            })}
+          </CategoryList>
+        </ModalBody>
         <ModalActions>
-          <Button color="#435269">
+          <Button color="#435269" onClick={saveCategory}>
             <p>저장</p>
           </Button>
           <Button color="#bfbfbf" onClick={closeModal}>
@@ -162,4 +274,62 @@ const Button = styled.button`
   margin: 0 0.5rem 0 0.5rem;
 `;
 
+/* 리스트 관리 스타일 */
+
+const ListBody = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+`;
+const ListHeader = styled.div`
+  display: flex;
+  width: 100%;
+  background-color: #435269;
+  div {
+    padding: 0.5rem 0 0.5rem 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+  }
+`;
+const ListWrapper = styled.ul`
+  width: 100%;
+  list-style-type: none;
+  height: 30rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  border: solid 1px #eeeeee;
+  overflow-x: hidden;
+`;
+const ListItem = styled.li`
+  cursor: pointer;
+  padding: 1rem;
+  min-height: 1.5rem;
+  border-bottom: dotted 1px #eeeeee;
+`;
+
+const CategoryList = styled.div`
+  margin-top: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: left;
+  border: solid 1px #eee;
+  flex-wrap: wrap;
+
+  div {
+    cursor: pointer;
+    margin: 0.5rem;
+    background-color: #eee;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    font-size: 12px;
+  }
+`;
 export default CategoryModal;

@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { setModal, setModalData,setCategoryModalType } from "../Modules/modal";
+import { setModal, setModalData, setCategoryModalType } from "../Modules/modal";
 import { MdSettings, MdOutlineLink } from "react-icons/md";
 import Editor from "./Editor";
 
@@ -40,25 +40,27 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
   const [dcUrlIntro, setDcUrlIntro] = useState(""); // dc_url_intro 위의 원문 문서 위치로 이동할 수 있는 도메인 안내 링크
 
-
-  const [dcLanguage, setDcLanguage] = useState(""); //dc_language 문서 언어
-
   const [dcBiblio, setDcBiblio] = useState(""); // dc_biblio 문서 서지 사항
-  const [dcTypeDoc, setDcTypeDoc] = useState(""); // dc_type_doc 문서의 유형 분류
-  const [dcTypeContent, setDcTypeContent] = useState(""); // dc_type_content 문서 내용의 성격(장르) 분류
-  const [dcTopic, setDcTopic] = useState(""); // 문서내용의 이슈(신산업,기술 등) 주제분류
   const [dcProject, setDcProject] = useState(""); // 문서가 활용된 주문형 조사과제명
   const [dcPublishing, setDcPublishing] = useState(""); // 주문형 조사과제명의 세부과업명
   const [dcRecomm, setDcRecomm] = useState(""); // 큐레이션 추천문서
   const [dcMemo, setDcMemo] = useState(""); // 관리자만 작성 및 조회가 가능한 기타 메모사항
 
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 문서 대상 국가
-  const dcCountryPub = useSelector((state) => state.modal.modalData.dc_country_pub); //dc_country_pub 문서 발행 국가
+  const dcCountryPub = useSelector(
+    (state) => state.modal.modalData.dc_country_pub
+  ); //dc_country_pub 문서 발행 국가
   const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
+  const dcTopic = useSelector((state) => state.modal.modalData.dc_topic); //dc_topic 문서내용의 이슈(신산업,기술 등) 주제분류
+  const dcTypeDoc = useSelector((state) => state.modal.modalData.dc_type_doc); //dc_type_doc 문서의 유형 분류
+  const dcTypeContent = useSelector(
+    (state) => state.modal.modalData.dc_type_content
+  ); //dc_type_content 문서 내용의 성격(장르) 분류
+  const dcLanguage = useSelector((state) => state.modal.modalData.dc_language); //dc_language 언어
+
   const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
   const [dcCodeList, setDcCodeList] = useState([]);
   const [dcCountryPubIndexList, setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
-
 
   const _dcContentHandler = (data) => {
     setDcContent(data);
@@ -75,7 +77,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _dcKeywordStringHandler = (e) => {
     setDcKeywordString(e.target.value);
   };
-
   const _dcCoverSelectHandler = (e) => {
     setDcCoverSelect(e.target.value);
   };
@@ -97,15 +98,11 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _dcUrlLocHandler = (e) => {
     setDcUrlLoc(e.target.value);
   };
-  const _dcLanguageHandler = (e) => {
-    setDcLanguage(e.target.value);
-  };
-
   const dispatch = useDispatch();
-  const _openCategoryModal = (categoryModalType)=>{
+  const _openCategoryModal = (categoryModalType) => {
     dispatch(setModal("CategoryModal"));
     dispatch(setCategoryModalType(categoryModalType));
-  }
+  };
 
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
@@ -131,13 +128,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["dc_title_or"] = dcTitleOr;
       _docs["dc_title_kr"] = dcTitleKr;
       _docs["dc_url_loc"] = dcUrlLoc;
-      _docs["dc_lang"] = dcLanguage;
       _docs["item_id"] = itemId;
 
       return _docs;
     },
   }));
   useEffect(() => {
+    console.log(docs)
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
       setDcContent(docs.dc_content);
@@ -145,9 +142,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDcDtRegi(docs.dc_dt_regi.substring(0, 10));
       setDcKeyword(docs.dc_keyword);
       setDcKeywordString(docs.dc_keyword.join(", "));
-      dispatch(setModalData(docs.dc_code, "dc_code"));
-      dispatch(setModalData(docs.dc_country, "dc_country"));
-      dispatch(setModalData(docs.dc_country_pub, "dc_country_pub"));
       setDcCover(docs.dc_cover);
       setDcCoverSelect(docs.dc_cover[0] || "");
       setDcSmryKr(docs.dc_smry_kr);
@@ -156,7 +150,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDcTitleOr(docs.dc_title_or);
       setDcTitleKr(docs.dc_title_kr);
       setDcUrlLoc(docs.dc_url_loc);
-      setDcLanguage(docs.dc_lang);
+      dispatch(setModalData(docs.dc_code, "dc_code"));
+      dispatch(setModalData(docs.dc_country, "dc_country"));
+      dispatch(setModalData(docs.dc_country_pub, "dc_country_pub"));
+      dispatch(setModalData(docs.dc_language, "dc_language"));
+      dispatch(setModalData(docs.dc_type_content, "dc_type_content"));
+      dispatch(setModalData(docs.dc_type_doc, "dc_type_doc"));
+      dispatch(setModalData(docs.dc_topic, "dc_topic"));
       setItemId(docs.item_id);
     }
   }, [docs]);
@@ -234,26 +234,34 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             <CustomFormItem>
               <div className="title">
                 <p>문서 대상 국가</p>
-                <button onClick={()=>{_openCategoryModal("dcCountry")}}>
+                <button
+                  onClick={() => {
+                    _openCategoryModal("dc_country");
+                  }}
+                >
                   <MdSettings /> 설정
                 </button>
               </div>
               <div className="form notInput">
                 {dcCountry.map((item, index) => {
-                  return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
+                  return <CustomList key={index}>{item.CT_NM}</CustomList>;
                 })}
               </div>
             </CustomFormItem>
             <CustomFormItem>
               <div className="title">
                 <p>문서 발행 국가</p>
-                <button onClick={()=>{_openCategoryModal("dcCountryPub")}}>
+                <button
+                  onClick={() => {
+                    _openCategoryModal("dc_country_pub");
+                  }}
+                >
                   <MdSettings /> 설정
                 </button>
               </div>
               <div className="form notInput">
                 {dcCountryPub.map((item, index) => {
-                  return <CustomList key={index}>{item.CTY_NAME}</CustomList>;
+                  return <CustomList key={index}>{item.CT_NM}</CustomList>;
                 })}
               </div>
             </CustomFormItem>
@@ -264,7 +272,11 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             <CustomFormItem>
               <div className="title">
                 <p>정책 분류</p>
-                <button onClick={()=>{_openCategoryModal("dcCode")}}>
+                <button
+                  onClick={() => {
+                    _openCategoryModal("dc_code");
+                  }}
+                >
                   <MdSettings /> 설정
                 </button>
               </div>
@@ -277,12 +289,18 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             <CustomFormItem>
               <div className="title">
                 <p>문서 토픽 분류</p>
-                <button onClick={()=>{_openCategoryModal("dcTopic")}}>
+                <button
+                  onClick={() => {
+                    _openCategoryModal("dc_topic");
+                  }}
+                >
                   <MdSettings /> 설정
                 </button>
               </div>
               <div className="form notInput">
-                <CustomList>메타버스</CustomList>
+                {dcTopic.map((item, index) => {
+                  return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                })}
               </div>
             </CustomFormItem>
           </CustomFormRow>
@@ -291,23 +309,35 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>문서 유형</p>
-              <button onClick={()=>{_openCategoryModal("dcTypeDoc")}}>
+              <button
+                onClick={() => {
+                  _openCategoryModal("dc_type_doc");
+                }}
+              >
                 <MdSettings /> 선택
               </button>
             </div>
             <div className="form notInput">
-              <CustomList>유형 분류...</CustomList>
+              {dcTypeDoc.map((item, index) => {
+                return <CustomList key={index}>{item.CT_NM}</CustomList>;
+              })}
             </div>
           </CustomFormItem>
           <CustomFormItem>
             <div className="title">
-              <p >내용구분</p>
-              <button onClick={()=>{_openCategoryModal("dcTypeContent")}}>
+              <p>내용구분</p>
+              <button
+                onClick={() => {
+                  _openCategoryModal("dc_type_content");
+                }}
+              >
                 <MdSettings /> 선택
               </button>
             </div>
             <div className="form notInput">
-              <CustomList>성격(장르)...</CustomList>
+              {dcTypeContent.map((item, index) => {
+                return <CustomList key={index}>{item.CT_NM}</CustomList>;
+              })}
             </div>
           </CustomFormItem>
         </CustomFormRow>
@@ -315,12 +345,18 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>언어</p>
-              <button onClick={()=>{_openCategoryModal("dcLanguage")}}>
+              <button
+                onClick={() => {
+                  _openCategoryModal("dc_language");
+                }}
+              >
                 <MdSettings /> 선택
               </button>
             </div>
             <div className="form notInput">
-              <CustomList>한국어</CustomList>
+              {dcLanguage.map((item, index) => {
+                return <CustomList key={index}>{item.CT_NM}</CustomList>;
+              })}
             </div>
           </CustomFormItem>
 
