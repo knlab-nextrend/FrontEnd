@@ -23,6 +23,7 @@ function CategoryManagementContainer() {
     유형분류: 2,
     국가분류: 3,
     언어: 4,
+    토픽분류:5,
   };
 
   const [addCategoryName, setAddCategoryName] = useState(""); // 새롭게 등록할 카테고리 이름

@@ -68,6 +68,14 @@ function CategoryManagement({
             >
               언어
             </li>
+            <li
+              onClick={() => {
+                typeHandler(CATEGOROY_CODE_LIST.토픽분류);
+              }}
+              className={type === CATEGOROY_CODE_LIST.토픽분류 ? "active" : null}
+            >
+              토픽분류
+            </li>
           </Menu>
         </MenuContainer>
         <ContentContainer>

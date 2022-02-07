@@ -1,49 +1,44 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setModal,setModalData } from "../../Modules/modal";
+import { setModal, setModalData } from "../../Modules/modal";
 /* modal Components */
-import CountryCategoryModal from "./CountryCategoryModal";
-import CountryPubCategoryModal from "./CountryPubCategoryModal"
-import CodeCategoryModal from "./CodeCategoryModal";
+import CategoryModal from "./CategoryModal";
 import UserInfoModal from "./UserInfoModal";
 
 export const MODAL_TYPES = {
-  CountryCategoryModal: "CountryCategoryModal",
-  CountryPubCategoryModal:"CountryPubCategoryModal",
-  CodeCategoryModal: "CodeCategoryModal",
+  CategoryModal: "CategoryModal",
   UserInfoModal: "UserInfoModal",
 };
 
 const MODAL_COMPONENTS = {
-  [MODAL_TYPES.CountryCategoryModal]: CountryCategoryModal,
-  [MODAL_TYPES.CountryPubCategoryModal]: CountryPubCategoryModal,
-  [MODAL_TYPES.CodeCategoryModal]: CodeCategoryModal,
+  [MODAL_TYPES.CategoryModal]: CategoryModal,
   [MODAL_TYPES.UserInfoModal]: UserInfoModal,
 };
 
 function GlobalModal() {
+  const dispatch = useDispatch();
   /* modalType이 존재한다면 모달창을 렌더링하도록 하며, modalType이 null이면 모달창을 렌더링하지 않는다. */
   /* 이 Modal 컴포넌트는 App.js 에 */
   /* https://mygumi.tistory.com/406 참고코드 */
 
   const modalType = useSelector((state) => state.modal.modalType);
 
-  const dispatch = useDispatch();
-
   const closeModal = () => {
     dispatch(setModal(null));
   };
-  const executeModal = (modalData,dataType)=>{
-    dispatch(setModalData(modalData,dataType))
-  }
+  const executeModal = (modalData, dataType) => {
+    dispatch(setModalData(modalData, dataType));
+  };
 
   const renderComponent = () => {
     if (!modalType) {
       return null;
     }
     const ModalComponent = MODAL_COMPONENTS[modalType];
-    return <ModalComponent closeModal={closeModal} executeModal={executeModal}/>;
+    return (
+      <ModalComponent closeModal={closeModal} executeModal={executeModal} />
+    );
   };
 
   return (

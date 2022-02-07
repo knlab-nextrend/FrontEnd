@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { setModal, setModalData } from "../Modules/modal";
+import { setModal, setModalData,setCategoryModalType } from "../Modules/modal";
 import { MdSettings, MdOutlineLink } from "react-icons/md";
 import Editor from "./Editor";
 
@@ -23,12 +23,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
 
   const [dcKeyword, setDcKeyword] = useState([]); // dc_keyword 키워드 검색 단어. 받아올 땐 배열이나, 관리는 문자열로 할 예정
   const [dcKeywordString, setDcKeywordString] = useState(""); // dc_keyword 를 문자열 형태로 표시하기 위해서 .
-  const [dcCat, setDcCat] = useState(""); //dc_cat 유형분류. 그런데 아직 모호함
-  const [dcType, setDcType] = useState(""); // dc_type 유형분류. 그런데 아직 모호함.
-
-  const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
-  const [dcCodeList, setDcCodeList] = useState([]);
-  const [dcCountryPubIndexList, setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
 
   const [dcCover, setDcCover] = useState([]); // dc_cover 문서 표지 리스트
   const [dcCoverSelect, setDcCoverSelect] = useState(""); // dc_cover 에서 선택한 표지
@@ -46,7 +40,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [dcUrlLoc, setDcUrlLoc] = useState(""); // dc_url_loc 원문 문서 위치
   const [dcUrlIntro, setDcUrlIntro] = useState(""); // dc_url_intro 위의 원문 문서 위치로 이동할 수 있는 도메인 안내 링크
 
-  const [dcLink, setDcLink] = useState(""); //dc_link 문서가 참조하는 다른 내부 문서 id list
 
   const [dcLanguage, setDcLanguage] = useState(""); //dc_language 문서 언어
 
@@ -60,10 +53,12 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [dcMemo, setDcMemo] = useState(""); // 관리자만 작성 및 조회가 가능한 기타 메모사항
 
   const dcCountry = useSelector((state) => state.modal.modalData.dc_country); //dc_country 문서 대상 국가
-  const dcCountryPub = useSelector(
-    (state) => state.modal.modalData.dc_country_pub
-  ); //dc_country_pub 문서 발행 국가
+  const dcCountryPub = useSelector((state) => state.modal.modalData.dc_country_pub); //dc_country_pub 문서 발행 국가
   const dcCode = useSelector((state) => state.modal.modalData.dc_code); //dc_code 주제 분류
+  const [dcCountryIndexList, setDcCountryIndexList] = useState([]); // dc_country의 index 리스트
+  const [dcCodeList, setDcCodeList] = useState([]);
+  const [dcCountryPubIndexList, setDcCountryPubIndexList] = useState([]); //dc_country_pub의 index리스트
+
 
   const _dcContentHandler = (data) => {
     setDcContent(data);
@@ -80,12 +75,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _dcKeywordStringHandler = (e) => {
     setDcKeywordString(e.target.value);
   };
-  const _dcCatHandler = (e) => {
-    setDcCat(e.target.value);
-  };
-  const _dcTypeHandler = (e) => {
-    setDcType(e.target.value);
-  };
+
   const _dcCoverSelectHandler = (e) => {
     setDcCoverSelect(e.target.value);
   };
@@ -107,23 +97,15 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _dcUrlLocHandler = (e) => {
     setDcUrlLoc(e.target.value);
   };
-  const _dcLinkHandler = (e) => {
-    setDcLink(e.target.value);
-  };
   const _dcLanguageHandler = (e) => {
     setDcLanguage(e.target.value);
   };
 
   const dispatch = useDispatch();
-  const _openCountryCategoryModal = () => {
-    dispatch(setModal("CountryCategoryModal"));
-  };
-  const _openCountryPubCategoryModal = () => {
-    dispatch(setModal("CountryPubCategoryModal"));
-  };
-  const _openCodeCategoryModal = () => {
-    dispatch(setModal("CodeCategoryModal"));
-  };
+  const _openCategoryModal = (categoryModalType)=>{
+    dispatch(setModal("CategoryModal"));
+    dispatch(setCategoryModalType(categoryModalType));
+  }
 
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   useImperativeHandle(ref, () => ({
@@ -137,8 +119,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["dc_dt_regi"] = dcDtRegi;
       _docs["dc_keyword"] = dcKeyword;
       _docs["dc_code"] = dcCodeList;
-      _docs["dc_cat"] = dcCat;
-      _docs["dc_type"] = dcType;
       _docs["dc_country"] = dcCountryIndexList;
       _docs["dc_country_pub"] = dcCountryPubIndexList;
       _docs["dc_cover"] =
@@ -151,7 +131,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["dc_title_or"] = dcTitleOr;
       _docs["dc_title_kr"] = dcTitleKr;
       _docs["dc_url_loc"] = dcUrlLoc;
-      _docs["dc_link"] = dcLink;
       _docs["dc_lang"] = dcLanguage;
       _docs["item_id"] = itemId;
 
@@ -166,8 +145,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDcDtRegi(docs.dc_dt_regi.substring(0, 10));
       setDcKeyword(docs.dc_keyword);
       setDcKeywordString(docs.dc_keyword.join(", "));
-      setDcCat(docs.dc_cat);
-      setDcType(docs.dc_type);
       dispatch(setModalData(docs.dc_code, "dc_code"));
       dispatch(setModalData(docs.dc_country, "dc_country"));
       dispatch(setModalData(docs.dc_country_pub, "dc_country_pub"));
@@ -179,7 +156,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDcTitleOr(docs.dc_title_or);
       setDcTitleKr(docs.dc_title_kr);
       setDcUrlLoc(docs.dc_url_loc);
-      setDcLink(docs.dc_link);
       setDcLanguage(docs.dc_lang);
       setItemId(docs.item_id);
     }
@@ -257,8 +233,8 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormRow>
             <CustomFormItem>
               <div className="title">
-                <p>문서 대상 국가 설정</p>
-                <button onClick={_openCountryCategoryModal}>
+                <p>문서 대상 국가</p>
+                <button onClick={()=>{_openCategoryModal("dcCountry")}}>
                   <MdSettings /> 설정
                 </button>
               </div>
@@ -270,8 +246,8 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             </CustomFormItem>
             <CustomFormItem>
               <div className="title">
-                <p>문서 발행 국가 설정</p>
-                <button onClick={_openCountryPubCategoryModal}>
+                <p>문서 발행 국가</p>
+                <button onClick={()=>{_openCategoryModal("dcCountryPub")}}>
                   <MdSettings /> 설정
                 </button>
               </div>
@@ -287,8 +263,8 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormRow>
             <CustomFormItem>
               <div className="title">
-                <p>정책 분류 설정</p>
-                <button onClick={_openCodeCategoryModal}>
+                <p>정책 분류</p>
+                <button onClick={()=>{_openCategoryModal("dcCode")}}>
                   <MdSettings /> 설정
                 </button>
               </div>
@@ -301,7 +277,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             <CustomFormItem>
               <div className="title">
                 <p>문서 토픽 분류</p>
-                <button>
+                <button onClick={()=>{_openCategoryModal("dcTopic")}}>
                   <MdSettings /> 설정
                 </button>
               </div>
@@ -315,7 +291,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>문서 유형</p>
-              <button>
+              <button onClick={()=>{_openCategoryModal("dcTypeDoc")}}>
                 <MdSettings /> 선택
               </button>
             </div>
@@ -325,8 +301,8 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           </CustomFormItem>
           <CustomFormItem>
             <div className="title">
-              <p>내용구분</p>
-              <button>
+              <p >내용구분</p>
+              <button onClick={()=>{_openCategoryModal("dcTypeContent")}}>
                 <MdSettings /> 선택
               </button>
             </div>
@@ -339,7 +315,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           <CustomFormItem>
             <div className="title">
               <p>언어</p>
-              <button>
+              <button onClick={()=>{_openCategoryModal("dcLanguage")}}>
                 <MdSettings /> 선택
               </button>
             </div>
@@ -533,22 +509,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             </CustomFormItem>
           </CustomFormRow>
         )}
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>내부 문서 링크</p>
-              <button>
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              <CustomList>
-                <MdOutlineLink size="18" />
-                회계연도 2019년 재무지표 ...{" "}
-              </CustomList>
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>
       </Wrapper>
     </>
   );

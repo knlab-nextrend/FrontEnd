@@ -19,6 +19,7 @@ function UserManagement({
   return (
     <>
       <FormHeader type={"view"} title={"사용자 관리"} />
+      
       <TableWrapper>
         <CustomTable>
           <colgroup>

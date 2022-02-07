@@ -220,6 +220,35 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,_id=n
 
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
+
+  const paste = async (event,data,editor)=>{
+      console.log("test")
+      if (data.dataTransfer.files.length > 0) {
+        // 기존 파이프라인에서 추가된 컨텐츠 삭제
+        editor.model.deleteContent(editor.model.document.selection);
+
+        // file 정보 받아오기
+        const file = data.dataTransfer.files[0];
+        const images = new FormData();
+        images.append('file',file);
+        images.append('_id',_id);
+
+        // 객체 생성
+        const result = await documentPastedImageApi(images);
+        editor.model.change(writer => {
+          const imageElement = writer.createElement('imageInline', {
+            src: 'http://'+result.data
+          });
+          // 현재 에디터의 모델이 선택하고 있는 영역에 새로 만든 컨텐츠를 삽입.
+          editor.model.insertContent(imageElement, editor.model.document.selection);
+        });
+      }
+      //이벤트를 종료함으로써 이후 로직을 무시
+      event.stop();
+
+    
+    
+  }
   return (
     <CustomCKEditor>
       <CKEditor
@@ -236,32 +265,9 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,_id=n
         }}
         onReady={(editor) => {
           const documentView = editor.editing.view.document
-          documentView.on('paste', async (event, data) => {
-            if (data.dataTransfer.files.length > 0) {
-              // 기존 파이프라인에서 추가된 컨텐츠 삭제
-              editor.model.deleteContent(editor.model.document.selection);
-
-              // file 정보 받아오기
-              const file = data.dataTransfer.files[0];
-              const images = new FormData();
-              images.append('file',file);
-              images.append('_id',_id);
-
-              // 객체 생성
-              const result = await documentPastedImageApi(images);
-              editor.model.change(writer => {
-                const imageElement = writer.createElement('imageInline', {
-                  src: 'http://'+result.data
-                });
-                // 현재 에디터의 모델이 선택하고 있는 영역에 새로 만든 컨텐츠를 삽입.
-                editor.model.insertContent(imageElement, editor.model.document.selection);
-              });
-            }
-            //이벤트를 종료함으로써 이후 로직을 무시
-            event.stop();
-
+          documentView.on('paste', (event,data)=>{paste(event,data,editor)}, { priority: 'lowest' });
           // priority가 가장 낮기 때문에 기존의 파이프라인 마지막 결과 컨텐츠에 접근할 수 있음.
-          }, { priority: 'lowest' });
+          documentView.on('drop', (event,data)=>{paste(event,data,editor)}, { priority: 'lowest' });
           const toolbarElement = editor.ui.view.toolbar.element;
           if (readOnly) {
             toolbarElement.style.display = "none";
