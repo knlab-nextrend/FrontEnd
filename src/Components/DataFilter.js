@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaFilter } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
-import { GrPowerReset } from "react-icons/gr";
-import { MdSort } from "react-icons/md";
 import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
 function DataFilter({ dataFilterFetch = null, type }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);

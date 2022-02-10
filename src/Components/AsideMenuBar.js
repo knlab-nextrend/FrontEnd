@@ -147,7 +147,7 @@ function AsideMenuBar({ permission }) {
               )}
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/home" activeClassName="active">
+                  <AsideMenuBarItem to="/host" activeClassName="active">
                     <div className="icon-container">
                       <MdWebAsset size="16" />
                     </div>
@@ -157,7 +157,7 @@ function AsideMenuBar({ permission }) {
               )}
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/home" activeClassName="active">
+                  <AsideMenuBarItem to="/dictionary" activeClassName="active">
                     <div className="icon-container">
                       <FaBook size="16" />
                     </div>

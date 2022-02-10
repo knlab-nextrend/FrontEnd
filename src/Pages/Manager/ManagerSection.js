@@ -5,7 +5,9 @@ import PrivateRoute from "../../Route/PrivateRoute";
 import ExcelDataRegisterContainer from "../Manager/ExcelDataRegister/ExcelDataRegisterContainer";
 import UserManagementContainer from "../Manager/UserManagement/UserManagementContainer";
 import DashboardContainer from "./Dashboard/DashboardContainer";
-import CategoryManagementContainer from "./CategoryManagement/CategoryManagementContainer"
+import CategoryManagementContainer from "./CategoryManagement/CategoryManagementContainer";
+import HostManagementContainer from "./HostManagement/HostManagementContainer";
+import MultilingualDictionaryContainer from "./MultilingualDictionary/MultilingualDictionaryContainer";
 function UserSection() {
   return (
     <Switch>
@@ -19,6 +21,12 @@ function UserSection() {
       <PrivateRoute
         path="/category"
         component={CategoryManagementContainer}
+        exact
+      />
+      <PrivateRoute path="/host" component={HostManagementContainer} exact />
+      <PrivateRoute
+        path="/dictionary"
+        component={MultilingualDictionaryContainer}
         exact
       />
     </Switch>
