@@ -80,8 +80,7 @@ function CategoryManagement({
         </MenuContainer>
         <ContentContainer>
           <div className="content-title">
-            <div className="main-title">카테고리 관리</div>
-            <div className="sub-title">서브..</div>
+            <div className="main-title">상위분류를 클릭하면 하위분류가 나타납니다.</div>
           </div>
           <div className="content-body">
             <div>
@@ -135,10 +134,10 @@ function CategoryManagement({
                 <ListContainer>
                   {categoryList.map((category, index) => {
                     return (
-                      <ListWrapper>
+                      <ListWrapper key={index}>
                         {category.list.map((item, index) => {
                           return (
-                            <>
+                            <div key={index}>
                               {editableCode === item.CODE ? (
                                 <EditItem>
                                   <input
@@ -164,7 +163,7 @@ function CategoryManagement({
                                   </div>
                                 </EditItem>
                               ) : (
-                                <ViewItem>
+                                <ViewItem >
                                   <div
                                     className="title"
                                     value={item.CODE}
@@ -198,7 +197,7 @@ function CategoryManagement({
                                   </div>
                                 </ViewItem>
                               )}
-                            </>
+                            </div>
                           );
                         })}
                       </ListWrapper>
