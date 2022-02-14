@@ -170,20 +170,14 @@ const CategorysListDataFetchApi = (upperCode = null) => {
 };
 
 /* 주제 분류 리스트를 모두 받아오는 함수 */
-const CategoryOptionFetchApi = () => {
+const CategoryOptionFetchApi = (type) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
+    params: { type },
   };
   return axios.get("/nextrend/categorys/dict", config);
 };
 
-/* 국가 리스트를 모두 받아오는 함수 */
-const CountryOptionFetchApi = () => {
-  let config = {
-    headers: { authorization: `Bearer ${getToken()}` },
-  };
-  return axios.get("/nextrend/countrys/dict", config);
-};
 /* 로그인 할 때 사용하는 통신 함수 */
 const LoginApi = async (userID, userPW) => {
   const body = {
@@ -356,7 +350,6 @@ export {
   addUserApi,
   CategorysListDataFetchApi,
   CategoryOptionFetchApi,
-  CountryOptionFetchApi,
   userAuthApi,
   sessionHandler,
   documentPastedImageApi,
