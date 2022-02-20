@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaFilter } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
-import { CategoryOptionFetchApi, CountryOptionFetchApi } from "../Utils/api";
+import { CategoryOptionFetchApi } from "../Utils/api";
 function DataFilter({ dataFilterFetch = null, type }) {
   const [optionIsOpen, setOptionIsOpen] = useState(false);
 
@@ -146,10 +146,10 @@ function DataFilter({ dataFilterFetch = null, type }) {
     console.log(_dateGte.toISOString().substring(0,10))
   },[dateRange])
   useEffect(() => {
-    CategoryOptionFetchApi().then((res) => {
+    CategoryOptionFetchApi(1).then((res) => {
       setCategoryOptions(res.data);
     });
-    CountryOptionFetchApi().then((res) => {
+    CategoryOptionFetchApi(3).then((res) => {
       setCountryOptions(res.data);
     });
   }, []);
