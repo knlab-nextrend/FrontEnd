@@ -6,7 +6,7 @@ function UserCustomMenu() {
     <>
       <FormHeader type={"view"} title={"맞춤형 화면 생성"} />
       <Wrapper>
-        <CardWrapper>
+        <UserListCard>
           <div className="title">
             <div className="title-main">사용자 목록</div>
             <div className="title-sub">
@@ -15,39 +15,144 @@ function UserCustomMenu() {
             </div>
           </div>
           <div className="content">
-            <UserListTable>
-              <thead>
-                <tr>
-                  <th>사용자 ID</th>
-                  <th>사용자 이름</th>
-                  <th>이메일</th>
-                  <th>연락처</th>
-                  <th>소속</th>
-                  <th>직책</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>jhy901</td>
-                  <td>전하영</td>
-                  <td>jhy901@naver.com</td>
-                  <td>01054274189</td>
-                  <td>null</td>
-                  <td>null</td>
-                </tr>
-              </tbody>
-            </UserListTable>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
+            <UserCard>
+              <div className="name-and-id">
+                <div className="name">전하영</div>
+                <div className="id">jhy901</div>
+              </div>
+              <div className="company">
+                금오공과대학교 / 학생
+              </div>
+            </UserCard>
           </div>
-        </CardWrapper>
+        </UserListCard>
       </Wrapper>
     </>
   );
 }
 
 const Wrapper = styled.div`
+  display: flex;
   padding: 1rem;
   font-size: 14px;
-  min-height: 50rem;
+  min-height: 1280px;
   background-color: #eee;
   color: rgb(59, 59, 59);
 `;
@@ -57,6 +162,7 @@ const CardWrapper = styled.div`
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   background-color: white;
+  height: 100%;
   .title {
     font-weight: bold;
     border-bottom: 1px solid #e6e9ed;
@@ -72,28 +178,44 @@ const CardWrapper = styled.div`
     color: #939ba2;
   }
   .content {
-    height: 100%;
     padding: 1rem;
+    height: 100%;
   }
 `;
 
-const UserListTable = styled.table`
-  width: 100%;
-  text-align: left;
-  border: 1px solid #e6e9ed;
-  border-radius:4px;
-  border-collapse: collapse;
-  thead {
-    background-color: #d8dee6;
-    color: #323d4d;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-    padding:0.5rem 1rem 0.5rem 1rem;
+const UserListCard = styled(CardWrapper)`
+  width: 20%;
+  .content {
+    background-color: #F6F6F6;
+    height: 35rem;
+    overflow:scroll;
   }
-  tr {
-    height: 2rem;
+`;
+const UserCard = styled.div`
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
+  padding:0.5rem;
+  margin-bottom:0.5rem;
+  &:hover {
+    transform: scale(1.02);
+    cursor: pointer;
   }
-  th,td{
-    padding:0.5rem 1rem 0.5rem 1rem;
+  .name-and-id{
+    display:flex;
+  }
+  .name{
+    color: #009999;
+    font-weight: bold;
+    font-size:16px;
+    margin-right:1rem;
+  }
+  .id{
+    color:#939ba2;
+  }
+  .company{
+    font-size:12px;
+    margin-top:0.25rem;
   }
 `;
 export default UserCustomMenu;

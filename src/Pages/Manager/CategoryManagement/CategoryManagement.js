@@ -217,13 +217,12 @@ const Wrapper = styled.div`
   display: flex;
   color: rgb(59, 59, 59);
   background-color: #eee;
-  min-height: 50rem;
+  min-height: 30rem;
 `;
 
 const LineBox = styled.div`
   /* border: solid 1px #d6d6d6;
   border-radius: 4px; */
-  min-height: 30rem;
   background-color: white;
   margin: 1rem;
   border-radius: 4px;
@@ -267,7 +266,6 @@ const ContentContainer = styled(LineBox)`
     }
   }
   .content-body {
-    height: 100%;
     padding: 1rem;
   }
 `;
