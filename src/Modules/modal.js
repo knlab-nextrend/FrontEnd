@@ -26,6 +26,7 @@ const initialState = {
     dc_type_doc:[],
     dc_type_content:[],
     dc_language:[],
+    dc_custom:[],
     modal_user: [],
   },
 };

@@ -47,7 +47,14 @@ function CategoryModal({ executeModal, closeModal }) {
     dc_language: {
       type: 4,
       title: "언어 설정",
-      subTitle: "해당 문서의 언어를 선택해주세요. 항목을 더블클릭하면 추가되며, 하나의 언어만 선택 가능합니다.",
+      subTitle:
+        "해당 문서의 언어를 선택해주세요. 항목을 더블클릭하면 추가되며, 하나의 언어만 선택 가능합니다.",
+    },
+    dc_custom: {
+      type: 6,
+      title: "기관맞춤형 분류 설정",
+      subTitle:
+        "해당 문서의 기관맞춤형 분류를 설정해주세요. 항목을 더블클릭하면 추가되며, 추가된 칩을 클릭하면 목록에서 삭제됩니다. 설정된 기관맞춤형 분류는 사용자 페이지에 표출할 때 사용됩니다.",
     },
   };
 
@@ -86,11 +93,9 @@ function CategoryModal({ executeModal, closeModal }) {
       })
     ) {
       alert("이미 선택된 항목 입니다.");
-    } 
-    else if (categoryModalType === ("dc_language" || "dc_country_pub") ){
-      setSelectedCategoryList([item])
-    }
-    else {
+    } else if (categoryModalType === ("dc_language" || "dc_country_pub")) {
+      setSelectedCategoryList([item]);
+    } else {
       setSelectedCategoryList([...selectedCategoryList, item]);
     }
   };
@@ -171,29 +176,30 @@ function CategoryModal({ executeModal, closeModal }) {
                   <ListWrapper>
                     {category.list.length === 0 ? (
                       <ListItem>상위분류를 먼저 선택하세요</ListItem>
-                    ):category.list.map((item, index) => {
-                      return (
-                        <>
-                          <ListItem>
-                            <div
-                              className="title"
-                              value={item.CODE}
-                              onClick={(e) => {
-                                clickHandler(
-                                  e,
-                                  item,
-                                  item.CODE,
-                                  category.length
-                                );
-                              }}
-                            >
-                              {item.CT_NM}
-                            </div>
-                          </ListItem>
-                        </>
-                      );
-                    })}
-                    
+                    ) : (
+                      category.list.map((item, index) => {
+                        return (
+                          <>
+                            <ListItem>
+                              <div
+                                className="title"
+                                value={item.CODE}
+                                onClick={(e) => {
+                                  clickHandler(
+                                    e,
+                                    item,
+                                    item.CODE,
+                                    category.length
+                                  );
+                                }}
+                              >
+                                {item.CT_NM}
+                              </div>
+                            </ListItem>
+                          </>
+                        );
+                      })
+                    )}
                   </ListWrapper>
                 );
               })}

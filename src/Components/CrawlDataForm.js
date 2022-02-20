@@ -485,13 +485,18 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
           <CustomFormItem>
-            <p className="title">메모</p>
-            <input
-              value={dcBiblio}
-              className="form"
-              type="text"
-              placeholder="관리자 전용 메모를 입력하세요."
-            />
+            <div className="title">
+              <p>기관맞춤형 분류</p>
+              <button
+                onClick={() => {
+                  _openCategoryModal("dc_custom");
+                }}
+              >
+                <MdSettings /> 선택
+              </button>
+            </div>
+            <div className="form notInput">
+            </div>
           </CustomFormItem>
         </CustomFormRow>
 
@@ -504,6 +509,15 @@ function CrawlDataForm({ docs, type, _id }, ref) {
               className="form"
               type="text"
               placeholder="검색에 사용할 키워드를 입력하세요. 검색 키워드는 쉼표(,)로 구분합니다."
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <p className="title">메모</p>
+            <input
+              value={dcBiblio}
+              className="form"
+              type="text"
+              placeholder="관리자 전용 메모를 입력하세요."
             />
           </CustomFormItem>
         </CustomFormRow>

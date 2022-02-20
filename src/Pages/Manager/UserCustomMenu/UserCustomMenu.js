@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import FormHeader from "../../../Components/FormHeader";
-function UserCustomMenu() {
+function UserCustomMenu({USER_DATA,currentUserId,setCurrentUserId}) {
   return (
     <>
       <FormHeader type={"view"} title={"맞춤형 화면 생성"} />
@@ -15,134 +15,26 @@ function UserCustomMenu() {
             </div>
           </div>
           <div className="content">
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
-            <UserCard>
-              <div className="name-and-id">
-                <div className="name">전하영</div>
-                <div className="id">jhy901</div>
-              </div>
-              <div className="company">
-                금오공과대학교 / 학생
-              </div>
-            </UserCard>
+            {USER_DATA.map((user,index)=>{
+              return ( <UserCard key={index} active={user.uid === currentUserId} onClick={()=>{setCurrentUserId(user.uid)}}>
+                <div className="name-and-id">
+                  <div className="name">{user.name}</div>
+                  <div className="id">{user.id}</div>
+                </div>
+                <div className="company">{user.company} / {user.role}</div>
+              </UserCard>)
+            })}
           </div>
         </UserListCard>
+        <MenuCustomCard>
+          <div className="title">
+            <div className="title-main">사용자 맞춤형 X축 및 Y축 설정</div>
+            <div className="title-sub">
+              사용자 맞춤형 X축 및 Y축 메뉴 설정
+            </div>
+          </div>
+          <div className="content"></div>
+        </MenuCustomCard>
       </Wrapper>
     </>
   );
@@ -183,39 +75,46 @@ const CardWrapper = styled.div`
   }
 `;
 
+const MenuCustomCard = styled(CardWrapper)`
+  width: 80%;
+  .content {
+    height: 35rem;
+  }
+`;
 const UserListCard = styled(CardWrapper)`
   width: 20%;
   .content {
-    background-color: #F6F6F6;
+    background-color: #f6f6f6;
     height: 35rem;
-    overflow:scroll;
+    overflow: scroll;
   }
 `;
 const UserCard = styled.div`
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
-  padding:0.5rem;
-  margin-bottom:0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-left: ${(props) => (props.active ? "solid 5px #435269" : null)};
   &:hover {
     transform: scale(1.02);
     cursor: pointer;
   }
-  .name-and-id{
-    display:flex;
+  .name-and-id {
+    display: flex;
   }
-  .name{
+  .name {
     color: #009999;
     font-weight: bold;
-    font-size:16px;
-    margin-right:1rem;
+    font-size: 16px;
+    margin-right: 1rem;
   }
-  .id{
-    color:#939ba2;
+  .id {
+    color: #939ba2;
   }
-  .company{
-    font-size:12px;
-    margin-top:0.25rem;
+  .company {
+    font-size: 12px;
+    margin-top: 0.25rem;
   }
 `;
 export default UserCustomMenu;

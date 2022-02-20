@@ -76,6 +76,15 @@ function CategoryManagement({
             >
               토픽분류
             </li>
+
+            <li
+              onClick={() => {
+                typeHandler(CATEGOROY_CODE_LIST.기관맞춤형분류);
+              }}
+              className={type === CATEGOROY_CODE_LIST.기관맞춤형분류 ? "active" : null}
+            >
+              기관맞춤형분류
+            </li>
           </Menu>
         </MenuContainer>
         <ContentContainer>
