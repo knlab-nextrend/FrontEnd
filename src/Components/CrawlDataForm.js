@@ -153,10 +153,10 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       dispatch(setModalData(docs.dc_code, "dc_code"));
       dispatch(setModalData(docs.dc_country, "dc_country"));
       dispatch(setModalData(docs.dc_country_pub, "dc_country_pub"));
-      dispatch(setModalData(docs.dc_language, "dc_language"));
-      dispatch(setModalData(docs.dc_type_content, "dc_type_content"));
-      dispatch(setModalData(docs.dc_type_doc, "dc_type_doc"));
-      dispatch(setModalData(docs.dc_topic, "dc_topic"));
+      //dispatch(setModalData(docs.dc_language, "dc_language"));
+      //dispatch(setModalData(docs.dc_type_content, "dc_type_content"));
+      //dispatch(setModalData(docs.dc_type_doc, "dc_type_doc"));
+      //dispatch(setModalData(docs.dc_topic, "dc_topic"));
       setItemId(docs.item_id);
     }
   }, [docs]);

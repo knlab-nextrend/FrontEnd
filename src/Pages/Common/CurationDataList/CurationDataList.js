@@ -287,7 +287,7 @@ const CurationListTable = styled.table`
     cursor: pointer;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   }
-  td,
+  th,
   td {
     padding: 0.5rem;
     word-break: break-all;

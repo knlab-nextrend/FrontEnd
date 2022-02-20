@@ -183,7 +183,7 @@ function AsideMenuBar({ permission }) {
 
               {PERMISSON_DATA[permission] === "관리자" && (
                 <li>
-                  <AsideMenuBarItem to="/home" activeClassName="active">
+                  <AsideMenuBarItem to="/user-custom-menu" activeClassName="active">
                     <div className="icon-container">
                       <MdSettings size="16" />
                     </div>

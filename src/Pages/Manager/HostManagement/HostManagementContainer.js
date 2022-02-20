@@ -1,7 +1,14 @@
-import React from "react"
+import React, { useState, useEffect } from "react";
 import HostManagement from "./HostManagement";
 
-function HostManagementContainer (){
-    return (<><HostManagement/></>)
+function HostManagementContainer() {
+  const [hostList, setHostList] = useState([]);
+  const [filterObj, setFilterObj] = useState({});
+
+  return (
+    <>
+      <HostManagement/>
+    </>
+  );
 }
 export default HostManagementContainer;

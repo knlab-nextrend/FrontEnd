@@ -8,6 +8,7 @@ import DashboardContainer from "./Dashboard/DashboardContainer";
 import CategoryManagementContainer from "./CategoryManagement/CategoryManagementContainer";
 import HostManagementContainer from "./HostManagement/HostManagementContainer";
 import MultilingualDictionaryContainer from "./MultilingualDictionary/MultilingualDictionaryContainer";
+import UserCustomMenuContainer from "./UserCustomMenu/UserCustomMenuContainer";
 function UserSection() {
   return (
     <Switch>
@@ -27,6 +28,11 @@ function UserSection() {
       <PrivateRoute
         path="/dictionary"
         component={MultilingualDictionaryContainer}
+        exact
+      />
+      <PrivateRoute
+        path="/user-custom-menu"
+        component={UserCustomMenuContainer}
         exact
       />
     </Switch>

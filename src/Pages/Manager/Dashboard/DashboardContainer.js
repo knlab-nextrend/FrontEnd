@@ -6,8 +6,9 @@ function DashboardContainer() {
   // docs 문서 통계
   // work 작업자 작업 통계
   // crawl 크롤러 현황
-  const [menuType,setMenuType] = useState("docs")
   
+  const [menuType,setMenuType] = useState("docs")
+
   const [process,setProcess] = useState("all")
   const menuHandler = (e)=>{
     setMenuType(e.target.value)
