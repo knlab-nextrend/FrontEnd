@@ -7,6 +7,8 @@ function UserCustomMenu({
   setCurrentUserId,
   openCategoryModal,
   currentAxis,
+  previewAxisMenu,
+  axisCategoryInfo
 }) {
   return (
     <>
@@ -63,9 +65,9 @@ function UserCustomMenu({
                   X축 설정
                 </button>
                 <div className="axis-contents">
-                  <div className="category-info">기관맞춤형 분류</div>
+                  <div className="category-info">{axisCategoryInfo.X.category_type || "선택없음"}</div>
                   <div>{`>`}</div>
-                  <div className="category-code">헬스케어</div>
+                  <div className="category-code">{axisCategoryInfo.X.select_category_name || "선택없음"}</div>
                 </div>
               </AxisCard>
               <AxisCard>
@@ -78,26 +80,23 @@ function UserCustomMenu({
                   Y축 설정
                 </button>
                 <div className="axis-contents">
-                  <div className="category-info">국가분류</div>
+                  <div className="category-info">{axisCategoryInfo.X.category_type || "선택없음"}</div>
                   <div>{`>`}</div>
-                  <div className="category-code">아시아</div>
+                  <div className="category-code">{axisCategoryInfo.Y.select_category_name || "선택없음"}</div>
                 </div>
               </AxisCard>
             </AxisCardWrapper>
             <PreviewMenuWrapper>
               <div className="axis-title">미리보기</div>
               <div className="axis-x-menu">
-                <div>메뉴1</div>
-                <div>메뉴1</div>
-                <div>메뉴1</div>
+                {previewAxisMenu.X.map((item) => {
+                  return <div>{item.ct_nm}</div>;
+                })}
               </div>
               <div className="axis-y-menu">
-                <div>메뉴1</div>
-                <div>메뉴1</div>
-                <div>메뉴1</div>
-                <div>메뉴1</div>
-                <div>메뉴1</div>
-                <div>메뉴1</div>
+              {previewAxisMenu.Y.map((item) => {
+                  return <div>{item.ct_nm}</div>;
+                })}
               </div>
               <div className="contents-body"></div>
             </PreviewMenuWrapper>
@@ -106,7 +105,6 @@ function UserCustomMenu({
             </div>
           </div>
         </MenuCustomCard>
-
       </Wrapper>
     </>
   );
@@ -134,6 +132,7 @@ const PreviewMenuWrapper = styled.div`
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     color: #009999;
+    font-weight:bold;
   }
   .axis-x-menu {
     display: flex;

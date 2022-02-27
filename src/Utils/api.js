@@ -301,19 +301,21 @@ const categoryListFetchApi = (type, length, code = null) => {
   return axios.get(`/nextrend/cat`, config);
 };
 /* 카테고리 추가하기 */
-const categoryItemAddApi = (type, length, ct_nm,code=null) => {
+const categoryItemAddApi = (type, length, ct_nm, code = null) => {
   const body = {
     type,
     length,
     ct_nm,
-    code
+    code,
   };
   return axios.post(`/nextrend/cat`, body, { headers: headers });
 };
 /* 카테고리 수정하기 */
 const categoryItemEditApi = (type, code, ct_nm) => {
   let body = {
-    type,code,ct_nm
+    type,
+    code,
+    ct_nm,
   };
   return axios.put(`/nextrend/cat`, body, { headers: headers });
 };
@@ -323,11 +325,18 @@ const categoryItemDeleteApi = (type, code) => {
     headers: headers,
     params: {
       type,
-      code
+      code,
     },
   };
   return axios.delete(`/nextrend/cat`, config);
+};
 
+const axisMenuPreviewFetch = (cid) => {
+  const config = {
+    headers: headers,
+    params: { cid },
+  };
+  return axios.get(`/nextrend/custom/test`, config);
 };
 export {
   LoginApi,
@@ -360,5 +369,6 @@ export {
   categoryListFetchApi,
   categoryItemAddApi,
   categoryItemDeleteApi,
-  categoryItemEditApi
+  categoryItemEditApi,
+  axisMenuPreviewFetch
 };
