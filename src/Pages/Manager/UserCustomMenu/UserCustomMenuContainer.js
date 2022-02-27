@@ -9,6 +9,14 @@ import {
 } from "../../../Utils/api";
 import { setModal, clearCategoryData } from "../../../Modules/modal";
 function UserCustomMenuContainer() {
+  const CATEGORY_TYPE_LIST = {
+    1:"정책 분류",
+    2:"유형 분류",
+    3:"국가 분류",
+    4:"언어 분류",
+    5:"토픽 분류",
+    6:"기관 맞춤형 분류"
+  }
   const dispatch = useDispatch();
   const [userList, setUserList] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null); // 현재 선택된 유저의 id
@@ -53,17 +61,23 @@ function UserCustomMenuContainer() {
           ...prev,
           [currentAxis]: res.data,
         }));
+        console.log(CATEGORY_TYPE_LIST[res.data[0].type])
         setAxisCategoryInfo((prev) => ({
           ...prev,
           [currentAxis]: {
-            category_type: "일단미정",
+            category_type: CATEGORY_TYPE_LIST[res.data[0].type],
             select_category_name: axisMenuData[currentAxis].CT_NM,
           },
         }));
       })
     );
   };
-  const saveUserAxisData = () => {};
+  const saveUserAxisData = () => {
+    if(axisCategoryInfo.X.category_type === axisCategoryInfo.Y.category_type){
+      alert("X축과 Y축이 동일한 카테고리 타입을 가질 수 없습니다. 다시 설정해주세요.");
+      return;
+    }
+  };
   useEffect(() => {
     getUserList();
   }, []);
@@ -90,9 +104,9 @@ function UserCustomMenuContainer() {
         currentUserId={currentUserId}
         setCurrentUserId={setCurrentUserId}
         openCategoryModal={openCategoryModal}
-        currentAxis={currentAxis}
         previewAxisMenu={previewAxisMenu}
         axisCategoryInfo={axisCategoryInfo}
+        saveUserAxisData={saveUserAxisData}
       />
     </>
   );

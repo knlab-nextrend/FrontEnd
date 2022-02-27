@@ -38,9 +38,8 @@ function CategoryModal({ executeModal, closeModal }) {
   const addCategory = (item) => {
     if (!!selectedCategory && selectedCategory.CODE === item.CODE) {
       alert("이미 선택한 항목 입니다.");
-    }
-    else{
-        setSelectedCategory(item)
+    } else {
+      setSelectedCategory(item);
     }
   };
 
@@ -65,10 +64,14 @@ function CategoryModal({ executeModal, closeModal }) {
     );
   };
   const saveCategory = () => {
-    // 1. 모달에서 값 선택 후 redux에 저장
-    executeModal(selectedCategory, "axis_category");
-    alert("성공적으로 저장되었습니다.");
-    closeModal();
+    if (selectedCategory === null) {
+      alert("값을 선택해주세요.");
+    } else {
+      // 1. 모달에서 값 선택 후 redux에 저장
+      executeModal(selectedCategory, "axis_category");
+      alert("성공적으로 저장되었습니다.");
+      closeModal();
+    }
   };
 
   const dataCleansing = (rawData) => {
@@ -101,7 +104,8 @@ function CategoryModal({ executeModal, closeModal }) {
         <Modalheader>
           <ModalTitle>맞춤형 메뉴 주제 설정</ModalTitle>
           <ModalSubTitle>
-            해당 축에 설정할 메뉴 주제를 선택하세요.
+            해당 축에 설정할 메뉴 주제를 선택하세요. X축과 Y축이 동일한 카테고리
+            타입을 가질 수 없습니다. 유의해주세요
           </ModalSubTitle>
         </Modalheader>
         <ModalBody>

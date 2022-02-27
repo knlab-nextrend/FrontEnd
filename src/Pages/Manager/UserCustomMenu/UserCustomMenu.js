@@ -6,9 +6,9 @@ function UserCustomMenu({
   currentUserId,
   setCurrentUserId,
   openCategoryModal,
-  currentAxis,
   previewAxisMenu,
-  axisCategoryInfo
+  axisCategoryInfo,
+  saveUserAxisData
 }) {
   return (
     <>
@@ -50,7 +50,7 @@ function UserCustomMenu({
             <div className="title-main">사용자 맞춤형 X축 및 Y축 설정</div>
             <div className="title-sub">
               해당 축에 표시할 분류를 선택하세요. 선택한 분류의 하위 분류가 해당
-              축의 메뉴로 표출됩니다. 클릭시 모달창이 뜹니다.
+              축의 메뉴로 표출됩니다. 클릭시 모달창이 뜹니다. X축과 Y축이 동일한 카테고리 타입을 가질 수 없습니다. 유의해주세요
             </div>
           </div>
           <div className="content">
@@ -80,7 +80,7 @@ function UserCustomMenu({
                   Y축 설정
                 </button>
                 <div className="axis-contents">
-                  <div className="category-info">{axisCategoryInfo.X.category_type || "선택없음"}</div>
+                  <div className="category-info">{axisCategoryInfo.Y.category_type || "선택없음"}</div>
                   <div>{`>`}</div>
                   <div className="category-code">{axisCategoryInfo.Y.select_category_name || "선택없음"}</div>
                 </div>
@@ -101,7 +101,7 @@ function UserCustomMenu({
               <div className="contents-body"></div>
             </PreviewMenuWrapper>
             <div className="action">
-              <SaveButton>저장</SaveButton>
+              <SaveButton onClick={saveUserAxisData}>저장</SaveButton>
             </div>
           </div>
         </MenuCustomCard>
