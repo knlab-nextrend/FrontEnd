@@ -1,6 +1,6 @@
 const SET_MODAL = "modal/SET_MODAL";
 const SET_MODAL_DATA = "modal/SET_MODAL_DATA";
-const CLEAR_MODAL_DATA = "modal/CLEAR_MODAL_DATA";
+const CLEAR_AXIS_CATEGORY = "modal/CLEAR_AXIS_CATEGORY";
 const SET_CATEGORY_MODAL_TYPE = "modal/SET_CATEGORY_MODAL_TYPE";
 
 export const setModal = (modalType) => ({ type: SET_MODAL, modalType });
@@ -9,12 +9,11 @@ export const setModalData = (modalData, dataType) => ({
   modalData,
   dataType,
 });
-export const clearModalData = () => ({ type: CLEAR_MODAL_DATA });
+export const clearCategoryData = () => ({ type: CLEAR_AXIS_CATEGORY });
 export const setCategoryModalType = (categoryModalType) => ({
   type: SET_CATEGORY_MODAL_TYPE,
   categoryModalType,
 });
-
 const initialState = {
   modalType: null,
   categoryModalType: null,
@@ -28,6 +27,7 @@ const initialState = {
     dc_language:[],
     dc_custom:[],
     modal_user: [],
+    axis_category:null,
   },
 };
 
@@ -45,10 +45,11 @@ export default function modal(state = initialState, action) {
         ...state,
         modalData: _modalData,
       };
-    case CLEAR_MODAL_DATA:
+    case CLEAR_AXIS_CATEGORY:
+      _modalData[action.axis_category] = null;
       return {
         ...state,
-        modalData: null,
+        modalData: _modalData,
       };
     case SET_CATEGORY_MODAL_TYPE:
       return {

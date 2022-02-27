@@ -21,6 +21,7 @@ function UserInfoModal({ closeModal, executeModal }) {
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
   const [Category, setCategory] = useState(0);
+  const [Company,setCompany]=useState("");
 
   const [confirm, setConfirm] = useState(false);
 
@@ -53,6 +54,9 @@ function UserInfoModal({ closeModal, executeModal }) {
   const _userCategoryHandler = (e) => {
     setCategory(e.target.value);
   };
+  const _userCompanyHandler = (e)=>{
+    setCompany(e.target.value)
+  }
   useEffect(() => {
     setUserID(userInfo.userID || "");
     setID(userInfo.id || "");
@@ -64,6 +68,7 @@ function UserInfoModal({ closeModal, executeModal }) {
     setCategory(userInfo.Category || "");
     setSalt(userInfo.salt || "");
     setConfirm(userInfo.Confirm || "");
+    setCompany(userInfo.Company || "");
   }, []);
 
   const _userIDdVerify = () => {
@@ -125,6 +130,7 @@ function UserInfoModal({ closeModal, executeModal }) {
       Name,
       Email,
       Category,
+      Company,
       salt,
     };
     if (_confirmCheck()) {
@@ -151,6 +157,7 @@ function UserInfoModal({ closeModal, executeModal }) {
       Name,
       Email,
       Category,
+      Company,
       salt,
     };
 
@@ -213,6 +220,16 @@ function UserInfoModal({ closeModal, executeModal }) {
             <InputFieldWrapper>
               <InputTitle>전화번호</InputTitle>
               <InputField value={Tel} onChange={_userTelHandler} type="text" />
+            </InputFieldWrapper>
+          </InputWrapper>
+          <InputWrapper>
+            <InputFieldWrapper>
+              <InputTitle>소속</InputTitle>
+              <InputField
+                value={Company}
+                onChange={_userCompanyHandler}
+                type="text"
+              />
             </InputFieldWrapper>
           </InputWrapper>
           <InputWrapper>

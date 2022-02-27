@@ -5,15 +5,18 @@ import { setModal, setModalData } from "../../Modules/modal";
 /* modal Components */
 import CategoryModal from "./CategoryModal";
 import UserInfoModal from "./UserInfoModal";
+import AxisCategoryModal from "./AxisCategoryModal"
 
 export const MODAL_TYPES = {
   CategoryModal: "CategoryModal",
   UserInfoModal: "UserInfoModal",
+  AxisCategoryModal:"AxisCategoryModal",
 };
 
 const MODAL_COMPONENTS = {
   [MODAL_TYPES.CategoryModal]: CategoryModal,
   [MODAL_TYPES.UserInfoModal]: UserInfoModal,
+  [MODAL_TYPES.AxisCategoryModal]:AxisCategoryModal,
 };
 
 function GlobalModal() {
