@@ -29,21 +29,26 @@ function CategoryModal({ executeModal, closeModal }) {
       subTitle:
         "발행 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dc_topic: {
-      type: 5,
-      title: "토픽 분류 설정",
-      subTitle: "토픽 분류를 선택해주세요.",
+    dc_type:{
+      type:2,
+      title:"문서 유형 설정",
+      subTitle:"문서 유형을 선택해주세요."
     },
-    dc_type_doc: {
-      type: 2,
-      title: "문서 유형 설정",
-      subTitle: "유형을 선택해주세요.",
-    },
-    dc_type_content: {
-      type: 2,
-      title: "내용 구분 설정",
-      subTitle: "내용 구분을 선택해주세요.",
-    },
+    // dc_topic: {
+    //   type: 5,
+    //   title: "토픽 분류 설정",
+    //   subTitle: "토픽 분류를 선택해주세요.",
+    // },
+    // dc_type_doc: {
+    //   type: 2,
+    //   title: "문서 유형 설정",
+    //   subTitle: "유형을 선택해주세요.",
+    // },
+    // dc_type_content: {
+    //   type: 2,
+    //   title: "내용 구분 설정",
+    //   subTitle: "내용 구분을 선택해주세요.",
+    // },
     dc_language: {
       type: 4,
       title: "언어 설정",

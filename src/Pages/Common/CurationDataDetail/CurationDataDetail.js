@@ -70,7 +70,7 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               </Info>
               <Info>
                 <div className="title">▶ 유형분류</div>
-                <div className="content">{docs.dc_type}</div>
+                <div className="content">{docs.dc_type.join(", ")}</div>
               </Info>
             </ArticleInfo>
           </ArticleInfoContainer>

@@ -50,13 +50,13 @@ function CurationDataDetailContainer() {
       dc_code: _rawStatusDetailData.dc_code,
       dc_code_list: _rawStatusDetailData.dc_code.map((x) => x.CT_NM),
       dc_country: _rawStatusDetailData.dc_country,
-      dc_country_list: _rawStatusDetailData.dc_country.map((x) => x.CTY_NAME),
+      dc_country_list: _rawStatusDetailData.dc_country.map((x) => x.CT_NM),
       dc_country_pub: _rawStatusDetailData.dc_country_pub,
       dc_country_pub_list: _rawStatusDetailData.dc_country_pub.map(
-        (x) => x.CTY_NAME
+        (x) => x.CT_NM
       ),
       dc_page: _rawStatusDetailData.dc_page || "",
-      dc_type: _rawStatusDetailData.dc_type || "",
+      dc_type: _rawStatusDetailData.dc_type?_rawStatusDetailData.dc_type.map((x) => x.CT_NM):[],
       dc_title_or: _rawStatusDetailData.dc_title_or || "",
       dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",

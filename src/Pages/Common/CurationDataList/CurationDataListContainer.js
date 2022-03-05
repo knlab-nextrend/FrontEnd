@@ -39,12 +39,12 @@ function CurationDataListContainer() {
         dc_title_kr: item.dc_title_kr,
         dc_page: item.dc_page,
         dc_cover: item.dc_cover[0] === "" ? [] : item.dc_cover,
-        dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
-        dc_country_pub_list: item.dc_country_pub.map((x) => x.CTY_NAME),
+        dc_country_list: item.dc_country.map((x) => x.CT_NM),
+        dc_country_pub_list: item.dc_country_pub.map((x) => x.CT_NM),
         dc_code_list: item.dc_code.map((x) => x.CT_NM),
         dc_dt_regi: item.dc_dt_regi.substring(0, 10),
         dc_publisher: item.dc_publisher,
-        dc_type:item.dc_type,
+        dc_type:item.dc_type? item.dc_type.map((x) => x.CT_NM):[],
         dc_content: item.dc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
       };
       _curationDataList.push(obj);

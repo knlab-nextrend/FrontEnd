@@ -67,8 +67,6 @@ function CrawlDataDetailContainer() {
           dataCleansing(res.data);
         })
         .catch((err) => {
-          
-          console.log(err.status)
           sessionHandler(err, dispatch).then((res) => {
             CrawlDataDetailFetchApi(statusCode, _id).then((res) => {
               dataCleansing(res.data);
@@ -80,8 +78,8 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
+    console.log(rawData.docs)
     const _rawStatusDetailData = rawData.docs;
-    console.log(_rawStatusDetailData);
     let _docs = {
       dc_content:
         _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content,
@@ -91,7 +89,7 @@ function CrawlDataDetailContainer() {
       dc_keyword: _rawStatusDetailData.dc_keyword,
       dc_publisher: _rawStatusDetailData.dc_publisher || "",
       dc_cover: _rawStatusDetailData.dc_cover,
-      dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
+      dc_country_pub: _rawStatusDetailData.dc_country_pub,
       dc_cat: _rawStatusDetailData.dc_cat || "",
       dc_code: _rawStatusDetailData.dc_code,
       dc_country: _rawStatusDetailData.dc_country,
@@ -101,10 +99,10 @@ function CrawlDataDetailContainer() {
       dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
-      dc_link: _rawStatusDetailData.dc_link || "",
-      dc_lang: _rawStatusDetailData.dc_lang || "",
-      item_id:_rawStatusDetailData.item_id
+      dc_language: _rawStatusDetailData.dc_lang || "",
+      item_id:_rawStatusDetailData.item_id,
     };
+    console.log(_docs)
     setDocs(_docs);
   };
 
