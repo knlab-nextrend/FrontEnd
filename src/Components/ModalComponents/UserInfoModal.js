@@ -20,8 +20,8 @@ function UserInfoModal({ closeModal, executeModal }) {
   const [Position, setPosition] = useState("");
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
-  const [Category, setCategory] = useState(0);
-  const [Company,setCompany]=useState("");
+  const [Category, setCategory] = useState(0); // 최초 설정은 일반사용자 ...
+  const [Company, setCompany] = useState("");
 
   const [confirm, setConfirm] = useState(false);
 
@@ -54,9 +54,9 @@ function UserInfoModal({ closeModal, executeModal }) {
   const _userCategoryHandler = (e) => {
     setCategory(e.target.value);
   };
-  const _userCompanyHandler = (e)=>{
-    setCompany(e.target.value)
-  }
+  const _userCompanyHandler = (e) => {
+    setCompany(e.target.value);
+  };
   useEffect(() => {
     setUserID(userInfo.userID || "");
     setID(userInfo.id || "");
@@ -65,7 +65,7 @@ function UserInfoModal({ closeModal, executeModal }) {
     setPosition(userInfo.Position || "");
     setName(userInfo.Name || "");
     setEmail(userInfo.Email || "");
-    setCategory(userInfo.Category || "");
+    setCategory(userInfo.Category || 0);
     setSalt(userInfo.salt || "");
     setConfirm(userInfo.Confirm || "");
     setCompany(userInfo.Company || "");
@@ -135,7 +135,10 @@ function UserInfoModal({ closeModal, executeModal }) {
     };
     if (_confirmCheck()) {
       addUserApi(userInfo)
-        .then(() => alert("성공적으로 생성되었습니다."))
+        .then(() => {
+          alert("성공적으로 생성되었습니다.");
+          window.location.reload();
+        })
         .catch((err) => {
           if (err.response.status === 400) {
             alert("추가 중 오류발생");
@@ -144,7 +147,6 @@ function UserInfoModal({ closeModal, executeModal }) {
           }
         });
       closeModal();
-      window.location.reload();
     }
   };
 
@@ -160,10 +162,12 @@ function UserInfoModal({ closeModal, executeModal }) {
       Company,
       salt,
     };
-
     if (_confirmCheck()) {
-      addUserApi(userInfo)
-        .then(() => alert("성공적으로 생성되었습니다."))
+      modifyUserInfoApi(userInfo,id)
+        .then(() => {
+          alert("성공적으로 수정되었습니다.");
+          window.location.reload();
+        })
         .catch((err) => {
           if (err.response.status === 400) {
             alert("추가 중 오류발생");
@@ -172,7 +176,6 @@ function UserInfoModal({ closeModal, executeModal }) {
           }
         });
       closeModal();
-      window.location.reload();
     }
   };
 

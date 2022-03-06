@@ -31,7 +31,6 @@ function App() {
   // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 ....
   useEffect(() => {
     if (isLogin) {
-      console.log(isLogin);
       trackPromise(
         userAuthApi()
           .then((res) => {
@@ -39,6 +38,7 @@ function App() {
               setUser({
                 name: res.data.Name,
                 permission: Number(res.data.Category),
+                id: res.data.id,
               })
             );
           })
@@ -58,37 +58,48 @@ function App() {
         exact
       />
       {isLogin && <Header name={userInfo.name} />}
-      <Body isLogin={isLogin}>
-        {isLogin && <AsideMenuBar permission={userInfo.permission} />}
-        <Section>
-          {userInfo.permission === 1 && <WorkerSection />}
-          {userInfo.permission === 2 && <WorkerSection />}
-          {userInfo.permission === 3 && <WorkerSection />}
-          {userInfo.permission === 4 && <WorkerSection />}
-          {userInfo.permission === 9 && (
-            <>
-              <WorkerSection />
-              <ManagerSection />
-            </>
-          )}
-          {userInfo.permission === 0 && <UserSection />}
-          <PrivateRoute path="/home" exact>
-            <MainPage />
-          </PrivateRoute>
-        </Section>
-      </Body>
+      {isLogin && userInfo.permission !== 0 && (
+        <>
+          <AdminBody isLogin={isLogin}>
+            <AsideMenuBar permission={userInfo.permission} />
+            <Section>
+              {userInfo.permission === 1 && <WorkerSection />}
+              {userInfo.permission === 2 && <WorkerSection />}
+              {userInfo.permission === 3 && <WorkerSection />}
+              {userInfo.permission === 4 && <WorkerSection />}
+              {userInfo.permission === 9 && (
+                <>
+                  <WorkerSection />
+                  <ManagerSection />
+                </>
+              )}
+              <PrivateRoute path="/home" exact>
+                <MainPage />
+              </PrivateRoute>
+            </Section>
+          </AdminBody>
+        </>
+      )}
+      {isLogin && userInfo.permission === 0 && (
+        <UserBody isLogin={isLogin}>
+          <UserSection />
+        </UserBody>
+      )}
       {isLogin && <Footer />}
       <GlobalModal /> {/* 모달 전역 제어 */}
     </>
   );
 }
 
-const Body = styled.div`
+const AdminBody = styled.div`
   display: ${(props) => (props.isLogin ? "grid" : "none")};
   padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
   grid-template-columns: minmax(260px, 1fr) 8fr;
   min-height: 1280px;
-
+`;
+const UserBody = styled.div`
+  padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
+  min-height: 1280px;
 `;
 
 const Section = styled.section`

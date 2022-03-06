@@ -331,13 +331,41 @@ const categoryItemDeleteApi = (type, code) => {
   return axios.delete(`/nextrend/cat`, config);
 };
 
-const axisMenuPreviewFetch = (cid) => {
+/* 사용자 맞춤형 메뉴 관련 api */
+
+/* 특정 카테고리의 하위 카테고리 목록을 받아오는 기능을 함. */
+const axisMenuPreviewFetchApi = (cid) => {
   const config = {
     headers: headers,
     params: { cid },
   };
   return axios.get(`/nextrend/custom/test`, config);
 };
+/* uid에 해당하는 유저의 설정된 x축, y축 의 하위 메뉴 정보를 받아옴. (사용자화면 출력용?? ) */
+const userAxisMenuFetchApi = (uid)=>{
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: { uid },
+  };
+  return axios.get(`/nextrend/custom/load`, config);
+}
+/* uid에 해당하는 유저의 메뉴 세팅 정보를 받아옴.*/
+const userAxisMenuSettingFetchApi = (uid)=>{
+  let config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+    params: { uid },
+  };
+  return axios.get(`/nextrend/custom`, config);
+}
+const userAxisMenuSaveApi = (axisSetObj,saveType) =>{
+  if(saveType === "create"){
+    return axios.post(`/nextrend/custom`, axisSetObj, { headers: headers });
+  }
+  if(saveType === "update"){
+    return axios.put(`/nextrend/custom`, axisSetObj, { headers: headers });
+  }
+  
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -370,5 +398,8 @@ export {
   categoryItemAddApi,
   categoryItemDeleteApi,
   categoryItemEditApi,
-  axisMenuPreviewFetch
+  axisMenuPreviewFetchApi,
+  userAxisMenuFetchApi,
+  userAxisMenuSettingFetchApi,
+  userAxisMenuSaveApi,
 };

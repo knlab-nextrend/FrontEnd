@@ -1,22 +1,16 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch,Redirect } from "react-router-dom";
 import PrivateRoute from "../../Route/PrivateRoute";
 
-import CurationDataListContainer from "../Common/CurationDataList/CurationDataListContainer"
-import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
-import CrawlDataDetailContainer from "../Worker/CrawlDataDetail/CrawlDataDetailContainer"
+import UserOnlyDataLookUpPageContainer from "./UserOnlyDataLookUpPage/UserOnlyDataLookUpPageContainer"
 
 function UserSection() {
   return (
     <Switch>
+       <Redirect from="/home" to="/library" /> {/*사용자는 home에 접근 금지*/}
       <PrivateRoute
-        path="/curation"
-        component={CurationDataListContainer}
-        exact
-      />
-      <PrivateRoute
-        path="/curation/:_id"
-        component={CurationDataDetailContainer}
+        path="/library"
+        component={UserOnlyDataLookUpPageContainer}
         exact
       />
     </Switch>

@@ -89,16 +89,16 @@ function UserCustomMenu({
             <PreviewMenuWrapper>
               <div className="axis-title">미리보기</div>
               <div className="axis-x-menu">
-                {previewAxisMenu.X.map((item) => {
-                  return <div>{item.ct_nm}</div>;
+                {previewAxisMenu.X.map((item,index) => {
+                  return <div key={index}>{item.ct_nm}</div>;
                 })}
               </div>
               <div className="axis-y-menu">
-              {previewAxisMenu.Y.map((item) => {
-                  return <div>{item.ct_nm}</div>;
+              {previewAxisMenu.Y.map((item,index) => {
+                  return <div key={index}>{item.ct_nm}</div>;
                 })}
               </div>
-              <div className="contents-body"></div>
+              <div className="contents-body">해당 위치에 조건에 맞는 자료가 표출됩니다.</div>
             </PreviewMenuWrapper>
             <div className="action">
               <SaveButton onClick={saveUserAxisData}>저장</SaveButton>
@@ -171,31 +171,9 @@ const PreviewMenuWrapper = styled.div`
   .contents-body {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
-  }
-`;
-const CategorySelectWRapper = styled.div`
-  .explain {
-    font-size: 12px;
-    margin: 0.5rem;
-  }
-`;
-const CategoryBtnWrapper = styled.div`
-  padding: 0.5rem;
-  button {
-    margin-right: 0.5rem;
-    min-width: 5rem;
-    color: #435269;
-    border: solid 1px #435269;
-    border-radius: 20px;
-    background-color: white;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    font-weight: bold;
-    &:hover {
-      cursor: pointer;
-      background-color: #435269;
-      color: white;
-      transition: 0.2s;
-    }
+    display:flex;
+    justify-content:center;
+    align-items:center;
   }
 `;
 const CardWrapper = styled.div`
