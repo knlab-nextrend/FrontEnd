@@ -110,13 +110,30 @@ function CrawlDataScreeningContainer() {
   /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
   const stageScreeningData = async () => {
     if (window.confirm("선택 하신 대로 스크리닝을 진행하시겠습니까?")) {
-      await ScreeningDataStageApi(stageDataList);
-      await ScreeningDataKeepApi(keepDataList);
-      if (deleteDataList.length !== 0) {
-        await ScreeningDataDeleteApi(deleteDataList);
-      }
-      alert("스크리닝이 성공적으로 완료되었습니다.");
-      history.go(0);
+      console.log(stageDataList,keepDataList,deleteDataList)
+      ScreeningDataStageApi(stageDataList).then(res=>{
+        console.log(res.status)
+        if(res.status === 200){
+          ScreeningDataKeepApi(keepDataList).then(res=>{
+            console.log(res)
+            if(res.status === 200){
+              if (deleteDataList.length !== 0) {
+                ScreeningDataDeleteApi(deleteDataList).then(res=>{
+                  console.log(res)
+                  if(res.status===200){
+                    alert("스크리닝이 성공적으로 완료되었습니다.");
+                    history.go(0);
+                  }
+                });
+              }
+              else{
+                alert("스크리닝이 성공적으로 완료되었습니다.");
+                history.go(0);
+              }
+            }
+          })
+        }
+      })
     }
   };
 

@@ -56,13 +56,14 @@ function CurationDataDetailContainer() {
         (x) => x.CT_NM
       ),
       dc_page: _rawStatusDetailData.dc_page || "",
-      dc_type: _rawStatusDetailData.dc_type?_rawStatusDetailData.dc_type.map((x) => x.CT_NM):[],
+      dc_type: _rawStatusDetailData.dc_type||[],
+      dc_type_list:_rawStatusDetailData.dc_type ? _rawStatusDetailData.dc_type.map((x) => x.CT_NM):[],
       dc_title_or: _rawStatusDetailData.dc_title_or || "",
       dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
       dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
       dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
-      dc_link: _rawStatusDetailData.dc_link || "",
     };
+    console.log(_docs)
     setDocs(_docs);
   };
 

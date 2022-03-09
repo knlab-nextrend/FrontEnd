@@ -36,7 +36,12 @@ function CategoryModal({ executeModal, closeModal }) {
   };
 
   const addCategory = (item) => {
-    if (!!selectedCategory && selectedCategory.CODE === item.CODE) {
+    if(categoryList.find((item)=>item.length === length).list.length=== 0){
+      alert("하위항목이 없는 카테고리는 선택할 수 없습니다.");
+      return;
+    }
+    console.log(selectedCategory,item)
+    if (!!selectedCategory && selectedCategory.IDX === item.IDX) {
       alert("이미 선택한 항목 입니다.");
     } else {
       setSelectedCategory(item);

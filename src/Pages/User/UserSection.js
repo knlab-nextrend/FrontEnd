@@ -3,7 +3,7 @@ import { Switch,Redirect } from "react-router-dom";
 import PrivateRoute from "../../Route/PrivateRoute";
 
 import UserOnlyDataLookUpPageContainer from "./UserOnlyDataLookUpPage/UserOnlyDataLookUpPageContainer"
-
+import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer"
 function UserSection() {
   return (
     <Switch>
@@ -11,6 +11,11 @@ function UserSection() {
       <PrivateRoute
         path="/library"
         component={UserOnlyDataLookUpPageContainer}
+        exact
+      />
+      <PrivateRoute
+        path="/library/:_id"
+        component={CurationDataDetailContainer}
         exact
       />
     </Switch>

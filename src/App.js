@@ -58,7 +58,7 @@ function App() {
         exact
       />
       {isLogin && <Header name={userInfo.name} />}
-      {isLogin && userInfo.permission !== 0 && (
+      {isLogin && userInfo.permission !== 0 &&userInfo !== null && (
         <>
           <AdminBody isLogin={isLogin}>
             <AsideMenuBar permission={userInfo.permission} />

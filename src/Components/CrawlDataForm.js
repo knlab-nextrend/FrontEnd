@@ -144,7 +144,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
 
   /* dcKeywordString 값이 변경되면 dcKeyword 배열도 자동으로 반영되도록.*/
   useEffect(() => {
-    const _stringToArrayKeywordArray = dcKeywordString.split(", ");
+    const _stringToArrayKeywordArray = dcKeywordString.split(",");
     setDcKeyword(_stringToArrayKeywordArray);
   }, [dcKeywordString]);
 

@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import CurationLookUp from "./CurationLookUp";
 function UserOnlyDataLookUpPage({ axisMenu }) {
   return (
     <Wrapper>
@@ -10,17 +11,20 @@ function UserOnlyDataLookUpPage({ axisMenu }) {
         })}
       </AxisMenuBar>
       <AxisMenuBar axis="Y">
-      {axisMenu.Y.map((category, index) => {
+        {axisMenu.Y.map((category, index) => {
           return <div key={index}>{category.ct_nm}</div>;
         })}
       </AxisMenuBar>
-      <ContentBody>내용</ContentBody>
+      <ContentBody>
+        <CurationLookUp />
+      </ContentBody>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: grid;
+  width: 100%;
   grid-template-columns: 1fr 8fr;
   grid-template-rows: 50px minmax(1280px, auto);
 `;
@@ -50,7 +54,7 @@ const AxisMenuBar = styled.div`
         align-items: center;
         height: 100%;
         padding-left: 2rem;
-        padding-right:2rem;
+        padding-right: 2rem;
         text-align: center;
         &:hover {
           background-color: rgba(255, 255, 255, 0.2);
@@ -79,7 +83,7 @@ const ContentBody = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   display: flex;
+  width: 100%;
   justify-content: center;
-  align-items: center;
 `;
 export default UserOnlyDataLookUpPage;

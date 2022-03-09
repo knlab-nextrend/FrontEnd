@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import CurationDataList from "./CurationDataList";
 import { CrawlDataListFetchApi, sessionHandler } from "../../../Utils/api";
 import { useParams , useHistory} from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
 function CurationDataListContainer() {
   const [curationDataList, setCurationDataList] = useState([]);
-
+  const userInfo = useSelector((state) => state.user.user);
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
@@ -24,7 +24,7 @@ function CurationDataListContainer() {
 
   const history = useHistory();
   const handleRowClick = (_id) => {
-    history.push(`/curation/${_id}`);
+    history.push(`/${userInfo.permission!==0?"curation":"library"}/${_id}`);
   }  
 
   /* 데이터 정제하기 */
@@ -46,6 +46,7 @@ function CurationDataListContainer() {
         dc_publisher: item.dc_publisher,
         dc_type:item.dc_type? item.dc_type.map((x) => x.CT_NM):[],
         dc_content: item.dc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
+        dc_url_loc:item.dc_url_loc,
       };
       _curationDataList.push(obj);
     });
@@ -88,6 +89,7 @@ function CurationDataListContainer() {
         viewTypeHandler={viewTypeHandler}
         viewType={viewType}
         handleRowClick={handleRowClick}
+        userInfo={userInfo}
       />
     </>
   );
