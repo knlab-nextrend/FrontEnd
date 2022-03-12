@@ -50,7 +50,7 @@ function UserCustomMenu({
             <div className="title-main">사용자 맞춤형 X축 및 Y축 설정</div>
             <div className="title-sub">
               해당 축에 표시할 분류를 선택하세요. 선택한 분류의 하위 분류가 해당
-              축의 메뉴로 표출됩니다. 클릭시 모달창이 뜹니다. X축과 Y축이 동일한 카테고리 타입을 가질 수 없습니다. 유의해주세요
+              축의 메뉴로 표출됩니다. 클릭시 모달창이 뜹니다. X축과 Y축이 동일한 카테고리 타입을 가질 수 없습니다.
             </div>
           </div>
           <div className="content">

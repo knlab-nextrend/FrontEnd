@@ -271,7 +271,7 @@ const ContentContainer = styled(LineBox)`
       margin-bottom:8px;
     }
     .sub-title{
-      font-size:14px;
+      /*font-size:14px;*/
     }
   }
   .content-body {
