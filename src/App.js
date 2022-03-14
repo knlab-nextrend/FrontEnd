@@ -28,7 +28,6 @@ function App() {
   const userInfo = useSelector((state) => state.user.user, shallowEqual);
   const dispatch = useDispatch();
 
-  // isLogin .... 을 true로 두면 임시방편으로 로그인 상태를 볼 수 있쌈 ....
   useEffect(() => {
     if (isLogin) {
       trackPromise(
@@ -57,35 +56,36 @@ function App() {
         component={LoginContainer}
         exact
       />
-      {isLogin && <Header name={userInfo.name} />}
-      {isLogin && userInfo.permission !== 0 &&userInfo !== null && (
+      {isLogin && userInfo !== null && (
         <>
-          <AdminBody isLogin={isLogin}>
-            <AsideMenuBar permission={userInfo.permission} />
-            <Section>
-              {userInfo.permission === 1 && <WorkerSection />}
-              {userInfo.permission === 2 && <WorkerSection />}
-              {userInfo.permission === 3 && <WorkerSection />}
-              {userInfo.permission === 4 && <WorkerSection />}
-              {userInfo.permission === 9 && (
-                <>
-                  <WorkerSection />
-                  <ManagerSection />
-                </>
-              )}
-              <PrivateRoute path="/home" exact>
-                <MainPage />
-              </PrivateRoute>
-            </Section>
-          </AdminBody>
+          <Header name={userInfo.name} />
+          {userInfo.permission !== 0 ? (
+            <AdminBody isLogin={isLogin}>
+              <AsideMenuBar permission={userInfo.permission} />
+              <Section>
+                {userInfo.permission === 1 && <WorkerSection />}
+                {userInfo.permission === 2 && <WorkerSection />}
+                {userInfo.permission === 3 && <WorkerSection />}
+                {userInfo.permission === 4 && <WorkerSection />}
+                {userInfo.permission === 9 && (
+                  <>
+                    <WorkerSection />
+                    <ManagerSection />
+                  </>
+                )}
+                <PrivateRoute path="/home" exact>
+                  <MainPage />
+                </PrivateRoute>
+              </Section>
+            </AdminBody>
+          ) : (
+            <UserBody isLogin={isLogin}>
+              <UserSection />
+            </UserBody>
+          )}
+          <Footer />
         </>
       )}
-      {isLogin && userInfo.permission === 0 && (
-        <UserBody isLogin={isLogin}>
-          <UserSection />
-        </UserBody>
-      )}
-      {isLogin && <Footer />}
       <GlobalModal /> {/* 모달 전역 제어 */}
     </>
   );

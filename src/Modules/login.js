@@ -29,14 +29,12 @@ export default function login(state = initialState, action) {
       const _refreshToken = action.tokens.refreshToken;
       localStorage.setItem("token", _token);
       localStorage.setItem("refreshToken", _refreshToken);
-      window.location.href = "/home";
       return {
         ...state,
         isLogin: true,
       };
 
     case SET_LOGOUT:
-      console.log("test")
       const _type = action.logout_type;
       if (_type === "NORMAL_LOGOUT") {
         alert("성공적으로 로그아웃 되었습니다.");
@@ -45,7 +43,6 @@ export default function login(state = initialState, action) {
       }
       localStorage.removeItem("token"); // 로컬스토리지에서 데이터 삭제
       localStorage.removeItem("refreshToken"); // 로컬스토리지에서 데이터 삭제
-
       window.location.href = "/";
       return {
         ...state,

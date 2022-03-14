@@ -4,9 +4,6 @@ import styled from "styled-components";
 import BeatLoader from "react-spinners/BeatLoader";
 function Loading() {
   const { promiseInProgress } = usePromiseTracker();
-  useEffect(() => {
-    console.log(promiseInProgress);
-  }, []);
   return (
     <>
       {promiseInProgress && (

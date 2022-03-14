@@ -3,7 +3,7 @@ const SET_USER = "user/SET_USER";
 export const setUser = (user) => ({ type: SET_USER, user });
 
 const initialState = {
-  user: {}, // 로그인한 유저의 정보를 담고 있는 state`
+  user: null, // 로그인한 유저의 정보를 담고 있는 state`
 };
 
 export default function user(state = initialState, action) {

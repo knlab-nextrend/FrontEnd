@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 function PublicRoute({ component: Component, restricted, ...rest }) {
 
   const isLogin = useSelector((state) => state.login.isLogin);
+  const userInfo = useSelector((state) => state.user.user);
 
   return (
     <Route
       {...rest}
       component={(props) =>
         isLogin && restricted ? (
-          <Redirect to="/home" />
+          <Redirect to={userInfo!==null ? userInfo.permission !== 0 ? "/home" : "/library" : "/"} />
         ) : (
           <Component {...props} />
         )
