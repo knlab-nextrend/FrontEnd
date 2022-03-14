@@ -1,16 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
-function SearchBar() {
+function SearchBar({keywordHandler=null, searchAction=null}) {
   return (
     <SearchBarContainer>
-      <InputField type="text" placeholder="검색" />
+      <InputField type="text" placeholder="검색" onChange={keywordHandler}/>
       <OptionWrapper>
-        <ExactlySearchOption>
-          <input id="exact" name="exact" type="checkbox" />
-          <label htmlFor="exact">정확히 일치</label>
-        </ExactlySearchOption>
-        <SearchBtn>
+        <SearchBtn onClick={searchAction}>
           <AiOutlineSearch size="24" />
         </SearchBtn>
       </OptionWrapper>

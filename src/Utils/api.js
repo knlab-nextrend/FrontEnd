@@ -364,7 +364,31 @@ const userAxisMenuSaveApi = (axisSetObj,saveType) =>{
   if(saveType === "update"){
     return axios.put(`/nextrend/custom`, axisSetObj, { headers: headers });
   }
-  
+}
+//data와 method 형태로 변경.. 
+const MultilingualDictionaryApi = (data=null,method)=>{
+  if(method==="GET"){
+    const config = {
+      headers: { headers },
+    };
+    return axios.get(`/nextrend/multilingual`, config);
+  }
+  if(method==="POST"){
+    return axios.post(`/nextrend/multilingual`, data, { headers: headers });
+  }
+  if(method==="PUT"){
+    console.log(data)
+    return axios.put(`/nextrend/multilingual`, data, { headers: headers });
+  }
+  if(method==="DELETE"){
+    const config = {
+      headers: headers,
+      params: {
+        ...data
+      },
+    };
+    return axios.delete(`/nextrend/multilingual`, config);
+  }
 }
 export {
   LoginApi,
@@ -402,4 +426,5 @@ export {
   userAxisMenuFetchApi,
   userAxisMenuSettingFetchApi,
   userAxisMenuSaveApi,
+  MultilingualDictionaryApi,
 };
