@@ -23,18 +23,18 @@ function ArchiveDataListContainer() {
     _rawArchiveDataList.forEach((item) => {
       const obj = {
         _id: item._id,
-        dc_title_or: item.dc_title_or,
-        dc_title_kr: item.dc_title_kr,
-        dc_smry_kr: item.dc_smry_kr,
-        dc_page: item.dc_page,
-        dc_hit: item.dc_hit || 0,
-        dc_country_list: item.dc_country.map((x) => x.CTY_NAME),
-        dc_code_list: item.dc_code.map((x) => x.CT_NM),
-        dc_url_loc: item.dc_url_loc.replace("%3A", ":"),
+        doc_kor_title: item.doc_kor_title,
+        doc_origin_title: item.doc_origin_title,
+        doc_origin_summary: item.doc_origin_summary,
+        doc_kor_summary:item.doc_kor_summary,
+        doc_page: item.doc_page,
+        doc_country_list: item.doc_country.map((x) => x.CT_NM),
+        doc_category_list: item.doc_category.map((x) => x.CT_NM),
+        doc_url: item.doc_url.replace("%3A", ":"),
         is_crawled: item.is_crawled,
-        dc_dt_collect: item.dc_dt_collect,
-        dc_lang: item.dc_lang,
-        dc_publisher: item.dc_publisher,
+        doc_collect_date: item.doc_collect_date,
+        doc_language: item.doc_language,
+        doc_host: item.doc_host,
       };
       _archiveDataList.push(obj);
     });

@@ -35,18 +35,18 @@ function CurationDataListContainer() {
     _rawCurationDataList.forEach((item) => {
       const obj = {
         _id: item._id,
-        dc_title_or: item.dc_title_or,
-        dc_title_kr: item.dc_title_kr,
-        dc_page: item.dc_page,
-        dc_cover: item.dc_cover[0] === "" ? [] : item.dc_cover,
-        dc_country_list: item.dc_country.map((x) => x.CT_NM),
-        dc_country_pub_list: item.dc_country_pub.map((x) => x.CT_NM),
-        dc_code_list: item.dc_code.map((x) => x.CT_NM),
-        dc_dt_regi: item.dc_dt_regi.substring(0, 10),
-        dc_publisher: item.dc_publisher,
-        dc_type:item.dc_type? item.dc_type.map((x) => x.CT_NM):[],
-        dc_content: item.dc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
-        dc_url_loc:item.dc_url_loc,
+        doc_origin_title: item.dc_title_or,
+        doc_kor_title: item.dc_title_kr,
+        doc_page: item.dc_page,
+        doc_thumbnail: item.dc_cover[0] === "" ? [] : item.dc_cover,
+        doc_country_list: item.doc_country.map((x) => x.CT_NM),
+        doc_publish_country_list: item.doc_publish_country.map((x) => x.CT_NM),
+        doc_category: item.doc_category.map((x) => x.CT_NM),
+        doc_register_date: item.doc_register_date.substring(0, 10),
+        doc_host: item.doc_host,
+        doc_content_type:item.doc_content_type? item.dc_type.map((x) => x.CT_NM):[],
+        doc_content: item.doc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
+        doc_url:item.doc_url,
       };
       _curationDataList.push(obj);
     });

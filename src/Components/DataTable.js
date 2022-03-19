@@ -22,13 +22,13 @@ function DataTable({
               {type === "archive" && (
                 <>
                   <th>구분</th>
-                  <th>원문 대상 국가</th>
-                  <th>주제 분류</th>
+                  <th>문서 대상 국가</th>
+                  <th>정책 분류</th>
                 </>
               )}
               {(type === "register" || type==="archive") && <th>한글제목</th>}
               {type !== "screening" && <th className="dc_title_or">원제목</th>}
-              <th>요약</th>
+              <th>원문 요약</th>
               <th className="dc_publisher">HOST 명</th>
 
               <th className="lang">언어</th>
@@ -73,7 +73,7 @@ function DataTable({
             {tableData.map((item, index) => {
               return (
                 <tr key={index}>
-                  {type === "archive" && (
+                  {/*type === "archive" && (
                     <>
                       <td className="is_crawled">
                         {item.is_crawled ? (
@@ -85,20 +85,20 @@ function DataTable({
                       <td>{item.dc_country_list.join(", ")}</td>
                       <td>{item.dc_code_list.join(", ")}</td>
                     </>
-                  )}
-                  {(type === "register" || type==="archive") && <td>{item.dc_title_kr}</td>}
+                        )*/}
+                  {(type === "register" || type==="archive") && <td>{item.doc_kor_title}</td>}
                   {type !== "screening" && (
                     <td>
                       <Link to={`/crawl/${statusCode}/${item._id}`}>
-                        {item.dc_title_or}
+                        {item.doc_origin_title}
                       </Link>
                     </td>
                   )}
-                  <td>{item.dc_smry_kr}</td>
-                  <td>{item.dc_publisher}</td>
-                  <td>{item.dc_lang}</td>
-                  <td>{item.dc_dt_collect}</td>
-                  <td>{item.dc_page}쪽</td>
+                  <td>{item.doc_origin_summary}</td>
+                  <td>{item.doc_host}</td>
+                  <td>{item.doc_language}</td>
+                  <td>{item.doc_collet_date}</td>
+                  <td>{item.doc_page}쪽</td>
                   {type === "screening" && (
                     <>
                       <td>
@@ -138,7 +138,7 @@ function DataTable({
                   )}
 
                   <td>
-                    <a href={item.dc_url_loc} target="_blank">
+                    <a href={item.doc_url} target="_blank">
                       <HiOutlineExternalLink size="24" color="#435269" />
                     </a>
                   </td>

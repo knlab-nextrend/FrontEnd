@@ -34,7 +34,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const docLanguage = useSelector(
     (state) => state.modal.modalData.doc_language
   ); // dc_lang > doc_language 문서 언어
-  const docTopic = useSelector((state) => state.modal.modalData.doc_language); // doc_topic 문서 내용의 이슈 주제 분류
+  const docTopic = useSelector((state) => state.modal.modalData.doc_topic); // doc_topic 문서 내용의 이슈 주제 분류
 
   /* 현재 보여질 데이터 정보들 */
   const [docContent, setDocContent] = useState(""); // dc_content > doc_content 문서 본문
@@ -57,7 +57,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docBundleUrl, setDocBundleUrl] = useState(""); // doc_bundle_url 묶음문서 링크
   const [docRelateTitle, setDocRelateTitle] = useState(""); // doc_relate_title 연관문서 제목
   const [docRelateUrl, setDocRelateUrl] = useState(""); // doc_relate_url 연관문서 링크
-  const [docThumbnail, setDocThumbnail] = useState(""); // dc_cover > doc_thumbnail 문서 표지 파일
+  const [docThumbnail, setDocThumbnail] = useState([]); // dc_cover > doc_thumbnail 문서 표지 파일
   const [docUrl, setDocUrl] = useState(""); // dc_url_loc > doc_url 문서의 파일이 위치한 url
   const [docUrlIntro, setDocUrlIntro] = useState(""); // dc_url_intro > doc_url_intro 문서 파일의 안내 url
   const [docProject, setDocProject] = useState(""); // doc_project 조사과제명
@@ -189,7 +189,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_thumbnail"] =
         type !== "screening" && type !== "refine" && type !== "register"
           ? docThumbnailSelect
-          : [docThumbnail];
+          : docThumbnail;
       _docs["doc_keyword"] = docKeyword;
       _docs["doc_category"] = docCategoryIndexList;
       _docs["doc_country"] = docCountryIndexList;
@@ -206,23 +206,22 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     },
   }));
   useEffect(() => {
-    console.log(docs);
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
       setItemId(docs.item_id);
 
       setDocContent(docs.doc_content);
-      setDocWriteDate(docs.doc_write_date.substring(0, 10)); // date 객체에 넣어주기
-      setDocRegisterDate(docs.doc_register_date.substring(0, 10));
-      setDocPublishDate(docs.doc_publish_date.substring(0, 10));
+      setDocWriteDate(docs.doc_write_date && docs.doc_write_date.substring(0, 10)); // date 객체에 넣어주기
+      setDocRegisterDate(docs.doc_register_date && docs.doc_register_date.substring(0, 10));
+      setDocPublishDate(docs.doc_publish_date &&docs.doc_publish_date.substring(0, 10));
       setDocKeyword(docs.doc_keyword);
-      setDocKeywordString(docs.doc_keyword.join(", "));
+      //setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
       setDocThumbnail(docs.doc_thumbnail);
-      setDocThumbnailSelect(docs.doc_thumbnail[0] || "");
+      setDocThumbnailSelect(docs.doc_thumbnail[0]);
       setDocOriginSummary(docs.doc_origin_summary);
       setDocKorSummary(docs.doc_kor_summary);
       setDocPublisher(docs.doc_publisher);
-      setDocPublishing(docs.doc_publishing);
+      setDocPublishing(docs.doc_publishing );
       setDocPage(docs.doc_page);
       setDocOriginTitle(docs.doc_origin_title);
       setDocKorTitle(docs.doc_kor_title);
@@ -234,7 +233,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDocBundleUrl(docs.doc_bundle_url);
       setDocRecomment(docs.doc_recomment);
       setDocBiblio(docs.doc_biblio);
-      setDocMemo(docs.doc_memo);
+      setDocMemo(docs.doc_memo );
       setDocHost(docs.doc_host);
 
       dispatch(setModalData(docs.doc_category, "doc_category"));

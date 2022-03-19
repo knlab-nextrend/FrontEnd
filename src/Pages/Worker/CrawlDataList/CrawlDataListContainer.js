@@ -60,18 +60,18 @@ function CrawlDataListContainer() {
 
     _rawCrawlDataList.forEach((item, index) => {
       const obj = {
-        dc_title_or: item.dc_title_or,
-        dc_title_kr: item.dc_title_kr,
-        dc_keyword: item.dc_keyword,
-        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
+        doc_origin_title: item.doc_origin_title,
+        doc_kor_title: item.doc_kor_title,
+        doc_keyword: item.doc_keyword,
+        doc_collect_date: item.doc_collect_date.substring(0, 10),
         _id: item._id,
         item_id:item.item_id,
-        dc_publisher: item.dc_publisher,
+        doc_host: item.doc_host,
         stat: item.stat,
-        dc_lang: item.dc_lang,
-        dc_page: item.dc_page,
-        dc_url_loc: item.dc_url_loc,
-        dc_smry_kr: item.dc_smry_kr,
+        doc_language: item.doc_language,
+        doc_page: item.doc_page,
+        doc_url: item.doc_url,
+        doc_origin_summary: item.doc_origin_summary,
       };
       _crawlDataList.push(obj);
     });
@@ -84,7 +84,7 @@ function CrawlDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {
-          console.log(res.data)
+          console.log("??",res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {

@@ -43,10 +43,8 @@ function CrawlDataScreeningContainer() {
   };
 
   const onChangeEach = (e, type) => {
-    console.log(e.target.value)
     const _item_id = e.target.value;
     const _index = itemList.findIndex((item) => item.item_id === Number(_item_id));
-    console.log(itemList)
     const _newItemList = [...itemList];
     _newItemList[_index].status = type;
     setItemList(_newItemList);
@@ -112,23 +110,20 @@ function CrawlDataScreeningContainer() {
     if (window.confirm("선택 하신 대로 스크리닝을 진행하시겠습니까?")) {
       console.log(stageDataList,keepDataList,deleteDataList)
       ScreeningDataStageApi(stageDataList).then(res=>{
-        console.log(res.status)
         if(res.status === 200){
           ScreeningDataKeepApi(keepDataList).then(res=>{
-            console.log(res)
             if(res.status === 200){
               if (deleteDataList.length !== 0) {
                 ScreeningDataDeleteApi(deleteDataList).then(res=>{
-                  console.log(res)
                   if(res.status===200){
                     alert("스크리닝이 성공적으로 완료되었습니다.");
-                    history.go(0);
+                    dataFetch();
                   }
                 });
               }
               else{
                 alert("스크리닝이 성공적으로 완료되었습니다.");
-                history.go(0);
+                dataFetch();
               }
             }
           })
@@ -146,12 +141,12 @@ function CrawlDataScreeningContainer() {
     _rawScreeningData.forEach((item, index) => {
       const obj = {
         item_id: item.item_id,
-        dc_smry_kr: item.dc_smry_kr,
-        dc_publisher: item.dc_publisher,
-        dc_lang: item.dc_lang,
-        dc_dt_collect: item.dc_dt_collect.substring(0, 10),
-        dc_page: item.dc_page,
-        dc_url_loc: item.dc_url_loc,
+        doc_origin_summary: item.doc_origin_summary,
+        doc_host: item.doc_host,
+        doc_language: item.doc_language,
+        doc_collect_date: item.doc_collect_date.substring(0, 10),
+        doc_page: item.doc_page,
+        doc_url: item.doc_url,
       };
       _screeningData.push(obj);
     });

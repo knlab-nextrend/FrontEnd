@@ -78,28 +78,43 @@ function CrawlDataDetailContainer() {
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
-    console.log(rawData.docs)
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
-      dc_content:
-        _rawStatusDetailData.dc_content && _rawStatusDetailData.dc_content,
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
-      dc_dt_regi: new Date().toISOString().substring(0, 19) + "Z",
-      dc_dt_write: _rawStatusDetailData.dc_dt_write || "",
-      dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher: _rawStatusDetailData.dc_publisher || "",
-      dc_cover: _rawStatusDetailData.dc_cover,
-      dc_country_pub: _rawStatusDetailData.dc_country_pub,
-      dc_cat: _rawStatusDetailData.dc_cat || "",
-      dc_code: _rawStatusDetailData.dc_code,
-      dc_country: _rawStatusDetailData.dc_country,
-      dc_page: _rawStatusDetailData.dc_page || 0,
-      dc_type: _rawStatusDetailData.dc_type || "",
-      dc_title_or: _rawStatusDetailData.dc_title_or || "",
-      dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
-      dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
-      dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
-      dc_language: _rawStatusDetailData.dc_lang || "",
+      doc_content:
+        _rawStatusDetailData.doc_content || "",
+      doc_collect_date: _rawStatusDetailData.dc_dt_collect || "",
+      doc_write_date: _rawStatusDetailData.doc_write_date || "",
+      doc_keyword: _rawStatusDetailData.doc_keyword,
+      doc_publisher: _rawStatusDetailData.doc_publisher || "",
+      doc_thumbnail: _rawStatusDetailData.doc_thumbnail || [],
+      doc_country: _rawStatusDetailData.doc_country || [],
+      doc_publish_country: _rawStatusDetailData.doc_publish_country || [],
+      doc_category: _rawStatusDetailData.doc_category || [],
+      doc_content_type:_rawStatusDetailData.doc_content_type||[],
+      doc_topic:_rawStatusDetailData.doc_topic || [],
+      doc_custom:_rawStatusDetailData.doc_custom || [],
+      doc_content_category:_rawStatusDetailData.doc_content_category||[],
+      doc_language: _rawStatusDetailData.doc_language || [],
+      doc_page: _rawStatusDetailData.doc_page || 0,
+      doc_origin_title: _rawStatusDetailData.doc_origin_title || "",
+      doc_kor_title: _rawStatusDetailData.doc_kor_title || "",
+      doc_kor_summary: _rawStatusDetailData.doc_kor_summary || "",
+      doc_origin_summary:_rawStatusDetailData.doc_origin_summary || "",
+      doc_url: _rawStatusDetailData.doc_url || "",
+      doc_url_intro:_rawStatusDetailData.doc_url_intro||"",
+      doc_project:_rawStatusDetailData.doc_project || "",
+      doc_biblio:_rawStatusDetailData.doc_biblio || "",
+      doc_relate_title:_rawStatusDetailData.doc_relate_title || "",
+      doc_relate_url:_rawStatusDetailData.doc_relate_url || "",
+      doc_bundle_title:_rawStatusDetailData.doc_bundle_title || "",
+      doc_bundle_url:_rawStatusDetailData.doc_bundle_url || "",
+      doc_memo:_rawStatusDetailData.doc_memo || "",
+      doc_host:_rawStatusDetailData.doc_host || "",
+      doc_keyword: _rawStatusDetailData.doc_keyword || [],
+      doc_recomment:_rawStatusDetailData.doc_recomment || "",
+      doc_publishing:_rawStatusDetailData.doc_publishing || "",
+
+
       item_id:_rawStatusDetailData.item_id,
     };
     console.log(_docs)
@@ -134,6 +149,7 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
+    console.log(_crawlDataFormDocs)
     CrawlDataStageApi(statusCode, _id, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
