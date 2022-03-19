@@ -143,13 +143,13 @@ function CategoryModal({ executeModal, closeModal }) {
             >
               언어
             </button>
-            {/* <button
+            <button
               onClick={() => {
                 setCurrentCategoryType(5);
               }}
             >
               토픽 분류
-            </button> */}
+            </button> 
             <button
               onClick={() => {
                 setCurrentCategoryType(6);

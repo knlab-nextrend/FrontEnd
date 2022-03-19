@@ -11,51 +11,46 @@ function CategoryModal({ executeModal, closeModal }) {
     (state) => state.modal.categoryModalType
   );
   const CATEGORY_TYPE_DATA = {
-    dc_code: {
+    doc_category: {
       type: 1,
       title: "정책 분류 설정",
       subTitle:
         "정책 분류를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 정책 분류는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dc_country: {
+    doc_content_type: {
+      type: 2,
+      title: "문서 유형 설정",
+      subTitle: "문서 유형을 선택해주세요.",
+    },
+    doc_content_category: {
+      type: 2,
+      title: "내용 구분 설정",
+      subTitle: "내용 구분을 선택해주세요.",
+    },
+    doc_country: {
       type: 3,
       title: "문서 대상 국가 설정",
       subTitle:
         "대상 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dc_country_pub: {
+    doc_publish_country: {
       type: 3,
       title: "문서 발행 국가 설정",
       subTitle:
         "발행 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
     },
-    dc_type:{
-      type:2,
-      title:"문서 유형 설정",
-      subTitle:"문서 유형을 선택해주세요."
-    },
-    // dc_topic: {
-    //   type: 5,
-    //   title: "토픽 분류 설정",
-    //   subTitle: "토픽 분류를 선택해주세요.",
-    // },
-    // dc_type_doc: {
-    //   type: 2,
-    //   title: "문서 유형 설정",
-    //   subTitle: "유형을 선택해주세요.",
-    // },
-    // dc_type_content: {
-    //   type: 2,
-    //   title: "내용 구분 설정",
-    //   subTitle: "내용 구분을 선택해주세요.",
-    // },
-    dc_language: {
+    doc_language: {
       type: 4,
       title: "언어 설정",
       subTitle:
         "언어를 선택해주세요. 항목을 더블클릭하면 추가되며, 하나의 언어만 선택 가능합니다.",
     },
-    dc_custom: {
+    doc_topic: {
+      type: 5,
+      title: "토픽 분류 설정",
+      subTitle: "토픽 분류를 선택해주세요..",
+    },
+    doc_custom: {
       type: 6,
       title: "기관맞춤형 분류 설정",
       subTitle:
@@ -83,7 +78,7 @@ function CategoryModal({ executeModal, closeModal }) {
   };
   const clickHandler = (e, item, code, length) => {
     //console.log(e.detail) // 1 : 원클릭 2: 더블클릭
-    if (e.detail === 1 && categoryModalType !== "dc_language") {
+    if (e.detail === 1 && categoryModalType !== "doc_language") {
       upperCodeHandler(code, length);
       lengthHandler(length + 2);
     } else if (e.detail === 2) {
@@ -98,7 +93,9 @@ function CategoryModal({ executeModal, closeModal }) {
       })
     ) {
       alert("이미 선택된 항목 입니다.");
-    } else if (categoryModalType === ("dc_language" || "dc_country_pub")) {
+    } else if (
+      categoryModalType === ("doc_language" || "doc_publish_country")
+    ) {
       setSelectedCategoryList([item]);
     } else {
       setSelectedCategoryList([...selectedCategoryList, item]);
@@ -108,19 +105,21 @@ function CategoryModal({ executeModal, closeModal }) {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     const type = CATEGORY_TYPE_DATA[categoryModalType].type;
-    categoryListFetchApi(type, length, upperCode[length - 2])
-      .then((res) => {
-        dataCleansing(res.data);
-      })
-      .catch((err) => {
-        sessionHandler(err, dispatch).then((res) => {
-          categoryListFetchApi(type, length, upperCode[length - 2]).then(
-            (res) => {
-              dataCleansing(res.data);
-            }
-          );
-        });
-      });
+    trackPromise(
+      categoryListFetchApi(type, length, upperCode[length - 2])
+        .then((res) => {
+          dataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            categoryListFetchApi(type, length, upperCode[length - 2]).then(
+              (res) => {
+                dataCleansing(res.data);
+              }
+            );
+          });
+        })
+    );
   };
   const saveCategory = () => {
     executeModal(selectedCategoryList, categoryModalType);
@@ -134,14 +133,10 @@ function CategoryModal({ executeModal, closeModal }) {
   };
 
   const dataCleansing = (rawData) => {
-    if (categoryModalType === "dc_language") {
-      setCategoryList([{ length: 2, list: rawData }]);
-    } else {
-      const index = categoryList.findIndex((i) => i.length == length);
-      let _categoryList = [...categoryList];
-      _categoryList[index] = { length, list: rawData };
-      setCategoryList(_categoryList);
-    }
+    const index = categoryList.findIndex((i) => i.length == length);
+    let _categoryList = [...categoryList];
+    _categoryList[index] = { length, list: rawData };
+    setCategoryList(_categoryList);
   };
 
   const listInit = () => {
@@ -172,8 +167,8 @@ function CategoryModal({ executeModal, closeModal }) {
           <ListContainer>
             <ListHeader>
               <div>대분류</div>
-              {categoryModalType !== "dc_language" && <div>중분류</div>}
-              {categoryModalType !== "dc_language" && <div>소분류</div>}
+              <div>중분류</div>
+              <div>소분류</div>
             </ListHeader>
             <ListBody>
               {categoryList.map((category, index) => {

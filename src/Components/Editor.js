@@ -216,7 +216,7 @@ const editorConfiguration = {
     ],
   },
 };
-function Editor({ _dcContentHandler = null, data = null, readOnly = false ,_id=null}) {
+function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=null}) {
 
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
@@ -260,7 +260,7 @@ function Editor({ _dcContentHandler = null, data = null, readOnly = false ,_id=n
         onChange={(event, editor) => {
           if (!readOnly) {
             const data = editor.getData();
-            _dcContentHandler(data);
+            _docContentHandler(data);
           }
         }}
         onReady={(editor) => {
