@@ -150,6 +150,7 @@ function CrawlDataScreeningContainer() {
       };
       _screeningData.push(obj);
     });
+    console.log(_screeningData)
     setDcCount(_dcCount);
     setScreeningData(_screeningData);
   };

@@ -21,6 +21,7 @@ function HostManagementContainer() {
     setFilterOpen(!filterOpen)
   }
 
+  
 
   return (
     <>

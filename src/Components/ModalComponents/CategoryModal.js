@@ -87,6 +87,7 @@ function CategoryModal({ executeModal, closeModal }) {
   };
 
   const addCategory = (item) => {
+    console.log(item)
     if (
       selectedCategoryList.some((ele) => {
         return ele.CODE === item.CODE;

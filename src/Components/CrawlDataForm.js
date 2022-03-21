@@ -202,9 +202,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_topic"] = docTopicIndexList;
 
       _docs["doc_thumbnail"] =
-      type !== "screening" && type !== "refine" && type !== "register"
-        ? docThumbnailSelect
-        : docThumbnail;
+        type !== "screening" && type !== "refine" && type !== "register"
+          ? docThumbnailSelect
+          : docThumbnail;
 
       _docs["item_id"] = itemId;
 
@@ -215,8 +215,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
       setItemId(docs.item_id);
-
-      setDocContent(docs.doc_content);
+      setDocContent(docs.doc_content.replaceAll("\n", "<br/>")); // /n 개행 태그를 <br/> 태그로 치환하여 공백을 그대로 출력
       setDocWriteDate(
         docs.doc_write_date && docs.doc_write_date.substring(0, 10)
       ); // date 객체에 넣어주기
@@ -715,7 +714,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
         </CustomFormRow>
-        {type !== "refine" && (
+        {(type === "curation"||type==="archive") && (
           <>
             <CustomFormRow>
               <CustomFormItem>
@@ -731,23 +730,29 @@ function CrawlDataForm({ docs, type, _id }, ref) {
               <CustomFormItem>
                 <p className="title">표지 파일</p>
                 <ImageContainer>
-                  {docThumbnail.map((item, index) => {
-                    return (
-                      <div key={index}>
-                        <input
-                          type="radio"
-                          id={index}
-                          value={item}
-                          name="cover"
-                          onChange={_docThumbnailSelectHandler}
-                          checked={docThumbnailSelect === item}
-                        />
-                        <label htmlFor={index}>
-                          <img className="cover" src={`http://${item}`} />
-                        </label>
-                      </div>
-                    );
-                  })}
+                  {type === "curation" ? (
+                    <label>
+                      <img className="cover" src={`http://${docThumbnail}`} />
+                    </label>
+                  ) : (
+                    docThumbnail.map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <input
+                            type="radio"
+                            id={index}
+                            value={item}
+                            name="cover"
+                            onChange={_docThumbnailSelectHandler}
+                            checked={docThumbnailSelect === item}
+                          />
+                          <label htmlFor={index}>
+                            <img className="cover" src={`http://${item}`} />
+                          </label>
+                        </div>
+                      );
+                    })
+                  )}
                 </ImageContainer>
               </CustomFormItem>
             </CustomFormRow>

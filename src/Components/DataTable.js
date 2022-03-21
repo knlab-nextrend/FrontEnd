@@ -82,8 +82,8 @@ function DataTable({
                           <Badge>업로드</Badge>
                         )}
                       </td>
-                      <td>{item.dc_country_list}</td>
-                      <td>{item.dc_code_list}</td>
+                      <td>{item.doc_country_list}</td>
+                      <td>{item.doc_category_list}</td>
                     </>
                         )}
                   {(type === "register" || type==="archive") && <td>{item.doc_kor_title}</td>}
@@ -96,8 +96,8 @@ function DataTable({
                   )}
                   <td>{item.doc_origin_summary}</td>
                   <td>{item.doc_host}</td>
-                  <td>{item.doc_language.CT_NM}</td>
-                  <td>{item.doc_collet_date}</td>
+                  <td>{type==="screening"?item.doc_language : item.doc_language ? item.doc_language.CT_NM : ""}</td>
+                  <td>{item.doc_collect_date}</td>
                   <td>{item.doc_page}쪽</td>
                   {type === "screening" && (
                     <>
