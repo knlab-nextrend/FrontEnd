@@ -82,9 +82,11 @@ function CrawlDataDetailContainer() {
     let _docs = {
       doc_content:
         _rawStatusDetailData.doc_content || "",
-      doc_collect_date: _rawStatusDetailData.dc_dt_collect || "",
+      doc_collect_date: _rawStatusDetailData.doc_collect_date || "",
       doc_write_date: _rawStatusDetailData.doc_write_date || "",
-      doc_keyword: _rawStatusDetailData.doc_keyword,
+      doc_register_date : _rawStatusDetailData.doc_collect_date || "",
+      doc_publish_date : _rawStatusDetailData.doc_publish_date||"",
+      doc_keyword: _rawStatusDetailData.doc_keyowrd || [], // 오타로 필드가 설정되어있어서 ... 
       doc_publisher: _rawStatusDetailData.doc_publisher || "",
       doc_thumbnail: _rawStatusDetailData.doc_thumbnail || [],
       doc_country: _rawStatusDetailData.doc_country || [],
@@ -110,7 +112,6 @@ function CrawlDataDetailContainer() {
       doc_bundle_url:_rawStatusDetailData.doc_bundle_url || "",
       doc_memo:_rawStatusDetailData.doc_memo || "",
       doc_host:_rawStatusDetailData.doc_host || "",
-      doc_keyword: _rawStatusDetailData.doc_keyword || [],
       doc_recomment:_rawStatusDetailData.doc_recomment || "",
       doc_publishing:_rawStatusDetailData.doc_publishing || "",
 

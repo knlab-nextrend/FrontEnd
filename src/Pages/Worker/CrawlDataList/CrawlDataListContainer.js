@@ -62,7 +62,7 @@ function CrawlDataListContainer() {
       const obj = {
         doc_origin_title: item.doc_origin_title,
         doc_kor_title: item.doc_kor_title,
-        doc_keyword: item.doc_keyword,
+        doc_keyword: item.doc_keyowrd,
         doc_collect_date: item.doc_collect_date.substring(0, 10),
         _id: item._id,
         item_id:item.item_id,

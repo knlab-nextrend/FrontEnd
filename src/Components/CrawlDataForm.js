@@ -53,6 +53,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docPublishDate, setDocPublishDate] = useState(""); // doc_publish_date 수집 문서의 발간일
   const [docWriteDate, setDocWriteDate] = useState(""); // doc_write_date 수집 문서의 작성일
   const [docRegisterDate, setDocRegisterDate] = useState(""); // doc_register_date 문서의 서비스 등록일
+  const [docCollectDate, setDocCollectDate] = useState(""); // doc_collect_date 문서 수집일 (크롤링 일)
   const [docBundleTitle, setDocBundleTitle] = useState(""); // doc_bundle_title 묶음문서 제목
   const [docBundleUrl, setDocBundleUrl] = useState(""); // doc_bundle_url 묶음문서 링크
   const [docRelateTitle, setDocRelateTitle] = useState(""); // doc_relate_title 연관문서 제목
@@ -115,11 +116,14 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _docPublishDateHandler = (e) => {
     setDocPublishDate(e.target.value);
   };
-  const _docDocWriteDateHandler = (e) => {
+  const _docWriteDateHandler = (e) => {
     setDocWriteDate(e.target.value);
   };
-  const _docDocRegisterDateHandler = (e) => {
+  const _docRegisterDateHandler = (e) => {
     setDocRegisterDate(e.target.value);
+  };
+  const _docCollectDateHandler = (e) => {
+    setDocCollectDate(e.target.value);
   };
   const _docBundleTitleHandler = (e) => {
     setDocBundleTitle(e.target.value);
@@ -166,7 +170,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_content"] = docContent;
       _docs["doc_write_date"] = docWriteDate;
       _docs["doc_publish_date"] = docPublishDate;
-      _docs["doc_keyword"] = docKeyword;
+      _docs["doc_collect_date"] = docCollectDate;
+      _docs["doc_register_date"] = docRegisterDate;
+      _docs["doc_keyowrd"] = docKeyword; // 오타로 필드가 설정되어있음..
       _docs["doc_kor_title"] = docKorTitle;
       _docs["doc_origin_title"] = docOriginTitle;
       _docs["doc_kor_summary"] = docKorSummary;
@@ -190,7 +196,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
         type !== "screening" && type !== "refine" && type !== "register"
           ? docThumbnailSelect
           : docThumbnail;
-      _docs["doc_keyword"] = docKeyword;
+      _docs["doc_keyowrd"] = docKeyword;
       _docs["doc_category"] = docCategoryIndexList;
       _docs["doc_country"] = docCountryIndexList;
       _docs["doc_publish_country"] = docPublishCountryIndexList;
@@ -211,17 +217,25 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setItemId(docs.item_id);
 
       setDocContent(docs.doc_content);
-      setDocWriteDate(docs.doc_write_date && docs.doc_write_date.substring(0, 10)); // date 객체에 넣어주기
-      setDocRegisterDate(docs.doc_register_date && docs.doc_register_date.substring(0, 10));
-      setDocPublishDate(docs.doc_publish_date &&docs.doc_publish_date.substring(0, 10));
-      setDocKeyword(docs.doc_keyword);
-      //setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
+      setDocWriteDate(
+        docs.doc_write_date && docs.doc_write_date.substring(0, 10)
+      ); // date 객체에 넣어주기
+      setDocRegisterDate(
+        docs.doc_register_date && docs.doc_register_date.substring(0, 10)
+      );
+      setDocPublishDate(
+        docs.doc_publish_date && docs.doc_publish_date.substring(0, 10)
+      );
+      setDocCollectDate(
+        docs.doc_collect_date && docs.doc_collect_date.substring(0, 10)
+      );
+      setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
       setDocThumbnail(docs.doc_thumbnail);
       setDocThumbnailSelect(docs.doc_thumbnail[0]);
       setDocOriginSummary(docs.doc_origin_summary);
       setDocKorSummary(docs.doc_kor_summary);
       setDocPublisher(docs.doc_publisher);
-      setDocPublishing(docs.doc_publishing );
+      setDocPublishing(docs.doc_publishing);
       setDocPage(docs.doc_page);
       setDocOriginTitle(docs.doc_origin_title);
       setDocKorTitle(docs.doc_kor_title);
@@ -233,7 +247,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDocBundleUrl(docs.doc_bundle_url);
       setDocRecomment(docs.doc_recomment);
       setDocBiblio(docs.doc_biblio);
-      setDocMemo(docs.doc_memo );
+      setDocMemo(docs.doc_memo);
       setDocHost(docs.doc_host);
 
       dispatch(setModalData(docs.doc_category, "doc_category"));
@@ -341,133 +355,137 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
         </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 정책 분류</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_category");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docCategory.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 토픽 분류</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_topic");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docTopic.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 대상 국가</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_country");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docCountry.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 발급 국가</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_publish_country");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docPublishCountry.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 유형 분류</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_content_type");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docContentType.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-          <CustomFormItem>
-            <div className="title">
-              <p>문서 내용 구분 분류</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_content_category");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docContentCategory.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <div className="title">
-              <p>기관맞춤형 분류</p>
-              <button
-                onClick={() => {
-                  _openCategoryModal("doc_custom");
-                }}
-              >
-                <MdSettings /> 설정
-              </button>
-            </div>
-            <div className="form notInput">
-              {docCustom.map((item, index) => {
-                return <CustomList key={index}>{item.CT_NM}</CustomList>;
-              })}
-            </div>
-          </CustomFormItem>
-        </CustomFormRow>
+        {type !== "refine" && (
+          <>
+            <CustomFormRow>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 정책 분류</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_category");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docCategory.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 토픽 분류</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_topic");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docTopic.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+            </CustomFormRow>
+            <CustomFormRow>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 대상 국가</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_country");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docCountry.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 발급 국가</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_publish_country");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docPublishCountry.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+            </CustomFormRow>
+            <CustomFormRow>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 유형 분류</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_content_type");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docContentType.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+              <CustomFormItem>
+                <div className="title">
+                  <p>문서 내용 구분 분류</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_content_category");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docContentCategory.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+            </CustomFormRow>
+            <CustomFormRow>
+              <CustomFormItem>
+                <div className="title">
+                  <p>기관맞춤형 분류</p>
+                  <button
+                    onClick={() => {
+                      _openCategoryModal("doc_custom");
+                    }}
+                  >
+                    <MdSettings /> 설정
+                  </button>
+                </div>
+                <div className="form notInput">
+                  {docCustom.map((item, index) => {
+                    return <CustomList key={index}>{item.CT_NM}</CustomList>;
+                  })}
+                </div>
+              </CustomFormItem>
+            </CustomFormRow>
+          </>
+        )}
         <CustomFormRow>
           <CustomFormItem>
             <p className="title">문서 위치 URL</p>
@@ -547,7 +565,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             <p className="title">원문 작성일</p>
             <input
               value={docWriteDate}
-              onChange={_docDocWriteDateHandler}
+              onChange={_docWriteDateHandler}
               className="form"
               type="date"
               placeholder="원문이 작성된 날짜를 입력하세요"
@@ -561,6 +579,28 @@ function CrawlDataForm({ docs, type, _id }, ref) {
               className="form"
               type="date"
               placeholder="원문이 발간된 날짜를 입력하세요"
+            />
+          </CustomFormItem>
+        </CustomFormRow>
+        <CustomFormRow>
+          <CustomFormItem>
+            <p className="title">데이터 수집일</p>
+            <input
+              value={docCollectDate}
+              onChange={_docCollectDateHandler}
+              className="form"
+              type="date"
+              placeholder="데이터를 수집한 날짜를 입력하세요"
+            />
+          </CustomFormItem>
+          <CustomFormItem>
+            <p className="title">문서 등록일</p>
+            <input
+              value={docRegisterDate}
+              onChange={_docRegisterDateHandler}
+              className="form"
+              type="date"
+              placeholder="서비스에 문서를 등록한 날짜를 입력하세요"
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -671,44 +711,48 @@ function CrawlDataForm({ docs, type, _id }, ref) {
               type="text"
               value={docMemo}
               onChange={_docMemoHandler}
+              placeholder="관리자 전용 메모를 입력하세요"
             />
           </CustomFormItem>
         </CustomFormRow>
-
-        <CustomFormRow>
-          <CustomFormItem>
-            <p className="title">내용</p>
-            <Editor
-              data={docContent}
-              _docContentHandler={_docContentHandler}
-              _id={_id}
-            />
-          </CustomFormItem>
-        </CustomFormRow>
-        <CustomFormRow>
-          <CustomFormItem>
-            <p className="title">표지 파일</p>
-            <ImageContainer>
-              {docThumbnail.map((item, index) => {
-                return (
-                  <div key={index}>
-                    <input
-                      type="radio"
-                      id={index}
-                      value={item}
-                      name="cover"
-                      onChange={_docThumbnailSelectHandler}
-                      checked={docThumbnailSelect === item}
-                    />
-                    <label htmlFor={index}>
-                      <img className="cover" src={`http://${item}`} />
-                    </label>
-                  </div>
-                );
-              })}
-            </ImageContainer>
-          </CustomFormItem>
-        </CustomFormRow>
+        {type !== "refine" && (
+          <>
+            <CustomFormRow>
+              <CustomFormItem>
+                <p className="title">내용</p>
+                <Editor
+                  data={docContent}
+                  _docContentHandler={_docContentHandler}
+                  _id={_id}
+                />
+              </CustomFormItem>
+            </CustomFormRow>
+            <CustomFormRow>
+              <CustomFormItem>
+                <p className="title">표지 파일</p>
+                <ImageContainer>
+                  {docThumbnail.map((item, index) => {
+                    return (
+                      <div key={index}>
+                        <input
+                          type="radio"
+                          id={index}
+                          value={item}
+                          name="cover"
+                          onChange={_docThumbnailSelectHandler}
+                          checked={docThumbnailSelect === item}
+                        />
+                        <label htmlFor={index}>
+                          <img className="cover" src={`http://${item}`} />
+                        </label>
+                      </div>
+                    );
+                  })}
+                </ImageContainer>
+              </CustomFormItem>
+            </CustomFormRow>
+          </>
+        )}
       </Wrapper>
     </>
   );
