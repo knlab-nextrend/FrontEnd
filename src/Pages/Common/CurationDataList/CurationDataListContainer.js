@@ -32,19 +32,21 @@ function CurationDataListContainer() {
     let _curationDataList = [];
     let _rawCurationDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
+    console.log(rawData)
     _rawCurationDataList.forEach((item) => {
       const obj = {
         _id: item._id,
-        doc_origin_title: item.dc_title_or,
-        doc_kor_title: item.dc_title_kr,
-        doc_page: item.dc_page,
-        doc_thumbnail: item.dc_cover[0] === "" ? [] : item.dc_cover,
+        doc_origin_title: item.doc_origin_title,
+        doc_kor_title: item.doc_kor_title,
+        doc_page: item.doc_page,
+        doc_thumbnail: item.doc_thumbnail,
         doc_country_list: item.doc_country.map((x) => x.CT_NM),
         doc_publish_country_list: item.doc_publish_country.map((x) => x.CT_NM),
-        doc_category: item.doc_category.map((x) => x.CT_NM),
+        doc_category_list: item.doc_category.map((x) => x.CT_NM),
         doc_register_date: item.doc_register_date.substring(0, 10),
         doc_host: item.doc_host,
-        doc_content_type:item.doc_content_type? item.dc_type.map((x) => x.CT_NM):[],
+        doc_content_type:item.doc_content_type.map((x) => x.CT_NM),
+        doc_content_type_list:item.doc_content_type.map((x) => x.CT_NM),
         doc_content: item.doc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
         doc_url:item.doc_url,
       };

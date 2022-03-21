@@ -283,5 +283,17 @@ const FilterWrapper = styled.div`
       }
     }
   }
+  .filter-action{
+    display:flex;
+    justify-content:end;
+    button{
+      cursor:pointer;
+      border-radius:4px;
+      border:none;
+      background-color:#435269;
+      color:white;
+      padding:0.5rem 1rem 0.5rem 1rem ;
+    }
+  }
 `;
 export default HostManagement;

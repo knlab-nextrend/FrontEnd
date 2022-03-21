@@ -36,32 +36,30 @@ function CurationDataDetailContainer() {
   const dataCleansing = (rawData) => {
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
-      dc_content: _rawStatusDetailData.dc_content || "",
-      dc_dt_collect: _rawStatusDetailData.dc_dt_collect || "",
-      dc_dt_write: _rawStatusDetailData.dc_dt_write && (_rawStatusDetailData.dc_dt_write.substring(0,10) || ""),
-      dc_keyword: _rawStatusDetailData.dc_keyword,
-      dc_publisher: _rawStatusDetailData.dc_publisher || "",
-      dc_cover:
-        _rawStatusDetailData.dc_cover[0] === ""
-          ? []
-          : _rawStatusDetailData.dc_cover,
-      dc_country_pub: _rawStatusDetailData.dc_country_pub || "",
-      dc_cat: _rawStatusDetailData.dc_cat,
-      dc_code: _rawStatusDetailData.dc_code,
-      dc_code_list: _rawStatusDetailData.dc_code.map((x) => x.CT_NM),
-      dc_country: _rawStatusDetailData.dc_country,
-      dc_country_list: _rawStatusDetailData.dc_country.map((x) => x.CT_NM),
-      dc_country_pub: _rawStatusDetailData.dc_country_pub,
-      dc_country_pub_list: _rawStatusDetailData.dc_country_pub.map(
+      doc_content: _rawStatusDetailData.doc_content || "",
+      doc_collect_date: _rawStatusDetailData.doc_collect_date || "",
+      doc_write_date: _rawStatusDetailData.doc_write_date && (_rawStatusDetailData.doc_write_date || ""),
+      doc_keyword: _rawStatusDetailData.doc_keyowrd,
+      doc_publisher: _rawStatusDetailData.doc_publisher || "",
+      doc_thumbnail:_rawStatusDetailData.doc_thumbnail,
+      doc_publish_country: _rawStatusDetailData.doc_publish_country || "",
+      doc_publish_country_list: _rawStatusDetailData.doc_publish_country.map(
         (x) => x.CT_NM
-      ),
-      dc_page: _rawStatusDetailData.dc_page || "",
-      dc_type: _rawStatusDetailData.dc_type||[],
-      dc_type_list:_rawStatusDetailData.dc_type ? _rawStatusDetailData.dc_type.map((x) => x.CT_NM):[],
-      dc_title_or: _rawStatusDetailData.dc_title_or || "",
-      dc_title_kr: _rawStatusDetailData.dc_title_kr || "",
-      dc_smry_kr: _rawStatusDetailData.dc_smry_kr || "",
-      dc_url_loc: _rawStatusDetailData.dc_url_loc || "",
+      ).join(", "),
+      doc_category: _rawStatusDetailData.doc_category,
+      doc_category_list: _rawStatusDetailData.doc_category.map((x) => x.CT_NM).join(", "),
+      doc_country: _rawStatusDetailData.doc_country,
+      doc_country_list: _rawStatusDetailData.doc_country.map((x) => x.CT_NM).join(", "),
+      doc_page: _rawStatusDetailData.doc_page || "",
+      doc_content_type: _rawStatusDetailData.doc_content_type||[],
+      doc_content_type_list:_rawStatusDetailData.doc_content_type ? _rawStatusDetailData.doc_content_type.map((x) => x.CT_NM).join(", "):[],
+      doc_origin_title: _rawStatusDetailData.doc_origin_title || "",
+      doc_kor_title: _rawStatusDetailData.doc_kor_title || "",
+      doc_kor_summary: _rawStatusDetailData.doc_kor_summary || "",
+      doc_url: _rawStatusDetailData.doc_url || "",
+      doc_url_intro:_rawStatusDetailData.doc_url_intro || "",
+      doc_relate_title:_rawStatusDetailData.doc_relate_title || "",
+      doc_relate_url:_rawStatusDetailData.doc_relate_url||""
     };
     console.log(_docs)
     setDocs(_docs);

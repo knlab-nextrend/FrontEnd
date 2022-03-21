@@ -73,7 +73,7 @@ function DataTable({
             {tableData.map((item, index) => {
               return (
                 <tr key={index}>
-                  {/*type === "archive" && (
+                  {type === "archive" && (
                     <>
                       <td className="is_crawled">
                         {item.is_crawled ? (
@@ -82,10 +82,10 @@ function DataTable({
                           <Badge>업로드</Badge>
                         )}
                       </td>
-                      <td>{item.dc_country_list.join(", ")}</td>
-                      <td>{item.dc_code_list.join(", ")}</td>
+                      <td>{item.dc_country_list}</td>
+                      <td>{item.dc_code_list}</td>
                     </>
-                        )*/}
+                        )}
                   {(type === "register" || type==="archive") && <td>{item.doc_kor_title}</td>}
                   {type !== "screening" && (
                     <td>
@@ -96,7 +96,7 @@ function DataTable({
                   )}
                   <td>{item.doc_origin_summary}</td>
                   <td>{item.doc_host}</td>
-                  <td>{item.doc_language}</td>
+                  <td>{item.doc_language.CT_NM}</td>
                   <td>{item.doc_collet_date}</td>
                   <td>{item.doc_page}쪽</td>
                   {type === "screening" && (

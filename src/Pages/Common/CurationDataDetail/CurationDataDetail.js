@@ -12,23 +12,17 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
       <Wrapper>
         <ArticleInfoWrapper>
           <ImageContainer>
-            {docs.dc_cover && (
-              <Image
-                src={
-                  docs.dc_cover && docs.dc_cover.length !== 0
-                    ? `http://${docs.dc_cover[0]}`
-                    : process.env.PUBLIC_URL + `/img/curation_default_image.png`
-                }
-              />
+            {docs.doc_thumbnail && (
+              <Image src={`http://${docs.doc_thumbnail}`}/>
             )}
           </ImageContainer>
           <ArticleInfoContainer>
             <ArticleHeader>
               <SubTitle>
-                [{docs.dc_country_list && docs.dc_country_list.join(", ")}]
+                [{docs.doc_country_list}]
               </SubTitle>
-              <Title>{docs.dc_title_kr}</Title>
-              <div>{docs.dc_title_or}</div>
+              <Title>{docs.doc_kor_title}</Title>
+              <div>{docs.doc_origin_title}</div>
             </ArticleHeader>
             {
               // 권한이 관리자일 경우
@@ -45,32 +39,31 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               </Info>
               <Info>
                 <div className="title">▶ 원문 발행일</div>
-                <div className="content">{docs.dc_dt_write}</div>
+                <div className="content">{docs.doc_write_date}</div>
               </Info>
               <Info>
-                <div className="title">▶ 발행 HOST</div>
-                <div className="content">{docs.dc_publisher}</div>
+                <div className="title">▶ 발행 기관</div>
+                <div className="content">{docs.doc_publisher}({docs.doc_host})</div>
               </Info>
               <Info>
                 <div className="title">▶ 발행면수</div>
-                <div className="content">{docs.dc_page}</div>
+                <div className="content">{docs.doc_page}</div>
               </Info>
               <Info>
                 <div className="title">▶ 발행국가</div>
                 <div className="content">
-                  {docs.dc_country_pub_list &&
-                    docs.dc_country_pub_list.join(", ")}
+                  {docs.doc_publish_country_list}
                 </div>
               </Info>
               <Info>
                 <div className="title">▶ 주제분류</div>
                 <div className="content">
-                  {docs.dc_code_list && docs.dc_code_list.join(", ")}
+                  {docs.doc_category_list}
                 </div>
               </Info>
               <Info>
                 <div className="title">▶ 유형분류</div>
-                <div className="content">{docs.dc_code_list && docs.dc_type_list.join(", ")}</div>
+                <div className="content">{docs.doc_content_type_list}</div>
               </Info>
             </ArticleInfo>
           </ArticleInfoContainer>
@@ -78,8 +71,8 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
         <ContentRow>
           <div className="title">▶ 키워드</div>
           <div className="contents">
-            {docs.dc_keyword &&
-              docs.dc_keyword.map((item, index) => {
+            {docs.doc_keyword &&
+              docs.doc_keyword.map((item, index) => {
                 return (
                   <div className="chip" key={index}>
                     {item}
@@ -91,29 +84,29 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
         <ContentRow>
           <div className="title">▶ URL</div>
           <div className="contents">
-            <a target="_blank" href={docs.dc_url_loc}>
-              {docs.dc_url_loc}
+            <a target="_blank" href={docs.doc_url}>
+              {docs.doc_url}
             </a>
           </div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ 요약</div>
-          <div className="contents">{docs.dc_smry_kr}</div>
+          <div className="contents">{docs.doc_kor_summary}</div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ 연관문서 이동</div>
           <div className="contents">
-            <div className="chip">
+            <a className="chip" target="_blank" href={docs.doc_relate_url}>
               <AiOutlineLink />
-              연관문서 1
-            </div>
+              {docs.doc_relate_title}
+            </a>
           </div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ 본문내용</div>
         </ContentRow>
         <ContentRow>
-          <Editor readOnly={true} data={docs.dc_content} />
+          <Editor readOnly={true} data={docs.doc_content} />
         </ContentRow>
       </Wrapper>
     </>

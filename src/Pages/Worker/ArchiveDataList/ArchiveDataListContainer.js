@@ -20,6 +20,7 @@ function ArchiveDataListContainer() {
     let _archiveDataList = [];
     let _rawArchiveDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
+    console.log(rawData)
     _rawArchiveDataList.forEach((item) => {
       const obj = {
         _id: item._id,
@@ -28,8 +29,8 @@ function ArchiveDataListContainer() {
         doc_origin_summary: item.doc_origin_summary,
         doc_kor_summary:item.doc_kor_summary,
         doc_page: item.doc_page,
-        doc_country_list: item.doc_country.map((x) => x.CT_NM),
-        doc_category_list: item.doc_category.map((x) => x.CT_NM),
+        doc_country_list: item.doc_country.map((x) => x.CT_NM).join(", "),
+        doc_category_list: item.doc_category.map((x) => x.CT_NM).join(", "),
         doc_url: item.doc_url.replace("%3A", ":"),
         is_crawled: item.is_crawled,
         doc_collect_date: item.doc_collect_date,
@@ -38,7 +39,7 @@ function ArchiveDataListContainer() {
       };
       _archiveDataList.push(obj);
     });
-
+    console.log(_archiveDataList)
     setDcCount(_dcCount);
     setArchiveDataList(_archiveDataList);
   };

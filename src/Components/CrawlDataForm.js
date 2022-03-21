@@ -191,11 +191,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_bundle_url"] = docBundleUrl;
       _docs["doc_relate_title"] = docRelateTitle;
       _docs["doc_relate_title"] = docRelateUrl;
-
-      _docs["doc_thumbnail"] =
-        type !== "screening" && type !== "refine" && type !== "register"
-          ? docThumbnailSelect
-          : docThumbnail;
       _docs["doc_keyowrd"] = docKeyword;
       _docs["doc_category"] = docCategoryIndexList;
       _docs["doc_country"] = docCountryIndexList;
@@ -205,6 +200,11 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_content_type"] = docContentTypeIndexList;
       _docs["doc_custom"] = docCustomIndexList;
       _docs["doc_topic"] = docTopicIndexList;
+
+      _docs["doc_thumbnail"] =
+      type !== "screening" && type !== "refine" && type !== "register"
+        ? docThumbnailSelect
+        : docThumbnail;
 
       _docs["item_id"] = itemId;
 

@@ -168,26 +168,26 @@ function CurationList({ curationData, handleRowClick }) {
                     <div className="img-container">
                       <img
                         src={
-                          item.dc_cover.length !== 0
-                            ? `http://${item.dc_cover[0]}`
+                          item.doc_thumbnail !== null
+                            ? `http://${item.doc_thumbnail}`
                             : process.env.PUBLIC_URL +
                               `/img/curation_default_image.png`
                         }
                       />
                     </div>
                     <div className="title-container">
-                      <td className="dc_title_kr">{item.dc_title_kr}</td>
-                      <td className="dc_title_or">{item.dc_title_or}</td>
+                      <td className="dc_title_kr">{item.doc_kor_title}</td>
+                      <td className="dc_title_or">{item.doc_origin_title}</td>
                     </div>
                   </div>
                 </td>
-                <td className="center">{item.dc_country_list.join(",")}</td>
-                <td className="center">{item.dc_code_list.join(", ")}</td>
-                <td className="center">{item.dc_type.join(", ")}</td>
-                <td className="center">{item.dc_publisher}</td>
+                <td className="center">{item.doc_country_list.join(",")}</td>
+                <td className="center">{item.doc_category_list.join(", ")}</td>
+                <td className="center">{item.doc_content_type_list.join(", ")}</td>
+                <td className="center">{item.doc_host}</td>
 
-                <td className="center">{item.dc_page}쪽</td>
-                <td className="center">{item.dc_dt_regi}</td>
+                <td className="center">{item.doc_page}쪽</td>
+                <td className="center">{item.doc_register_date}</td>
               </tr>
             );
           })}

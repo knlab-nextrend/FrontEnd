@@ -105,7 +105,6 @@ function CategoryModal({ executeModal, closeModal }) {
   /* 데이터 불러오기 */
   const dataFetch = () => {
     const type = CATEGORY_TYPE_DATA[categoryModalType].type;
-    trackPromise(
       categoryListFetchApi(type, length, upperCode[length - 2])
         .then((res) => {
           dataCleansing(res.data);
@@ -119,7 +118,6 @@ function CategoryModal({ executeModal, closeModal }) {
             );
           });
         })
-    );
   };
   const saveCategory = () => {
     executeModal(selectedCategoryList, categoryModalType);

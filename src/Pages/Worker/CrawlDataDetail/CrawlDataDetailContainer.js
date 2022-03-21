@@ -186,8 +186,8 @@ function CrawlDataDetailContainer() {
     //   });
     // }
     console.log("꺼지는지 테스트...")
-    documentDetachImageApi(_id).then((res) => {
-    });
+    // documentDetachImageApi(_id).then((res) => {
+    // });
   };
   const leaveSetting = (e) => {
     // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다.
