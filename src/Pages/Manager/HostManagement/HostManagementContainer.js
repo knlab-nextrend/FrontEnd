@@ -10,9 +10,10 @@ function HostManagementContainer() {
     language: "",
     country: "",
     name: "",
+    category:"",
     crawl_period: "",
   });
-  const { domain, language, country, name, crawl_period } = filterInputs; // 비구조화 할당을 통해 값 추출
+  const { domain, language, country, name, categorycrawl_period } = filterInputs; // 비구조화 할당을 통해 값 추출
   const [filterOpen, setFilterOpen] = useState(true);
 
   const [deleteHostList,setDeleteHostList] = useState([]); // DB에서 삭제할 host 목록 .. ? 
@@ -48,6 +49,7 @@ function HostManagementContainer() {
           country: item["HOST 해당 국가"],
           language: item["HOST 해당 언어"],
           name: item["발급 기관 명"],
+          category:item["HOST 정책 분류"],
           crawl_period: item["크롤링 수집주기"],
         });
       });
@@ -65,6 +67,7 @@ function HostManagementContainer() {
         "HOST 해당 언어",
         "HOST 해당 국가",
         "발급 기관 명",
+        "HOST 정책 분류",
         "크롤링 수집주기",
       ],
     ];

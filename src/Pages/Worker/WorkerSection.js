@@ -8,6 +8,7 @@ import CrawlDataListContainer from "./CrawlDataList/CrawlDataListContainer";
 import ArchiveDataListContainer from "./ArchiveDataList/ArchiveDataListContainer";
 import CurationDataListContainer from "../Common/CurationDataList/CurationDataListContainer";
 import CurationDataDetailContainer from "../Common/CurationDataDetail/CurationDataDetailContainer";
+import AdminCurationDataList from "./AdminCurationDataList";
 
 function WorkerSection() {
   return (
@@ -36,7 +37,7 @@ function WorkerSection() {
       />
       <PrivateRoute
         path="/curation"
-        component={CurationDataListContainer}
+        component={AdminCurationDataList}
         exact
       />
       <PrivateRoute

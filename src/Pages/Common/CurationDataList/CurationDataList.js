@@ -1,5 +1,4 @@
 import React from "react";
-import FormHeader from "../../../Components/FormHeader";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Pagination from "../../../Components/Pagination";
@@ -23,7 +22,6 @@ function CurationDataList({
 }) {
   return (
     <>
-      {userInfo.permission!==0 && <FormHeader type="view" title={"큐레이션 데이터 조회"} />}
       {curationDataList.length !== 0 ? (
         <Wrapper>
           <RowContainer>
@@ -202,7 +200,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width:100%;
-  margin: 0 5rem 0 5rem;
 `;
 
 const RowContainer = styled.div`
@@ -242,7 +239,6 @@ const Row = styled.div`
 
 const ViewType = styled.div`
   display: flex;
-
   font-size: 14px;
   input[type="radio"] {
     display: none;

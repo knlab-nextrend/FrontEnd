@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import CurationLookUp from "./CurationLookUp";
+import CurationDataListContainer from "../../Common/CurationDataList/CurationDataListContainer";
 function UserOnlyDataLookUpPage({ axisMenu }) {
   return (
     <Wrapper>
@@ -16,7 +16,7 @@ function UserOnlyDataLookUpPage({ axisMenu }) {
         })}
       </AxisMenuBar>
       <ContentBody>
-        <CurationLookUp />
+        <CurationDataListContainer className="list"/>
       </ContentBody>
     </Wrapper>
   );
@@ -24,8 +24,7 @@ function UserOnlyDataLookUpPage({ axisMenu }) {
 
 const Wrapper = styled.div`
   display: grid;
-  width: 100%;
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: 200px auto;
   grid-template-rows: 50px minmax(1280px, auto);
 `;
 const AxisTitle = styled.div`
@@ -83,7 +82,10 @@ const ContentBody = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   display: flex;
-  width: 100%;
   justify-content: center;
+  margin: 0 5rem 0 5rem;
+
 `;
+
+
 export default UserOnlyDataLookUpPage;

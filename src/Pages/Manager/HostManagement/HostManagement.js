@@ -10,7 +10,7 @@ import {
   MdOutlineDeleteOutline,
   MdOutlineCheck,
   MdClose,
-  MdOutlineSearch
+  MdOutlineSearch,
 } from "react-icons/md";
 function HostManagement({
   hostList,
@@ -38,7 +38,10 @@ function HostManagement({
           <div className="content-body">
             <DictionaryFunctionWrapper>
               <DictionaryFunctionBtnWrapper>
-                <button onClick={_filterOpenHandler}><MdOutlineSearch size="20"/>조건 검색 여닫기</button>
+                <button onClick={_filterOpenHandler}>
+                  <MdOutlineSearch size="20" />
+                  조건 검색 여닫기
+                </button>
                 <input
                   id="excel-upload"
                   type="file"
@@ -99,6 +102,14 @@ function HostManagement({
                     />
                   </div>
                   <div className="filter-item">
+                    <div>HOST 정책 분류</div>
+                    <input
+                      name="category"
+                      onChange={_filterInputsHandler}
+                      type="text"
+                    />
+                  </div>
+                  <div className="filter-item">
                     <div className="item-title">크롤링 수집주기</div>
                     <select name="crawl_period" onChange={_filterInputsHandler}>
                       <option value="A">A</option>
@@ -124,6 +135,7 @@ function HostManagement({
                   <th>HOST 해당 언어</th>
                   <th>HOST 해당 국가</th>
                   <th>발급 기관 명</th>
+                  <th>HOST 정책 분류</th>
                   <th className="crawl-setting">크롤링 수집주기</th>
                 </tr>
               </thead>
@@ -138,6 +150,7 @@ function HostManagement({
                       <td>{host.langauge}</td>
                       <td>{host.country}</td>
                       <td>{host.name}</td>
+                      <td>{host.category}</td>
                       <td className={`A`}>{host.crawl_period}</td>
                     </tr>
                   );
