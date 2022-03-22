@@ -226,7 +226,6 @@ const Wrapper = styled.div`
   display: flex;
   color: rgb(59, 59, 59);
   background-color: #eee;
-  min-height: 30rem;
 `;
 
 const LineBox = styled.div`

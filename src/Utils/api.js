@@ -390,6 +390,18 @@ const MultilingualDictionaryApi = (data=null,method)=>{
     return axios.delete(`/nextrend/multilingual`, config);
   }
 }
+
+const HostManagementApi = (data = null , method) =>{
+  if(method === "GET"){
+    const config = {
+      headers: { headers },
+    };
+    return axios.get(`/nextrend/host`, config);
+  }
+  if(method === "POST"){
+    return axios.post(`/nextrend/host`, data, { headers: headers });
+  }
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -427,4 +439,5 @@ export {
   userAxisMenuSettingFetchApi,
   userAxisMenuSaveApi,
   MultilingualDictionaryApi,
+  HostManagementApi
 };

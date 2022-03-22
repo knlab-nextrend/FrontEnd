@@ -13,7 +13,7 @@ import {
   MdOutlineSearch,
 } from "react-icons/md";
 function HostManagement({
-  hostList,
+  currentHostList,
   filterOpen,
   _filterOpenHandler,
   _filterInputsHandler,
@@ -72,7 +72,8 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 도메인</div>
                     <input
-                      name="domain"
+                    placeHolder = "입력값을 포함하여 검색됩니다."
+                      name="host"
                       onChange={_filterInputsHandler}
                       type="text"
                     />
@@ -80,14 +81,16 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 언어</div>
                     <input
-                      name="language"
+                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
+                      name="lang"
                       onChange={_filterInputsHandler}
                       type="text"
                     />
                   </div>
                   <div className="filter-item">
-                    <div>HOST 국가</div>
+                    <div>HOST 해당 국가</div>
                     <input
+                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
                       name="country"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -96,6 +99,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>발급 기관 명</div>
                     <input
+                    placeHolder = "입력값을 포함하여 검색됩니다"
                       name="name"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -104,6 +108,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 정책 분류</div>
                     <input
+                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
                       name="category"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -111,7 +116,7 @@ function HostManagement({
                   </div>
                   <div className="filter-item">
                     <div className="item-title">크롤링 수집주기</div>
-                    <select name="crawl_period" onChange={_filterInputsHandler}>
+                    <select name="workCycle" onChange={_filterInputsHandler}>
                       <option value="A">A</option>
                       <option value="B">B</option>
                       <option value="C">C</option>
@@ -128,9 +133,6 @@ function HostManagement({
             <DictonaryDataTable>
               <thead>
                 <tr>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
                   <th>HOST 도메인</th>
                   <th>HOST 해당 언어</th>
                   <th>HOST 해당 국가</th>
@@ -140,18 +142,15 @@ function HostManagement({
                 </tr>
               </thead>
               <tbody>
-                {hostList.map((host, index) => {
+                {currentHostList.map((host, index) => {
                   return (
                     <tr>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
-                      <td>{host.domain}</td>
-                      <td>{host.langauge}</td>
+                      <td>{host.host}</td>
+                      <td>{host.lang}</td>
                       <td>{host.country}</td>
                       <td>{host.name}</td>
                       <td>{host.category}</td>
-                      <td className={`A`}>{host.crawl_period}</td>
+                      <td>{host.workCycle}</td>
                     </tr>
                   );
                 })}
