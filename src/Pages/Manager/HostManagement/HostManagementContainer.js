@@ -29,10 +29,7 @@ function HostManagementContainer() {
     });
   };
   const filterSearch = () => {
-    console.log(filterInputs);
     let _result = [...hostList];
-    // 이거 reduce 쓰면 조금 낫나 ?
-
     for (let key in filterInputs) {
       // host와 name은 포함검색되어야하기에
       if (key !== "host" && key !== "name") {
@@ -42,13 +39,11 @@ function HostManagementContainer() {
           });
         }
       } else {
-        console.log(key);
         _result = _result.filter((item) => {
           return item[key].includes(filterInputs[key]);
         });
       }
     }
-    console.log(_result);
     setCurrentHostList(_result);
   };
   const _filterOpenHandler = () => {

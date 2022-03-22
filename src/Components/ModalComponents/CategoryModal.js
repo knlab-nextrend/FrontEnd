@@ -10,6 +10,7 @@ function CategoryModal({ executeModal, closeModal }) {
   const categoryModalType = useSelector(
     (state) => state.modal.categoryModalType
   );
+  const categoryModalData = useSelector((state)=>state.modal.modalData[categoryModalType])
   const CATEGORY_TYPE_DATA = {
     doc_category: {
       type: 1,
@@ -146,6 +147,7 @@ function CategoryModal({ executeModal, closeModal }) {
     ]);
     setUpperCode({ 2: null, 4: null, 6: null });
     setLength(2);
+    setSelectedCategoryList(categoryModalData)
   };
   useEffect(() => {
     listInit();
