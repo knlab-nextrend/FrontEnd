@@ -215,7 +215,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
       setItemId(docs.item_id);
-      setDocContent(docs.doc_content.replaceAll("\n", "<br/>")); // /n 개행 태그를 <br/> 태그로 치환하여 공백을 그대로 출력
+      setDocContent(docs.doc_content.replaceAll("\n", "<p><br datacke-filter='true'></p>")); // /n 개행 태그를 <br/> 태그로 치환하여 공백을 그대로 출력
       setDocWriteDate(
         docs.doc_write_date && docs.doc_write_date.substring(0, 10)
       ); // date 객체에 넣어주기

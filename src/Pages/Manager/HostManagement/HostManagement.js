@@ -11,7 +11,15 @@ import {
   MdOutlineCheck,
   MdClose,
 } from "react-icons/md";
-function HostManagement({ filterOpen, _filterOpenHandler }) {
+function HostManagement({
+  hostList,
+  filterOpen,
+  _filterOpenHandler,
+  _filterInputsHandler,
+  filterSearch,
+  excelDownload,
+  excelUpload,
+}) {
   return (
     <>
       <FormHeader type={"view"} title={"HOST 목록 관리"} />
@@ -27,9 +35,19 @@ function HostManagement({ filterOpen, _filterOpenHandler }) {
             <DictionaryFunctionWrapper>
               <DictionaryFunctionBtnWrapper>
                 <button onClick={_filterOpenHandler}>조건 검색</button>
-                <button>
+                <input
+                  id="excel-upload"
+                  type="file"
+                  accept=".xlsx"
+                  onChange={excelUpload}
+                />
+                <label htmlFor="excel-upload">
                   <MdUpload size="20" />
-                  엑셀 파일 일괄 업로드
+                  엑셀 일괄 업로드
+                </label>
+                <button onClick={excelDownload}>
+                  <MdDownload size="20" />
+                  현재 목록 다운로드
                 </button>
                 <button>
                   <MdOutlineDeleteOutline size="20" />
@@ -46,33 +64,49 @@ function HostManagement({ filterOpen, _filterOpenHandler }) {
                 <div className="filter-body">
                   <div className="filter-item">
                     <div>HOST 도메인</div>
-                    <input type="text" />
+                    <input
+                      name="domain"
+                      onChange={_filterInputsHandler}
+                      type="text"
+                    />
                   </div>
                   <div className="filter-item">
                     <div>HOST 언어</div>
-                    <input type="text" />
+                    <input
+                      name="language"
+                      onChange={_filterInputsHandler}
+                      type="text"
+                    />
                   </div>
                   <div className="filter-item">
                     <div>HOST 국가</div>
-                    <input type="text" />
+                    <input
+                      name="country"
+                      onChange={_filterInputsHandler}
+                      type="text"
+                    />
                   </div>
                   <div className="filter-item">
                     <div>발급 기관 명</div>
-                    <input type="text" />
+                    <input
+                      name="name"
+                      onChange={_filterInputsHandler}
+                      type="text"
+                    />
                   </div>
                   <div className="filter-item">
                     <div className="item-title">크롤링 수집주기</div>
-                    <select>
-                      <option>A</option>
-                      <option>B</option>
-                      <option>C</option>
-                      <option>D</option>
-                      <option>E</option>
+                    <select name="crawl_period" onChange={_filterInputsHandler}>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                      <option value="F">E</option>
                     </select>
                   </div>
                 </div>
                 <div className="filter-action">
-                  <button>검색</button>
+                  <button onClick={filterSearch}>검색</button>
                 </div>
               </FilterWrapper>
             )}
@@ -86,30 +120,24 @@ function HostManagement({ filterOpen, _filterOpenHandler }) {
                   <th>HOST 해당 언어</th>
                   <th>HOST 해당 국가</th>
                   <th>발급 기관 명</th>
-                  <th className="crawl-setting">크롤링 수집주기 설정</th>
+                  <th className="crawl-setting">크롤링 수집주기</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>www.meti.go.jp</td>
-                  <td>일본어</td>
-                  <td>일본</td>
-                  <td>METI</td>
-                  <td className={`A`}>A</td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>www.meti.go.jp</td>
-                  <td>일본어</td>
-                  <td>일본</td>
-                  <td>METI</td>
-                  <td className={`A`}>A</td>
-                </tr>
+                {hostList.map((host, index) => {
+                  return (
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{host.domain}</td>
+                      <td>{host.langauge}</td>
+                      <td>{host.country}</td>
+                      <td>{host.name}</td>
+                      <td className={`A`}>{host.crawl_period}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </DictonaryDataTable>
           </div>
@@ -158,7 +186,11 @@ const DictionaryFunctionWrapper = styled.div`
 `;
 const DictionaryFunctionBtnWrapper = styled.div`
   display: flex;
-  button {
+  input[type="file"] {
+    display: none;
+  }
+  button,
+  label {
     cursor: pointer;
     margin: 0.5rem;
     font-size: 12px;
@@ -283,16 +315,16 @@ const FilterWrapper = styled.div`
       }
     }
   }
-  .filter-action{
-    display:flex;
-    justify-content:end;
-    button{
-      cursor:pointer;
-      border-radius:4px;
-      border:none;
-      background-color:#435269;
-      color:white;
-      padding:0.5rem 1rem 0.5rem 1rem ;
+  .filter-action {
+    display: flex;
+    justify-content: end;
+    button {
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+      background-color: #435269;
+      color: white;
+      padding: 0.5rem 1rem 0.5rem 1rem;
     }
   }
 `;
