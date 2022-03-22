@@ -13,14 +13,12 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
         <ArticleInfoWrapper>
           <ImageContainer>
             {docs.doc_thumbnail && (
-              <Image src={`http://${docs.doc_thumbnail}`}/>
+              <Image src={`http://${docs.doc_thumbnail}`} />
             )}
           </ImageContainer>
           <ArticleInfoContainer>
             <ArticleHeader>
-              <SubTitle>
-                [{docs.doc_country_list}]
-              </SubTitle>
+              <SubTitle>[{docs.doc_country_list}]</SubTitle>
               <Title>{docs.doc_kor_title}</Title>
               <div>{docs.doc_origin_title}</div>
             </ArticleHeader>
@@ -38,12 +36,16 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 <div className="content">{docs.dc_hits || 0}</div>
               </Info>
               <Info>
-                <div className="title">▶ 원문 발행일</div>
-                <div className="content">{docs.doc_write_date}</div>
+                <div className="title">▶ 원문 작성일 / 원문 발행일</div>
+                <div className="content">
+                  {docs.doc_write_date} / {docs.doc_publish_date}
+                </div>
               </Info>
               <Info>
                 <div className="title">▶ 발행 기관</div>
-                <div className="content">{docs.doc_publisher}({docs.doc_host})</div>
+                <div className="content">
+                  {docs.doc_publisher}({docs.doc_host})
+                </div>
               </Info>
               <Info>
                 <div className="title">▶ 발행면수</div>
@@ -51,19 +53,18 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               </Info>
               <Info>
                 <div className="title">▶ 발행국가</div>
-                <div className="content">
-                  {docs.doc_publish_country_list}
-                </div>
+                <div className="content">{docs.doc_publish_country_list}</div>
               </Info>
               <Info>
-                <div className="title">▶ 주제분류</div>
-                <div className="content">
-                  {docs.doc_category_list}
-                </div>
+                <div className="title">▶ 정책분류</div>
+                <div className="content">{docs.doc_category_list}</div>
               </Info>
               <Info>
-                <div className="title">▶ 유형분류</div>
-                <div className="content">{docs.doc_content_type_list}</div>
+                <div className="title">▶ 문서 유형 분류 / 내용 구분 분류</div>
+                <div className="content">
+                  {docs.doc_content_type_list} /{" "}
+                  {docs.doc_content_category_list}
+                </div>
               </Info>
             </ArticleInfo>
           </ArticleInfoContainer>
@@ -82,10 +83,18 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
           </div>
         </ContentRow>
         <ContentRow>
-          <div className="title">▶ URL</div>
+          <div className="title">▶ 문서 URL</div>
           <div className="contents">
             <a target="_blank" href={docs.doc_url}>
               {docs.doc_url}
+            </a>
+          </div>
+        </ContentRow>
+        <ContentRow>
+          <div className="title">▶ 문서 안내 URL</div>
+          <div className="contents">
+            <a target="_blank" href={docs.doc_url_intro}>
+              {docs.doc_url_intro}
             </a>
           </div>
         </ContentRow>
@@ -98,7 +107,7 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
           <div className="contents">
             <a className="chip" target="_blank" href={docs.doc_relate_url}>
               <AiOutlineLink />
-              {docs.doc_relate_title}
+              {docs.doc_relate_title} ({docs.doc_relate_url})
             </a>
           </div>
         </ContentRow>

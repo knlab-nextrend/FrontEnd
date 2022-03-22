@@ -208,6 +208,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
 
       _docs["item_id"] = itemId;
 
+      console.log(_docs)
       return _docs;
     },
   }));
@@ -230,7 +231,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       );
       setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
       setDocThumbnail(docs.doc_thumbnail);
-      setDocThumbnailSelect(docs.doc_thumbnail[0]);
+      setDocThumbnailSelect(type==="screeing" || type==="refine" || type==="register" ? docs.doc_thumbnail[0] : docs.doc_thumbnail);
       setDocOriginSummary(docs.doc_origin_summary);
       setDocKorSummary(docs.doc_kor_summary);
       setDocPublisher(docs.doc_publisher);

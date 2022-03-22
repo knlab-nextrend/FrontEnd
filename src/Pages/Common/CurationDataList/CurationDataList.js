@@ -181,9 +181,9 @@ function CurationList({ curationData, handleRowClick }) {
                     </div>
                   </div>
                 </td>
-                <td className="center">{item.doc_country_list.join(",")}</td>
-                <td className="center">{item.doc_category_list.join(", ")}</td>
-                <td className="center">{item.doc_content_type_list.join(", ")}</td>
+                <td className="center">{item.doc_country_list}</td>
+                <td className="center">{item.doc_category_list}</td>
+                <td className="center">{item.doc_content_type_list}</td>
                 <td className="center">{item.doc_host}</td>
 
                 <td className="center">{item.doc_page}쪽</td>

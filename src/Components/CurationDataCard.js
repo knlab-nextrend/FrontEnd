@@ -5,38 +5,37 @@ function CurationDataCard({ curationDataItem }) {
     <>
       <CardWrapper>
         <ImageContainer>
-          <Image
-            src={
-              curationDataItem.dc_cover.length !== 0
-                ? `http://${curationDataItem.dc_cover[0]}`
-                : process.env.PUBLIC_URL + `/img/curation_default_image.png`
-            }
-          />
+          <Image src={
+                          curationDataItem.doc_thumbnail !== null
+                            ? `http://${curationDataItem.doc_thumbnail}`
+                            : process.env.PUBLIC_URL +
+                              `/img/curation_default_image.png`
+                        } />
         </ImageContainer>
         <ContentContainer>
           <Title>
-            <div>[{curationDataItem.dc_country_list.join(",")}]</div>
-            <div>{curationDataItem.dc_title_kr}</div>
+            <div>[{curationDataItem.doc_country_list}]</div>
+            <div>{curationDataItem.doc_kor_title}</div>
           </Title>
-          <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
+          <SubTitle>{curationDataItem.doc_origin_title}</SubTitle>
           <Info>
             <CategoryBadge color="grey">
-              {curationDataItem.dc_code_list.join(", ")}
+              {curationDataItem.doc_category_list}
             </CategoryBadge>
             <CountryBadge color="grey">
-              {curationDataItem.dc_country_list.join(", ")}
+              {curationDataItem.doc_publish_country_list}
             </CountryBadge>
             <PublisherBadge color="grey">
-              {curationDataItem.dc_publisher}
+              {curationDataItem.doc_host}
             </PublisherBadge>
           </Info>
           <Info>
-            <PageBadge color="grey">{curationDataItem.dc_page}쪽</PageBadge>
+            <PageBadge color="grey">{curationDataItem.doc_page}쪽</PageBadge>
             <RegiDateBadge color="grey">
-              {curationDataItem.dc_dt_regi}
+              {curationDataItem.doc_register_date}
             </RegiDateBadge>
           </Info>
-          <Content>{curationDataItem.dc_content}</Content>
+          <Content>{curationDataItem.doc_content}</Content>
         </ContentContainer>
       </CardWrapper>
     </>
@@ -131,7 +130,7 @@ const CategoryBadge = styled(Badge)`
 `;
 const CountryBadge = styled(Badge)`
   &:before {
-    content: "국가";
+    content: "발행 국가";
   }
 `;
 const PageBadge = styled(Badge)`

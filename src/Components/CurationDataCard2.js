@@ -7,30 +7,30 @@ function CurationDataCard2({ curationDataItem }) {
       <ImageContainer>
         <Image
           src={
-            curationDataItem.dc_cover.length !== 0
-              ? `http://${curationDataItem.dc_cover[0]}`
+            curationDataItem.doc_thumbnail !== null
+              ? `http://${curationDataItem.doc_thumbnail}`
               : process.env.PUBLIC_URL + `/img/curation_default_image.png`
           }
         />
       </ImageContainer>
       <ContentContainer>
         <Title>
-          <div>[{curationDataItem.dc_country_list.join(",")}]</div>
-          <div>{curationDataItem.dc_title_kr}</div>
+          <div>[{curationDataItem.doc_country_list}]</div>
+          <div>{curationDataItem.doc_kor_title}</div>
         </Title>
-        <SubTitle>{curationDataItem.dc_title_or}</SubTitle>
+        <SubTitle>{curationDataItem.doc_origin_title}</SubTitle>
         <Info>
-          <div>{curationDataItem.dc_code_list.join(", ")}</div>
+          <div>{curationDataItem.doc_category_list}</div>
           <div>|</div>
-          <div>{curationDataItem.dc_country_list.join(", ")}</div>
+          <div>{curationDataItem.doc_publish_country_list}</div>
           <div>|</div>
-          <div>{curationDataItem.dc_publisher}</div>
+          <div>{curationDataItem.doc_host}</div>
           <div>|</div>
-          <div>{curationDataItem.dc_dt_regi}</div>
+          <div>{curationDataItem.doc_register_date}</div>
           <div>|</div>
-          <div>{curationDataItem.dc_page}쪽</div>
+          <div>{curationDataItem.doc_page}쪽</div>
         </Info>
-        <UrlPreview>{curationDataItem.dc_url_loc}</UrlPreview>
+        <UrlPreview>{curationDataItem.doc_url}</UrlPreview>
       </ContentContainer>
     </CardWrapper>
   );

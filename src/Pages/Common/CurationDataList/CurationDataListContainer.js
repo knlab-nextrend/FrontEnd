@@ -40,13 +40,12 @@ function CurationDataListContainer() {
         doc_kor_title: item.doc_kor_title,
         doc_page: item.doc_page,
         doc_thumbnail: item.doc_thumbnail,
-        doc_country_list: item.doc_country.map((x) => x.CT_NM),
-        doc_publish_country_list: item.doc_publish_country.map((x) => x.CT_NM),
-        doc_category_list: item.doc_category.map((x) => x.CT_NM),
+        doc_country_list: item.doc_country.map((x) => x.CT_NM).join(", "),
+        doc_publish_country_list: item.doc_publish_country.map((x) => x.CT_NM).join(", "),
+        doc_category_list: item.doc_category.map((x) => x.CT_NM).join(", "),
         doc_register_date: item.doc_register_date.substring(0, 10),
         doc_host: item.doc_host,
-        doc_content_type:item.doc_content_type.map((x) => x.CT_NM),
-        doc_content_type_list:item.doc_content_type.map((x) => x.CT_NM),
+        doc_content_type_list:item.doc_content_type.map((x) => x.CT_NM).join(", "),
         doc_content: item.doc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
         doc_url:item.doc_url,
       };
