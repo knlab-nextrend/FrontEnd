@@ -62,7 +62,10 @@ function CurationDataDetailContainer() {
       doc_url: _rawStatusDetailData.doc_url || "",
       doc_url_intro:_rawStatusDetailData.doc_url_intro || "",
       doc_relate_title:_rawStatusDetailData.doc_relate_title || "",
-      doc_relate_url:_rawStatusDetailData.doc_relate_url||""
+      doc_relate_url:_rawStatusDetailData.doc_relate_url||"",
+      doc_project:_rawStatusDetailData.doc_project || "",
+      doc_publishing : _rawStatusDetailData.doc_publishing || "",
+      doc_blblio:_rawStatusDetailData.doc_blblio || ""
     };
     console.log(_docs)
     setDocs(_docs);

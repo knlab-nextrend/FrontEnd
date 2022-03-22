@@ -36,15 +36,21 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 <div className="content">{docs.dc_hits || 0}</div>
               </Info>
               <Info>
-                <div className="title">▶ 원문 작성일 / 원문 발행일</div>
+                <div className="title">▶ 원문 수집일 / 원문 작성일 / 원문 발행일</div>
                 <div className="content">
-                  {docs.doc_write_date} / {docs.doc_publish_date}
+                {docs.doc_collect_date} / {docs.doc_write_date} / {docs.doc_publish_date}
                 </div>
               </Info>
               <Info>
-                <div className="title">▶ 발행 기관</div>
+                <div className="title">▶ 문서 서비스 등록일</div>
                 <div className="content">
-                  {docs.doc_publisher}({docs.doc_host})
+                  {docs.doc_publish_date}
+                </div>
+              </Info>
+              <Info>
+                <div className="title">▶ 발행 HOST / 기관 명</div>
+                <div className="content">
+                  {docs.doc_publisher} / {docs.doc_host}
                 </div>
               </Info>
               <Info>
@@ -62,8 +68,14 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               <Info>
                 <div className="title">▶ 문서 유형 분류 / 내용 구분 분류</div>
                 <div className="content">
-                  {docs.doc_content_type_list} /{" "}
-                  {docs.doc_content_category_list}
+                  {docs.doc_content_type_list} /{docs.doc_content_category_list}
+                </div>
+              </Info>
+              <Info>
+                <div className="title">▶ 조사 과제 명 / 주문형 조사과제명의 세부과업명</div>
+                <div className="content">
+                  {docs.doc_project} /
+                  {docs.doc_publishing}
                 </div>
               </Info>
             </ArticleInfo>
@@ -83,6 +95,12 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
           </div>
         </ContentRow>
         <ContentRow>
+          <div className="title">▶ 서지사항</div>
+          <div className="contents">
+            {docs.doc_blblio}
+          </div>
+        </ContentRow>
+        <ContentRow>
           <div className="title">▶ 문서 URL</div>
           <div className="contents">
             <a target="_blank" href={docs.doc_url}>
@@ -99,10 +117,6 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
           </div>
         </ContentRow>
         <ContentRow>
-          <div className="title">▶ 요약</div>
-          <div className="contents">{docs.doc_kor_summary}</div>
-        </ContentRow>
-        <ContentRow>
           <div className="title">▶ 연관문서 이동</div>
           <div className="contents">
             <a className="chip" target="_blank" href={docs.doc_relate_url}>
@@ -110,6 +124,23 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               {docs.doc_relate_title} ({docs.doc_relate_url})
             </a>
           </div>
+        </ContentRow>
+        <ContentRow>
+          <div className="title">▶ 묶음문서 이동</div>
+          <div className="contents">
+            <a className="chip" target="_blank" href={docs.doc_relate_url}>
+              <AiOutlineLink />
+              {docs.doc_relate_title} ({docs.doc_relate_url})
+            </a>
+          </div>
+        </ContentRow>
+        <ContentRow>
+          <div className="title">▶ 한글 요약</div>
+          <div className="contents">{docs.doc_kor_summary}</div>
+        </ContentRow>
+        <ContentRow>
+          <div className="title">▶ 영어 요약</div>
+          <div className="contents">{docs.doc_origin_summary}</div>
         </ContentRow>
         <ContentRow>
           <div className="title">▶ 본문내용</div>
@@ -144,12 +175,12 @@ const ArticleInfoWrapper = styled.div`
   margin-bottom: 3rem;
 `;
 const SubTitle = styled.div`
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 0.5rem;
 `;
 const Title = styled.div`
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   color: #009999;
   margin-bottom: 0.5rem;
@@ -188,7 +219,7 @@ const Info = styled.div`
   .title {
     font-weight: bold;
     color: rgb(153, 153, 153);
-    width: 20%;
+    width: 30%;
   }
 `;
 

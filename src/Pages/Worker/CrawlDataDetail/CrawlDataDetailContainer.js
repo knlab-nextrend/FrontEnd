@@ -149,6 +149,7 @@ function CrawlDataDetailContainer() {
   };
 
   const dataStage = () => {
+    console.log("zz")
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
 
     CrawlDataStageApi(statusCode, _id, _crawlDataFormDocs).then((res) => {
