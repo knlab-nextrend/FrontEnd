@@ -48,6 +48,12 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 </div>
               </Info>
               <Info>
+                <div className="title">▶ 문서 언어</div>
+                <div className="content">
+                  {docs.doc_language_list}
+                </div>
+              </Info>
+              <Info>
                 <div className="title">▶ 발행 HOST / 기관 명</div>
                 <div className="content">
                   {docs.doc_publisher} / {docs.doc_host}
@@ -72,10 +78,23 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 </div>
               </Info>
               <Info>
+                <div className="title">▶ 문서 토픽 분류</div>
+                <div className="content">
+                  {docs.doc_topic_list}
+                </div>
+              </Info>
+
+              <Info>
                 <div className="title">▶ 조사 과제 명 / 주문형 조사과제명의 세부과업명</div>
                 <div className="content">
                   {docs.doc_project} /
                   {docs.doc_publishing}
+                </div>
+              </Info>
+              <Info>
+                <div className="title">▶ 큐레이션 추천문서</div>
+                <div className="content">
+                  {docs.doc_recomment}
                 </div>
               </Info>
             </ArticleInfo>
@@ -97,7 +116,7 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
         <ContentRow>
           <div className="title">▶ 서지사항</div>
           <div className="contents">
-            {docs.doc_blblio}
+            {docs.doc_biblio}
           </div>
         </ContentRow>
         <ContentRow>
@@ -128,9 +147,9 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
         <ContentRow>
           <div className="title">▶ 묶음문서 이동</div>
           <div className="contents">
-            <a className="chip" target="_blank" href={docs.doc_relate_url}>
+            <a className="chip" target="_blank" href={docs.doc_bundle_url}>
               <AiOutlineLink />
-              {docs.doc_relate_title} ({docs.doc_relate_url})
+              {docs.doc_bundle_title} ({docs.doc_bundle_url})
             </a>
           </div>
         </ContentRow>
@@ -139,7 +158,7 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
           <div className="contents">{docs.doc_kor_summary}</div>
         </ContentRow>
         <ContentRow>
-          <div className="title">▶ 영어 요약</div>
+          <div className="title">▶ 원문 요약</div>
           <div className="contents">{docs.doc_origin_summary}</div>
         </ContentRow>
         <ContentRow>
@@ -245,6 +264,13 @@ const ContentRow = styled.div`
     margin-bottom: 12px;
     background-color: #eee;
     margin-right: 1rem;
+    color:black;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    * {
+      margin-right:4px;
+    }
   }
 `;
 

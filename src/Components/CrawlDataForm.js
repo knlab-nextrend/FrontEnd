@@ -190,7 +190,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_bundle_title"] = docBundleTitle;
       _docs["doc_bundle_url"] = docBundleUrl;
       _docs["doc_relate_title"] = docRelateTitle;
-      _docs["doc_relate_title"] = docRelateUrl;
+      _docs["doc_relate_url"] = docRelateUrl;
       _docs["doc_keyowrd"] = docKeyword;
       _docs["doc_category"] = docCategoryIndexList;
       _docs["doc_country"] = docCountryIndexList;

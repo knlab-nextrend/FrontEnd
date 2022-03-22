@@ -34,6 +34,7 @@ function CurationDataDetailContainer() {
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
+    console.log(rawData.docs)
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
       doc_content: _rawStatusDetailData.doc_content || "",
@@ -59,13 +60,21 @@ function CurationDataDetailContainer() {
       doc_origin_title: _rawStatusDetailData.doc_origin_title || "",
       doc_kor_title: _rawStatusDetailData.doc_kor_title || "",
       doc_kor_summary: _rawStatusDetailData.doc_kor_summary || "",
+      doc_origin_summary:_rawStatusDetailData.doc_origin_summary || "",
+      doc_recomment:_rawStatusDetailData.doc_recomment || "",
       doc_url: _rawStatusDetailData.doc_url || "",
       doc_url_intro:_rawStatusDetailData.doc_url_intro || "",
       doc_relate_title:_rawStatusDetailData.doc_relate_title || "",
       doc_relate_url:_rawStatusDetailData.doc_relate_url||"",
+      doc_bundle_url:_rawStatusDetailData.doc_bundle_url || "",
+      doc_bundle_title:_rawStatusDetailData.doc_bundle_title || "",
       doc_project:_rawStatusDetailData.doc_project || "",
       doc_publishing : _rawStatusDetailData.doc_publishing || "",
-      doc_blblio:_rawStatusDetailData.doc_blblio || ""
+      doc_biblio:_rawStatusDetailData.doc_biblio || "",
+      doc_topic:_rawStatusDetailData.doc_topic || [],
+      doc_topic_list : _rawStatusDetailData.doc_topic.map((x) => x.CT_NM).join(", "),
+      doc_language : _rawStatusDetailData.doc_language || [],
+      doc_language_list: _rawStatusDetailData.doc_language.map((x) => x.CT_NM).join(", "),
     };
     console.log(_docs)
     setDocs(_docs);
