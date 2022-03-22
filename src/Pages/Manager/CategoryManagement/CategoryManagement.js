@@ -184,7 +184,7 @@ function CategoryManagement({
                                       lengthHandler(category.length + 2);
                                     }}
                                   >
-                                    {item.CT_NM}
+                                    {item.CT_NM} ({item.CODE}) 
                                   </div>
                                   <div className="actions">
                                     <button
