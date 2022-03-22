@@ -10,6 +10,7 @@ import {
   MdOutlineDeleteOutline,
   MdOutlineCheck,
   MdClose,
+  MdOutlineSearch
 } from "react-icons/md";
 function HostManagement({
   hostList,
@@ -27,14 +28,17 @@ function HostManagement({
         <ContentContainer>
           <div className="content-title">
             <div className="main-title">
-              크롤링 HOST의 목록을 관리할 수 있습니다. 엑셀로 데이터를
-              업로드하고 관리할 수 있습니다.
+              크롤링 HOST의 목록을 관리할 수 있습니다.
+            </div>
+            <div className="sub-title">
+              엑셀로 데이터를 업로드하고 관리할 수 있습니다. 업로드한 데이터는
+              기존의 데이터를 덮어씌웁니다.
             </div>
           </div>
           <div className="content-body">
             <DictionaryFunctionWrapper>
               <DictionaryFunctionBtnWrapper>
-                <button onClick={_filterOpenHandler}>조건 검색</button>
+                <button onClick={_filterOpenHandler}><MdOutlineSearch size="20"/>조건 검색 여닫기</button>
                 <input
                   id="excel-upload"
                   type="file"
@@ -172,6 +176,9 @@ const ContentContainer = styled(LineBox)`
     .main-title {
       font-size: 16px;
       font-weight: bold;
+    }
+    .sub-title {
+      font-size: 14px;
     }
   }
   .content-body {

@@ -25,6 +25,8 @@ function MultilingualDictionary({
   search,
   addWord,
   addWordDataHandler,
+  wordDataUpload,
+  wordDataDownload
 }) {
   return (
     <>
@@ -42,11 +44,12 @@ function MultilingualDictionary({
                 <SearchBar keywordHandler={keywordHandler} searchAction={search}/>
               </ShortSearchBar>
               <DictionaryFunctionBtnWrapper>
-                <button>
+                <label htmlFor="excel-upload">
                   <MdUpload size="20" />
                   사전 데이터 일괄 업로드
-                </button>
-                <button>
+                </label>
+                <input id="excel-upload" type="file" accept=".xlsx" onChange={wordDataUpload}/>
+                <button onClick={wordDataDownload}>
                   <MdDownload size="20" />
                   사전 데이터 다운로드
                 </button>
@@ -195,7 +198,11 @@ const DictionaryFunctionWrapper = styled.div`
 `;
 const DictionaryFunctionBtnWrapper = styled.div`
   display: flex;
-  button {
+  input[type=file]{
+    display:none;
+  }
+  button,label {
+    cursor:pointer;
     margin: 0.5rem;
     font-size: 12px;
     display: flex;
