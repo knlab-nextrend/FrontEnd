@@ -138,7 +138,7 @@ function ExcelDataRegister({
                 <span className="emphasis">PDF 파일</span>
                 <span>
                   을 대조한 결과 입니다. 파일을 검토하여 적절하지 못한 파일은
-                  삭제하여주세요.
+                  삭제하여주세요. PDF가 등록된 문서만 등록됩니다.
                 </span>
               </div>
               <FileList>

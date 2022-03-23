@@ -24,17 +24,18 @@ function ExcelDataRegisterContainer() {
     }
   };
   const readPdf = (e) => {
+    
     console.log(e.target.files);
     const files = e.target.files;
     const _pdfData = [];
     const _pdfMetaData = [];
     for (const file of files) {
       console.log(getfileSize(file.size));
-      const available = excelData.filter((x) => x.pdf_file_name === file.name);
+      const available = excelData.filter((data) => data.pdf === file.name.replace(/(.pdf)$/, ''));
       console.log(available);
       const _obj = {
         size: getfileSize(file.size),
-        name: file.name,
+        name: file.name.replace(/(.pdf)$/, ''),
         available: available.length !== 0,
       };
       _pdfData.push(file);
@@ -45,36 +46,61 @@ function ExcelDataRegisterContainer() {
     setPdfMetaData(_pdfMetaData);
   };
   const readExcel = (e) => {
-    let _excelData = [];
     let input = e.target;
     let reader = new FileReader();
     reader.onload = function () {
       let data = reader.result;
-      let workBook = XLSX.read(data, { type: "binary" });
-      workBook.SheetNames.forEach(function (sheetName) {
-        console.log("SheetName: " + sheetName);
-        let rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-        console.log(rows);
-        /* sheet 에 포함된 row 데이터를 순회*/
-        rows.forEach((item, index) => {
-          let _obj = {
-            dc_keyword: item["키워드(태그)"],
-            dc_domain: item["발행기관도메인"],
-            dc_cat: item["유형분류"],
-            dc_country: item["대상국가"],
-            dc_title_kr: item["한글제목"],
-            dc_title_or: item["원제목"],
-            dc_content: item["본문내용"],
-            dc_publisher: item["발행기관"],
-            dc_dt_write: item["발행일"],
-            dc_page: item["발행면수"],
-            pdf_file_name: item["PDF파일명"],
-          };
-          _excelData.push(_obj);
+      let _excelData = [];
+      const excelFile = XLSX.read(data, { type: "binary" });
+      const sheetName = excelFile.SheetNames[0];
+      const firstSheet = excelFile.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
+
+      jsonData.map((item) => {
+        _excelData.push({
+          item_id: item["1"]===""?null : item["1"],
+          is_crawled:item["2"]===""?null : item["2"],
+          status:item["3"]===""?null : item["3"],
+          doc_thumbnail: item["4"]===""?null : item["4"],
+          doc_file:item["5"]===""?null : item["5"],
+          doc_origin_title:item["6"]===""?null : item["6"],
+          doc_kor_title:item["7"]===""?null : item["7"],
+          doc_kor_summary:item["8"]===""?null : item["8"],
+          doc_publish_date:item["9"]===""?null : item["9"].split(".").filter(item=>item !== "").join("-"), // 날짜형식 수정
+          doc_write_date:item["10"]===""?null : item["10"].split(".").filter(item=>item !== "").join("-"),
+          doc_collect_date:item["11"]===""?null : item["11"].split(".").filter(item=>item !== "").join("-"),
+          doc_url:item["12"]===""?null : item["12"],
+          doc_url_intro:item["13"]===""?null : item["13"],
+          doc_bundle_title:item["14"]===""?null : item["14"],
+          doc_bundle_url:item["15"]===""?null : item["15"],
+          doc_relate_title:item["16"]===""?null : item["16"],
+          doc_relate_url:item["17"]===""?null : item["17"],
+          doc_publisher:item["18"]===""?null : item["18"],
+          doc_page:item["19"]===""?null : item["19"],
+          doc_biblio:item["20"]===""?null : item["20"],
+          doc_content_type:item["21"]===""?null : item["21"].split(", "),
+          doc_content_category:item["22"]===""?null : item["22"].split(", "),
+          doc_language:item["23"]===""?null : item["23"].split(", "),
+          doc_publish_country:item["24"]===""?null : item["24"].split(", "),
+          doc_country:item["25"]===""?null : item["25"].split(", "),
+          doc_keyowrd:item["26"]===""?null : item["26"].split(", "),
+          doc_content:item["27"]===""?null : item["27"],
+          doc_hit:item["28"]===""?null : item["28"],
+          doc_host:item["29"]===""?null : item["29"],
+          doc_register_date:item["30"]===""?null : item["30"].split(".").filter(item=>item !== "").join("-"),
+          doc_modify_date:item["31"]===""?null : item["31"].split(".").filter(item=>item !== "").join("-"),
+          doc_origin_summary:item["32"]===""?null : item["32"],
+          doc_category:item["33"]===""?null : item["33"].replaceAll("\"", "").split(", "), // 쌍따옴표 제거 
+          doc_topic:item["34"]===""?null : item["34"].split(", "),
+          doc_project:item["35"]===""?null : item["35"],
+          doc_custom:item["36"]===""?null : item["36"].split(", "),
+          doc_publishing:item["37"]===""?null : item["37"],
+          doc_recomment:item["38"]===""?null : item["38"],
+          doc_memo:item["39"]===""?null : item["39"],
+          pdf:item["pdf"]===""?null : item["pdf"],
         });
       });
-      console.log(_excelData);
-      setExcelData(_excelData);
+      setExcelData(_excelData)
     };
     reader.readAsBinaryString(input.files[0]);
   };
