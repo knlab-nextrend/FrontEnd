@@ -9,51 +9,13 @@ import ChartCard from "../../../Components/DashboardComponents/ChartCard";
 import TableCard from "../../../Components/DashboardComponents/TableCard";
 import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu";
 import DateRange from "../../../Components/DashboardComponents/DateRange";
+import Map from "./Map"
 import styled from "styled-components";
 
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
-import { ResponsiveGeoMap } from "@nivo/geo"; // 세계지도!
-import * as am5 from "@amcharts/amcharts5";
-import * as am5map from "@amcharts/amcharts5/map";
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
-import Title from "antd/lib/skeleton/Title";
 
-function Map(props) {
-  useLayoutEffect(() => {
-    let root = am5.Root.new("chartdiv");
 
-    root.setThemes([am5themes_Animated.new(root)]);
 
-    let chart = root.container.children.push(
-      am5map.MapChart.new(root, {
-        //panX: "rotateX",
-        projection: am5map.geoEquirectangular(),
-      })
-    );
-    let polygonSeries = chart.series.push(
-      am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_worldLow,
-        exclude: ["AQ"],
-      })
-    );
-
-    polygonSeries.mapPolygons.template.setAll({
-      tooltipText: "{name}",
-      interactive: true,
-    });
-    polygonSeries.mapPolygons.template.states.create("hover", {
-      fill: am5.color(0x677935),
-    });
-    chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
-    return () => {
-      root.dispose();
-    };
-  }, []);
-
-  return <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>;
-}
 function Dashboard({
   data,
   menuType,
@@ -62,10 +24,10 @@ function Dashboard({
   processHandler,
   rowClickHandler,
   crawlDummyData,
+  selectedJobId
 }) {
   return (
     <>
-      {/* <FormHeader type={"view"} title={"대시보드"} /> */}
       <Tab>
         <div className="button-group">
           <TabButton
@@ -360,32 +322,34 @@ function Dashboard({
                           <td>{item.scheduled_at}</td>
                           <td>{item.created_at}</td>
                         </tr>
-                        <tr key={index+999}>
-                          <td colSpan="6">
-                            <div className="work-log-wrapper">
-                              <div className="work-log">
-                                <div>[시작일] 2020-08-24 15:26:07</div>
-                                <div>[종료일] 2020-08-26 18:04:02</div>
-                                <div>[url] 87590</div>
-                                <div>[html] 87350</div>
-                                <div>[pdf] 240</div>
-                                <div>[word] 0</div>
-                                <div>[excel] 0</div>
-                                <div>[ppt] 0</div>
+                        {selectedJobId === item.job_id && (
+                          <tr key={index + 999}>
+                            <td colSpan="6">
+                              <div className="work-log-wrapper">
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
                               </div>
-                              <div className="work-log">
-                                <div>[시작일] 2020-08-24 15:26:07</div>
-                                <div>[종료일] 2020-08-26 18:04:02</div>
-                                <div>[url] 87590</div>
-                                <div>[html] 87350</div>
-                                <div>[pdf] 240</div>
-                                <div>[word] 0</div>
-                                <div>[excel] 0</div>
-                                <div>[ppt] 0</div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
+                            </td>
+                          </tr>
+                        )}
                       </>
                     );
                   })}
@@ -479,6 +443,7 @@ const CrawlStatusTable = styled.table`
     border-bottom: 1px solid #d6d6d6;
     padding: 10px;
   }
+
   tr:first-child,
   tr:last-child {
     border: none;
@@ -488,10 +453,10 @@ const CrawlStatusTable = styled.table`
   }
   .work-log-wrapper {
     width: 100%;
-    display:flex;
+    display: flex;
   }
   .work-log {
-    margin:10px;
+    margin: 10px;
     border: solid 1px #d6d6d6;
     border-radius: 4px;
     box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;

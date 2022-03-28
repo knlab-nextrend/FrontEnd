@@ -16,6 +16,7 @@ function DashboardContainer() {
     setProcess(select);
   };
   const rowClickHandler = (job_id) => {
+    console.log(job_id)
     // 현재 선택된 job_id와 새로 보고자 하는 job_id가 같을경우 이미 오픈된 목록을 닫는걸로 생각
     if (selectedJobId === job_id) {
       setSelectedJobId(null);
@@ -83,6 +84,7 @@ function DashboardContainer() {
         rowClickHandler={rowClickHandler}
         process={process}
         crawlDummyData={crawlDummyData}
+        selectedJobId={selectedJobId}
       />
     </>
   );
