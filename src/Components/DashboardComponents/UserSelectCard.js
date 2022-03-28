@@ -11,7 +11,7 @@ function UserSelectCard() {
           <option>정제 작업자</option>
           <option>작업자 2</option>
         </select>
-        <div className="sub">의 통계를 나타낸 대시보드 입니다.</div>
+        <div className="sub">의 작업 통계 입니다.</div>
       </div>
     </CardWrapper>
   );

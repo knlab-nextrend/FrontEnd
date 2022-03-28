@@ -6,23 +6,27 @@ function DocumentStatCard() {
     <CardWrapper>
       <div className="title">
         <div className="title-main">한국</div>
-        <div className="title-sub">위 국가의 문서 작업 현황입니다.</div>
+        <div className="title-sub">의 문서 현황입니다.</div>
       </div>
       <div className="stat-list">
-        <div className="stat">
-          <div className="stat-title">스크리닝 문서 수</div>
-          <div className="stat-count">14870</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">정제 문서 수</div>
-          <div className="stat-count">1480</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">등록 문서 수</div>
+      <div className="stat">
+          <div className="stat-title">수집 문서 수</div>
           <div className="stat-count">140</div>
         </div>
         <div className="stat">
-          <div className="stat-title">큐레이션 문서 수</div>
+          <div className="stat-title">스크리닝 완료 (정제) 문서 수</div>
+          <div className="stat-count">1480</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">정제 완료 (등록) 문서 수</div>
+          <div className="stat-count">140</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">등록 완료 (아카이브) 문서 수</div>
+          <div className="stat-count">140</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">큐레이션 완료 (큐레이션) 문서 수</div>
           <div className="stat-count">14</div>
         </div>
       </div>

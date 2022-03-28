@@ -263,7 +263,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
 
   useEffect(() => {
     /* dcKeywordString 값이 변경되면 dcKeyword 배열도 자동으로 반영되도록.*/
-    setDocKeyword(docKeywordString.split(","));
+    setDocKeyword(docKeywordString.split(",").map(item=>item.trim()));
   }, [docKeywordString]);
 
   useEffect(() => {
