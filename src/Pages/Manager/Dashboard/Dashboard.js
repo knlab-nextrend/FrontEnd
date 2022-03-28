@@ -346,6 +346,56 @@ function Dashboard({
                                   <div>[excel] 0</div>
                                   <div>[ppt] 0</div>
                                 </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
+                                <div className="work-log">
+                                  <div>[시작일] 2020-08-24 15:26:07</div>
+                                  <div>[종료일] 2020-08-26 18:04:02</div>
+                                  <div>[url] 87590</div>
+                                  <div>[html] 87350</div>
+                                  <div>[pdf] 240</div>
+                                  <div>[word] 0</div>
+                                  <div>[excel] 0</div>
+                                  <div>[ppt] 0</div>
+                                </div>
                               </div>
                             </td>
                           </tr>
@@ -383,7 +433,6 @@ const CountryContentWrapper = styled.div`
 `;
 
 const Tab = styled.div`
-  width: 100%;
   height: 4rem;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
   align-items: bottom;
@@ -429,7 +478,8 @@ const CrawlFileTypeStatCard = styled.div`
 `;
 
 const CrawlStatusTable = styled.table`
-  width: 100%;
+  width:100%;
+  table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
   font-size: 14px;
@@ -452,8 +502,9 @@ const CrawlStatusTable = styled.table`
     width: 100%;
   }
   .work-log-wrapper {
-    width: 100%;
     display: flex;
+    flex-wrap: nowrap;
+    overflow-x:auto;
   }
   .work-log {
     margin: 10px;
@@ -461,6 +512,7 @@ const CrawlStatusTable = styled.table`
     border-radius: 4px;
     box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
     padding: 1rem;
+    min-width:190px;
   }
 `;
 export default Dashboard;
