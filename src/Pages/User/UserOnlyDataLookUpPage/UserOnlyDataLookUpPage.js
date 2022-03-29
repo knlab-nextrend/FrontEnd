@@ -1,22 +1,25 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled, { css } from "styled-components";
 import CurationDataListContainer from "../../Common/CurationDataList/CurationDataListContainer";
-function UserOnlyDataLookUpPage({ axisMenu }) {
+function UserOnlyDataLookUpPage({ axisMenu,menuClickHandler,axisObj }) {
+  useEffect(()=>{
+    console.log(axisObj)
+  },[axisObj])
   return (
     <Wrapper>
       <AxisTitle>사용자메뉴</AxisTitle>
       <AxisMenuBar axis="X">
         {axisMenu.X.map((category, index) => {
-          return <div key={index}>{category.ct_nm}</div>;
+          return <div key={index} onClick={()=>{menuClickHandler("X",category)}}>{category.ct_nm}</div>;
         })}
       </AxisMenuBar>
       <AxisMenuBar axis="Y">
         {axisMenu.Y.map((category, index) => {
-          return <div key={index}>{category.ct_nm}</div>;
+          return <div key={index} onClick={()=>{menuClickHandler("Y",category)}}>{category.ct_nm}</div>;
         })}
       </AxisMenuBar>
       <ContentBody>
-        <CurationDataListContainer className="list"/>
+        <CurationDataListContainer className="list" key={axisObj} axisObj={axisObj}/>
       </ContentBody>
     </Wrapper>
   );

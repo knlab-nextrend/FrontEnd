@@ -365,6 +365,7 @@ const userAxisMenuSaveApi = (axisSetObj, saveType) => {
     return axios.put(`/nextrend/custom`, axisSetObj, { headers: headers });
   }
 };
+
 //data와 method 형태로 변경..
 const MultilingualDictionaryApi = (data = null, method) => {
   if (method === "GET") {
@@ -400,13 +401,22 @@ const HostManagementApi = (data = null, method) => {
       // 검색 쿼리가 있다면?
       config["params"] = { ...data };
     }
-    console.log(config)
+    console.log(config);
     return axios.get(`/nextrend/host`, config);
   }
   if (method === "POST") {
     return axios.post(`/nextrend/host`, data, { headers: headers });
   }
 };
+
+const userCustomCurationDataFetchApi = (axis) => {
+  const config = {
+    headers: { headers },
+    params: { axis },
+  };
+  return axios.get(`/nextrend/custom/search`, config);
+};
+
 export {
   LoginApi,
   RefreshTokenApi,
@@ -445,4 +455,5 @@ export {
   userAxisMenuSaveApi,
   MultilingualDictionaryApi,
   HostManagementApi,
+  userCustomCurationDataFetchApi
 };
