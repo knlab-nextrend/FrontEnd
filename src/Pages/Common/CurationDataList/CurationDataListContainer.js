@@ -51,7 +51,7 @@ function CurationDataListContainer({ axisObj = null }) {
           .join(", "),
         doc_category_list: item.doc_category.map((x) => x.CT_NM).join(", "),
         doc_register_date: item.doc_register_date.substring(0, 10),
-        doc_host: item.doc_host,
+        doc_host: item.doc_host && item.doc_host[0].HOST,
         doc_content_type_list: item.doc_content_type
           .map((x) => x.CT_NM)
           .join(", "),

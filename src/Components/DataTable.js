@@ -22,7 +22,7 @@ function DataTable({
               {type === "archive" && (
                 <>
                   <th>구분</th>
-                  <th>문서 대상 국가</th>
+                  <th>문서 발행 국가</th>
                   <th>정책 분류</th>
                 </>
               )}
@@ -95,8 +95,8 @@ function DataTable({
                     </td>
                   )}
                   <td>{item.doc_origin_summary}</td>
-                  <td>{item.doc_host}</td>
-                  <td>{type==="screening"?item.doc_language : item.doc_language ? item.doc_language.CT_NM : ""}</td>
+                  <td>{item.doc_host && item.doc_host[0].HOST}</td>
+                  <td>{type==="screening"?item.doc_language : item.doc_language ? item.doc_language[0].CT_NM : ""}</td>
                   <td>{item.doc_collect_date}</td>
                   <td>{item.doc_page}쪽</td>
                   {type === "screening" && (
@@ -177,7 +177,7 @@ const CustomTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   .lang {
-    width: 2rem;
+    width: 4rem;
   }
   .is_crawled {
     width: 3rem;

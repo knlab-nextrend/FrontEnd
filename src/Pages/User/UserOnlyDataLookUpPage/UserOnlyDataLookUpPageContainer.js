@@ -22,6 +22,11 @@ function UserOnlyDataLookUpPageContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
+  const curationRequest = (id)=>{
+    if(confirm("해당 아카이브 자료의 큐레이션을 신청하시겠습니까?")){
+      console.log(id)
+    }
+  }
   const initAxisObj = (setting) => {
     const _axisObj = {
       X: { type: setting.x_type, code: setting.x_code },
@@ -116,6 +121,7 @@ function UserOnlyDataLookUpPageContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         archiveData={archiveData}
+        curationRequest={curationRequest}
       />
     </>
   );

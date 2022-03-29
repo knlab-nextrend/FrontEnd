@@ -47,7 +47,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docMemo, setDocMemo] = useState(""); // doc_memo 관리자 전용 메모
   const [docPage, setDocPage] = useState(""); // dc_page > doc_page 문서 페이지 수
   const [docBiblio, setDocBiblio] = useState(""); // doc_biblio 문서의 서지사항
- // const [docPublisher, setDocPublisher] = useState(""); // doc_publisher 문서 발급 기관명
+  const [docPublisher, setDocPublisher] = useState(""); // doc_publisher 문서 발급 기관명
   const [docPublishing, setDocPublishing] = useState(""); // doc_publishing 주문형 조사과제명의 세부과업명
   const [docRecomment, setDocRecomment] = useState(""); // doc_recomment 큐레이션 추천문서
   const [docPublishDate, setDocPublishDate] = useState(""); // doc_publish_date 수집 문서의 발간일
@@ -80,9 +80,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docTopicIndexList, setDocTopicIndexList] = useState([]); // doc_topic 의 index리스트. 데이터 저장용 변수
 
   /* 데이터 값 핸들러 */
- /* const _docHostHandler = (e) => {
-    setDocHost(e.target.value);
-  };*/
   const _docKorSummaryHandler = (e) => {
     setDocKorSummary(e.target.value);
   };
@@ -104,9 +101,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _docBiblioHandler = (e) => {
     setDocBiblio(e.target.value);
   };
- /*const _docPublisherHandler = (e) => {
+  const _docPublisherHandler = (e) => {
     setDocPublisher(e.target.value);
-  };*/
+  };
   const _docPublishingHandler = (e) => {
     setDocPublishing(e.target.value);
   };
@@ -187,7 +184,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_project"] = docProject;
       _docs["doc_biblio"] = docBiblio;
       _docs["doc_memo"] = docMemo;
-      //_docs["doc_publisher"] = docPublisher;
+      _docs["doc_publisher"] = docPublisher;
       _docs["doc_publishing"] = docPublishing;
       _docs["doc_recomment"] = docRecomment;
       _docs["doc_bundle_title"] = docBundleTitle;
@@ -243,7 +240,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       );
       setDocOriginSummary(docs.doc_origin_summary);
       setDocKorSummary(docs.doc_kor_summary);
-      //setDocPublisher(docs.doc_publisher);
+      setDocPublisher(docs.doc_publisher);
       setDocPublishing(docs.doc_publishing);
       setDocPage(docs.doc_page);
       setDocOriginTitle(docs.doc_origin_title);
@@ -257,7 +254,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDocRecomment(docs.doc_recomment);
       setDocBiblio(docs.doc_biblio);
       setDocMemo(docs.doc_memo);
-     // setDocHost(docs.doc_host);
 
       dispatch(setModalData(docs.doc_category, "doc_category"));
       dispatch(setModalData(docs.doc_country, "doc_country"));
@@ -267,7 +263,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       dispatch(setModalData(docs.doc_topic, "doc_topic"));
       dispatch(setModalData(docs.doc_content_category, "doc_content_category"));
       dispatch(setModalData(docs.doc_content_type, "doc_content_type"));
-      dispatch(setModalData(docs.doc_host, "doc_host"));
+      dispatch(setModalData(docs.doc_host[0], "doc_host"));
     }
   }, [docs]);
 
@@ -534,7 +530,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">발급기관 명</p>
-            <div className="form notInput">{docHost.NAME}</div>
+            <input
+              value={docPublisher}
+              onChange={_docPublisherHandler}
+              className="form"
+              type="text"
+              placeholder="발급기관명을 입력해주세요."
+            />
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>

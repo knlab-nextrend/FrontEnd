@@ -29,9 +29,9 @@ function HostSelectModal({ executeModal, closeModal }) {
     <>
       <ModalWrapper>
         <Modalheader>
-          <ModalTitle>HOST / 발급기관 명 검색</ModalTitle>
+          <ModalTitle>HOST 검색</ModalTitle>
           <ModalSubTitle>
-            HOST 도메인 및 발급기관 명의 일부를 검색하여 결과를 확인하고, 값을
+            HOST 도메인의 일부를 검색하여 결과를 확인하고, 값을
             등록해주세요.
           </ModalSubTitle>
         </Modalheader>

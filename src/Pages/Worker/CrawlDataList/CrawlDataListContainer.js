@@ -66,7 +66,7 @@ function CrawlDataListContainer() {
         doc_collect_date: item.doc_collect_date.substring(0, 10),
         _id: item._id,
         item_id:item.item_id,
-        doc_host: item.doc_host,
+        doc_host: item.doc_host && item.doc_host[0].HOST,
         stat: item.stat,
         doc_language: item.doc_language,
         doc_page: item.doc_page,

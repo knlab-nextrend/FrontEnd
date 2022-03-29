@@ -74,7 +74,7 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
               <Info>
                 <div className="title">▶ 문서 유형 분류 / 내용 구분 분류</div>
                 <div className="content">
-                  {docs.doc_content_type_list} /{docs.doc_content_category_list}
+                  {docs.doc_content_type_list} / {docs.doc_content_category_list}
                 </div>
               </Info>
               <Info>

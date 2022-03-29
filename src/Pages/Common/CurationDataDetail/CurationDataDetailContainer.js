@@ -75,6 +75,7 @@ function CurationDataDetailContainer() {
       doc_topic_list : _rawStatusDetailData.doc_topic.map((x) => x.CT_NM).join(", "),
       doc_language : _rawStatusDetailData.doc_language || [],
       doc_language_list: _rawStatusDetailData.doc_language.map((x) => x.CT_NM).join(", "),
+        doc_host:_rawStatusDetailData.doc_host ? _rawStatusDetailData.doc_host[0].HOST : ""
     };
     console.log(_docs)
     setDocs(_docs);

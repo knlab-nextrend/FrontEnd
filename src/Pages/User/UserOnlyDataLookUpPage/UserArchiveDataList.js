@@ -10,6 +10,7 @@ function UserArchiveDataList({
   setPageNo,
   listSizeHandler,
   archiveData,
+  curationRequest
 }) {
   return (
     <Wrapper>
@@ -66,7 +67,7 @@ function UserArchiveDataList({
                     <td></td>
                     <td>{item.doc_publish_date}</td>
                     <td>{item.doc_page}</td>
-                    <td>{item.status===6?<button>큐레이션 신청</button>:<Badge>큐레이션 신청됨</Badge>}</td>
+                    <td>{item.status===6?<button onClick={()=>{curationRequest(item._id)}}>큐레이션 신청</button>:<Badge>큐레이션 신청됨</Badge>}</td>
                   </tr>
                 );
               })}

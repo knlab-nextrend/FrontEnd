@@ -7,12 +7,10 @@ import {
   sessionHandler,
 } from "../../../Utils/api";
 import CrawlDataScreening from "./CrawlDataScreening";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
 function CrawlDataScreeningContainer() {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   /* 현재 보여질 데이터 */

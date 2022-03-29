@@ -14,7 +14,8 @@ function UserOnlyDataLookUpPage({
   listSizeHandler,
   pageNo,
   setPageNo,
-  archiveData
+  archiveData,
+  curationRequest
 }) {
   return (
     <Wrapper>
@@ -56,6 +57,7 @@ function UserOnlyDataLookUpPage({
             setPageNo={setPageNo}
             listSizeHandler={listSizeHandler}
             archiveData={archiveData}
+            curationRequest={curationRequest}
           />
         ) : (
           <CurationDataListContainer
