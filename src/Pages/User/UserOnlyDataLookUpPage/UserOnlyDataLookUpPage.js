@@ -1,26 +1,83 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import CurationDataListContainer from "../../Common/CurationDataList/CurationDataListContainer";
-function UserOnlyDataLookUpPage({ axisMenu,menuClickHandler,axisObj }) {
-  useEffect(()=>{
-    console.log(axisObj)
-  },[axisObj])
+import UserArchiveDataList from "./UserArchiveDataList";
+import { HiOutlineArchive, HiOutlineDocumentDuplicate } from "react-icons/hi";
+function UserOnlyDataLookUpPage({
+  axisMenu,
+  menuClickHandler,
+  axisObj,
+  dataMode,
+  modeSwitchHandler,
+  dcCount,
+  listSize,
+  listSizeHandler,
+  pageNo,
+  setPageNo,
+  archiveData
+}) {
   return (
     <Wrapper>
-      <AxisTitle>사용자메뉴</AxisTitle>
+      <AxisTitle>전체</AxisTitle>
       <AxisMenuBar axis="X">
         {axisMenu.X.map((category, index) => {
-          return <div key={index} onClick={()=>{menuClickHandler("X",category)}}>{category.ct_nm}</div>;
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                menuClickHandler("X", category);
+              }}
+            >
+              {category.ct_nm}
+            </div>
+          );
         })}
       </AxisMenuBar>
       <AxisMenuBar axis="Y">
         {axisMenu.Y.map((category, index) => {
-          return <div key={index} onClick={()=>{menuClickHandler("Y",category)}}>{category.ct_nm}</div>;
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                menuClickHandler("Y", category);
+              }}
+            >
+              {category.ct_nm}
+            </div>
+          );
         })}
       </AxisMenuBar>
       <ContentBody>
-        <CurationDataListContainer className="list" key={axisObj} axisObj={axisObj}/>
+        {dataMode === "archive" ? (
+          <UserArchiveDataList
+            dcCount={dcCount}
+            listSize={listSize}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
+            listSizeHandler={listSizeHandler}
+            archiveData={archiveData}
+          />
+        ) : (
+          <CurationDataListContainer
+            className="list"
+            key={axisObj}
+            axisObj={axisObj}
+          />
+        )}
       </ContentBody>
+      <ModeSwitchButton onClick={modeSwitchHandler}>
+        {dataMode === "archive" ? (
+          <>
+            <HiOutlineDocumentDuplicate size="18" />
+            큐레이션 보기
+          </>
+        ) : (
+          <>
+            <HiOutlineArchive size="18" />
+            아카이브 보기
+          </>
+        )}
+      </ModeSwitchButton>
     </Wrapper>
   );
 }
@@ -29,6 +86,35 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 200px auto;
   grid-template-rows: 50px minmax(1280px, auto);
+`;
+const ModeSwitchButton = styled.button`
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  min-width: 10rem;
+  height: 3rem;
+  border: none;
+  border-radius: 3rem;
+  font-size: 14px;
+  background-color: #435269;
+  color: white;
+  border: solid 1px #d6d6d6;
+  box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
+  z-index: 999;
+  right: 0;
+  bottom: 0;
+  margin: 2rem;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: #d8dee6;
+    color: #435269;
+    font-weight: bold;
+  }
+  & * {
+    margin: 4px;
+  }
 `;
 const AxisTitle = styled.div`
   display: flex;
@@ -87,8 +173,6 @@ const ContentBody = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 5rem 0 5rem;
-
 `;
-
 
 export default UserOnlyDataLookUpPage;

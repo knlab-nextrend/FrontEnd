@@ -116,13 +116,11 @@ function HostManagement({
                   </div>
                   <div className="filter-item">
                     <div className="item-title">크롤링 수집주기</div>
-                    <select name="workCycle" onChange={_filterInputsHandler}>
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                      <option value="D">D</option>
-                      <option value="F">E</option>
-                    </select>
+                    <input
+                      placeholder = "숫자 입력"
+                      name="workCycle"
+                      onChange={_filterInputsHandler}
+                    />
                   </div>
                 </div>
                 <div className="filter-action">
@@ -138,7 +136,7 @@ function HostManagement({
                   <th>HOST 해당 국가</th>
                   <th>발급 기관 명</th>
                   <th>HOST 정책 분류</th>
-                  <th className="crawl-setting">크롤링 수집주기</th>
+                  <th className="crawl-setting">크롤링 수집주기(일 단위)</th>
                 </tr>
               </thead>
               <tbody>
