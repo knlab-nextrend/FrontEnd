@@ -26,6 +26,7 @@ const initialState = {
     doc_custom:[],
     doc_language:[],
     doc_topic:[],
+    doc_host:{}, // host와 publisher 를 동시에 담는 객체
 
     modal_user: [],
     axis_category:null,

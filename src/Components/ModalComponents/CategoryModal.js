@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionHandler, categoryListFetchApi } from "../../Utils/api";
-import { trackPromise } from "react-promise-tracker";
 
 import styled from "styled-components";
 

@@ -32,7 +32,6 @@ function CurationDataListContainer() {
     let _curationDataList = [];
     let _rawCurationDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
-    console.log(rawData)
     _rawCurationDataList.forEach((item) => {
       const obj = {
         _id: item._id,
@@ -60,13 +59,11 @@ function CurationDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(statusCode, listSize, pageNo)
         .then((res) => {
-          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
             CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
-
               dataCleansing(res.data);
             });
           });

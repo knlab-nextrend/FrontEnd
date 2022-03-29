@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 function ProcessMenu({process,processHandler}) {
   /* 
     all : 전체
-    collect : 수집
     screening : 스크리닝
     refine : 정제
     archive : 등록(아카이브)
@@ -27,14 +26,6 @@ function ProcessMenu({process,processHandler}) {
           active={process === "all"}
         >
           전체
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            _processHandler("collect");
-          }}
-          active={process === "collect"}
-        >
-          수집
         </MenuItem>
         <MenuItem
           onClick={() => {

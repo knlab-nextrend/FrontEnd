@@ -10,7 +10,7 @@ function DateRange() {
         3달 : three_month
         6달 : six_month
     */
-  const [dateRange, setDateRange] = useState("day");
+  const [dateRange, setDateRange] = useState("all");
 
   const dateRangeHandler = (e) => {
     setDateRange(e.target.value);

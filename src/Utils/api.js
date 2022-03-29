@@ -342,66 +342,71 @@ const axisMenuPreviewFetchApi = (cid) => {
   return axios.get(`/nextrend/custom/test`, config);
 };
 /* uid에 해당하는 유저의 설정된 x축, y축 의 하위 메뉴 정보를 받아옴. (사용자화면 출력용?? ) */
-const userAxisMenuFetchApi = (uid)=>{
+const userAxisMenuFetchApi = (uid) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
     params: { uid },
   };
   return axios.get(`/nextrend/custom/load`, config);
-}
+};
 /* uid에 해당하는 유저의 메뉴 세팅 정보를 받아옴.*/
-const userAxisMenuSettingFetchApi = (uid)=>{
+const userAxisMenuSettingFetchApi = (uid) => {
   let config = {
     headers: { authorization: `Bearer ${getToken()}` },
     params: { uid },
   };
   return axios.get(`/nextrend/custom`, config);
-}
-const userAxisMenuSaveApi = (axisSetObj,saveType) =>{
-  if(saveType === "create"){
+};
+const userAxisMenuSaveApi = (axisSetObj, saveType) => {
+  if (saveType === "create") {
     return axios.post(`/nextrend/custom`, axisSetObj, { headers: headers });
   }
-  if(saveType === "update"){
+  if (saveType === "update") {
     return axios.put(`/nextrend/custom`, axisSetObj, { headers: headers });
   }
-}
-//data와 method 형태로 변경.. 
-const MultilingualDictionaryApi = (data=null,method)=>{
-  if(method==="GET"){
+};
+//data와 method 형태로 변경..
+const MultilingualDictionaryApi = (data = null, method) => {
+  if (method === "GET") {
     const config = {
       headers: { headers },
     };
     return axios.get(`/nextrend/multilingual`, config);
   }
-  if(method==="POST"){
+  if (method === "POST") {
     return axios.post(`/nextrend/multilingual`, data, { headers: headers });
   }
-  if(method==="PUT"){
-    console.log(data)
+  if (method === "PUT") {
+    console.log(data);
     return axios.put(`/nextrend/multilingual`, data, { headers: headers });
   }
-  if(method==="DELETE"){
+  if (method === "DELETE") {
     const config = {
       headers: headers,
       params: {
-        ...data
+        ...data,
       },
     };
     return axios.delete(`/nextrend/multilingual`, config);
   }
-}
+};
 
-const HostManagementApi = (data = null , method) =>{
-  if(method === "GET"){
+const HostManagementApi = (data = null, method) => {
+  if (method === "GET") {
     const config = {
       headers: { headers },
     };
+    if (data !== null) {
+      // 검색 쿼리가 있다면?
+      config["params"] = { ...data };
+    }
+    console.log(config)
     return axios.get(`/nextrend/host`, config);
   }
-  if(method === "POST"){
+  if (method === "POST") {
     return axios.post(`/nextrend/host`, data, { headers: headers });
   }
-}
+};
 export {
   LoginApi,
   RefreshTokenApi,
@@ -439,5 +444,5 @@ export {
   userAxisMenuSettingFetchApi,
   userAxisMenuSaveApi,
   MultilingualDictionaryApi,
-  HostManagementApi
+  HostManagementApi,
 };

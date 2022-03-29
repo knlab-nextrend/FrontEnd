@@ -72,7 +72,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 도메인</div>
                     <input
-                    placeHolder = "입력값을 포함하여 검색됩니다."
+                    placeholder = "입력값을 포함하여 검색됩니다."
                       name="host"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -81,7 +81,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 언어</div>
                     <input
-                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
+                    placeholder = "이름 및 코드 입력 (정확한 데이터만 표출)"
                       name="lang"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -90,7 +90,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 해당 국가</div>
                     <input
-                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
+                    placeholder = "이름 및 코드 입력 (정확한 데이터만 표출)"
                       name="country"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -99,7 +99,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>발급 기관 명</div>
                     <input
-                    placeHolder = "입력값을 포함하여 검색됩니다"
+                    placeholder = "입력값을 포함하여 검색됩니다"
                       name="name"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -108,7 +108,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 정책 분류</div>
                     <input
-                    placeHolder = "이름 및 코드 입력 (정확한 데이터만 표출)"
+                    placeholder = "이름 및 코드 입력 (정확한 데이터만 표출)"
                       name="category"
                       onChange={_filterInputsHandler}
                       type="text"

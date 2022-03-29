@@ -6,8 +6,8 @@ import { HiOutlineDocumentSearch, HiPhotograph } from "react-icons/hi";
 import { MdCalendarViewDay } from "react-icons/md";
 import { RiFileList2Line } from "react-icons/ri";
 import DataFilter from "../../../Components/DataFilter";
-import CurationDataCard from "../../../Components/CurationDataCard"
-import CurationDataCard2 from "../../../Components/CurationDataCard2"
+import CurationDataCard from "../../../Components/CurationDataCard";
+import CurationDataCard2 from "../../../Components/CurationDataCard2";
 import NoData from "../../../Components/NoData";
 function CurationDataList({
   curationDataList,
@@ -18,7 +18,7 @@ function CurationDataList({
   viewType,
   viewTypeHandler,
   handleRowClick,
-  userInfo
+  userInfo,
 }) {
   return (
     <>
@@ -96,8 +96,14 @@ function CurationDataList({
             <CurationCard1Wrapper>
               {curationDataList.map((item, index) => {
                 return (
-                  <CustomLink to={`/${userInfo.permission!==0?"curation":"library"}/${item._id}`}>
-                    <CurationDataCard curationDataItem={item}></CurationDataCard>
+                  <CustomLink
+                    to={`/${
+                      userInfo.permission !== 0 ? "curation" : "library"
+                    }/${item._id}`}
+                  >
+                    <CurationDataCard
+                      curationDataItem={item}
+                    ></CurationDataCard>
                   </CustomLink>
                 );
               })}
@@ -107,8 +113,14 @@ function CurationDataList({
             <CurationCard2Wrapper>
               {curationDataList.map((item, index) => {
                 return (
-                  <CustomLink to={`/${userInfo.permission!==0?"curation":"library"}/${item._id}`}>
-                    <CurationDataCard2 curationDataItem={item}></CurationDataCard2>
+                  <CustomLink
+                    to={`/${
+                      userInfo.permission !== 0 ? "curation" : "library"
+                    }/${item._id}`}
+                  >
+                    <CurationDataCard2
+                      curationDataItem={item}
+                    ></CurationDataCard2>
                   </CustomLink>
                 );
               })}
@@ -160,6 +172,7 @@ function CurationList({ curationData, handleRowClick }) {
                 onClick={() => {
                   handleRowClick(item._id);
                 }}
+                key={index}
               >
                 <td>
                   <div className="content">
@@ -174,8 +187,8 @@ function CurationList({ curationData, handleRowClick }) {
                       />
                     </div>
                     <div className="title-container">
-                      <td className="dc_title_kr">{item.doc_kor_title}</td>
-                      <td className="dc_title_or">{item.doc_origin_title}</td>
+                      <div className="dc_title_kr">{item.doc_kor_title}</div>
+                      <div className="dc_title_or">{item.doc_origin_title}</div>
                     </div>
                   </div>
                 </td>
@@ -199,7 +212,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:100%;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
@@ -300,12 +313,15 @@ const CurationListTable = styled.table`
       flex-direction: column;
       .dc_title_kr {
         color: #009999;
-
         font-weight: bold;
         font-size: 16px;
+        padding: 0.5rem;
+        word-break: break-all;
       }
       .dc_title_or {
         color: rgb(59, 59, 59);
+        padding: 0.5rem;
+        word-break: break-all;
       }
     }
   }
@@ -323,13 +339,12 @@ const CurationCard1Wrapper = styled.div`
 `;
 const CurationCard2Wrapper = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   width: 100%;
 `;
 
-
 const CustomLink = styled(Link)`
-  text-decoration:none;
-  color:black;
-`
+  text-decoration: none;
+  color: black;
+`;
 export default CurationDataList;

@@ -6,17 +6,20 @@ import { setModal, setModalData } from "../../Modules/modal";
 import CategoryModal from "./CategoryModal";
 import UserInfoModal from "./UserInfoModal";
 import AxisCategoryModal from "./AxisCategoryModal"
+import HostSelectModal from "./HostSelectModal"
 
 export const MODAL_TYPES = {
   CategoryModal: "CategoryModal",
   UserInfoModal: "UserInfoModal",
   AxisCategoryModal:"AxisCategoryModal",
+  HostSelectModal:"HostSelectModal"
 };
 
 const MODAL_COMPONENTS = {
   [MODAL_TYPES.CategoryModal]: CategoryModal,
   [MODAL_TYPES.UserInfoModal]: UserInfoModal,
   [MODAL_TYPES.AxisCategoryModal]:AxisCategoryModal,
+  [MODAL_TYPES.HostSelectModal]:HostSelectModal,
 };
 
 function GlobalModal() {

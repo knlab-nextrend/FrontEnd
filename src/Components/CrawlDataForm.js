@@ -35,10 +35,10 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     (state) => state.modal.modalData.doc_language
   ); // dc_lang > doc_language 문서 언어
   const docTopic = useSelector((state) => state.modal.modalData.doc_topic); // doc_topic 문서 내용의 이슈 주제 분류
-
+  const docHost = useSelector((state) => state.modal.modalData.doc_host); // doc_host, doc_publisher host 및 발급기관명 관리
   /* 현재 보여질 데이터 정보들 */
   const [docContent, setDocContent] = useState(""); // dc_content > doc_content 문서 본문
-  const [docHost, setDocHost] = useState(""); // dc_host > doc_host 기관 host 도메인
+  //const [docHost, setDocHost] = useState(""); // dc_host > doc_host 기관 host 도메인
   const [docKeyword, setDocKeyword] = useState(""); // dc_keyword > doc_keyword 키워드 검색단어. 받아올 떈 배열이나 관리는 문자열로 할 예정. 현재 db 필드에는 doc_keyowrd 로 되어있음..
   const [docKorSummary, setDocKorSummary] = useState(""); // dc_smry_kr > doc_kor_summary 문서 한글 요약
   const [docOriginSummary, setDocOriginSummary] = useState(""); // dc_smry_or > doc_origin_summary 문서 원문 요약
@@ -47,7 +47,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docMemo, setDocMemo] = useState(""); // doc_memo 관리자 전용 메모
   const [docPage, setDocPage] = useState(""); // dc_page > doc_page 문서 페이지 수
   const [docBiblio, setDocBiblio] = useState(""); // doc_biblio 문서의 서지사항
-  const [docPublisher, setDocPublisher] = useState(""); // doc_publisher 문서 발급 기관명
+ // const [docPublisher, setDocPublisher] = useState(""); // doc_publisher 문서 발급 기관명
   const [docPublishing, setDocPublishing] = useState(""); // doc_publishing 주문형 조사과제명의 세부과업명
   const [docRecomment, setDocRecomment] = useState(""); // doc_recomment 큐레이션 추천문서
   const [docPublishDate, setDocPublishDate] = useState(""); // doc_publish_date 수집 문서의 발간일
@@ -80,9 +80,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docTopicIndexList, setDocTopicIndexList] = useState([]); // doc_topic 의 index리스트. 데이터 저장용 변수
 
   /* 데이터 값 핸들러 */
-  const _docHostHandler = (e) => {
+ /* const _docHostHandler = (e) => {
     setDocHost(e.target.value);
-  };
+  };*/
   const _docKorSummaryHandler = (e) => {
     setDocKorSummary(e.target.value);
   };
@@ -104,9 +104,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const _docBiblioHandler = (e) => {
     setDocBiblio(e.target.value);
   };
-  const _docPublisherHandler = (e) => {
+ /*const _docPublisherHandler = (e) => {
     setDocPublisher(e.target.value);
-  };
+  };*/
   const _docPublishingHandler = (e) => {
     setDocPublishing(e.target.value);
   };
@@ -162,6 +162,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     dispatch(setCategoryModalType(categoryModalType));
   };
 
+  const _openHostSelectModal = () => {
+    dispatch(setModal("HostSelectModal"));
+  };
   /* 부모 컴포넌트에서 호출할 수 있는 함수.*/
   /* input state 값들을 객체에 담아서 반환함.*/
   useImperativeHandle(ref, () => ({
@@ -178,13 +181,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_kor_summary"] = docKorSummary;
       _docs["doc_origin_summary"] = docOriginSummary;
       _docs["doc_page"] = docPage;
-      _docs["doc_host"] = docHost;
+      _docs["doc_host"] = docHost.IDX;
       _docs["doc_url"] = docUrl;
       _docs["doc_url_intro"] = docUrlIntro;
       _docs["doc_project"] = docProject;
       _docs["doc_biblio"] = docBiblio;
       _docs["doc_memo"] = docMemo;
-      _docs["doc_publisher"] = docPublisher;
+      //_docs["doc_publisher"] = docPublisher;
       _docs["doc_publishing"] = docPublishing;
       _docs["doc_recomment"] = docRecomment;
       _docs["doc_bundle_title"] = docBundleTitle;
@@ -208,7 +211,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
 
       _docs["item_id"] = itemId;
 
-      console.log(_docs)
+      console.log(_docs);
       return _docs;
     },
   }));
@@ -216,7 +219,9 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     /* docs가 빈 객체가 아니라면 */
     if (Object.keys(docs).length !== 0) {
       setItemId(docs.item_id);
-      setDocContent(docs.doc_content.replaceAll("\n", "<p><br datacke-filter='true'></p>")); // /n 개행 태그를 <br/> 태그로 치환하여 공백을 그대로 출력
+      setDocContent(
+        docs.doc_content.replaceAll("\n", "<p><br datacke-filter='true'></p>")
+      ); // /n 개행 태그를 <br/> 태그로 치환하여 공백을 그대로 출력
       setDocWriteDate(
         docs.doc_write_date && docs.doc_write_date.substring(0, 10)
       ); // date 객체에 넣어주기
@@ -231,10 +236,14 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       );
       setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
       setDocThumbnail(docs.doc_thumbnail);
-      setDocThumbnailSelect(type==="screeing" || type==="refine" || type==="register" ? docs.doc_thumbnail[0] : docs.doc_thumbnail);
+      setDocThumbnailSelect(
+        type === "screeing" || type === "refine" || type === "register"
+          ? docs.doc_thumbnail[0]
+          : docs.doc_thumbnail
+      );
       setDocOriginSummary(docs.doc_origin_summary);
       setDocKorSummary(docs.doc_kor_summary);
-      setDocPublisher(docs.doc_publisher);
+      //setDocPublisher(docs.doc_publisher);
       setDocPublishing(docs.doc_publishing);
       setDocPage(docs.doc_page);
       setDocOriginTitle(docs.doc_origin_title);
@@ -248,7 +257,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDocRecomment(docs.doc_recomment);
       setDocBiblio(docs.doc_biblio);
       setDocMemo(docs.doc_memo);
-      setDocHost(docs.doc_host);
+     // setDocHost(docs.doc_host);
 
       dispatch(setModalData(docs.doc_category, "doc_category"));
       dispatch(setModalData(docs.doc_country, "doc_country"));
@@ -258,12 +267,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       dispatch(setModalData(docs.doc_topic, "doc_topic"));
       dispatch(setModalData(docs.doc_content_category, "doc_content_category"));
       dispatch(setModalData(docs.doc_content_type, "doc_content_type"));
+      dispatch(setModalData(docs.doc_host, "doc_host"));
     }
   }, [docs]);
 
   useEffect(() => {
     /* dcKeywordString 값이 변경되면 dcKeyword 배열도 자동으로 반영되도록.*/
-    setDocKeyword(docKeywordString.split(",").map(item=>item.trim()));
+    setDocKeyword(docKeywordString.split(",").map((item) => item.trim()));
   }, [docKeywordString]);
 
   useEffect(() => {
@@ -510,24 +520,21 @@ function CrawlDataForm({ docs, type, _id }, ref) {
         </CustomFormRow>
         <CustomFormRow>
           <CustomFormItem>
-            <p className="title">HOST 도메인</p>
-            <input
-              value={docHost}
-              onChange={_docHostHandler}
-              className="form"
-              type="text"
-              placeholder="문서 발급 기관의 HOST 도메인 주소를 입력하세요"
-            />
+            <div className="title">
+              <p>HOST 도메인</p>
+              <button
+                onClick={() => {
+                  _openHostSelectModal();
+                }}
+              >
+                <MdSettings /> 설정
+              </button>
+            </div>
+            <div className="form notInput">{docHost.HOST}</div>
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">발급기관 명</p>
-            <input
-              value={docPublisher}
-              onChange={_docPublisherHandler}
-              className="form"
-              type="text"
-              placeholder="문서 발급 기관명을 입력하세요"
-            />
+            <div className="form notInput">{docHost.NAME}</div>
           </CustomFormItem>
         </CustomFormRow>
         <CustomFormRow>
@@ -715,7 +722,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
         </CustomFormRow>
-        {(type === "curation"||type==="archive") && (
+        {(type === "curation" || type === "archive") && (
           <>
             <CustomFormRow>
               <CustomFormItem>

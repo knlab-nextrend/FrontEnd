@@ -9,12 +9,10 @@ import ChartCard from "../../../Components/DashboardComponents/ChartCard";
 import TableCard from "../../../Components/DashboardComponents/TableCard";
 import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu";
 import DateRange from "../../../Components/DashboardComponents/DateRange";
-import Map from "./Map"
+import Map from "./Map";
 import styled from "styled-components";
 
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
-
-
 
 function Dashboard({
   data,
@@ -24,7 +22,7 @@ function Dashboard({
   processHandler,
   rowClickHandler,
   crawlDummyData,
-  selectedJobId
+  selectedJobId,
 }) {
   return (
     <>
@@ -72,6 +70,7 @@ function Dashboard({
           <>
             {process === "all" && (
               <>
+                <WorkStatCard />
                 <CountryContentWrapper>
                   <TitleCard
                     title={"국가별 문서 현황"}
@@ -79,7 +78,7 @@ function Dashboard({
                       "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
                     }
                   >
-                    <Map></Map>
+                    <Map />
                   </TitleCard>
                   <div>
                     <ChartCard>
@@ -211,7 +210,7 @@ function Dashboard({
         {menuType === "docs_worker" && (
           <>
             <UserSelectCard />
-            <WorkStatCard />
+
             <ProcessMenu processHandler={processHandler} process={process} />
             <TitleCard
               title={"기간별 통계"}
@@ -265,7 +264,7 @@ function Dashboard({
             <TitleCard
               title={"작업 목록"}
               subtitle={
-                "크롤러 작업 대상 HOST 목록과 그 대상의 작업 현황을 볼 수 있습니다."
+                "크롤러 작업 대상 HOST 목록과 그 대상의 작업 현황을 볼 수 있습니다. HOST별 크롤링 작업 현황은 해당 컬럼을 클릭하면 확인할 수 있습니다."
               }
             >
               <CrawlStatusTable>
@@ -478,7 +477,7 @@ const CrawlFileTypeStatCard = styled.div`
 `;
 
 const CrawlStatusTable = styled.table`
-  width:100%;
+  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
@@ -504,7 +503,7 @@ const CrawlStatusTable = styled.table`
   .work-log-wrapper {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x:auto;
+    overflow-x: auto;
   }
   .work-log {
     margin: 10px;
@@ -512,7 +511,7 @@ const CrawlStatusTable = styled.table`
     border-radius: 4px;
     box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
     padding: 1rem;
-    min-width:190px;
+    min-width: 190px;
   }
 `;
 export default Dashboard;
