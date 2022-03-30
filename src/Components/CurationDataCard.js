@@ -26,7 +26,7 @@ function CurationDataCard({ curationDataItem }) {
               {curationDataItem.doc_publish_country_list}
             </CountryBadge>
             <PublisherBadge color="grey">
-              {curationDataItem.doc_host}
+              {curationDataItem.doc_publisher}
             </PublisherBadge>
           </Info>
           <Info>
@@ -81,6 +81,9 @@ const ContentContainer = styled.div`
 `;
 const Title = styled.div`
   display: flex;
+  div:nth-child(1){
+    min-width:4rem;
+  }
   div {
     margin-right: 0.5rem;
     font-weight: bold;
@@ -140,7 +143,7 @@ const PageBadge = styled(Badge)`
 `;
 const PublisherBadge = styled(Badge)`
   &:before {
-    content: "발행 HOST";
+    content: "발행기관명";
   }
 `;
 const RegiDateBadge = styled(Badge)`

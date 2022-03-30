@@ -95,8 +95,8 @@ function DataTable({
                     </td>
                   )}
                   <td>{item.doc_origin_summary}</td>
-                  <td>{item.doc_host && item.doc_host[0].HOST}</td>
-                  <td>{type==="screening"?item.doc_language : item.doc_language ? item.doc_language[0].CT_NM : ""}</td>
+                  <td>{type==="screening"?item.doc_host : item.doc_host && item.doc_host[0].HOST}</td>
+                  <td>{type==="screening"?item.doc_language : item.doc_language.length!==0 && item.doc_language[0].CT_NM }</td>
                   <td>{item.doc_collect_date}</td>
                   <td>{item.doc_page}쪽</td>
                   {type === "screening" && (

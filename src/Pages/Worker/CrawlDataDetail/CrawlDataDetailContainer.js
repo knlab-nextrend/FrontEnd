@@ -139,7 +139,7 @@ function CrawlDataDetailContainer() {
         alert("해당 데이터가 성공적으로 삭제되었습니다.");
         if (statusCode === "6") {
           history.push(`/archive`); // 목록으로 돌아가기
-        } else if (statusCode === "7") {
+        } else if (statusCode === "8") {
           history.push(`/curation`);
         } else {
           history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
@@ -155,7 +155,7 @@ function CrawlDataDetailContainer() {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
         history.push(`/archive`); // 목록으로 돌아가기
-      } else if (statusCode === "7") {
+      } else if (statusCode === "8") {
         history.push(`/curation`);
       } else {
         history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
@@ -171,7 +171,7 @@ function CrawlDataDetailContainer() {
       history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기
       if (statusCode === "6") {
         history.push(`/archive`); // 목록으로 돌아가기
-      } else if (statusCode === "7") {
+      } else if (statusCode === "8") {
         history.push(`/curation`);
       } else {
         history.push(`/crawl/${statusCode}`); // 목록으로 돌아가기

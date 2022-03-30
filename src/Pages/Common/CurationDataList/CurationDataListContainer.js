@@ -9,16 +9,17 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
-function CurationDataListContainer({ axisObj = null }) {
+function CurationDataListContainer() {
   const [curationDataList, setCurationDataList] = useState([]);
   const userInfo = useSelector((state) => state.user.user);
+  const axisObj = useSelector((state) => state.custom.axisObj);
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
   const dispatch = useDispatch();
-  const statusCode = 7;
+  const statusCode = 8;
 
   const [viewType, setViewType] = useState("list");
 
@@ -57,6 +58,7 @@ function CurationDataListContainer({ axisObj = null }) {
           .join(", "),
         doc_content: item.doc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
         doc_url: item.doc_url,
+        doc_publisher:item.doc_publisher,
       };
       _curationDataList.push(obj);
     });
@@ -89,6 +91,7 @@ function CurationDataListContainer({ axisObj = null }) {
       trackPromise(
         userCustomCurationDataFetchApi(axis)
           .then((res) => {
+            console.log(res.data)
             dataCleansing(res.data);
           })
           .catch((err) => {
@@ -103,7 +106,7 @@ function CurationDataListContainer({ axisObj = null }) {
   };
 
   useEffect(() => {
-    if (axisObj === null) {
+    if (axisObj.X === null) {
       dataFetch();
     }
     else{

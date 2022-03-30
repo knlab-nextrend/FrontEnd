@@ -62,7 +62,6 @@ function UserOnlyDataLookUpPage({
         ) : (
           <CurationDataListContainer
             className="list"
-            key={axisObj}
             axisObj={axisObj}
           />
         )}

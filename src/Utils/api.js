@@ -409,12 +409,22 @@ const HostManagementApi = (data = null, method) => {
   }
 };
 
-const userCustomCurationDataFetchApi = (axis) => {
+const userCustomCurationDataFetchApi = (axis, archive = null) => {
   const config = {
     headers: { headers },
-    params: { axis },
+    params: { axis, statusCode: archive ? 6 : 8 },
   };
   return axios.get(`/nextrend/custom/search`, config);
+};
+
+const curationRequestApi = (_id) => {
+  const body = {
+    statusCode: 6,
+    _id,
+    requested: true,
+    docs: {},
+  };
+  return axios.post(`/crawl/detail/${_id}`, body, { headers: headers });
 };
 
 export {
@@ -455,5 +465,6 @@ export {
   userAxisMenuSaveApi,
   MultilingualDictionaryApi,
   HostManagementApi,
-  userCustomCurationDataFetchApi
+  userCustomCurationDataFetchApi,
+  curationRequestApi,
 };

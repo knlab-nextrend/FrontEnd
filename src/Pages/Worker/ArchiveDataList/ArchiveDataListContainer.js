@@ -14,7 +14,12 @@ function ArchiveDataListContainer() {
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
   const [listSize, setListSize] = useState(10); // 한 페이지에 나타낼 document 개수
 
+  const [isRequest,setIsRequest]=useState(false); // 큐레이션 선정 여부
+  const onChangeRequestToggle = ()=>{
+    setIsRequest(!isRequest)
+  }
   const statusCode = 6;
+  const [currentCode, setCurrentCode] = useState(statusCode);
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
     let _archiveDataList = [];
@@ -80,7 +85,7 @@ function ArchiveDataListContainer() {
   /* 데이터 불러오기 */
   const dataFetch = (searchObj = null) => {
     trackPromise(
-      CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj)
+      CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {
           console.log(res.data)
           dataCleansing(res.data);
@@ -88,7 +93,7 @@ function ArchiveDataListContainer() {
         .catch((err) => {
           console.log(err);
           sessionHandler(err, dispatch).then((res) => {
-            CrawlDataListFetchApi(statusCode, listSize, pageNo, searchObj).then(
+            CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj).then(
               (res) => {
                 dataCleansing(res.data);
               }
@@ -100,7 +105,12 @@ function ArchiveDataListContainer() {
 
   useEffect(() => {
     dataFetch(searchObj);
-  }, [pageNo, listSize, searchObj]);
+  }, [currentCode,pageNo, listSize, searchObj]);
+
+  useEffect(() => {
+    const code = isRequest ? Number(statusCode) + 1 : Number(statusCode);
+    setCurrentCode(code);
+  }, [isRequest]);
 
   return (
     <>
@@ -113,6 +123,8 @@ function ArchiveDataListContainer() {
         pageNo={pageNo}
         setPageNo={setPageNo}
         dataFilterFetch={dataFilterFetch}
+        onChangeRequestToggle={onChangeRequestToggle}
+        isRequest={isRequest}
       />
     </>
   );

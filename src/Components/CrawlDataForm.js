@@ -178,7 +178,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_kor_summary"] = docKorSummary;
       _docs["doc_origin_summary"] = docOriginSummary;
       _docs["doc_page"] = docPage;
-      _docs["doc_host"] = docHost.IDX;
+      _docs["doc_host"] = docHost && docHost.IDX;
       _docs["doc_url"] = docUrl;
       _docs["doc_url_intro"] = docUrlIntro;
       _docs["doc_project"] = docProject;
@@ -526,7 +526,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
                 <MdSettings /> 설정
               </button>
             </div>
-            <div className="form notInput">{docHost.HOST}</div>
+            <div className="form notInput">{docHost && docHost.HOST}</div>
           </CustomFormItem>
           <CustomFormItem>
             <p className="title">발급기관 명</p>

@@ -10,7 +10,7 @@ function UserArchiveDataList({
   setPageNo,
   listSizeHandler,
   archiveData,
-  curationRequest
+  curationRequest,
 }) {
   return (
     <Wrapper>

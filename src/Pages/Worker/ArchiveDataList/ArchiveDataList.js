@@ -3,6 +3,7 @@ import FormHeader from "../../../Components/FormHeader";
 import Pagination from "../../../Components/Pagination";
 import DataFilter from "../../../Components/DataFilter";
 import DataTable from "../../../Components/DataTable";
+import ToggleButton from "../../../Components/ToggleButton";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HiOutlineExternalLink, HiOutlineDocumentSearch } from "react-icons/hi";
@@ -16,6 +17,8 @@ function ArchiveDataList({
   pageNo,
   setPageNo,
   dataFilterFetch,
+  onChangeRequestToggle,
+  isRequest,
 }) {
   const _listSizeHandler = (e) => {
     setListSize(e.target.value);
@@ -35,6 +38,12 @@ function ArchiveDataList({
               검색 결과 ({dcCount}건)
             </div>
             <div className="action-group">
+              <ToggleButton
+                mode1={"아카이브 문서"}
+                mode2={"큐레이션 선정 문서"}
+                action={onChangeRequestToggle}
+                checked={isRequest}
+              />
               <select
                 className="list-size"
                 value={listSize}

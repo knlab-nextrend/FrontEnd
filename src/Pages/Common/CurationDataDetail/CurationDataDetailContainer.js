@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
 function CurationDataDetailContainer() {
-  const statusCode = 7;
+  const statusCode = 8;
   const permission = useSelector((state) => state.user.user.permission);
   const { _id } = useParams();
   const [docs, setDocs] = useState({}); // 폼에 default 값으로 출력할 데이터를 객체로 전달. 관리 편하게
