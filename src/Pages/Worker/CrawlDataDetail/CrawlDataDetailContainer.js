@@ -53,7 +53,7 @@ function CrawlDataDetailContainer() {
       type: "archive",
       title: "아카이브 데이터 조회 및 수정",
     },
-    7: {
+    8: {
       type: "curation",
       title: "큐레이션 데이터 조회 및 수정",
     },
@@ -114,7 +114,7 @@ function CrawlDataDetailContainer() {
       doc_host:_rawStatusDetailData.doc_host || "",
       doc_recomment:_rawStatusDetailData.doc_recomment || "",
       doc_publishing:_rawStatusDetailData.doc_publishing || "",
-
+      
 
       item_id:_rawStatusDetailData.item_id,
     };

@@ -234,7 +234,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       setDocKeywordString(docs.doc_keyword && docs.doc_keyword.join(", "));
       setDocThumbnail(docs.doc_thumbnail);
       setDocThumbnailSelect(
-        type === "screeing" || type === "refine" || type === "register"
+        type === "archive"
           ? docs.doc_thumbnail[0]
           : docs.doc_thumbnail
       );
