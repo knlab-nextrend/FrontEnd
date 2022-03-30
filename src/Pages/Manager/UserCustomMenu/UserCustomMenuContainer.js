@@ -125,6 +125,7 @@ function UserCustomMenuContainer() {
   const saveUserAxisData = () => {
     if (axisMenuData.X === null || axisMenuData.Y === null) {
       alert("X축과 Y축 모두 카테고리를 설정하여야 합니다.");
+      return;
     }
     if (axisCategoryInfo.X.category_type === axisCategoryInfo.Y.category_type) {
       alert(

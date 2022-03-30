@@ -158,9 +158,9 @@ function CurationList({ curationData, handleRowClick }) {
           <tr>
             <th>제목</th>
             <th>대상 국가</th>
-            <th>주제 분류</th>
+            <th>정책 분류</th>
             <th>문서 분류</th>
-            <th>HOST 명</th>
+            <th>발급 기관 명</th>
             <th>페이지 수</th>
             <th>데이터 등록일</th>
           </tr>
@@ -195,7 +195,7 @@ function CurationList({ curationData, handleRowClick }) {
                 <td className="center">{item.doc_country_list}</td>
                 <td className="center">{item.doc_category_list}</td>
                 <td className="center">{item.doc_content_type_list}</td>
-                <td className="center">{item.doc_host}</td>
+                <td className="center">{item.doc_publisher}</td>
 
                 <td className="center">{item.doc_page}쪽</td>
                 <td className="center">{item.doc_register_date}</td>
