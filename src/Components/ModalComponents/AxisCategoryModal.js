@@ -50,7 +50,6 @@ function CategoryModal({ executeModal, closeModal }) {
 
   /* 데이터 불러오기 */
   const dataFetch = () => {
-    trackPromise(
       categoryListFetchApi(currentCategoryType, length, upperCode[length - 2])
         .then((res) => {
           dataCleansing(res.data);
@@ -66,7 +65,6 @@ function CategoryModal({ executeModal, closeModal }) {
             });
           });
         })
-    );
   };
   const saveCategory = () => {
     if (selectedCategory === null) {

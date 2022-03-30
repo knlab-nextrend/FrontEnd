@@ -40,7 +40,7 @@ function ArchiveDataListContainer() {
         is_crawled: item.is_crawled,
         doc_collect_date: item.doc_collect_date,
         doc_language: item.doc_language,
-        doc_host: item.doc_host,
+        doc_publisher:item.doc_publisher,
       };
       _archiveDataList.push(obj);
     });

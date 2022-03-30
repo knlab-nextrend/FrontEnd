@@ -375,7 +375,12 @@ const MultilingualDictionaryApi = (data = null, method) => {
     return axios.get(`/nextrend/multilingual`, config);
   }
   if (method === "POST") {
-    return axios.post(`/nextrend/multilingual`, data, { headers: headers });
+    if("multi_text" in data){
+      return axios.post(`/nextrend/multilingual`, data, { headers: headers });
+    }
+    if("list" in data){
+      return axios.post(`/nextrend/multilingual/upload`, data, { headers: headers });
+    }
   }
   if (method === "PUT") {
     console.log(data);

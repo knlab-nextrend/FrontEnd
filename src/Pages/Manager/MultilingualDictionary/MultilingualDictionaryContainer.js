@@ -57,8 +57,7 @@ function MultilingualDictionaryContainer() {
       const jsonData = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
       jsonData.map((word, index) => {
         _excelData.push({
-          IDX: index,
-          MULTI_TEXT: Object.values(word)
+          multi_text: Object.values(word)
             .slice(1)
             .map((item) => item.split(", "))
             .flat(Infinity)
@@ -66,9 +65,14 @@ function MultilingualDictionaryContainer() {
             .join(", "),
         });
       });
-      console.log(_excelData);
-      setWordData(_excelData);
-      setCurrentWordData(_excelData);
+      const list = { list: _excelData };
+      console.log(list)
+      MultilingualDictionaryApi(list, "POST").then((res) => {
+        if (res.status === 200) {
+          alert("성공적으로 등록되었습니다.");
+          dataFetch();
+        }
+      });
     };
     reader.readAsBinaryString(input.files[0]);
   };

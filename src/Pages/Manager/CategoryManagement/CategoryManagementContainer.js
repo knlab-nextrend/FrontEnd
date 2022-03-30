@@ -105,7 +105,7 @@ function CategoryManagementContainer() {
     }
   };
   const categoryDelete = (code) => {
-    if (confirm("해당 카테고리를 삭제하시겠습니까?")) {
+    if (confirm("해당 카테고리를 삭제하시겠습니까? 연관된 문서에서 카테고리 설정이 삭제됩니다.")) {
       categoryItemDeleteApi(type, code).then((res) => {
         if (res.status === 200) {
           alert("성공적으로 삭제되었습니다.");

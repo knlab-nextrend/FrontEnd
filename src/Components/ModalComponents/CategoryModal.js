@@ -37,7 +37,7 @@ function CategoryModal({ executeModal, closeModal }) {
       type: 3,
       title: "문서 발행 국가 설정",
       subTitle:
-        "발행 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다.",
+        "발행 국가를 선택해주세요. 항목을 더블클릭하면 추가됩니다. 추가된 국가는 아래의 리스트에서 미리 볼 수 있으며, 추가된 칩을 클릭하면 목록에서 삭제됩니다. 발행 국가는 1개만 선택 가능 합니다.",
     },
     doc_language: {
       type: 4,
@@ -78,7 +78,7 @@ function CategoryModal({ executeModal, closeModal }) {
   };
   const clickHandler = (e, item, code, length) => {
     //console.log(e.detail) // 1 : 원클릭 2: 더블클릭
-    if (e.detail === 1 && categoryModalType !== "doc_language") {
+    if (e.detail === 1) {
       upperCodeHandler(code, length);
       lengthHandler(length + 2);
     } else if (e.detail === 2) {
@@ -87,7 +87,7 @@ function CategoryModal({ executeModal, closeModal }) {
   };
 
   const addCategory = (item) => {
-    console.log(item)
+    console.log(categoryModalType)
     if (
       selectedCategoryList.some((ele) => {
         return ele.CODE === item.CODE;
@@ -95,8 +95,9 @@ function CategoryModal({ executeModal, closeModal }) {
     ) {
       alert("이미 선택된 항목 입니다.");
     } else if (
-      categoryModalType === ("doc_language" || "doc_publish_country")
-    ) {
+      (categoryModalType === "doc_language") || (categoryModalType==="doc_publish_country"))
+     {
+      
       setSelectedCategoryList([item]);
     } else {
       setSelectedCategoryList([...selectedCategoryList, item]);

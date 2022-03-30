@@ -29,10 +29,9 @@ function DataTable({
               {(type === "register" || type==="archive") && <th>한글제목</th>}
               {type !== "screening" && <th className="dc_title_or">원제목</th>}
               <th>원문 요약</th>
-              <th className="dc_publisher">HOST 명</th>
-
+              <th className="dc_publisher">{type==="screening"?"HOST명":"발급기관명"}</th>
               <th className="lang">언어</th>
-              <th className="dc_dt_collect">원문 수집일</th>
+              <th className="dc_dt_collect">원문수집일</th>
               <th className="dc_page">페이지 수</th>
 
               {type === "screening" && (
@@ -95,7 +94,9 @@ function DataTable({
                     </td>
                   )}
                   <td>{item.doc_origin_summary}</td>
-                  <td>{type==="screening"?item.doc_host : item.doc_host && item.doc_host[0].HOST}</td>
+                  <td>
+                  {type==="screening"?item.doc_host:item.doc_publisher }
+                  </td>
                   <td>{type==="screening"?item.doc_language : item.doc_language.length!==0 && item.doc_language[0].CT_NM }</td>
                   <td>{item.doc_collect_date}</td>
                   <td>{item.doc_page}쪽</td>
