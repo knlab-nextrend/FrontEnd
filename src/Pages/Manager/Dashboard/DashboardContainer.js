@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "./Dashboard";
+import { useDispatch } from "react-redux";
+import { trackPromise } from "react-promise-tracker";
+import {
+  crawlHostDataFetchApi,
+  crawlSumDataFetchApi,
+  sessionHandler,
+} from "../../../Utils/api";
 
 function DashboardContainer() {
   // docs 문서 통계
   // work 작업자 작업 통계
   // crawl 크롤러 현황
-
+  const dispatch = useDispatch();
   const [menuType, setMenuType] = useState("docs_country");
-  const [selectedJobId, setSelectedJobId] = useState(null);
+
+  const [crawlHostList, setCrawlHostList] = useState([]); // 크롤 호스트 전체 목록
+  const [currentCrawlHostLog, setCurrentCrawlHostLog] = useState([]); // 선택한 호스트의 크롤링 작업 로그 목록
+  const [selectedHostId, setSelectedHostId] = useState(null); // 현태 선택한 호스트
+  const [crawlSum,setCrawlSum] = useState(null); // 현재 크롤링 총 작업 현황 
   const [process, setProcess] = useState("all");
   const menuHandler = (e) => {
     setMenuType(e.target.value);
@@ -15,13 +26,12 @@ function DashboardContainer() {
   const processHandler = (select) => {
     setProcess(select);
   };
-  const rowClickHandler = (job_id) => {
-    console.log(job_id)
-    // 현재 선택된 job_id와 새로 보고자 하는 job_id가 같을경우 이미 오픈된 목록을 닫는걸로 생각
-    if (selectedJobId === job_id) {
-      setSelectedJobId(null);
+  const rowClickHandler = (host_id) => {
+    // 현재 선택된 host_id 새로 보고자 하는 host_id 같을경우 이미 오픈된 목록을 닫는걸로 생각
+    if (selectedHostId === host_id) {
+      setSelectedHostId(null);
     } else {
-      setSelectedJobId(job_id);
+      setSelectedHostId(host_id);
     }
   };
   const data = [
@@ -56,24 +66,46 @@ function DashboardContainer() {
       color: "hsl(192, 70%, 50%)",
     },
   ];
-  const crawlDummyData = [
-    {
-      job_id:"1",
-      host:"https://www.worldbank.org/",
-      worked_count:"10",
-      worked_at:"2022-01-04 10:00:01.000000",
-      scheduled_at:"2022-01-04 10:00:01.000000",
-      created_at:"2022-01-04 10:00:01.000000"
-    },
-    {
-      job_id:"2",
-      host:"https://www.worldbank.org/",
-      worked_count:"10",
-      worked_at:"2022-01-04 10:00:01.000000",
-      scheduled_at:"2022-01-04 10:00:01.000000",
-      created_at:"2022-01-04 10:00:01.000000"
+
+  useEffect(() => {
+    trackPromise(
+      crawlHostDataFetchApi()
+        .then((res) => {
+          setCrawlHostList(res.data);
+          crawlSumDataFetchApi().then((res) => {
+            setCrawlSum(res.data[0]);
+          });
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            crawlHostDataFetchApi().then((res) => {
+              setCrawlHostList(res.data);
+              crawlSumDataFetchApi().then((res) => {
+                setCrawlSum(res.data[0]);
+              });
+            });
+          });
+        })
+    );
+  }, []);
+  useEffect(() => {
+    if (selectedHostId !== null) {
+      trackPromise(
+        crawlHostDataFetchApi(selectedHostId)
+          .then((res) => {
+            console.log(res.data);
+            setCurrentCrawlHostLog(res.data.reverse()); // 최신순
+          })
+          .catch((err) => {
+            sessionHandler(err, dispatch).then((res) => {
+              crawlHostDataFetchApi(selectedHostId).then((res) => {
+                setCurrentCrawlHostLog(res.data.reverse()); // 최신순
+              });
+            });
+          })
+      );
     }
-  ]
+  }, [selectedHostId]);
   return (
     <>
       <Dashboard
@@ -83,8 +115,10 @@ function DashboardContainer() {
         processHandler={processHandler}
         rowClickHandler={rowClickHandler}
         process={process}
-        crawlDummyData={crawlDummyData}
-        selectedJobId={selectedJobId}
+        crawlHostList={crawlHostList}
+        selectedHostId={selectedHostId}
+        currentCrawlHostLog={currentCrawlHostLog}
+        crawlSum={crawlSum}
       />
     </>
   );

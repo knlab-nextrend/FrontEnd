@@ -21,8 +21,10 @@ function Dashboard({
   process,
   processHandler,
   rowClickHandler,
-  crawlDummyData,
-  selectedJobId,
+  crawlHostList,
+  selectedHostId,
+  currentCrawlHostLog,
+  crawlSum
 }) {
   return (
     <>
@@ -233,38 +235,38 @@ function Dashboard({
               <CrawlFileTypeWrapper>
                 <CrawlFileTypeStatCard color="#435269">
                   <div className="file-type">URL</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.url}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#fccb00">
                   <div className="file-type">HTML</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.html}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#b80000">
                   <div className="file-type">PDF</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.pdf}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#3f51b5">
                   <div className="file-type">WORD</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.word}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#4caf50">
                   <div className="file-type">EXCEL</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.excel}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#db3e00">
                   <div className="file-type">PPT</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.ppt}</div>
                 </CrawlFileTypeStatCard>
                 <CrawlFileTypeStatCard color="#d6d6d6">
                   <div className="file-type">ETC</div>
-                  <div className="file-status">100</div>
+                  <div className="file-status">{crawlSum.etc}</div>
                 </CrawlFileTypeStatCard>
               </CrawlFileTypeWrapper>
             </TitleCard>
             <TitleCard
               title={"작업 목록"}
               subtitle={
-                "크롤러 작업 대상 HOST 목록과 그 대상의 작업 현황을 볼 수 있습니다. HOST별 크롤링 작업 현황은 해당 컬럼을 클릭하면 확인할 수 있습니다."
+                "크롤러 작업 대상 HOST 목록과 그 대상의 작업 현황을 볼 수 있습니다. HOST별 크롤링 작업 현황은 해당 컬럼을 클릭하면 확인할 수 있습니다. host 검색은 ctrl+F 로 가능합니다."
               }
             >
               <CrawlStatusTable>
@@ -279,8 +281,8 @@ function Dashboard({
                 <thead>
                   <tr>
                     <th>
-                      작업 ID <br />
-                      (job_id)
+                      HOST ID <br />
+                      (host_id)
                     </th>
                     <th>
                       HOST 도메인 <br />
@@ -296,7 +298,7 @@ function Dashboard({
                     </th>
                     <th>
                       다음 작업 예약일 <br />
-                      (scheduled_at)
+                      (schedule_at)
                     </th>
                     <th>
                       작업 생성일 <br />
@@ -305,96 +307,44 @@ function Dashboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {crawlDummyData.map((item, index) => {
+                  {crawlHostList.map((item, index) => {
                     return (
                       <>
                         <tr
                           key={index}
                           onClick={() => {
-                            rowClickHandler(item.job_id);
+                            rowClickHandler(item.host_id);
                           }}
                         >
                           <td>{item.job_id}</td>
                           <td>{item.host}</td>
                           <td>{item.worked_count}</td>
                           <td>{item.worked_at}</td>
-                          <td>{item.scheduled_at}</td>
+                          <td>{item.schedule_at}</td>
                           <td>{item.created_at}</td>
                         </tr>
-                        {selectedJobId === item.job_id && (
+                        {selectedHostId === item.host_id && (
                           <tr key={index + 999}>
                             <td colSpan="6">
                               <div className="work-log-wrapper">
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
-                                <div className="work-log">
-                                  <div>[시작일] 2020-08-24 15:26:07</div>
-                                  <div>[종료일] 2020-08-26 18:04:02</div>
-                                  <div>[url] 87590</div>
-                                  <div>[html] 87350</div>
-                                  <div>[pdf] 240</div>
-                                  <div>[word] 0</div>
-                                  <div>[excel] 0</div>
-                                  <div>[ppt] 0</div>
-                                </div>
+                                {currentCrawlHostLog.length === 0 ? (
+                                  <div>작업 로그가 없습니다.</div>
+                                ) : (
+                                  currentCrawlHostLog.map((log, index) => {
+                                    return (
+                                      <div key={index} className="work-log">
+                                        <div>[시작일] {log.start_time}</div>
+                                        <div>[종료일] {log.end_time}</div>
+                                        <div>[url] {log.url}</div>
+                                        <div>[html] {log.html}</div>
+                                        <div>[pdf] {log.pdf}</div>
+                                        <div>[word] {log.word}</div>
+                                        <div>[excel] {log.excel}</div>
+                                        <div>[ppt] {log.ppt}</div>
+                                      </div>
+                                    );
+                                  })
+                                )}
                               </div>
                             </td>
                           </tr>
@@ -491,6 +441,7 @@ const CrawlStatusTable = styled.table`
   td {
     border-bottom: 1px solid #d6d6d6;
     padding: 10px;
+    word-wrap: break-word;
   }
 
   tr:first-child,

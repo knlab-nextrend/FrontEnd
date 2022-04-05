@@ -432,6 +432,19 @@ const curationRequestApi = (_id) => {
   return axios.post(`/crawl/detail/${_id}`, body, { headers: headers });
 };
 
+const crawlHostDataFetchApi = (host_id=null) =>{
+  const config = {
+    headers: { headers },
+  };
+  const router = host_id?`/crawl/host/${host_id}`:`/crawl/host`
+
+  return axios.get(router,config)
+}
+
+const crawlSumDataFetchApi = ()=>{
+  return axios.get(`/crawl/sum`, {headers: { headers }});
+}
+
 export {
   LoginApi,
   RefreshTokenApi,
@@ -472,4 +485,6 @@ export {
   HostManagementApi,
   userCustomCurationDataFetchApi,
   curationRequestApi,
+  crawlHostDataFetchApi,
+  crawlSumDataFetchApi
 };

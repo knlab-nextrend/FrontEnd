@@ -4,10 +4,10 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal, setModalData, setCategoryModalType } from "../Modules/modal";
-import { MdSettings, MdOutlineLink } from "react-icons/md";
+import { MdSettings} from "react-icons/md";
 import Editor from "./Editor";
 
 /* forwordRef는 부모 컴포넌트에서 자식 컴포넌트를 컨트롤하기 위해 */

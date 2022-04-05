@@ -11,9 +11,8 @@ import {
   MdManageSearch,
   MdCalendarViewDay,
 } from "react-icons/md";
-import { useHistory, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
-import { useDispatch } from "react-redux";
 function AsideMenuBar({ permission }) {
   const PERMISSON_DATA = {
     0: "사용자",

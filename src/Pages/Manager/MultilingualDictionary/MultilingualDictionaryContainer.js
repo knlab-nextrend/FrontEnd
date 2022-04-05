@@ -149,7 +149,7 @@ function MultilingualDictionaryContainer() {
     if (currentWordData.length !== 0) {
       setCurrentWordData(
         wordData.filter((word) => {
-          return word.multi_text.includes(keyword);
+          return word.MULTI_TEXT.includes(keyword);
         })
       );
     }
