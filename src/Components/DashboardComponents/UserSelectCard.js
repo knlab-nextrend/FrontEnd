@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
+import { FetchUsersApi } from "../../Utils/api";
 
-function UserSelectCard() {
+function UserSelectCard({ currentUserIdHandler,setCurrentUserId}) {
+  const [userList, setUserList] = useState([]); // 유저 목록
+  const getUserList = () => {
+    FetchUsersApi().then((res) => {
+      setUserList(
+        res.data.filter((user) => {
+          return user.Category !== "0";
+        })
+      );
+    });
+  };
+  useEffect(() => {
+    getUserList();
+  }, []);
+  useEffect(() => {
+    if (userList.length !== 0) {
+      setCurrentUserId(userList[0].id); // 첫번째 사용자를 초기 사용자로 세팅.
+    }
+  }, [userList]);
+
   return (
     <CardWrapper>
       <div className="title">
-        <select className="user-select">
-          <option>전체</option>
-          <option>스크리닝 작업자</option>
-          <option>정제 작업자</option>
-          <option>작업자 2</option>
+        <select className="user-select" onChange={currentUserIdHandler}>
+          {userList.map((user, index) => {
+            return (
+              <option key={index} value={user.id}>
+                {user.Name} [ {user.userID} ]
+              </option>
+            );
+          })}
         </select>
         <div className="sub">의 작업 통계 입니다.</div>
       </div>
@@ -37,8 +60,8 @@ const CardWrapper = styled.div`
     &:focus {
       outline: none;
     }
-    & option{
-        font-size:12px;
+    & option {
+      font-size: 12px;
     }
   }
   .sub {

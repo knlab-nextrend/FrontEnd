@@ -1,5 +1,4 @@
 import React from "react";
-import TitleCard from "./TitleCard";
 import styled from "styled-components";
 
 function TableCard({ title, subtitle }) {

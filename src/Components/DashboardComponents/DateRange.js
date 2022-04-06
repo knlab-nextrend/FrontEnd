@@ -1,20 +1,44 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 
-function DateRange() {
+function DateRange({setDateGte}) {
   /* 
-        전체: all
-        1일 : day
-        1주일 : week
-        1달 : month
-        3달 : three_month
-        6달 : six_month
-    */
+    all : 전체 범위
+    past_week : 최근 1주
+    past_month : 최근 1달
+    past_3_month : 최근 3달
+    past_6_month : 최근 6달
+    past_year : 최근 1년
+    past_3_year : 최근 3년
+    custom_range : 직접 설정
+  */
   const [dateRange, setDateRange] = useState("all");
 
   const dateRangeHandler = (e) => {
     setDateRange(e.target.value);
   };
+  useEffect(()=>{
+    const _dateGte = new Date(); // 오늘 날짜
+    if(dateRange === "past_week"){
+      _dateGte.setDate(_dateGte.getDate() - 7); // 7일. 1주일 전
+    }
+    else if(dateRange === "past_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 1); // 1달 전
+    }
+    else if(dateRange === "past_3_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 3); // 3달 전
+    }
+    else if(dateRange === "past_6_month"){
+      _dateGte.setMonth(_dateGte.getMonth() - 6); // 6달 전
+    }
+    else if(dateRange === "past_year"){
+      _dateGte.setFullYear(_dateGte.getFullYear() - 1); // 1년 전
+    }
+    else if(dateRange === "past_3_year"){
+      _dateGte.setFullYear(_dateGte.getFullYear() - 3); // 3년 전
+    }
+    setDateGte(_dateGte.toISOString().substring(0,10));
+  },[dateRange])
   return (
     <DateRangeContainer>
       <input
@@ -29,48 +53,57 @@ function DateRange() {
       <input
         type="radio"
         name="range"
-        id="day"
-        value="day"
+        id="past_week"
+        value="past_week"
         onChange={dateRangeHandler}
-        checked={dateRange==="day"}
+        checked={dateRange==="past_week"}
       ></input>
-      <label htmlFor="day">최근 1일</label>
+      <label htmlFor="past_week">최근 1주일</label>
       <input
         type="radio"
         name="range"
-        id="week"
-        value="week"
+        id="past_month"
+        value="past_month"
         onChange={dateRangeHandler}
-        checked={dateRange==="week"}
+        checked={dateRange==="past_month"}
       ></input>
-      <label htmlFor="week">최근 1주일</label>
+      <label htmlFor="past_month">최근 1달</label>
       <input
         type="radio"
         name="range"
-        id="month"
-        value="month"
+        id="past_3_month"
+        value="past_3_month"
         onChange={dateRangeHandler}
-        checked={dateRange==="month"}
+        checked={dateRange==="past_3_month"}
       ></input>
-      <label htmlFor="month">최근 1달</label>
+      <label htmlFor="past_3_month">최근 3달</label>
       <input
         type="radio"
         name="range"
-        id="three_month"
-        value="three_month"
+        id="past_6_month"
+        value="past_6_month"
         onChange={dateRangeHandler}
-        checked={dateRange==="three_month"}
+        checked={dateRange==="past_6_month"}
       ></input>
-      <label htmlFor="three_month">최근 3달</label>
+      <label htmlFor="past_6_month">최근 6달</label>
       <input
         type="radio"
         name="range"
-        id="six_month"
-        value="six_month"
+        id="past_year"
+        value="past_year"
         onChange={dateRangeHandler}
-        checked={dateRange==="six_month"}
+        checked={dateRange==="past_year"}
       ></input>
-      <label htmlFor="six_month">최근 6달</label>
+      <label htmlFor="past_year">최근 1년</label>
+      <input
+        type="radio"
+        name="range"
+        id="past_3_year"
+        value="past_3_year"
+        onChange={dateRangeHandler}
+        checked={dateRange==="past_3_year"}
+      ></input>
+      <label htmlFor="past_3_year">최근 3년</label>
     </DateRangeContainer>
   );
 }

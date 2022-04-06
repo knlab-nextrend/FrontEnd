@@ -444,7 +444,14 @@ const crawlHostDataFetchApi = (host_id=null) =>{
 const crawlSumDataFetchApi = ()=>{
   return axios.get(`/crawl/sum`, {headers: { headers }});
 }
-
+const userWorkLogFetchApi = (dataObj)=>{
+  console.log(dataObj)
+  const config = {
+    headers: { headers },
+    params:{...dataObj}
+  };
+  return axios.get(`/nextrend/board/work`, config);
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -486,5 +493,6 @@ export {
   userCustomCurationDataFetchApi,
   curationRequestApi,
   crawlHostDataFetchApi,
-  crawlSumDataFetchApi
+  crawlSumDataFetchApi,
+  userWorkLogFetchApi,
 };

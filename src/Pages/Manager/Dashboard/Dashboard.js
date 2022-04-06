@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
 import TitleCard from "../../../Components/DashboardComponents/TitleCard";
 import DocumentStatCard from "../../../Components/DashboardComponents/DocumentStatCard";
@@ -6,12 +6,12 @@ import DocumentStatCard from "../../../Components/DashboardComponents/DocumentSt
 import UserSelectCard from "../../../Components/DashboardComponents/UserSelectCard";
 import WorkStatCard from "../../../Components/DashboardComponents/WorkStatCard";
 import ChartCard from "../../../Components/DashboardComponents/ChartCard";
-import TableCard from "../../../Components/DashboardComponents/TableCard";
 import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu";
 import DateRange from "../../../Components/DashboardComponents/DateRange";
 import Map from "./Map";
+import LineGraph from "./LineGraph"
 import styled from "styled-components";
-
+import Duration from "../../../Components/DashboardComponents/Duration"
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
 
 function Dashboard({
@@ -24,7 +24,13 @@ function Dashboard({
   crawlHostList,
   selectedHostId,
   currentCrawlHostLog,
-  crawlSum
+  crawlSum,
+  setCurrentUserId,
+  currentUserIdHandler,
+  setDateGte,
+  lineGraphData,
+  setDuration,
+  duration,
 }) {
   return (
     <>
@@ -35,21 +41,14 @@ function Dashboard({
             value="docs_country"
             onClick={menuHandler}
           >
-            국가별 문서 작업 통계
+            문서 전체 통계 & 국가별 통계
           </TabButton>
           <TabButton
             active={menuType === "docs_worker"}
             value="docs_worker"
             onClick={menuHandler}
           >
-            작업자별 문서 작업 통계
-          </TabButton>
-          <TabButton
-            active={menuType === "work_detail"}
-            value="work_detail"
-            onClick={menuHandler}
-          >
-            작업자별 작업 상세 현황
+            작업자별 작업 통계 및 현황
           </TabButton>
           <TabButton
             active={menuType === "crawl"}
@@ -70,7 +69,6 @@ function Dashboard({
       <Wrapper>
         {menuType === "docs_country" && (
           <>
-            {process === "all" && (
               <>
                 <WorkStatCard />
                 <CountryContentWrapper>
@@ -206,21 +204,24 @@ function Dashboard({
                   </div>
                 </CountryContentWrapper>
               </>
-            )}
           </>
         )}
         {menuType === "docs_worker" && (
           <>
-            <UserSelectCard />
+            <UserSelectCard
+              currentUserIdHandler={currentUserIdHandler} setCurrentUserId={setCurrentUserId}
+            />
 
             <ProcessMenu processHandler={processHandler} process={process} />
             <TitleCard
               title={"기간별 통계"}
               subtitle={
-                "최근 1일 / 최근 1주일 /최근 1달/ 최근 3달 / 최근 6달 수집 통계를 확인하세요."
+                "기간별 수집 통계를 확인하세요."
               }
             >
-              <DateRange />
+              <DateRange setDateGte={setDateGte}/>
+              <Duration setDuration={setDuration} />
+              <LineGraph lineGraphData={lineGraphData} duration={duration}/>
             </TitleCard>
           </>
         )}
@@ -355,14 +356,6 @@ function Dashboard({
                 </tbody>
               </CrawlStatusTable>
             </TitleCard>
-          </>
-        )}
-        {menuType === "work_detail" && (
-          <>
-            <TableCard
-              title={"작업자 작업 현황"}
-              subtitle={"작업자 작업 현황입니다."}
-            />
           </>
         )}
       </Wrapper>

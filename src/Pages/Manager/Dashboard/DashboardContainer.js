@@ -5,6 +5,7 @@ import { trackPromise } from "react-promise-tracker";
 import {
   crawlHostDataFetchApi,
   crawlSumDataFetchApi,
+  userWorkLogFetchApi,
   sessionHandler,
 } from "../../../Utils/api";
 
@@ -18,8 +19,16 @@ function DashboardContainer() {
   const [crawlHostList, setCrawlHostList] = useState([]); // 크롤 호스트 전체 목록
   const [currentCrawlHostLog, setCurrentCrawlHostLog] = useState([]); // 선택한 호스트의 크롤링 작업 로그 목록
   const [selectedHostId, setSelectedHostId] = useState(null); // 현태 선택한 호스트
-  const [crawlSum,setCrawlSum] = useState(null); // 현재 크롤링 총 작업 현황 
-  const [process, setProcess] = useState("all");
+  const [crawlSum, setCrawlSum] = useState(null); // 현재 크롤링 총 작업 현황
+  const [process, setProcess] = useState(0);
+
+  const [currentUserId, setCurrentUserId] = useState(null); // 현재 선택된 유저의 id
+
+  const [dateGte, setDateGte] = useState("2022-01-01"); // 현재 시각 기준 3년 전으로 설정 할 예정...
+  const [lineGraphData, setLineGraphData] = useState([]); // 기간별 통계 꺾은선 그래프 데이터
+
+  const [duration,setDuration] = useState("daily");
+
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
@@ -34,6 +43,10 @@ function DashboardContainer() {
       setSelectedHostId(host_id);
     }
   };
+  const currentUserIdHandler = (e) => {
+    setCurrentUserId(e.target.value);
+  };
+
   const data = [
     {
       id: "sass",
@@ -67,7 +80,7 @@ function DashboardContainer() {
     },
   ];
 
-  useEffect(() => {
+  const getCrawlHostList = () => {
     trackPromise(
       crawlHostDataFetchApi()
         .then((res) => {
@@ -87,25 +100,72 @@ function DashboardContainer() {
           });
         })
     );
+  };
+
+  const getCrawlHostLogList = () => {
+    trackPromise(
+      crawlHostDataFetchApi(selectedHostId)
+        .then((res) => {
+          console.log(res.data);
+          setCurrentCrawlHostLog(res.data.reverse()); // 최신순
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            crawlHostDataFetchApi(selectedHostId).then((res) => {
+              setCurrentCrawlHostLog(res.data.reverse()); // 최신순
+            });
+          });
+        })
+    );
+  };
+  const graphDataCleansing = (rawData) => {
+    setLineGraphData(rawData.map((item, index) => {
+      return { date: new Date(item.start).getTime(), value: item.cnt };
+    }));
+  };
+  const getUserWorkLog = () => {
+    const dataObj = {
+      status: process,
+      wid: Number(currentUserId),
+      duration: duration,
+      dateLte: new Date().toISOString().substring(0, 10),
+      dateGte: dateGte,
+    };
+    trackPromise(
+      userWorkLogFetchApi(dataObj)
+        .then((res) => {
+          graphDataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            userWorkLogFetchApi(dataObj).then((res) => {
+              graphDataCleansing(res.data);
+            });
+          });
+        })
+    );
+  };
+
+  useEffect(() => {
+    getCrawlHostList(); // 크롤 호스트 목록 불러오기
   }, []);
+
+  useEffect(() => {
+    if (!!currentUserId) {
+      getUserWorkLog();
+    }
+  }, [currentUserId, dateGte, process,duration]);
+
   useEffect(() => {
     if (selectedHostId !== null) {
-      trackPromise(
-        crawlHostDataFetchApi(selectedHostId)
-          .then((res) => {
-            console.log(res.data);
-            setCurrentCrawlHostLog(res.data.reverse()); // 최신순
-          })
-          .catch((err) => {
-            sessionHandler(err, dispatch).then((res) => {
-              crawlHostDataFetchApi(selectedHostId).then((res) => {
-                setCurrentCrawlHostLog(res.data.reverse()); // 최신순
-              });
-            });
-          })
-      );
+      getCrawlHostLogList();
     }
   }, [selectedHostId]);
+
+  useEffect(()=>{
+    console.log(lineGraphData)
+  },[lineGraphData])
+
   return (
     <>
       <Dashboard
@@ -119,6 +179,12 @@ function DashboardContainer() {
         selectedHostId={selectedHostId}
         currentCrawlHostLog={currentCrawlHostLog}
         crawlSum={crawlSum}
+        currentUserIdHandler={currentUserIdHandler}
+        setCurrentUserId={setCurrentUserId}
+        setDateGte={setDateGte}
+        lineGraphData={lineGraphData}
+        setDuration={setDuration}
+        duration={duration}
       />
     </>
   );

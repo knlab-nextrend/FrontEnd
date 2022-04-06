@@ -4,10 +4,10 @@ import styled, { css } from "styled-components";
 function ProcessMenu({process,processHandler}) {
   /* 
     all : 전체
-    screening : 스크리닝
-    refine : 정제
-    archive : 등록(아카이브)
-    curation : 큐레이션
+    1 : 스크리닝
+    2 : 정제
+    4 : 등록(아카이브)
+    6 : 큐레이션
   */
   const _processHandler = (value) => {
     processHandler(value);
@@ -21,41 +21,41 @@ function ProcessMenu({process,processHandler}) {
       <ul>
         <MenuItem
           onClick={() => {
-            _processHandler("all");
+            _processHandler(0);
           }}
-          active={process === "all"}
+          active={process === 0}
         >
           전체
         </MenuItem>
         <MenuItem
           onClick={() => {
-            _processHandler("screening");
+            _processHandler(1);
           }}
-          active={process === "screening"}
+          active={process === 1}
         >
           스크리닝
         </MenuItem>
         <MenuItem
           onClick={() => {
-            _processHandler("refine");
+            _processHandler(2);
           }}
-          active={process === "refine"}
+          active={process === 2}
         >
           정제
         </MenuItem>
         <MenuItem
           onClick={() => {
-            _processHandler("register");
+            _processHandler(4);
           }}
-          active={process === "register"}
+          active={process === 4}
         >
           등록(아카이브)
         </MenuItem>
         <MenuItem
           onClick={() => {
-            _processHandler("curation");
+            _processHandler(6);
           }}
-          active={process === "curation"}
+          active={process === 6}
         >
           큐레이션
         </MenuItem>

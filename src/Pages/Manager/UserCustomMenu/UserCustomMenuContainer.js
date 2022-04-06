@@ -6,11 +6,10 @@ import {
   FetchUsersApi,
   sessionHandler,
   axisMenuPreviewFetchApi,
-  userAxisMenuFetchApi,
   userAxisMenuSettingFetchApi,
   userAxisMenuSaveApi,
 } from "../../../Utils/api";
-import { setModal, clearCategoryData } from "../../../Modules/modal";
+import { setModal} from "../../../Modules/modal";
 function UserCustomMenuContainer() {
   const CATEGORY_TYPE_LIST = {
     1: "정책 분류",
