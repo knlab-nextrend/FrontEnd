@@ -9,9 +9,9 @@ import ChartCard from "../../../Components/DashboardComponents/ChartCard";
 import ProcessMenu from "../../../Components/DashboardComponents/ProcessMenu";
 import DateRange from "../../../Components/DashboardComponents/DateRange";
 import Map from "./Map";
-import LineGraph from "./LineGraph"
+import LineGraph from "./LineGraph";
 import styled from "styled-components";
-import Duration from "../../../Components/DashboardComponents/Duration"
+import Duration from "../../../Components/DashboardComponents/Duration";
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
 
 function Dashboard({
@@ -31,6 +31,8 @@ function Dashboard({
   lineGraphData,
   setDuration,
   duration,
+  curationWorkModalOpen,
+  curationWorkList
 }) {
   return (
     <>
@@ -69,159 +71,220 @@ function Dashboard({
       <Wrapper>
         {menuType === "docs_country" && (
           <>
-              <>
-                <WorkStatCard />
-                <CountryContentWrapper>
-                  <TitleCard
-                    title={"국가별 문서 현황"}
-                    subtitle={
-                      "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
-                    }
-                  >
-                    <Map />
-                  </TitleCard>
-                  <div>
-                    <ChartCard>
-                      <ResponsivePie
-                        data={data}
-                        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-                        innerRadius={0.5}
-                        padAngle={0.7}
-                        cornerRadius={3}
-                        activeOuterRadiusOffset={8}
-                        borderWidth={1}
-                        borderColor={{
-                          from: "color",
-                          modifiers: [["darker", 0.2]],
-                        }}
-                        arcLinkLabelsSkipAngle={10}
-                        arcLinkLabelsTextColor="#333333"
-                        arcLinkLabelsThickness={2}
-                        arcLinkLabelsColor={{ from: "color" }}
-                        arcLabelsSkipAngle={10}
-                        arcLabelsTextColor={{
-                          from: "color",
-                          modifiers: [["darker", 2]],
-                        }}
-                        defs={[
-                          {
-                            id: "dots",
-                            type: "patternDots",
-                            background: "inherit",
-                            color: "rgba(255, 255, 255, 0.3)",
-                            size: 4,
-                            padding: 1,
-                            stagger: true,
+            <>
+              <WorkStatCard />
+              <CountryContentWrapper>
+                <TitleCard
+                  title={"국가별 문서 현황"}
+                  subtitle={
+                    "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
+                  }
+                >
+                  <Map />
+                </TitleCard>
+                <div>
+                  <ChartCard>
+                    <ResponsivePie
+                      data={data}
+                      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                      innerRadius={0.5}
+                      padAngle={0.7}
+                      cornerRadius={3}
+                      activeOuterRadiusOffset={8}
+                      borderWidth={1}
+                      borderColor={{
+                        from: "color",
+                        modifiers: [["darker", 0.2]],
+                      }}
+                      arcLinkLabelsSkipAngle={10}
+                      arcLinkLabelsTextColor="#333333"
+                      arcLinkLabelsThickness={2}
+                      arcLinkLabelsColor={{ from: "color" }}
+                      arcLabelsSkipAngle={10}
+                      arcLabelsTextColor={{
+                        from: "color",
+                        modifiers: [["darker", 2]],
+                      }}
+                      defs={[
+                        {
+                          id: "dots",
+                          type: "patternDots",
+                          background: "inherit",
+                          color: "rgba(255, 255, 255, 0.3)",
+                          size: 4,
+                          padding: 1,
+                          stagger: true,
+                        },
+                        {
+                          id: "lines",
+                          type: "patternLines",
+                          background: "inherit",
+                          color: "rgba(255, 255, 255, 0.3)",
+                          rotation: -45,
+                          lineWidth: 6,
+                          spacing: 10,
+                        },
+                      ]}
+                      fill={[
+                        {
+                          match: {
+                            id: "ruby",
                           },
-                          {
-                            id: "lines",
-                            type: "patternLines",
-                            background: "inherit",
-                            color: "rgba(255, 255, 255, 0.3)",
-                            rotation: -45,
-                            lineWidth: 6,
-                            spacing: 10,
+                          id: "dots",
+                        },
+                        {
+                          match: {
+                            id: "c",
                           },
-                        ]}
-                        fill={[
-                          {
-                            match: {
-                              id: "ruby",
-                            },
-                            id: "dots",
+                          id: "dots",
+                        },
+                        {
+                          match: {
+                            id: "go",
                           },
-                          {
-                            match: {
-                              id: "c",
-                            },
-                            id: "dots",
+                          id: "dots",
+                        },
+                        {
+                          match: {
+                            id: "python",
                           },
-                          {
-                            match: {
-                              id: "go",
-                            },
-                            id: "dots",
+                          id: "dots",
+                        },
+                        {
+                          match: {
+                            id: "scala",
                           },
-                          {
-                            match: {
-                              id: "python",
-                            },
-                            id: "dots",
+                          id: "lines",
+                        },
+                        {
+                          match: {
+                            id: "lisp",
                           },
-                          {
-                            match: {
-                              id: "scala",
-                            },
-                            id: "lines",
+                          id: "lines",
+                        },
+                        {
+                          match: {
+                            id: "elixir",
                           },
-                          {
-                            match: {
-                              id: "lisp",
-                            },
-                            id: "lines",
+                          id: "lines",
+                        },
+                        {
+                          match: {
+                            id: "javascript",
                           },
-                          {
-                            match: {
-                              id: "elixir",
-                            },
-                            id: "lines",
-                          },
-                          {
-                            match: {
-                              id: "javascript",
-                            },
-                            id: "lines",
-                          },
-                        ]}
-                        legends={[
-                          {
-                            anchor: "bottom",
-                            direction: "row",
-                            justify: false,
-                            translateX: 0,
-                            translateY: 56,
-                            itemsSpacing: 0,
-                            itemWidth: 100,
-                            itemHeight: 18,
-                            itemTextColor: "#999",
-                            itemDirection: "left-to-right",
-                            itemOpacity: 1,
-                            symbolSize: 18,
-                            symbolShape: "circle",
-                            effects: [
-                              {
-                                on: "hover",
-                                style: {
-                                  itemTextColor: "#000",
-                                },
+                          id: "lines",
+                        },
+                      ]}
+                      legends={[
+                        {
+                          anchor: "bottom",
+                          direction: "row",
+                          justify: false,
+                          translateX: 0,
+                          translateY: 56,
+                          itemsSpacing: 0,
+                          itemWidth: 100,
+                          itemHeight: 18,
+                          itemTextColor: "#999",
+                          itemDirection: "left-to-right",
+                          itemOpacity: 1,
+                          symbolSize: 18,
+                          symbolShape: "circle",
+                          effects: [
+                            {
+                              on: "hover",
+                              style: {
+                                itemTextColor: "#000",
                               },
-                            ],
-                          },
-                        ]}
-                      />
-                    </ChartCard>
-                    <DocumentStatCard></DocumentStatCard>
-                  </div>
-                </CountryContentWrapper>
-              </>
+                            },
+                          ],
+                        },
+                      ]}
+                    />
+                  </ChartCard>
+                  <DocumentStatCard></DocumentStatCard>
+                </div>
+              </CountryContentWrapper>
+            </>
           </>
         )}
         {menuType === "docs_worker" && (
           <>
             <UserSelectCard
-              currentUserIdHandler={currentUserIdHandler} setCurrentUserId={setCurrentUserId}
+              currentUserIdHandler={currentUserIdHandler}
+              setCurrentUserId={setCurrentUserId}
             />
 
             <ProcessMenu processHandler={processHandler} process={process} />
             <TitleCard
               title={"기간별 통계"}
+              subtitle={"기간별 수집 통계를 확인하세요."}
+            >
+              <DateRange setDateGte={setDateGte} />
+              <Duration setDuration={setDuration} />
+              <LineGraphWrapper>
+                <LineGraph lineGraphData={lineGraphData} duration={duration} />
+              </LineGraphWrapper>
+            </TitleCard>
+            <TitleCard
+              title={"큐레이션 작업 내역"}
               subtitle={
-                "기간별 수집 통계를 확인하세요."
+                "해당 작업자의 큐레이션 작업 내역을 문서별로 확인하세요. 작업 전/후 를 비교할 수 있습니다."
               }
             >
-              <DateRange setDateGte={setDateGte}/>
-              <Duration setDuration={setDuration} />
-              <LineGraph lineGraphData={lineGraphData} duration={duration}/>
+              <CrawlStatusTable>
+              <colgroup>
+                  <col width="50%" />
+                  <col width="20%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>작업 문서 ID</th>
+                    <th>작업 일시</th>
+                    <th>컨텐츠 품질</th>
+                    <th>작업 전</th>
+                    <th>작업 후</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {curationWorkList.map((item,index)=>{
+                    return <tr>
+                    <td>{item.ES_ID}</td>
+                    <td>{item.DT}</td>
+                    <td>{item.QUALITY}</td>
+                    <td><button onClick={()=>{curationWorkModalOpen(item.CONTENT_BEF)}}>조회</button></td>
+                    <td><button onClick={()=>{curationWorkModalOpen(item.CONTENT_CUR)}}>조회</button></td>
+                  </tr>
+                  })}
+                  
+                </tbody>
+              </CrawlStatusTable>
+            </TitleCard>
+            <TitleCard
+              title={"전체 작업 상세 로그"}
+              subtitle={
+                "해당 작업자의 작업 상세 로그를 확인하세요. 작업문서 ID, 작업 일시, 작업 단계 등이 표시됩니다."
+              }
+            >
+              <CrawlStatusTable>
+                <thead>
+                  <tr>
+                    <th>작업 문서 ID</th>
+                    <th>작업 일시</th>
+                    <th>작업 단계</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>_abcdefghijklmnop</td>
+                    <td>2022-04-07 13:36:00</td>
+                    <td>스크리닝 완료</td>
+                  </tr>
+                </tbody>
+              </CrawlStatusTable>
             </TitleCard>
           </>
         )}
@@ -458,4 +521,9 @@ const CrawlStatusTable = styled.table`
     min-width: 190px;
   }
 `;
+
+const LineGraphWrapper = styled.div`
+  padding: 3rem;
+`;
+
 export default Dashboard;

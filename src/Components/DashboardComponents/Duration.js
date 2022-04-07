@@ -55,6 +55,7 @@ const DateRangeContainer = styled.div`
   background-color: #eee;
   font-size: 12px;
   border-radius: 0.5rem;
+  margin-left:1rem;
 
   label {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;

@@ -17,33 +17,28 @@ function LineGraph({ lineGraphData, duration }) {
         setGraphDuration("month");
         break;
     }
-    console.log(duration);
   }, [duration]);
-  useEffect(() => {
-    console.log(graphDuration);
-  }, [graphDuration]);
+
   useLayoutEffect(() => {
     var root = am5.Root.new("chartdiv");
     root.setThemes([am5themes_Animated.new(root)]);
     var chart = root.container.children.push(
       am5xy.XYChart.new(root, {
-        panY: false,
+        panX: true,
+        panY: true,
+        wheelX: "panX",
         wheelY: "zoomX",
         layout: root.verticalLayout,
         maxTooltipDistance: 0,
       })
     );
-    // Define data
-    var data = [
-      {
-        date: new Date(2021, 0, 1).getTime(),
-        value: 100,
-      },
-    ];
 
     // Create Y-axis
     var yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
+        min: 0,
+        max: 100,
+        maxDeviation: 0.1,
         extraTooltipPrecision: 1,
         renderer: am5xy.AxisRendererY.new(root, {}),
       })
@@ -52,16 +47,16 @@ function LineGraph({ lineGraphData, duration }) {
     // Create X-Axis
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
+        maxDeviation: 0.1,
+        groupData: false,
         baseInterval: { timeUnit: graphDuration, count: 1 },
-        gridIntervals: [
-          { timeUnit: graphDuration, count: 3 },
-        ],
-        renderer: am5xy.AxisRendererX.new(root, {}),
+        gridIntervals: [{ timeUnit: graphDuration, count: 1 }],
+        renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 30 }),
       })
     );
 
-    //xAxis.get("dateFormats")[graphDuration] = "MM/dd";
-    //xAxis.get("periodChangeDateFormats")[graphDuration] = "MMMM";
+    xAxis.get("dateFormats")["day"] = "MM/dd";
+    xAxis.get("periodChangeDateFormats")["day"] = "MMMM";
 
     var series = chart.series.push(
       am5xy.LineSeries.new(root, {
@@ -74,48 +69,69 @@ function LineGraph({ lineGraphData, duration }) {
       })
     );
 
-    series.bullets.push(function () {
-      return am5.Bullet.new(root, {
-        sprite: am5.Circle.new(root, {
-          radius: 5,
-          fill: series.get("fill"),
-        }),
-      });
-    });
+    // series.bullets.push(function () {
+    //   return am5.Bullet.new(root, {
+    //     sprite: am5.Circle.new(root, {
+    //       radius: 5,
+    //       fill: am5.color(0x435269),
+    //     }),
+    //   });
+    // });
 
-    series.strokes.template.set("strokeWidth", 2);
+    series.strokes.template.set("strokeWidth", 5);
 
     series
       .get("tooltip")
       .label.set("text", "[bold]{name}[/]\n{valueX.formatDate()}: {valueY}");
     series.data.setAll(lineGraphData); // 데이터 적용
 
+    // Pre-zoom X axis
+    series.events.once("datavalidated", (ev, target) => {
+      xAxis.zoomToDates(new Date(2021, 0, 1), new Date(2022, 0, 1));
+    });
+
     // Add legend
     var legend = chart.children.push(am5.Legend.new(root, {}));
     legend.data.setAll(chart.series.values);
 
     // Add cursor
-    chart.set(
+    // chart.set(
+    //   "cursor",
+    //   am5xy.XYCursor.new(root, {
+    //     behavior: "zoomXY",
+    //     xAxis: xAxis,
+    //   })
+    // );
+
+    // xAxis.set(
+    //   "tooltip",
+    //   am5.Tooltip.new(root, {
+    //     themeTags: ["axis"],
+    //   })
+    // );
+
+    // yAxis.set(
+    //   "tooltip",
+    //   am5.Tooltip.new(root, {
+    //     themeTags: ["axis"],
+    //   })
+    // );
+    // Add cursor
+    var cursor = chart.set(
       "cursor",
       am5xy.XYCursor.new(root, {
-        behavior: "zoomXY",
         xAxis: xAxis,
       })
     );
+    cursor.lineY.set("visible", false);
 
-    xAxis.set(
-      "tooltip",
-      am5.Tooltip.new(root, {
-        themeTags: ["axis"],
-      })
-    );
+    cursor.events.on("cursormoved", function (ev) {
+      var x = ev.target.getPrivate("positionX");
+      var y = ev.target.getPrivate("positionY");
 
-    yAxis.set(
-      "tooltip",
-      am5.Tooltip.new(root, {
-        themeTags: ["axis"],
-      })
-    );
+      var dateX = xAxis.positionToDate(x);
+      var valueY = xAxis.positionToValue(y);
+    });
 
     return () => {
       root.dispose();

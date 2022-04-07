@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Dashboard from "./Dashboard";
 import { useDispatch } from "react-redux";
+import { setModal, setModalData } from "../../../Modules/modal";
 import { trackPromise } from "react-promise-tracker";
 import {
   crawlHostDataFetchApi,
   crawlSumDataFetchApi,
   userWorkLogFetchApi,
+  curationWorkListFetchApi,
   sessionHandler,
 } from "../../../Utils/api";
 
@@ -27,7 +29,9 @@ function DashboardContainer() {
   const [dateGte, setDateGte] = useState("2022-01-01"); // 현재 시각 기준 3년 전으로 설정 할 예정...
   const [lineGraphData, setLineGraphData] = useState([]); // 기간별 통계 꺾은선 그래프 데이터
 
-  const [duration,setDuration] = useState("daily");
+  const [duration, setDuration] = useState("daily");
+
+  const [curationWorkList, setCurationWorkList] = useState([]); // 해당 작업자의 큐레이션 내역 목록
 
   const menuHandler = (e) => {
     setMenuType(e.target.value);
@@ -45,6 +49,10 @@ function DashboardContainer() {
   };
   const currentUserIdHandler = (e) => {
     setCurrentUserId(e.target.value);
+  };
+  const curationWorkModalOpen = (data) => {
+    dispatch(setModal("CurationWorkContentModal"));
+    dispatch(setModalData(data, "curation_work_content"));
   };
 
   const data = [
@@ -106,7 +114,6 @@ function DashboardContainer() {
     trackPromise(
       crawlHostDataFetchApi(selectedHostId)
         .then((res) => {
-          console.log(res.data);
           setCurrentCrawlHostLog(res.data.reverse()); // 최신순
         })
         .catch((err) => {
@@ -119,9 +126,11 @@ function DashboardContainer() {
     );
   };
   const graphDataCleansing = (rawData) => {
-    setLineGraphData(rawData.map((item, index) => {
-      return { date: new Date(item.start).getTime(), value: item.cnt };
-    }));
+    setLineGraphData(
+      rawData.map((item, index) => {
+        return { date: new Date(item.start).getTime(), value: item.cnt };
+      })
+    );
   };
   const getUserWorkLog = () => {
     const dataObj = {
@@ -145,6 +154,28 @@ function DashboardContainer() {
         })
     );
   };
+  const getCurationWorkList = () => {
+    const dataObj = {
+      wid: Number(currentUserId),
+      dateLte: new Date().toISOString().substring(0, 10),
+      dateGte: "1970-01-01",
+    };
+    trackPromise(
+      curationWorkListFetchApi(dataObj)
+        .then((res) => {
+          console.log(res.data);
+          setCurationWorkList(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            curationWorkListFetchApi(dataObj).then((res) => {
+              console.log(res.data);
+              setCurationWorkList(res.data);
+            });
+          });
+        })
+    );
+  };
 
   useEffect(() => {
     getCrawlHostList(); // 크롤 호스트 목록 불러오기
@@ -154,17 +185,18 @@ function DashboardContainer() {
     if (!!currentUserId) {
       getUserWorkLog();
     }
-  }, [currentUserId, dateGte, process,duration]);
+  }, [currentUserId, dateGte, process, duration]);
+  useEffect(()=>{
+    if(!!currentUserId){
+      getCurationWorkList();
+    }
+  },[currentUserId])
 
   useEffect(() => {
     if (selectedHostId !== null) {
       getCrawlHostLogList();
     }
   }, [selectedHostId]);
-
-  useEffect(()=>{
-    console.log(lineGraphData)
-  },[lineGraphData])
 
   return (
     <>
@@ -185,6 +217,8 @@ function DashboardContainer() {
         lineGraphData={lineGraphData}
         setDuration={setDuration}
         duration={duration}
+        curationWorkModalOpen={curationWorkModalOpen}
+        curationWorkList={curationWorkList}
       />
     </>
   );

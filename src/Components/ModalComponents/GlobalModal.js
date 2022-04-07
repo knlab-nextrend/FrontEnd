@@ -7,12 +7,14 @@ import CategoryModal from "./CategoryModal";
 import UserInfoModal from "./UserInfoModal";
 import AxisCategoryModal from "./AxisCategoryModal"
 import HostSelectModal from "./HostSelectModal"
+import CurationWorkContentModal from "./CurationWorkContentModal"
 
 export const MODAL_TYPES = {
   CategoryModal: "CategoryModal",
   UserInfoModal: "UserInfoModal",
   AxisCategoryModal:"AxisCategoryModal",
-  HostSelectModal:"HostSelectModal"
+  HostSelectModal:"HostSelectModal",
+  CurationWorkContentModal:"CurationWorkContentModal",
 };
 
 const MODAL_COMPONENTS = {
@@ -20,6 +22,7 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.UserInfoModal]: UserInfoModal,
   [MODAL_TYPES.AxisCategoryModal]:AxisCategoryModal,
   [MODAL_TYPES.HostSelectModal]:HostSelectModal,
+  [MODAL_TYPES.CurationWorkContentModal] :CurationWorkContentModal,
 };
 
 function GlobalModal() {

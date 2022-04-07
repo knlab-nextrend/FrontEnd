@@ -216,7 +216,7 @@ const editorConfiguration = {
     ],
   },
 };
-function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=null}) {
+function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=null , height=null}) {
 
   /*data props에 나중에 데이터 불러와서 넣으면 됨.
    */
@@ -250,7 +250,7 @@ function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=
     
   }
   return (
-    <CustomCKEditor>
+    <CustomCKEditor height={height}>
       <CKEditor
         disabled={readOnly}
         editor={ClassicEditor}
@@ -281,7 +281,7 @@ function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=
 const CustomCKEditor = styled.div`
   width: 100%;
   .ck-editor__editable_inline {
-    height: 1000px;
+    height:${(props) => props.height || "1000px"};
     padding: 2rem;
   }
 `;

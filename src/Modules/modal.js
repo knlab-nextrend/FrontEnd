@@ -30,6 +30,7 @@ const initialState = {
 
     modal_user: [],
     axis_category:null,
+    curation_work_content:"", // 큐레이션 작업 내용을 저장하는 변수
   },
 };
 
