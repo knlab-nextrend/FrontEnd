@@ -35,6 +35,8 @@ function Dashboard({
   curationWorkList,
   userWorkAllData,
   workAllLogData,
+  workAllStatus,
+  workAllStatusHandler
 }) {
   return (
     <>
@@ -74,7 +76,8 @@ function Dashboard({
         {menuType === "docs_country" && (
           <>
             <>
-              <WorkStatCard workAllLogData={workAllLogData}/>
+              <WorkStatCard workAllLogData={workAllLogData} workAllStatus={workAllStatus} workAllStatusHandler={workAllStatusHandler}/>
+             
               <CountryContentWrapper>
                 <TitleCard
                   title={"국가별 문서 현황"}
@@ -85,6 +88,7 @@ function Dashboard({
                   <Map />
                 </TitleCard>
                 <div>
+                  
                   <ChartCard>
                     <ResponsivePie
                       data={countryPieChartData}
@@ -125,56 +129,6 @@ function Dashboard({
                           rotation: -45,
                           lineWidth: 6,
                           spacing: 10,
-                        },
-                      ]}
-                      fill={[
-                        {
-                          match: {
-                            id: "ruby",
-                          },
-                          id: "dots",
-                        },
-                        {
-                          match: {
-                            id: "c",
-                          },
-                          id: "dots",
-                        },
-                        {
-                          match: {
-                            id: "go",
-                          },
-                          id: "dots",
-                        },
-                        {
-                          match: {
-                            id: "python",
-                          },
-                          id: "dots",
-                        },
-                        {
-                          match: {
-                            id: "scala",
-                          },
-                          id: "lines",
-                        },
-                        {
-                          match: {
-                            id: "lisp",
-                          },
-                          id: "lines",
-                        },
-                        {
-                          match: {
-                            id: "elixir",
-                          },
-                          id: "lines",
-                        },
-                        {
-                          match: {
-                            id: "javascript",
-                          },
-                          id: "lines",
                         },
                       ]}
                       legends={[

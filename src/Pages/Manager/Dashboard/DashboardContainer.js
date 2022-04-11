@@ -39,11 +39,13 @@ function DashboardContainer() {
   const [countryPieChartData, setCountryPieChartData] = useState([]); // 세계 국가 문서 현황
   
   const [workAllLogData,setWorkAllLogData] = useState({});
+  const [workAllStatus,setWorkAllStatus] = useState(-1) ; // 전체 작업에서 통계를 확인할 단계
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
   const processHandler = (select) => {
     setProcess(select);
+
   };
   const rowClickHandler = (host_id) => {
     // 현재 선택된 host_id 새로 보고자 하는 host_id 같을경우 이미 오픈된 목록을 닫는걸로 생각
@@ -53,6 +55,10 @@ function DashboardContainer() {
       setSelectedHostId(host_id);
     }
   };
+  const workAllStatusHandler = (status) =>{
+    setWorkAllStatus(status)
+    console.log(status)
+  }
   const currentUserIdHandler = (e) => {
     setCurrentUserId(e.target.value);
   };
@@ -181,6 +187,7 @@ function DashboardContainer() {
   };
 
   const pieChartDataCleansing = (rawData) => {
+    console.log(rawData)
     let _pieChart = [];
 
     for (var key in rawData) {
@@ -197,13 +204,13 @@ function DashboardContainer() {
 
   const getCountryWorkList = () => {
     trackPromise(
-      countryWorkListFetchApi(-1)
+      countryWorkListFetchApi(workAllStatus)
         .then((res) => {
           pieChartDataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
-            countryWorkListFetchApi(-1).then((res) => {
+            countryWorkListFetchApi(workAllStatus).then((res) => {
               pieChartDataCleansing(res.data);
             });
           });
@@ -239,7 +246,7 @@ function DashboardContainer() {
     if (!!currentUserId) {
       getUserWorkLog();
     }
-  }, [currentUserId, dateGte, process, duration]);
+  }, [currentUserId, dateGte, process, duration,workAllStatus]);
   useEffect(() => {
     if (!!currentUserId) {
       getCurationWorkList();
@@ -275,6 +282,8 @@ function DashboardContainer() {
         curationWorkList={curationWorkList}
         userWorkAllData={userWorkAllData}
         workAllLogData={workAllLogData}
+        workAllStatusHandler={workAllStatusHandler}
+        workAllStatus={workAllStatus}
       />
     </>
   );

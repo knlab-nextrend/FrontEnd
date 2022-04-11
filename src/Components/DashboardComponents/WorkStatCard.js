@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-function WorkStatCard({workAllLogData}) {
+function WorkStatCard({workAllLogData,workAllStatus,workAllStatusHandler}) {
   return (
     <CardWrapper>
       <div className="title">
@@ -19,23 +19,23 @@ function WorkStatCard({workAllLogData}) {
         </div> */}
       </div>
       <div className="content">
-        <StatContainer>
+        <StatContainer onClick={()=>{workAllStatusHandler(-1)}} >
           <div className="stat-name">수집</div>
           <div className="stat-count">{workAllLogData.collect}</div>
         </StatContainer>
-        <StatContainer>
+        <StatContainer onClick={()=>{workAllStatusHandler(0)}}>
           <div className="stat-name">스크리닝</div>
           <div className="stat-count">{workAllLogData.screening}</div>
         </StatContainer>
-        <StatContainer>
+        <StatContainer onClick={()=>{workAllStatusHandler(2)}}>
           <div className="stat-name">정제</div>
           <div className="stat-count">{workAllLogData.register}</div>
         </StatContainer>
-        <StatContainer>
+        <StatContainer onClick={()=>{workAllStatusHandler(4)}}>
           <div className="stat-name">등록(아카이브)</div>
           <div className="stat-count">{workAllLogData.archive}</div>
         </StatContainer>
-        <StatContainer>
+        <StatContainer onClick={()=>{workAllStatusHandler(6)}}>
           <div className="stat-name">큐레이션</div>
           <div className="stat-count">{workAllLogData.curation}</div>
         </StatContainer>
@@ -86,6 +86,7 @@ const CardWrapper = styled.div`
   }
 `;
 const StatContainer = styled.div`
+cursor:pointer;
   margin: 0.5rem;
   width: 8rem;
   padding: 1rem;
