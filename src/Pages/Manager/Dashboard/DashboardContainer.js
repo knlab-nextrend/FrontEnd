@@ -9,6 +9,8 @@ import {
   userWorkLogFetchApi,
   curationWorkListFetchApi,
   sessionHandler,
+  countryWorkListFetchApi,
+  workAllLogFetchApi,
 } from "../../../Utils/api";
 
 function DashboardContainer() {
@@ -22,7 +24,7 @@ function DashboardContainer() {
   const [currentCrawlHostLog, setCurrentCrawlHostLog] = useState([]); // 선택한 호스트의 크롤링 작업 로그 목록
   const [selectedHostId, setSelectedHostId] = useState(null); // 현태 선택한 호스트
   const [crawlSum, setCrawlSum] = useState(null); // 현재 크롤링 총 작업 현황
-  const [process, setProcess] = useState(0);
+  const [process, setProcess] = useState(1);
 
   const [currentUserId, setCurrentUserId] = useState(null); // 현재 선택된 유저의 id
 
@@ -34,6 +36,9 @@ function DashboardContainer() {
   const [curationWorkList, setCurationWorkList] = useState([]); // 해당 작업자의 큐레이션 내역 목록
 
   const [userWorkAllData, setUserWorkAllData] = useState([]); // 해당 작업자의 총 작업량
+  const [countryPieChartData, setCountryPieChartData] = useState([]); // 세계 국가 문서 현황
+  
+  const [workAllLogData,setWorkAllLogData] = useState({});
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
@@ -56,38 +61,9 @@ function DashboardContainer() {
     dispatch(setModalData(data, "curation_work_content"));
   };
 
-  const data = [
-    {
-      id: "sass",
-      label: "sass",
-      value: 10,
-      color: "hsl(63, 70%, 50%)",
-    },
-    {
-      id: "stylus",
-      label: "stylus",
-      value: 20,
-      color: "hsl(25, 70%, 50%)",
-    },
-    {
-      id: "elixir",
-      label: "elixir",
-      value: 30,
-      color: "hsl(262, 70%, 50%)",
-    },
-    {
-      id: "haskell",
-      label: "haskell",
-      value: 20,
-      color: "hsl(101, 70%, 50%)",
-    },
-    {
-      id: "javascript",
-      label: "javascript",
-      value: 3,
-      color: "hsl(192, 70%, 50%)",
-    },
-  ];
+  function getRandomColor() {
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  }
 
   const getCrawlHostList = () => {
     trackPromise(
@@ -156,30 +132,33 @@ function DashboardContainer() {
     );
   };
   const _getUserWorkAllLog = async (process) => {
-      const dataObj = {
-        status: process,
-        wid: Number(currentUserId),
-        duration: duration,
-        dateLte: new Date().toISOString().substring(0, 10),
-        dateGte: dateGte,
-      };
-      const _rawData = await userWorkLogFetchApi(dataObj);
-      const _tmp = _rawData.data.map((item, index) => {
-        return { date: new Date(item.start).getTime(), value: item.cnt };
-      })
-      return _tmp;
+    const dataObj = {
+      status: process,
+      duration: duration,
+      dateLte: new Date().toISOString().substring(0, 10),
+      dateGte: dateGte,
+    };
+    const _rawData = await userWorkLogFetchApi(dataObj);
+    const _tmp = _rawData.data.map((item, index) => {
+      return { date: new Date(item.start).getTime(), value: item.cnt };
+    });
+    return _tmp;
   };
 
-  const getUserWorkAllLog = async ()=>{
+  const getUserWorkAllLog = async () => {
     const screeningResult = await _getUserWorkAllLog(0);
     const refineResult = await _getUserWorkAllLog(2);
     const registerResult = await _getUserWorkAllLog(4);
     const curationResult = await _getUserWorkAllLog(6);
-    let _tmp = [[...screeningResult],[...refineResult],[...registerResult],[...curationResult]];
-    console.log(_tmp)
-    setUserWorkAllData(_tmp)
-  
-  }
+    let _tmp = [
+      [...screeningResult],
+      [...refineResult],
+      [...registerResult],
+      [...curationResult],
+    ];
+    console.log(_tmp);
+    setUserWorkAllData(_tmp);
+  };
   const getCurationWorkList = () => {
     const dataObj = {
       wid: Number(currentUserId),
@@ -201,16 +180,64 @@ function DashboardContainer() {
     );
   };
 
+  const pieChartDataCleansing = (rawData) => {
+    let _pieChart = [];
+
+    for (var key in rawData) {
+      let obj = {
+        id: key,
+        label: key,
+        value: rawData[key],
+        color: getRandomColor(),
+      };
+      _pieChart.push(obj);
+    }
+    setCountryPieChartData(_pieChart)
+  };
+
+  const getCountryWorkList = () => {
+    trackPromise(
+      countryWorkListFetchApi(-1)
+        .then((res) => {
+          pieChartDataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            countryWorkListFetchApi(-1).then((res) => {
+              pieChartDataCleansing(res.data);
+            });
+          });
+        })
+    );
+  };
+
+  const getWorkAllLogData = () =>{
+    trackPromise(
+      workAllLogFetchApi()
+        .then((res) => {
+          setWorkAllLogData(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            workAllLogFetchApi().then((res) => {
+              setWorkAllLogData(res.data);
+            });
+          });
+        })
+    );
+  }
   useEffect(() => {
     getCrawlHostList(); // 크롤 호스트 목록 불러오기
   }, []);
 
   useEffect(() => {
+    if (menuType === "docs_country") {
+      getUserWorkAllLog();
+      getCountryWorkList();
+      getWorkAllLogData();
+    }
     if (!!currentUserId) {
       getUserWorkLog();
-      if (process === 0) {
-        getUserWorkAllLog();
-      }
     }
   }, [currentUserId, dateGte, process, duration]);
   useEffect(() => {
@@ -225,11 +252,10 @@ function DashboardContainer() {
     }
   }, [selectedHostId]);
 
-
   return (
     <>
       <Dashboard
-        data={data}
+        countryPieChartData={countryPieChartData}
         menuHandler={menuHandler}
         menuType={menuType}
         processHandler={processHandler}
@@ -248,6 +274,7 @@ function DashboardContainer() {
         curationWorkModalOpen={curationWorkModalOpen}
         curationWorkList={curationWorkList}
         userWorkAllData={userWorkAllData}
+        workAllLogData={workAllLogData}
       />
     </>
   );

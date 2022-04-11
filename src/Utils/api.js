@@ -456,6 +456,17 @@ const curationWorkListFetchApi = (dataObj)=>{
   return axios.get(`/nextrend/board/curation`, config)
 }
 
+const countryWorkListFetchApi = (process)=>{
+  const config = {
+    headers: { headers },
+    params:{status:process}
+  };
+  return axios.get(`/nextrend/board`,config)
+}
+const workAllLogFetchApi = (process)=>{
+
+  return axios.get(`/nextrend/board/all`,{headers: { headers }})
+}
 export {
   LoginApi,
   RefreshTokenApi,
@@ -500,4 +511,6 @@ export {
   crawlSumDataFetchApi,
   userWorkLogFetchApi,
   curationWorkListFetchApi,
+  countryWorkListFetchApi,
+  workAllLogFetchApi,
 };

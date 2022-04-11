@@ -13,14 +13,7 @@ function ProcessMenu({process,processHandler}) {
         <div className="title-sub">통계를 확인할 단계를 선택하세요.</div>
       </div>
       <ul>
-        <MenuItem
-          onClick={() => {
-            _processHandler(0);
-          }}
-          active={process === 0}
-        >
-          전체
-        </MenuItem>
+
         <MenuItem
           onClick={() => {
             _processHandler(1);

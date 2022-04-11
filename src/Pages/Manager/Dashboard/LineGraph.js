@@ -3,7 +3,7 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
-function LineGraph({ lineGraphData, duration,divName }) {
+function LineGraph({ lineGraphData, duration, divName }) {
   const [graphDuration, setGraphDuration] = useState("day");
   useEffect(() => {
     switch (duration) {
@@ -36,7 +36,6 @@ function LineGraph({ lineGraphData, duration,divName }) {
     // Create Y-axis
     var yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
-        
         extraMax: 0.1,
         maxDeviation: 0.1,
         extraTooltipPrecision: 1,
@@ -49,6 +48,11 @@ function LineGraph({ lineGraphData, duration,divName }) {
       am5xy.DateAxis.new(root, {
         maxDeviation: 0.1,
         groupData: false,
+        groupIntervals: [
+          { timeUnit: "day", count: 1 },
+          { timeUnit: "month", count: 1 },
+          { timeUnit: "year", count: 1 },
+        ],
         baseInterval: { timeUnit: graphDuration, count: 1 },
         gridIntervals: [{ timeUnit: graphDuration, count: 1 }],
         renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 30 }),

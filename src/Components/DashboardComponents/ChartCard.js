@@ -5,7 +5,7 @@ function ChartCard({ children }) {
   return (
     <CardWrapper>
       <div className="title">
-        <div className="title-main">국가별 총 통계</div>
+        <div className="title-main">세계 문서 비율</div>
         <div className="title-sub">국가 별 문서 비율 입니다. </div>
       </div>
       <div className="chart">{children}</div>

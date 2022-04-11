@@ -15,7 +15,7 @@ import Duration from "../../../Components/DashboardComponents/Duration";
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
 
 function Dashboard({
-  data,
+  countryPieChartData,
   menuType,
   menuHandler,
   process,
@@ -34,6 +34,7 @@ function Dashboard({
   curationWorkModalOpen,
   curationWorkList,
   userWorkAllData,
+  workAllLogData,
 }) {
   return (
     <>
@@ -73,7 +74,7 @@ function Dashboard({
         {menuType === "docs_country" && (
           <>
             <>
-              <WorkStatCard />
+              <WorkStatCard workAllLogData={workAllLogData}/>
               <CountryContentWrapper>
                 <TitleCard
                   title={"국가별 문서 현황"}
@@ -86,7 +87,7 @@ function Dashboard({
                 <div>
                   <ChartCard>
                     <ResponsivePie
-                      data={data}
+                      data={countryPieChartData}
                       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
                       innerRadius={0.5}
                       padAngle={0.7}
@@ -206,6 +207,27 @@ function Dashboard({
                   <DocumentStatCard></DocumentStatCard>
                 </div>
               </CountryContentWrapper>
+              <TitleCard
+                title={"기간별 통계"}
+                subtitle={
+                  "전체 사용자의 단계별, 기간별 작업량 통계를 확인하세요."
+                }
+              >
+                <DateRange setDateGte={setDateGte} />
+                <Duration setDuration={setDuration} />
+                <LineGraphWrapper>
+                  {userWorkAllData.map((item, index) => {
+                    return (
+                      <LineGraph
+                        divName={"chartdiv" + index}
+                        lineGraphData={item}
+                        duration={duration}
+                        key={index}
+                      />
+                    );
+                  })}
+                </LineGraphWrapper>
+              </TitleCard>
             </>
           </>
         )}
@@ -219,25 +241,19 @@ function Dashboard({
             <ProcessMenu processHandler={processHandler} process={process} />
             <TitleCard
               title={"기간별 통계"}
-              subtitle={"기간별 수집 통계를 확인하세요."}
+              subtitle={
+                "해당 사용자의 단계별, 기간별 작업량 통계를 확인하세요."
+              }
             >
               <DateRange setDateGte={setDateGte} />
               <Duration setDuration={setDuration} />
-              {process === 0 ? (
-                <UserWorkAllDataGraphWrapper> 
-                  {userWorkAllData.map((item,index)=>{
-                    return <LineGraph divName={`chartdiv`+index} lineGraphData={item} key={index} duration={duration}></LineGraph>
-                  })}
-                </UserWorkAllDataGraphWrapper>
-              ) : (
-                <LineGraphWrapper>
-                  <LineGraph
+              <LineGraphWrapper>
+                <LineGraph
                   divName={"chartdiv"}
-                    lineGraphData={lineGraphData}
-                    duration={duration}
-                  />
-                </LineGraphWrapper>
-              )}
+                  lineGraphData={lineGraphData}
+                  duration={duration}
+                />
+              </LineGraphWrapper>
             </TitleCard>
             <TitleCard
               title={"큐레이션 작업 내역"}
@@ -554,10 +570,7 @@ const CrawlStatusTable = styled.table`
 
 const LineGraphWrapper = styled.div`
   padding: 3rem;
+  display: flex;
 `;
 
-const UserWorkAllDataGraphWrapper = styled.div`
-  padding: 3rem;
-  display:flex;
-`;
 export default Dashboard;

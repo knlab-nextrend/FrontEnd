@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-function WorkStatCard() {
+function WorkStatCard({workAllLogData}) {
   return (
     <CardWrapper>
       <div className="title">
         <div className="title-main">작업량 통계</div>
-        <div className="toggle-button">
+        {/* <div className="toggle-button">
           <input
             type="radio"
             name="date-type"
@@ -16,28 +16,28 @@ function WorkStatCard() {
           <label htmlFor="all">전체</label>
           <input type="radio" name="date-type" id="today" value="today" />
           <label htmlFor="today">오늘</label>
-        </div>
+        </div> */}
       </div>
       <div className="content">
         <StatContainer>
           <div className="stat-name">수집</div>
-          <div className="stat-count">100000</div>
+          <div className="stat-count">{workAllLogData.collect}</div>
         </StatContainer>
         <StatContainer>
           <div className="stat-name">스크리닝</div>
-          <div className="stat-count">10000</div>
+          <div className="stat-count">{workAllLogData.screening}</div>
         </StatContainer>
         <StatContainer>
           <div className="stat-name">정제</div>
-          <div className="stat-count">1000</div>
+          <div className="stat-count">{workAllLogData.register}</div>
         </StatContainer>
         <StatContainer>
           <div className="stat-name">등록(아카이브)</div>
-          <div className="stat-count">100</div>
+          <div className="stat-count">{workAllLogData.archive}</div>
         </StatContainer>
         <StatContainer>
           <div className="stat-name">큐레이션</div>
-          <div className="stat-count">10</div>
+          <div className="stat-count">{workAllLogData.curation}</div>
         </StatContainer>
       </div>
     </CardWrapper>
