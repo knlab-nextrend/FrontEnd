@@ -3,7 +3,7 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
-function LineGraph({ lineGraphData, duration }) {
+function LineGraph({ lineGraphData, duration,divName }) {
   const [graphDuration, setGraphDuration] = useState("day");
   useEffect(() => {
     switch (duration) {
@@ -20,7 +20,7 @@ function LineGraph({ lineGraphData, duration }) {
   }, [duration]);
 
   useLayoutEffect(() => {
-    var root = am5.Root.new("chartdiv");
+    var root = am5.Root.new(divName);
     root.setThemes([am5themes_Animated.new(root)]);
     var chart = root.container.children.push(
       am5xy.XYChart.new(root, {
@@ -36,8 +36,8 @@ function LineGraph({ lineGraphData, duration }) {
     // Create Y-axis
     var yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
-        min: 0,
-        max: 100,
+        
+        extraMax: 0.1,
         maxDeviation: 0.1,
         extraTooltipPrecision: 1,
         renderer: am5xy.AxisRendererY.new(root, {}),
@@ -69,14 +69,14 @@ function LineGraph({ lineGraphData, duration }) {
       })
     );
 
-    // series.bullets.push(function () {
-    //   return am5.Bullet.new(root, {
-    //     sprite: am5.Circle.new(root, {
-    //       radius: 5,
-    //       fill: am5.color(0x435269),
-    //     }),
-    //   });
-    // });
+    series.bullets.push(function () {
+      return am5.Bullet.new(root, {
+        sprite: am5.Circle.new(root, {
+          radius: 5,
+          fill: am5.color(0x435269),
+        }),
+      });
+    });
 
     series.strokes.template.set("strokeWidth", 5);
 
@@ -133,12 +133,20 @@ function LineGraph({ lineGraphData, duration }) {
       var valueY = xAxis.positionToValue(y);
     });
 
+    // add scrollbar
+    chart.set(
+      "scrollbarX",
+      am5.Scrollbar.new(root, {
+        orientation: "horizontal",
+      })
+    );
+
     return () => {
       root.dispose();
     };
   }, [lineGraphData, graphDuration]);
 
-  return <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>;
+  return <div id={divName} style={{ width: "100%", height: "500px" }}></div>;
 }
 
 export default LineGraph;

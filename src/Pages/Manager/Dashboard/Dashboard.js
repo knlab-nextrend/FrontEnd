@@ -32,7 +32,8 @@ function Dashboard({
   setDuration,
   duration,
   curationWorkModalOpen,
-  curationWorkList
+  curationWorkList,
+  userWorkAllData,
 }) {
   return (
     <>
@@ -222,9 +223,21 @@ function Dashboard({
             >
               <DateRange setDateGte={setDateGte} />
               <Duration setDuration={setDuration} />
-              <LineGraphWrapper>
-                <LineGraph lineGraphData={lineGraphData} duration={duration} />
-              </LineGraphWrapper>
+              {process === 0 ? (
+                <UserWorkAllDataGraphWrapper> 
+                  {userWorkAllData.map((item,index)=>{
+                    return <LineGraph divName={`chartdiv`+index} lineGraphData={item} key={index} duration={duration}></LineGraph>
+                  })}
+                </UserWorkAllDataGraphWrapper>
+              ) : (
+                <LineGraphWrapper>
+                  <LineGraph
+                  divName={"chartdiv"}
+                    lineGraphData={lineGraphData}
+                    duration={duration}
+                  />
+                </LineGraphWrapper>
+              )}
             </TitleCard>
             <TitleCard
               title={"큐레이션 작업 내역"}
@@ -233,7 +246,7 @@ function Dashboard({
               }
             >
               <CrawlStatusTable>
-              <colgroup>
+                <colgroup>
                   <col width="50%" />
                   <col width="20%" />
                   <col width="10%" />
@@ -250,23 +263,40 @@ function Dashboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {curationWorkList.map((item,index)=>{
-                    return <tr>
-                    <td>{item.ES_ID}</td>
-                    <td>{item.DT}</td>
-                    <td>{item.QUALITY}</td>
-                    <td><button onClick={()=>{curationWorkModalOpen(item.CONTENT_BEF)}}>조회</button></td>
-                    <td><button onClick={()=>{curationWorkModalOpen(item.CONTENT_CUR)}}>조회</button></td>
-                  </tr>
+                  {curationWorkList.map((item, index) => {
+                    return (
+                      <tr>
+                        <td>{item.ES_ID}</td>
+                        <td>{item.DT}</td>
+                        <td>{item.QUALITY}</td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              curationWorkModalOpen(item.CONTENT_BEF);
+                            }}
+                          >
+                            조회
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              curationWorkModalOpen(item.CONTENT_CUR);
+                            }}
+                          >
+                            조회
+                          </button>
+                        </td>
+                      </tr>
+                    );
                   })}
-                  
                 </tbody>
               </CrawlStatusTable>
             </TitleCard>
             <TitleCard
-              title={"전체 작업 상세 로그"}
+              title={"단계별 상세 로그"}
               subtitle={
-                "해당 작업자의 작업 상세 로그를 확인하세요. 작업문서 ID, 작업 일시, 작업 단계 등이 표시됩니다."
+                "단계별 작업 상세 로그를 확인하세요. 작업문서 ID, 작업 일시 등이 표시됩니다."
               }
             >
               <CrawlStatusTable>
@@ -526,4 +556,8 @@ const LineGraphWrapper = styled.div`
   padding: 3rem;
 `;
 
+const UserWorkAllDataGraphWrapper = styled.div`
+  padding: 3rem;
+  display:flex;
+`;
 export default Dashboard;

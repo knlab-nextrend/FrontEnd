@@ -2,13 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 function ProcessMenu({process,processHandler}) {
-  /* 
-    all : 전체
-    1 : 스크리닝
-    2 : 정제
-    4 : 등록(아카이브)
-    6 : 큐레이션
-  */
+  
   const _processHandler = (value) => {
     processHandler(value);
   };

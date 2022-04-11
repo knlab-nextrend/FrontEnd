@@ -7,7 +7,7 @@ function Duration({setDuration}) {
     weekly : 주간
     month : 월간
   */
-  const [currentDuration, setCurrentDuration] = useState("daily");
+  const [currentDuration, setCurrentDuration] = useState("weekly");
 
   const currentDurationHandler = (e) => {
     setCurrentDuration(e.target.value);

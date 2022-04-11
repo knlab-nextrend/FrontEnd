@@ -12,13 +12,16 @@ function DateRange({setDateGte}) {
     past_3_year : 최근 3년
     custom_range : 직접 설정
   */
-  const [dateRange, setDateRange] = useState("all");
+  const [dateRange, setDateRange] = useState("past_3_month");
 
   const dateRangeHandler = (e) => {
     setDateRange(e.target.value);
   };
   useEffect(()=>{
     const _dateGte = new Date(); // 오늘 날짜
+    if(dateRange === "all"){
+      _dateGte.setFullYear(_dateGte.getFullYear() - 30); // 30년 전
+    }
     if(dateRange === "past_week"){
       _dateGte.setDate(_dateGte.getDate() - 7); // 7일. 1주일 전
     }

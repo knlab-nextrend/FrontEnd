@@ -52,7 +52,6 @@ const ScreeningDataKeepApi = (keepDataList) => {
 };
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
-  console.log(deleteDataList);
   const config = {
     headers: headers,
     params: {
@@ -383,7 +382,6 @@ const MultilingualDictionaryApi = (data = null, method) => {
     }
   }
   if (method === "PUT") {
-    console.log(data);
     return axios.put(`/nextrend/multilingual`, data, { headers: headers });
   }
   if (method === "DELETE") {
@@ -406,7 +404,6 @@ const HostManagementApi = (data = null, method) => {
       // 검색 쿼리가 있다면?
       config["params"] = { ...data };
     }
-    console.log(config);
     return axios.get(`/nextrend/host`, config);
   }
   if (method === "POST") {
@@ -445,7 +442,6 @@ const crawlSumDataFetchApi = ()=>{
   return axios.get(`/crawl/sum`, {headers: { headers }});
 }
 const userWorkLogFetchApi = (dataObj)=>{
-  console.log(dataObj)
   const config = {
     headers: { headers },
     params:{...dataObj}
@@ -459,6 +455,7 @@ const curationWorkListFetchApi = (dataObj)=>{
   };
   return axios.get(`/nextrend/board/curation`, config)
 }
+
 export {
   LoginApi,
   RefreshTokenApi,

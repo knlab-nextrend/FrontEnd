@@ -33,6 +33,7 @@ function DashboardContainer() {
 
   const [curationWorkList, setCurationWorkList] = useState([]); // 해당 작업자의 큐레이션 내역 목록
 
+  const [userWorkAllData, setUserWorkAllData] = useState([]); // 해당 작업자의 총 작업량
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
@@ -154,6 +155,31 @@ function DashboardContainer() {
         })
     );
   };
+  const _getUserWorkAllLog = async (process) => {
+      const dataObj = {
+        status: process,
+        wid: Number(currentUserId),
+        duration: duration,
+        dateLte: new Date().toISOString().substring(0, 10),
+        dateGte: dateGte,
+      };
+      const _rawData = await userWorkLogFetchApi(dataObj);
+      const _tmp = _rawData.data.map((item, index) => {
+        return { date: new Date(item.start).getTime(), value: item.cnt };
+      })
+      return _tmp;
+  };
+
+  const getUserWorkAllLog = async ()=>{
+    const screeningResult = await _getUserWorkAllLog(0);
+    const refineResult = await _getUserWorkAllLog(2);
+    const registerResult = await _getUserWorkAllLog(4);
+    const curationResult = await _getUserWorkAllLog(6);
+    let _tmp = [[...screeningResult],[...refineResult],[...registerResult],[...curationResult]];
+    console.log(_tmp)
+    setUserWorkAllData(_tmp)
+  
+  }
   const getCurationWorkList = () => {
     const dataObj = {
       wid: Number(currentUserId),
@@ -163,13 +189,11 @@ function DashboardContainer() {
     trackPromise(
       curationWorkListFetchApi(dataObj)
         .then((res) => {
-          console.log(res.data);
           setCurationWorkList(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
             curationWorkListFetchApi(dataObj).then((res) => {
-              console.log(res.data);
               setCurationWorkList(res.data);
             });
           });
@@ -184,19 +208,23 @@ function DashboardContainer() {
   useEffect(() => {
     if (!!currentUserId) {
       getUserWorkLog();
+      if (process === 0) {
+        getUserWorkAllLog();
+      }
     }
   }, [currentUserId, dateGte, process, duration]);
-  useEffect(()=>{
-    if(!!currentUserId){
+  useEffect(() => {
+    if (!!currentUserId) {
       getCurationWorkList();
     }
-  },[currentUserId])
+  }, [currentUserId]);
 
   useEffect(() => {
     if (selectedHostId !== null) {
       getCrawlHostLogList();
     }
   }, [selectedHostId]);
+
 
   return (
     <>
@@ -219,6 +247,7 @@ function DashboardContainer() {
         duration={duration}
         curationWorkModalOpen={curationWorkModalOpen}
         curationWorkList={curationWorkList}
+        userWorkAllData={userWorkAllData}
       />
     </>
   );
