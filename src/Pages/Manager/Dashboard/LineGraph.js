@@ -46,15 +46,8 @@ function LineGraph({ lineGraphData, duration, divName }) {
     // Create X-Axis
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
-        maxDeviation: 0.1,
-        groupData: false,
-        groupIntervals: [
-          { timeUnit: "day", count: 1 },
-          { timeUnit: "month", count: 1 },
-          { timeUnit: "year", count: 1 },
-        ],
-        baseInterval: { timeUnit: graphDuration, count: 1 },
-        gridIntervals: [{ timeUnit: graphDuration, count: 1 }],
+        baseInterval: { timeUnit: "day", count: 1 },
+        
         renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 30 }),
       })
     );
@@ -90,9 +83,9 @@ function LineGraph({ lineGraphData, duration, divName }) {
     series.data.setAll(lineGraphData); // 데이터 적용
 
     // Pre-zoom X axis
-    series.events.once("datavalidated", (ev, target) => {
+   /* series.events.once("datavalidated", (ev, target) => {
       xAxis.zoomToDates(new Date(2021, 0, 1), new Date(2022, 0, 1));
-    });
+    });*/
 
     // Add legend
     var legend = chart.children.push(am5.Legend.new(root, {}));
