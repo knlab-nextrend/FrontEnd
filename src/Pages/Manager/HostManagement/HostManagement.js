@@ -12,6 +12,7 @@ import {
   MdClose,
   MdSettings,
   MdOutlineSearch,
+  MdSync,
 } from "react-icons/md";
 function HostManagement({
   currentHostList,
@@ -30,7 +31,7 @@ function HostManagement({
   docCountry,
   hostRegisterUpload,
   _hostPublisherHandler,
-  _hostWorkCycleHandler
+  _hostWorkCycleHandler,
 }) {
   return (
     <>
@@ -62,21 +63,21 @@ function HostManagement({
               </DictionaryFunctionBtnWrapper>
             </DictionaryFunctionWrapper>
             <DictonaryDataTable>
-            <colgroup>
-                  <col width="25%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="8%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="4%" />
-                  <col width="5%" />
-                  <col width="5%" />
-                </colgroup>
+              <colgroup>
+                <col width="25%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="8%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="5%" />
+                <col width="5%" />
+              </colgroup>
               <thead>
                 <tr>
                   <th rowSpan={2}>HOST 도메인</th>
@@ -135,7 +136,9 @@ function HostManagement({
                             </ActionButton>
                           </td>
                         )}
-                        <td><ActionButton >버리기</ActionButton></td>
+                        <td>
+                          <ActionButton>버리기</ActionButton>
+                        </td>
                       </tr>
                       {selectedHost && selectedHost.idx === host.idx && (
                         <tr>
@@ -151,7 +154,10 @@ function HostManagement({
                               </div>
                               <div className="input-wrapper">
                                 <div className="input-title">발급기관명</div>
-                                <input type="text" onChange={_hostPublisherHandler}/>
+                                <input
+                                  type="text"
+                                  onChange={_hostPublisherHandler}
+                                />
                               </div>
                               <div className="input-wrapper">
                                 <div className="input-title">
@@ -168,9 +174,7 @@ function HostManagement({
                                 <CustomList>
                                   {docLanguage.map((item, index) => {
                                     return (
-                                      <Chip key={index}>
-                                        {item.CT_NM}
-                                      </Chip>
+                                      <Chip key={index}>{item.CT_NM}</Chip>
                                     );
                                   })}
                                 </CustomList>
@@ -190,9 +194,7 @@ function HostManagement({
                                 <CustomList>
                                   {docCountry.map((item, index) => {
                                     return (
-                                      <Chip key={index}>
-                                        {item.CT_NM}
-                                      </Chip>
+                                      <Chip key={index}>{item.CT_NM}</Chip>
                                     );
                                   })}
                                 </CustomList>
@@ -212,16 +214,20 @@ function HostManagement({
                                 <CustomList>
                                   {docCategory.map((item, index) => {
                                     return (
-                                      <Chip key={index}>
-                                        {item.CT_NM}
-                                      </Chip>
+                                      <Chip key={index}>{item.CT_NM}</Chip>
                                     );
                                   })}
                                 </CustomList>
                               </div>
                               <div className="input-wrapper">
-                                <div className="input-title">크롤러 수집주기 (day)</div>
-                                <input type="number" min="0" onChange={_hostWorkCycleHandler}/>
+                                <div className="input-title">
+                                  크롤러 수집주기 (day)
+                                </div>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  onChange={_hostWorkCycleHandler}
+                                />
                               </div>
                               <ActionButton onClick={hostRegisterUpload}>
                                 등록
@@ -252,13 +258,12 @@ function HostManagement({
                   <MdOutlineSearch size="20" />
                   조건 검색 여닫기
                 </button>
-                <input
-                  id="excel-upload"
-                  type="file"
-                  accept=".xlsx"
-                  onChange={excelUpload}
-                />
+                <button >
+                  <MdSync size="20" />
+                  크롤러 DB와 SYNC 
+                </button>
               </DictionaryFunctionBtnWrapper>
+
             </DictionaryFunctionWrapper>
             {filterOpen && (
               <FilterWrapper>
@@ -328,13 +333,14 @@ function HostManagement({
             )}
             <DictonaryDataTable>
               <colgroup>
-                  <col width="30%" />
-                  <col width="15%" />
-                  <col width="15%" />
-                  <col width="15%" />
-                  <col width="15%" />
-                  <col width="10%" />
-                </colgroup>
+                <col width="30%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+              </colgroup>
               <thead>
                 <tr>
                   <th>HOST 도메인</th>
@@ -343,19 +349,127 @@ function HostManagement({
                   <th>발급 기관 명</th>
                   <th>HOST 정책 분류</th>
                   <th className="crawl-setting">크롤링 수집주기(일 단위)</th>
+                  <th>관리</th>
                 </tr>
               </thead>
               <tbody>
                 {currentHostList.map((host, index) => {
                   return (
-                    <tr>
-                      <td>{host.host}</td>
-                      <td>{host.lang}</td>
-                      <td>{host.country}</td>
-                      <td>{host.name}</td>
-                      <td>{host.category}</td>
-                      <td>{host.workCycle}</td>
-                    </tr>
+                    <>
+                      <tr>
+                        <td>{host.host}</td>
+                        <td>{host.lang.length!==0 && host.lang[0].CT_NM}</td>
+                        <td>{host.country.length!==0 && host.country[0].CT_NM}</td>
+                        <td>{host.name}</td>
+                        <td>{host.category.length!==0 && host.category[0].CT_NM}</td>
+                        <td>{host.workCycle}</td>
+                        <td>
+                          <ActionButton
+                            onClick={() => {
+                              _registerHostOpenHandler(host);
+                            }}
+                          >
+                            <MdSettings/>관리
+                          </ActionButton>
+                        </td>
+                      </tr>
+                      {selectedHost && selectedHost.idx === host.idx && (
+                        <tr>
+                          <td colSpan={12}>
+                            <div>
+                              아래의 값을 모두 채워 등록해주세요. 언어, 국가,
+                              정책분류는 각 1개씩만 설정가능 합니다.
+                            </div>
+                            <HostRegisterContainer>
+                              <div className="input-wrapper">
+                                <div className="input-title">HOST 도메인</div>
+                                <div>{host.host}</div>
+                              </div>
+                              <div className="input-wrapper">
+                                <div className="input-title">발급기관명</div>
+                                <input
+                                  type="text"
+                                  onChange={_hostPublisherHandler}
+                                />
+                              </div>
+                              <div className="input-wrapper">
+                                <div className="input-title">
+                                  HOST 해당 언어
+                                </div>
+                                <ActionButton
+                                  onClick={() => {
+                                    _openCategoryModal("doc_language");
+                                  }}
+                                >
+                                  <MdSettings />
+                                  선택
+                                </ActionButton>
+                                <CustomList>
+                                  {docLanguage.map((item, index) => {
+                                    return (
+                                      <Chip key={index}>{item.CT_NM}</Chip>
+                                    );
+                                  })}
+                                </CustomList>
+                              </div>
+                              <div className="input-wrapper">
+                                <div className="input-title">
+                                  HOST 해당 국가
+                                </div>
+                                <ActionButton
+                                  onClick={() => {
+                                    _openCategoryModal("doc_country");
+                                  }}
+                                >
+                                  <MdSettings />
+                                  선택
+                                </ActionButton>
+                                <CustomList>
+                                  {docCountry.map((item, index) => {
+                                    return (
+                                      <Chip key={index}>{item.CT_NM}</Chip>
+                                    );
+                                  })}
+                                </CustomList>
+                              </div>
+                              <div className="input-wrapper">
+                                <div className="input-title">
+                                  HOST 정책 분류
+                                </div>
+                                <ActionButton
+                                  onClick={() => {
+                                    _openCategoryModal("doc_category");
+                                  }}
+                                >
+                                  <MdSettings />
+                                  선택
+                                </ActionButton>
+                                <CustomList>
+                                  {docCategory.map((item, index) => {
+                                    return (
+                                      <Chip key={index}>{item.CT_NM}</Chip>
+                                    );
+                                  })}
+                                </CustomList>
+                              </div>
+                              <div className="input-wrapper">
+                                <div className="input-title">
+                                  크롤러 수집주기 (day)
+                                </div>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  onChange={_hostWorkCycleHandler}
+                                />
+                              </div>
+                              <ActionButton onClick={hostRegisterUpload}>
+                                등록
+                              </ActionButton>
+                            </HostRegisterContainer>
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   );
                 })}
               </tbody>
@@ -374,7 +488,7 @@ const Wrapper = styled.div`
   color: rgb(59, 59, 59);
   display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 `;
 
 const LineBox = styled.div`
@@ -443,7 +557,6 @@ const DictonaryDataTable = styled.table`
   td {
     border-bottom: solid 1px #eee;
     padding: 10px;
-    
   }
   tbody {
     tr:nth-child(even) {
@@ -603,14 +716,14 @@ const HostRegisterContainer = styled.div`
       border: solid 1px #d6d6d6;
       margin: 0 0.5rem 0 0.5rem;
       padding: 0.5rem;
-      &:focus{
-        outline:none;
+      &:focus {
+        outline: none;
       }
     }
   }
 `;
 const CustomList = styled.div`
-  display:flex;
+  display: flex;
 `;
 const Chip = styled.div`
   font-size: 12px;

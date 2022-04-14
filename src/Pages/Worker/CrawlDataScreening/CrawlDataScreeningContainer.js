@@ -173,6 +173,7 @@ function CrawlDataScreeningContainer() {
 
   /* pageNo, listSize 가 변경되었을 때 데이터를 다시 불러옴 */
   useEffect(() => {
+    setCheckedAll("delete")
     dataFetch(searchObj);
   }, [pageNo, listSize, isKeep, searchObj]);
 

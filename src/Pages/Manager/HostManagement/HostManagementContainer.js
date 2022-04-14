@@ -73,7 +73,7 @@ function HostManagementContainer() {
     },
     {
       idx: 333,
-      host: "www.daum.net",
+      host: "https://www.worldbank.org/",
       start_time: "2022-04-14 21:32:00",
       end_time: "2022-04-10 21:32:00",
       running_time: "3초",
@@ -84,8 +84,8 @@ function HostManagementContainer() {
       excel: null,
       ppt: null,
       etc: null,
-      test_end: false,
-      is_registered: true,
+      test_end: false, // 나중에 map으로 다시 배열 만들어야지.. 
+      is_registered: hostList.filter(host => host.host === "https://www.worldbank.org/").length===1 // host_list 에 등록된건지 확인
     },
     {
       idx: 444,
@@ -119,15 +119,9 @@ function HostManagementContainer() {
         setSelectedHost(null);
       } else {
         setSelectedHost(host);
-        dispatch(setModalData([], "doc_category")); // 값 비우는 것
-        dispatch(setModalData([], "doc_country")); // 값 비우는 것
-        dispatch(setModalData([], "doc_language")); // 값 비우는 것
       }
     } else {
       setSelectedHost(host);
-      dispatch(setModalData([], "doc_category")); // 값 비우는 것
-      dispatch(setModalData([], "doc_country")); // 값 비우는 것
-      dispatch(setModalData([], "doc_language")); // 값 비우는 것
     }
   };
   const _openCategoryModal = (categoryModalType) => {
@@ -226,6 +220,15 @@ function HostManagementContainer() {
       }
     });
   };
+
+  const eachHostModify = (host) => {
+    HostManagementApi({ list: host }, "POST").then((res) => {
+      if (res.status === 200) {
+        alert("성공적으로 수정 되었습니다");
+        dataFetch();
+      }
+    });
+  };
   const hostRegisterUpload = () => {
     if (selectedHost) {
       if (
@@ -244,22 +247,22 @@ function HostManagementContainer() {
       } else if (docLanguage.length > 1) {
         alert("언어는 하나만 선택 가능합니다.");
       } else {
-        const docCountryIndex = docCountry[0].IDX;
-        const docCategoryIndex = docCategory[0].IDX;
-        const docLanguageIndex = docLanguage[0].IDX;
-        console.log({
-          category: docCategoryIndex,
-          country: docCountryIndex,
-          lang: docLanguageIndex,
+        const hostObj = {
+          category: docCategory[0].CODE,
+          country: docCountry[0].CODE,
+          lang: docLanguage[0].CODE,
           name: hostPublisher,
           host: selectedHost.host,
-          workCycle:hostWorkCycle,
-        });
+          workCycle: hostWorkCycle,
+        };
+        console.log(hostObj);
+        eachHostModify([hostObj]);
       }
     } else {
       alert("host를 선택해주세요.");
     }
   };
+
   const dataFetch = () => {
     trackPromise(
       HostManagementApi(null, "GET")
@@ -279,12 +282,13 @@ function HostManagementContainer() {
   const dataCleansing = (rawData) => {
     const _arr = rawData.map((item) => {
       let _obj = {};
+      _obj["idx"] = item.IDX;
       _obj["host"] = item.HOST || "";
-      _obj["lang"] = item.LANG ? item.LANG.toString() : "";
+      _obj["lang"] = item.LANG;
       _obj["name"] = item.NAME || "";
-      _obj["country"] = item.COUNTRY ? item.COUNTRY.toString() : "";
-      _obj["category"] = item.CATEGORY ? item.CATEGORY.toString() : "";
-      _obj["workCycle"] = item.WORK_CYCLE ? item.WORK_CYCLE.toString() : "";
+      _obj["country"] = item.COUNTRY;
+      _obj["category"] = item.CATEGORY;
+      _obj["workCycle"] = item.WORK_CYCLE || "";
       return _obj;
     });
     setHostList(_arr);
@@ -296,6 +300,15 @@ function HostManagementContainer() {
   useEffect(() => {
     setCurrentHostList(hostList);
   }, [hostList]);
+  useEffect(() => {
+    console.log(selectedHost)
+    if(!!selectedHost){
+      dispatch(setModalData(selectedHost.category, "doc_category")); // 값 세팅
+      dispatch(setModalData(selectedHost.country, "doc_country")); // 값 세팅
+      dispatch(setModalData(selectedHost.lang, "doc_language")); // 값 세팅
+    }
+
+  }, [selectedHost]);
   return (
     <>
       <HostManagement

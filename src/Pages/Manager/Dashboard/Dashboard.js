@@ -243,7 +243,7 @@ function Dashboard({
                         <td>
                           <button
                             onClick={() => {
-                              curationWorkModalOpen(item.CONTENT_BEF);
+                              curationWorkModalOpen(item.CONTENT_BEF||"");
                             }}
                           >
                             조회

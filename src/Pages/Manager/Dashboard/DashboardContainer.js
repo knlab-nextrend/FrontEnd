@@ -174,6 +174,7 @@ function DashboardContainer() {
     trackPromise(
       curationWorkListFetchApi(dataObj)
         .then((res) => {
+          console.log(res.data)
           setCurationWorkList(res.data);
         })
         .catch((err) => {
