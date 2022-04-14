@@ -36,7 +36,8 @@ function Dashboard({
   userWorkAllData,
   workAllLogData,
   workAllStatus,
-  workAllStatusHandler
+  workAllStatusHandler,
+  processTitle
 }) {
   return (
     <>
@@ -76,8 +77,12 @@ function Dashboard({
         {menuType === "docs_country" && (
           <>
             <>
-              <WorkStatCard workAllLogData={workAllLogData} workAllStatus={workAllStatus} workAllStatusHandler={workAllStatusHandler}/>
-             
+              <WorkStatCard
+                workAllLogData={workAllLogData}
+                workAllStatus={workAllStatus}
+                workAllStatusHandler={workAllStatusHandler}
+              />
+
               <CountryContentWrapper>
                 <TitleCard
                   title={"국가별 문서 현황"}
@@ -88,7 +93,6 @@ function Dashboard({
                   <Map />
                 </TitleCard>
                 <div>
-                  
                   <ChartCard>
                     <ResponsivePie
                       data={countryPieChartData}
@@ -105,7 +109,7 @@ function Dashboard({
                       arcLinkLabelsSkipAngle={10}
                       arcLinkLabelsTextColor="#333333"
                       arcLinkLabelsThickness={2}
-                      colors={{ scheme: 'set3' }}
+                      colors={{ scheme: "set3" }}
                       arcLinkLabelsColor={{ from: "color" }}
                       arcLabelsSkipAngle={10}
                       arcLabelsTextColor={{
@@ -134,29 +138,29 @@ function Dashboard({
                       ]}
                       legends={[
                         {
-                            anchor: 'right',
-                            direction: 'column',
-                            justify: false,
-                            translateX: -180,
-                            translateY: -0,
-                            itemsSpacing: 3,
-                            itemWidth: 180,
-                            itemHeight: 18,
-                            itemTextColor: '#999',
-                            itemDirection: 'left-to-right',
-                            itemOpacity: 1,
-                            symbolSize: 11,
-                            symbolShape: 'circle',
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemTextColor: '#000'
-                                    }
-                                }
-                            ]
-                        }
-                    ]}
+                          anchor: "right",
+                          direction: "column",
+                          justify: false,
+                          translateX: -180,
+                          translateY: -0,
+                          itemsSpacing: 3,
+                          itemWidth: 180,
+                          itemHeight: 18,
+                          itemTextColor: "#999",
+                          itemDirection: "left-to-right",
+                          itemOpacity: 1,
+                          symbolSize: 11,
+                          symbolShape: "circle",
+                          effects: [
+                            {
+                              on: "hover",
+                              style: {
+                                itemTextColor: "#000",
+                              },
+                            },
+                          ],
+                        },
+                      ]}
                     />
                   </ChartCard>
                   <DocumentStatCard></DocumentStatCard>
@@ -173,12 +177,15 @@ function Dashboard({
                 <LineGraphWrapper>
                   {userWorkAllData.map((item, index) => {
                     return (
-                      <LineGraph
-                        divName={"chartdiv" + index}
-                        lineGraphData={item}
-                        duration={duration}
-                        key={index}
-                      />
+                      <div className="graph-title-container">
+                        <div className="graph-title">{processTitle[index]}</div>
+                        <LineGraph
+                          divName={"chartdiv" + index}
+                          lineGraphData={item}
+                          duration={duration}
+                          key={index}
+                        />
+                      </div>
                     );
                   })}
                 </LineGraphWrapper>
@@ -243,7 +250,7 @@ function Dashboard({
                         <td>
                           <button
                             onClick={() => {
-                              curationWorkModalOpen(item.CONTENT_BEF||"");
+                              curationWorkModalOpen(item.CONTENT_BEF || "");
                             }}
                           >
                             조회
@@ -525,7 +532,20 @@ const CrawlStatusTable = styled.table`
 
 const LineGraphWrapper = styled.div`
   padding: 3rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .graph-title-container {
+    display: flex;
+    flex-direction: column;
+    .graph-title{
+      display: flex;
+      padding-left:3rem;
+      font-size:14px;
+      font-weight:bold;
+      color:#435269;
+    }
+  }
 `;
 
 export default Dashboard;

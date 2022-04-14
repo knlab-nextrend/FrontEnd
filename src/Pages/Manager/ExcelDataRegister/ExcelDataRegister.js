@@ -22,10 +22,6 @@ function ExcelDataRegister({
   deletePdf,
   excelData
 }) {
-  console.log('excel',excelData);
-  useEffect(() => {
-    console.log(pdfMetaData);
-  }, [pdfMetaData]);
   const [excelFilename, setExcelFilename] = useState(null);
   const [pdfFilename, setPdfFilename] = useState(null);
   const excelFileHandler = (e) => {

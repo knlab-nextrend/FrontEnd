@@ -222,7 +222,6 @@ function Editor({ _docContentHandler = null, data = null, readOnly = false ,_id=
    */
 
   const paste = async (event,data,editor)=>{
-      console.log("test")
       if (data.dataTransfer.files.length > 0) {
         // 기존 파이프라인에서 추가된 컨텐츠 삭제
         editor.model.deleteContent(editor.model.document.selection);

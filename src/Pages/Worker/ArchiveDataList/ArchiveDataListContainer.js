@@ -25,7 +25,6 @@ function ArchiveDataListContainer() {
     let _archiveDataList = [];
     let _rawArchiveDataList = rawData.docs;
     let _dcCount = rawData.dcCount;
-    console.log(rawData)
     _rawArchiveDataList.forEach((item) => {
       const obj = {
         _id: item._id,
@@ -44,7 +43,6 @@ function ArchiveDataListContainer() {
       };
       _archiveDataList.push(obj);
     });
-    console.log(_archiveDataList)
     setDcCount(_dcCount);
     setArchiveDataList(_archiveDataList);
   };
@@ -87,11 +85,9 @@ function ArchiveDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {
-          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
-          console.log(err);
           sessionHandler(err, dispatch).then((res) => {
             CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj).then(
               (res) => {

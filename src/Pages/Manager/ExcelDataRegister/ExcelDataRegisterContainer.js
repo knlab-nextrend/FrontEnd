@@ -24,15 +24,11 @@ function ExcelDataRegisterContainer() {
     }
   };
   const readPdf = (e) => {
-    
-    console.log(e.target.files);
     const files = e.target.files;
     const _pdfData = [];
     const _pdfMetaData = [];
     for (const file of files) {
-      console.log(getfileSize(file.size));
       const available = excelData.filter((data) => data.pdf === file.name.replace(/(.pdf)$/, ''));
-      console.log(available);
       const _obj = {
         size: getfileSize(file.size),
         name: file.name.replace(/(.pdf)$/, ''),
@@ -113,15 +109,13 @@ function ExcelDataRegisterContainer() {
     }
   };
   const upload = () => {
-    console.log(pdfData,excelData);
     const files = new FormData(); 
     pdfData.forEach(pdf=>{
       files.append("files", pdf);
     });
     files.append("meta", JSON.stringify(excelData));
     uploadExcelDataApi(files).then((res)=>{
-      // 파일 전송이 완료 되었을 때...
-      console.log(res);
+      
     })
   }
   const nextStep = () => {

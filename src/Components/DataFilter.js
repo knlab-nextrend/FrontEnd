@@ -142,8 +142,6 @@ function DataFilter({ dataFilterFetch = null, type }) {
       _dateGte.setFullYear(_dateGte.getFullYear() - 3); // 3년 전
     }
     setDateGte(_dateGte.toISOString().substring(0,10));
-
-    console.log(_dateGte.toISOString().substring(0,10))
   },[dateRange])
   useEffect(() => {
     CategoryOptionFetchApi(1).then((res) => {
@@ -343,7 +341,6 @@ function Cascader({ options, selectedCountry, selectedCategory }) {
     setOptionIsOpen(!optionIsOpen);
   };
   const PrintValue = (e) => {
-    console.log(e.target.value);
     if (selectedCategory) {
       selectedCategory(e.target.value);
     }

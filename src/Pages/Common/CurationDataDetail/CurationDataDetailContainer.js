@@ -20,7 +20,6 @@ function CurationDataDetailContainer() {
   const dataFetch = () => {
     trackPromise(CrawlDataDetailFetchApi(statusCode, _id)
       .then((res) => {
-        console.log(res.data)
         dataCleansing(res.data);
       })
       .catch((err) => {
@@ -34,7 +33,6 @@ function CurationDataDetailContainer() {
 
   /* 데이터 정제하기 */
   const dataCleansing = (rawData) => {
-    console.log(rawData.docs)
     const _rawStatusDetailData = rawData.docs;
     let _docs = {
       doc_content: _rawStatusDetailData.doc_content || "",
@@ -77,7 +75,6 @@ function CurationDataDetailContainer() {
       doc_language_list: _rawStatusDetailData.doc_language.map((x) => x.CT_NM).join(", "),
         doc_host:_rawStatusDetailData.doc_host ? _rawStatusDetailData.doc_host[0].HOST : ""
     };
-    console.log(_docs)
     setDocs(_docs);
   };
 

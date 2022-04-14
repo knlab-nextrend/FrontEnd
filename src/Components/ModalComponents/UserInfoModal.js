@@ -142,8 +142,6 @@ function UserInfoModal({ closeModal, executeModal }) {
         .catch((err) => {
           if (err.response.status === 400) {
             alert("추가 중 오류발생");
-          } else {
-            console.log(err.response);
           }
         });
       closeModal();
@@ -171,8 +169,6 @@ function UserInfoModal({ closeModal, executeModal }) {
         .catch((err) => {
           if (err.response.status === 400) {
             alert("추가 중 오류발생");
-          } else {
-            console.log(err.response);
           }
         });
       closeModal();

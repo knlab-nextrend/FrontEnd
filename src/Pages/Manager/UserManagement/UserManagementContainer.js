@@ -36,7 +36,6 @@ function UserManagementContainer() {
   const getUserList = () => {
     trackPromise(FetchUsersApi()
       .then((res) => {
-        console.log(res.data);
         setUserData(res.data);
       })
       .catch((err) => {

@@ -84,7 +84,6 @@ function CrawlDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(currentCode, listSize, pageNo, searchObj)
         .then((res) => {
-          console.log("??",res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {

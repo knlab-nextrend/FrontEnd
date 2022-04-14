@@ -106,7 +106,6 @@ function CrawlDataScreeningContainer() {
   /* 선택된 데이터를 크롤데이터 정제 단계로 넘기고 나머지 데이터는 버리기 */
   const stageScreeningData = async () => {
     if (window.confirm("선택 하신 대로 스크리닝을 진행하시겠습니까?")) {
-      console.log(stageDataList,keepDataList,deleteDataList)
       ScreeningDataStageApi(stageDataList).then(res=>{
         if(res.status === 200){
           ScreeningDataKeepApi(keepDataList).then(res=>{
@@ -148,7 +147,6 @@ function CrawlDataScreeningContainer() {
       };
       _screeningData.push(obj);
     });
-    console.log(_screeningData)
     setDcCount(_dcCount);
     setScreeningData(_screeningData);
   };
@@ -158,7 +156,6 @@ function CrawlDataScreeningContainer() {
     trackPromise(
       ScreeningDataFetchApi(listSize, pageNo, isKeep, searchObj)
         .then((res) => {
-          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {

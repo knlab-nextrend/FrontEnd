@@ -71,7 +71,6 @@ function CurationDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(statusCode, listSize, pageNo)
         .then((res) => {
-          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
@@ -92,7 +91,6 @@ function CurationDataListContainer() {
       trackPromise(
         userCustomCurationDataFetchApi(axis)
           .then((res) => {
-            console.log(res.data)
             dataCleansing(res.data);
           })
           .catch((err) => {

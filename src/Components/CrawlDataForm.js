@@ -207,8 +207,6 @@ function CrawlDataForm({ docs, type, _id }, ref) {
           : docThumbnail;
 
       _docs["item_id"] = itemId;
-
-      console.log(_docs);
       return _docs;
     },
   }));

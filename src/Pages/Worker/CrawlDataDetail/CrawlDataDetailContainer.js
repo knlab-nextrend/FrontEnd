@@ -5,10 +5,9 @@ import {
   CrawlDataStageApi,
   CrawlDataKeepApi,
   sessionHandler,
-  documentDetachImageApi,
 } from "../../../Utils/api";
 import CrawlDataDetail from "./CrawlDataDetail";
-import { useParams, useHistory, Prompt } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
@@ -118,7 +117,6 @@ function CrawlDataDetailContainer() {
 
       item_id:_rawStatusDetailData.item_id,
     };
-    console.log(_docs)
     setDocs(_docs);
   };
 
@@ -150,7 +148,6 @@ function CrawlDataDetailContainer() {
 
   const dataStage = () => {
     const _crawlDataFormDocs = crawlDataFormRef.current.getCrawlFormData();
-    console.log(_crawlDataFormDocs)
     CrawlDataStageApi(statusCode, _id, _crawlDataFormDocs).then((res) => {
       alert("해당 데이터가 성공적으로 저장되었습니다.");
       if (statusCode === "6") {
@@ -185,7 +182,6 @@ function CrawlDataDetailContainer() {
     //   documentDetachImageApi(itemId).then((res) => {
     //   });
     // }
-    console.log("꺼지는지 테스트...")
     // documentDetachImageApi(_id).then((res) => {
     // });
   };

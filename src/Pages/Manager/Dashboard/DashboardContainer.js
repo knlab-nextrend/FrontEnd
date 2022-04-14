@@ -40,6 +40,13 @@ function DashboardContainer() {
   
   const [workAllLogData,setWorkAllLogData] = useState({});
   const [workAllStatus,setWorkAllStatus] = useState(-1) ; // 전체 작업에서 통계를 확인할 단계
+
+  const processTitle = {
+    0:"스크리닝",
+    1:"정제",
+    2:"등록",
+    3:"큐레이션"
+  }
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
@@ -57,7 +64,6 @@ function DashboardContainer() {
   };
   const workAllStatusHandler = (status) =>{
     setWorkAllStatus(status)
-    console.log(status)
   }
   const currentUserIdHandler = (e) => {
     setCurrentUserId(e.target.value);
@@ -162,7 +168,6 @@ function DashboardContainer() {
       [...registerResult],
       [...curationResult],
     ];
-    console.log(_tmp);
     setUserWorkAllData(_tmp);
   };
   const getCurationWorkList = () => {
@@ -174,7 +179,6 @@ function DashboardContainer() {
     trackPromise(
       curationWorkListFetchApi(dataObj)
         .then((res) => {
-          console.log(res.data)
           setCurationWorkList(res.data);
         })
         .catch((err) => {
@@ -188,7 +192,6 @@ function DashboardContainer() {
   };
 
   const pieChartDataCleansing = (rawData) => {
-    console.log(rawData)
     let _pieChart = [];
 
     for (var key in rawData) {
@@ -285,6 +288,7 @@ function DashboardContainer() {
         workAllLogData={workAllLogData}
         workAllStatusHandler={workAllStatusHandler}
         workAllStatus={workAllStatus}
+        processTitle={processTitle}
       />
     </>
   );

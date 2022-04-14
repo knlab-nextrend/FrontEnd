@@ -111,7 +111,6 @@ function HostManagementContainer() {
     setHostWorkCycle(e.target.value);
   };
   const _registerHostOpenHandler = (host) => {
-    console.log(host);
 
     //현재 선택된 host_id 새로 보고자 하는 host_id 같을경우 이미 오픈된 목록을 닫는걸로 생각
     if (selectedHost) {
@@ -255,7 +254,6 @@ function HostManagementContainer() {
           host: selectedHost.host,
           workCycle: hostWorkCycle,
         };
-        console.log(hostObj);
         eachHostModify([hostObj]);
       }
     } else {
@@ -267,7 +265,6 @@ function HostManagementContainer() {
     trackPromise(
       HostManagementApi(null, "GET")
         .then((res) => {
-          console.log(res.data);
           dataCleansing(res.data);
         })
         .catch((err) => {
@@ -301,7 +298,6 @@ function HostManagementContainer() {
     setCurrentHostList(hostList);
   }, [hostList]);
   useEffect(() => {
-    console.log(selectedHost)
     if(!!selectedHost){
       dispatch(setModalData(selectedHost.category, "doc_category")); // 값 세팅
       dispatch(setModalData(selectedHost.country, "doc_country")); // 값 세팅
