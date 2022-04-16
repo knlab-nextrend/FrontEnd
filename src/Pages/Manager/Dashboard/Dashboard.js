@@ -39,6 +39,7 @@ function Dashboard({
   workAllStatusHandler,
   processTitle,
   countryDocumentData,
+  getCountryMapChartData
 }) {
   return (
     <>
@@ -94,7 +95,7 @@ function Dashboard({
                     "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
                   }
                 >
-                  <Map />
+                  <Map getCountryMapChartData={getCountryMapChartData}/>
                 </TitleCard>
                 <div>
                   <ChartCard>

@@ -261,7 +261,6 @@ function DashboardContainer() {
     if (menuType === "docs_country") {
       getUserWorkAllLog();
       getCountryWorkList();
-      //getCountryMapChartData("미국");
       getWorkAllLogData();
     }
     if (!!currentUserId) {
@@ -307,6 +306,7 @@ function DashboardContainer() {
         workAllStatus={workAllStatus}
         processTitle={processTitle}
         countryDocumentData={countryDocumentData}
+        getCountryMapChartData={getCountryMapChartData}
       />
     </>
   );

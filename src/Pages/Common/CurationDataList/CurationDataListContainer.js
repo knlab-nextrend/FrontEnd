@@ -58,10 +58,11 @@ function CurationDataListContainer() {
         doc_content_type_list: item.doc_content_type
           .map((x) => x.CT_NM)
           .join(", "),
-        doc_content: item.doc_content.replace(/(<([^>]+)>)/gi, ""), // 태그 삭제 정규표현식
+        doc_content: item.doc_content ? item.doc_content.replace(/(<([^>]+)>)/gi, "") : "", // 태그 삭제 정규표현식
         doc_url: item.doc_url,
         doc_publisher:item.doc_publisher,
       };
+      console.log(obj)
       _curationDataList.push(obj);
     });
     setDcCount(_dcCount);
@@ -76,6 +77,7 @@ function CurationDataListContainer() {
     trackPromise(
       CrawlDataListFetchApi(statusCode, listSize, pageNo,searchObj)
         .then((res) => {
+          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {
