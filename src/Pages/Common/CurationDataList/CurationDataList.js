@@ -23,7 +23,7 @@ function CurationDataList({
 }) {
   return (
     <>
-      {curationDataList.length !== 0 ? (
+      
         <Wrapper>
           <RowContainer>
             <Row>
@@ -85,7 +85,7 @@ function CurationDataList({
               <DataFilter type={"curation"} dataFilterFetch={dataFilterFetch}/>
             </Row>
           </RowContainer>
-          {viewType === "list" && (
+          {curationDataList.length !== 0 ? (<>          {viewType === "list" && (
             <CurationListWrapper>
               <CurationList
                 curationData={curationDataList}
@@ -133,11 +133,9 @@ function CurationDataList({
             listSize={listSize}
             pageNo={pageNo}
             setPageNo={setPageNo}
-          />
+          /></>):( <NoData />)}
+
         </Wrapper>
-      ) : (
-        <NoData />
-      )}
     </>
   );
 }
@@ -334,9 +332,9 @@ const CurationListWrapper = styled.div`
   width: 100%;
 `;
 const CurationCard1Wrapper = styled.div`
-  display: grid;
   width: 100%;
-  grid-template-columns: 1fr 1fr;
+  display:grid;
+  grid-template-columns:1fr 1fr;
 `;
 const CurationCard2Wrapper = styled.div`
   display: flex;
