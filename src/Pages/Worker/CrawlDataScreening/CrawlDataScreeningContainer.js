@@ -48,34 +48,7 @@ function CrawlDataScreeningContainer() {
     setItemList(_newItemList);
   };
 
-  const dataFilterFetch = (
-    lang = null,
-    code = null,
-    keyword = null,
-    country = null,
-    dateGte = null,
-    dateLte = null,
-    pageGte = null,
-    pageLte = null,
-    isCrawled = null,
-    sort = null,
-    sortType = null,
-    host = null
-  ) => {
-    const searchObj = {
-      lang: lang,
-      code: code,
-      keyword: keyword,
-      country: country,
-      is_crawled: isCrawled,
-      dateLte,
-      dateGte,
-      pageGte,
-      pageLte,
-      sort,
-      sortType,
-      host,
-    };
+  const dataFilterFetch = (searchObj) => {
     setSearchObj(searchObj);
   };
 

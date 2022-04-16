@@ -36,6 +36,7 @@ function DataFilter({ dataFilterFetch = null, type }) {
   const [pageGte, setPageGte] = useState(0);
   const [pageLte, setPageLte] = useState(0);
 
+  const [screeningHost, setScreeningHost] = useState("");
 
   const docLanguage = useSelector(
     (state) => state.modal.modalData.doc_language
@@ -63,6 +64,9 @@ function DataFilter({ dataFilterFetch = null, type }) {
     dispatch(setModal("HostSelectModal"));
   };
 
+  const _screeningHostHandler = (e) => {
+    setScreeningHost(e.target.value);
+  };
   const _isCrawledHandler = (e) => {
     setIsCrawled(e.target.value);
   };
@@ -109,7 +113,13 @@ function DataFilter({ dataFilterFetch = null, type }) {
 
   const searchFilter = () => {
     const searchObj = {};
-    if(docLanguage.length>1 || docCountry.length>1 || docCategory.length>1 || docContentType.length>1 || docPublishCountry.length>1){
+    if (
+      docLanguage.length > 1 ||
+      docCountry.length > 1 ||
+      docCategory.length > 1 ||
+      docContentType.length > 1 ||
+      docPublishCountry.length > 1
+    ) {
       alert("검색 필드 하나에 하나의 필터 값만 설정 가능 합니다.");
       return;
     }
@@ -130,9 +140,16 @@ function DataFilter({ dataFilterFetch = null, type }) {
         (item) => item.CODE
       );
     }
-    if (docHost !== null) {
-      searchObj["doc_host"] = docHost.IDX;
+    if (type === "screening") {
+      if (screeningHost !== "") {
+        searchObj["host"] = screeningHost;
+      }
+    } else {
+      if (docHost !== null) {
+        searchObj["doc_host"] = docHost.IDX;
+      }
     }
+
     if (type === "archive") {
       searchObj["is_crawled"] = isCrawled;
     }
@@ -165,10 +182,10 @@ function DataFilter({ dataFilterFetch = null, type }) {
     dispatch(setModalData([], "doc_content_type"));
     dispatch(setModalData([], "doc_category"));
     dispatch(setModalData(null, "doc_host"));
-    setDateRange("all")
-    setSortType("doc_collect_date")
-    setDateGte("2019-01-01")
-    setDateLte(new Date().toISOString().substring(0, 10))
+    setDateRange("all");
+    setSortType("doc_collect_date");
+    setDateGte("2019-01-01");
+    setDateLte(new Date().toISOString().substring(0, 10));
     setPageGte(0);
     setPageLte(0);
   };
@@ -332,17 +349,31 @@ function DataFilter({ dataFilterFetch = null, type }) {
                       </CustomList>
                     </OptionCol>
                     <OptionCol>
-                      <OptionTitle>HOST 선택</OptionTitle>
-                      <ActionButton
-                        onClick={() => {
-                          _openHostSelectModal();
-                        }}
-                      >
-                        <MdSettings /> 선택
-                      </ActionButton>
-                      <CustomList>
-                        {docHost && <Chip>{docHost.HOST}</Chip>}
-                      </CustomList>
+                      {type === "screening" ? (
+                        <>
+                          <OptionTitle>HOST명 검색</OptionTitle>
+                          <OptionInput
+                            onChange={_screeningHostHandler}
+                            value={screeningHost}
+                            type="text"
+                            placeholder="HOST명 검색"
+                          ></OptionInput>
+                        </>
+                      ) : (
+                        <>
+                          <OptionTitle>HOST 선택</OptionTitle>
+                          <ActionButton
+                            onClick={() => {
+                              _openHostSelectModal();
+                            }}
+                          >
+                            <MdSettings /> 선택
+                          </ActionButton>
+                          <CustomList>
+                            {docHost && <Chip>{docHost.HOST}</Chip>}
+                          </CustomList>
+                        </>
+                      )}
                     </OptionCol>
                   </OptionRow>
 

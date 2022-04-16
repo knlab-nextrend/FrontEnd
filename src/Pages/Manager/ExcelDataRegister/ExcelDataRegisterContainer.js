@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ExcelDataRegister from "./ExcelDataRegister";
 import XLSX from "xlsx";
-import {uploadExcelDataApi} from "../../../Utils/api";
+import {uploadExcelDataApi,CategorysListDataFetchApi} from "../../../Utils/api";
 
 function ExcelDataRegisterContainer() {
   const [excelData, setExcelData] = useState([]);
@@ -140,6 +140,9 @@ function ExcelDataRegisterContainer() {
     setStep((prev) => prev - 1);
   };
 
+  const findCategoryCode = (name)=>{
+    let 대분류 = CategorysListDataFetchApi();
+  }
   return (
     <>
       <ExcelDataRegister

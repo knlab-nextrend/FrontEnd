@@ -43,6 +43,7 @@ function CurationDataCard({ curationDataItem }) {
 }
 
 const CardWrapper = styled.div`
+
   display: flex;
   padding: 1rem;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
