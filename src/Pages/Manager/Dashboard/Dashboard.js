@@ -37,7 +37,8 @@ function Dashboard({
   workAllLogData,
   workAllStatus,
   workAllStatusHandler,
-  processTitle
+  processTitle,
+  countryDocumentData,
 }) {
   return (
     <>
@@ -64,13 +65,16 @@ function Dashboard({
           >
             크롤러 작동 현황
           </TabButton>
-          <TabButton
+          {/*
+                    <TabButton
             active={menuType === "system_access"}
             value="system_access"
             onClick={menuHandler}
           >
             시스템 접속 통계
           </TabButton>
+          */}
+
         </div>
       </Tab>
       <Wrapper>
@@ -141,8 +145,8 @@ function Dashboard({
                           anchor: "right",
                           direction: "column",
                           justify: false,
-                          translateX: -180,
-                          translateY: -0,
+                          translateX: 180,
+                          translateY: 0,
                           itemsSpacing: 3,
                           itemWidth: 180,
                           itemHeight: 18,
@@ -163,7 +167,9 @@ function Dashboard({
                       ]}
                     />
                   </ChartCard>
-                  <DocumentStatCard></DocumentStatCard>
+                  <DocumentStatCard
+                    countryDocumentData={countryDocumentData}
+                  ></DocumentStatCard>
                 </div>
               </CountryContentWrapper>
               <TitleCard
@@ -277,7 +283,8 @@ function Dashboard({
                 "단계별 작업 상세 로그를 확인하세요. 작업문서 ID, 작업 일시 등이 표시됩니다."
               }
             >
-              <CrawlStatusTable>
+              {/*
+                            <CrawlStatusTable>
                 <thead>
                   <tr>
                     <th>작업 문서 ID</th>
@@ -293,6 +300,7 @@ function Dashboard({
                   </tr>
                 </tbody>
               </CrawlStatusTable>
+              */}
             </TitleCard>
           </>
         )}
@@ -531,8 +539,8 @@ const CrawlStatusTable = styled.table`
 `;
 
 const LineGraphOnlyOneWrapper = styled.div`
-padding: 3rem;
-` 
+  padding: 3rem;
+`;
 
 const LineGraphWrapper = styled.div`
   padding: 3rem;
@@ -542,12 +550,12 @@ const LineGraphWrapper = styled.div`
   .graph-title-container {
     display: flex;
     flex-direction: column;
-    .graph-title{
+    .graph-title {
       display: flex;
-      padding-left:3rem;
-      font-size:14px;
-      font-weight:bold;
-      color:#435269;
+      padding-left: 3rem;
+      font-size: 14px;
+      font-weight: bold;
+      color: #435269;
     }
   }
 `;

@@ -1,35 +1,47 @@
 import React from "react";
 import styled from "styled-components";
 
-function DocumentStatCard() {
+function DocumentStatCard({ countryDocumentData }) {
   return (
     <CardWrapper>
       <div className="title">
-        <div className="title-main">한국</div>
-        <div className="title-sub">의 문서 현황입니다.</div>
+        {countryDocumentData === null ? (
+          <div className="title-main">국가를 지도에서 선택해주세요!</div>
+        ) : (
+          <>
+            <div className="title-main">{countryDocumentData.country}</div>
+            <div className="title-sub">의 문서 현황입니다.</div>
+          </>
+        )}
       </div>
-      <div className="stat-list">
-      <div className="stat">
-          <div className="stat-title">수집 문서 수</div>
-          <div className="stat-count">140</div>
+      {countryDocumentData === null ? (
+          <div className="stat-list">표시할 값이 없습니다.</div>
+        ) : (
+          <div className="stat-list">
+          <div className="stat">
+            <div className="stat-title">수집 문서 수</div>
+            <div className="stat-count">{countryDocumentData.data.collect}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">스크리닝 완료 (정제) 문서 수</div>
+            <div className="stat-count">{countryDocumentData.data.screening}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">정제 완료 (등록) 문서 수</div>
+            <div className="stat-count">{countryDocumentData.data.refine}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">등록 완료 (아카이브) 문서 수</div>
+            <div className="stat-count">{countryDocumentData.data.register}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">큐레이션 완료 (큐레이션) 문서 수</div>
+            <div className="stat-count">{countryDocumentData.data.curation}</div>
+          </div>
         </div>
-        <div className="stat">
-          <div className="stat-title">스크리닝 완료 (정제) 문서 수</div>
-          <div className="stat-count">1480</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">정제 완료 (등록) 문서 수</div>
-          <div className="stat-count">140</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">등록 완료 (아카이브) 문서 수</div>
-          <div className="stat-count">140</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">큐레이션 완료 (큐레이션) 문서 수</div>
-          <div className="stat-count">14</div>
-        </div>
-      </div>
+        )}
+
+     
     </CardWrapper>
   );
 }
@@ -68,6 +80,7 @@ const CardWrapper = styled.div`
   }
   .stat-list {
     padding: 1rem;
+    min-height:10rem;
   }
 `;
 export default DocumentStatCard;

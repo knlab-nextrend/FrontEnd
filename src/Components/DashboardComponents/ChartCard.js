@@ -6,7 +6,7 @@ function ChartCard({ children }) {
     <CardWrapper>
       <div className="title">
         <div className="title-main">세계 문서 비율</div>
-        <div className="title-sub">국가 별 문서 비율 입니다. </div>
+        <div className="title-sub">공정별 세계 비율 입니다.</div>
       </div>
       <div className="chart">{children}</div>
     </CardWrapper>

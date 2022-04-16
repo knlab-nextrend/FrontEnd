@@ -13,6 +13,8 @@ function CurationDataListContainer() {
   const [curationDataList, setCurationDataList] = useState([]);
   const userInfo = useSelector((state) => state.user.user);
   const axisObj = useSelector((state) => state.custom.axisObj);
+  const [searchObj, setSearchObj] = useState(null); // 검색 옵션
+
   /* 페이지네이션 */
   const [dcCount, setDcCount] = useState(0); // document 총 개수
   const [pageNo, setPageNo] = useState(1); // 현재 활성화 된 페이지 번호
@@ -66,16 +68,19 @@ function CurationDataListContainer() {
     setCurationDataList(_curationDataList);
   };
 
+  const dataFilterFetch = (searchObj) => {
+    setSearchObj(searchObj);
+  };
   /* 데이터 불러오기 */
-  const dataFetch = () => {
+  const dataFetch = (searchObj = null) => {
     trackPromise(
-      CrawlDataListFetchApi(statusCode, listSize, pageNo)
+      CrawlDataListFetchApi(statusCode, listSize, pageNo,searchObj)
         .then((res) => {
           dataCleansing(res.data);
         })
         .catch((err) => {
           sessionHandler(err, dispatch).then((res) => {
-            CrawlDataListFetchApi(statusCode, listSize, pageNo).then((res) => {
+            CrawlDataListFetchApi(statusCode, listSize, pageNo,searchObj).then((res) => {
               dataCleansing(res.data);
             });
           });
@@ -106,12 +111,12 @@ function CurationDataListContainer() {
 
   useEffect(() => {
     if (axisObj.X === null) {
-      dataFetch();
+      dataFetch(searchObj);
     }
     else{
       customDataFetch();
     }
-  }, [pageNo,axisObj]);
+  }, [pageNo,axisObj,searchObj]);
 
   return (
     <>
@@ -126,6 +131,7 @@ function CurationDataListContainer() {
         viewType={viewType}
         handleRowClick={handleRowClick}
         userInfo={userInfo}
+        dataFilterFetch={dataFilterFetch}
       />
     </>
   );

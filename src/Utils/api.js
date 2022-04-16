@@ -517,6 +517,7 @@ const countryWorkListFetchApi = (process)=>{
   };
   return axios.get(`/nextrend/board`,config)
 }
+
 const workAllLogFetchApi = (process)=>{
   return axios.get(`/nextrend/board/all`,{headers: { headers }})
 }

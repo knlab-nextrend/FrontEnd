@@ -19,6 +19,7 @@ function CurationDataList({
   viewTypeHandler,
   handleRowClick,
   userInfo,
+  dataFilterFetch
 }) {
   return (
     <>
@@ -81,7 +82,7 @@ function CurationDataList({
               </div>
             </Row>
             <Row>
-              <DataFilter type={"curation"} />
+              <DataFilter type={"curation"} dataFilterFetch={dataFilterFetch}/>
             </Row>
           </RowContainer>
           {viewType === "list" && (

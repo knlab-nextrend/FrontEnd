@@ -44,74 +44,6 @@ function HostManagementContainer() {
     (state) => state.modal.modalData.doc_category
   ); // doc_category HOST 정책 분류
 
-  const dummy_data = [
-    {
-      idx: 111,
-      host: "www.naver.com",
-      start_time: "2022-04-14 21:32:00",
-      end_time: "2022-04-10 21:32:00",
-      running_time: "1초",
-      url: 1111,
-      html: 2222,
-      pdf: 333,
-      word: 344,
-      excel: 22,
-      ppt: 33,
-      etc: 11,
-      test_end: true,
-      is_registered: true,
-    },
-    {
-      idx: 222,
-      host: "www.youtube.com",
-      start_time: "2022-04-14 21:32:00",
-      end_time: "2022-04-10 21:32:00",
-      running_time: "2초",
-      url: 111211,
-      html: 212222,
-      pdf: 33213,
-      word: 34214,
-      excel: 2212,
-      ppt: 2133,
-      etc: 1211,
-      test_end: true,
-      is_registered: false,
-    },
-    {
-      idx: 333,
-      host: "https://www.worldbank.org/",
-      start_time: "2022-04-14 21:32:00",
-      end_time: "2022-04-10 21:32:00",
-      running_time: "3초",
-      url: null,
-      html: null,
-      pdf: null,
-      word: null,
-      excel: null,
-      ppt: null,
-      etc: null,
-      test_end: false, // 나중에 map으로 다시 배열 만들어야지..
-      is_registered:
-        hostList.filter((host) => host.host === "https://www.worldbank.org/")
-          .length === 1, // host_list 에 등록된건지 확인
-    },
-    {
-      idx: 444,
-      host: "www.google.co.kr",
-      start_time: "2022-04-14 21:32:00",
-      end_time: "2022-04-10 21:32:00",
-      running_time: "3초",
-      url: 111211,
-      html: 212222,
-      pdf: 33213,
-      word: 34214,
-      excel: 2212,
-      ppt: 2133,
-      etc: 1211,
-      test_end: true,
-      is_registered: false,
-    },
-  ];
   const _hostPublisherHandler = (e) => {
     setHostPublisher(e.target.value);
   };
@@ -379,7 +311,6 @@ function HostManagementContainer() {
         excelUpload={excelUpload}
         _registerHostOpenHandler={_registerHostOpenHandler}
         selectedHost={selectedHost}
-        dummy_data={dummy_data}
         _openCategoryModal={_openCategoryModal}
         docCountry={docCountry}
         docCategory={docCategory}

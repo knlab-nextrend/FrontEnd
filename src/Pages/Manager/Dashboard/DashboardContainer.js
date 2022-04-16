@@ -37,22 +37,21 @@ function DashboardContainer() {
 
   const [userWorkAllData, setUserWorkAllData] = useState([]); // 해당 작업자의 총 작업량
   const [countryPieChartData, setCountryPieChartData] = useState([]); // 세계 국가 문서 현황
-  
-  const [workAllLogData,setWorkAllLogData] = useState({});
-  const [workAllStatus,setWorkAllStatus] = useState(-1) ; // 전체 작업에서 통계를 확인할 단계
+  const [countryDocumentData , setCountryDocumentData] = useState(null); // 특정 국가 문서 현황 
+  const [workAllLogData, setWorkAllLogData] = useState({});
+  const [workAllStatus, setWorkAllStatus] = useState(-1); // 전체 작업에서 통계를 확인할 단계
 
   const processTitle = {
-    0:"스크리닝",
-    1:"정제",
-    2:"등록",
-    3:"큐레이션"
-  }
+    0: "스크리닝",
+    1: "정제",
+    2: "등록",
+    3: "큐레이션",
+  };
   const menuHandler = (e) => {
     setMenuType(e.target.value);
   };
   const processHandler = (select) => {
     setProcess(select);
-
   };
   const rowClickHandler = (host_id) => {
     // 현재 선택된 host_id 새로 보고자 하는 host_id 같을경우 이미 오픈된 목록을 닫는걸로 생각
@@ -62,9 +61,9 @@ function DashboardContainer() {
       setSelectedHostId(host_id);
     }
   };
-  const workAllStatusHandler = (status) =>{
-    setWorkAllStatus(status)
-  }
+  const workAllStatusHandler = (status) => {
+    setWorkAllStatus(status);
+  };
   const currentUserIdHandler = (e) => {
     setCurrentUserId(e.target.value);
   };
@@ -203,7 +202,7 @@ function DashboardContainer() {
       };
       _pieChart.push(obj);
     }
-    setCountryPieChartData(_pieChart)
+    setCountryPieChartData(_pieChart);
   };
 
   const getCountryWorkList = () => {
@@ -222,7 +221,7 @@ function DashboardContainer() {
     );
   };
 
-  const getWorkAllLogData = () =>{
+  const getWorkAllLogData = () => {
     trackPromise(
       workAllLogFetchApi()
         .then((res) => {
@@ -236,7 +235,24 @@ function DashboardContainer() {
           });
         })
     );
-  }
+  };
+
+  const getCountryMapChartData = async (countryName) => {
+    const _collect = await countryWorkListFetchApi(-1);
+    const _screening = await countryWorkListFetchApi(0);
+    const _refine = await countryWorkListFetchApi(2);
+    const _register = await countryWorkListFetchApi(4);
+    const _curation = await countryWorkListFetchApi(6);
+    const _data = {
+      collect:_collect.data[countryName] || 0,
+      screening:_screening.data[countryName] || 0,
+      refine:_refine.data[countryName] || 0,
+      register:_register.data[countryName] || 0,
+      curation: _curation.data[countryName] || 0
+    };
+    console.log(_data)
+    setCountryDocumentData({country:countryName,data:_data});
+  };
   useEffect(() => {
     getCrawlHostList(); // 크롤 호스트 목록 불러오기
   }, []);
@@ -245,12 +261,13 @@ function DashboardContainer() {
     if (menuType === "docs_country") {
       getUserWorkAllLog();
       getCountryWorkList();
+      //getCountryMapChartData("미국");
       getWorkAllLogData();
     }
     if (!!currentUserId) {
       getUserWorkLog();
     }
-  }, [currentUserId, dateGte, process, duration,workAllStatus]);
+  }, [currentUserId, dateGte, process, duration, workAllStatus]);
   useEffect(() => {
     if (!!currentUserId) {
       getCurationWorkList();
@@ -289,6 +306,7 @@ function DashboardContainer() {
         workAllStatusHandler={workAllStatusHandler}
         workAllStatus={workAllStatus}
         processTitle={processTitle}
+        countryDocumentData={countryDocumentData}
       />
     </>
   );

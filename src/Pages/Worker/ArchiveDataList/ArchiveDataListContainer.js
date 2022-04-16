@@ -49,34 +49,7 @@ function ArchiveDataListContainer() {
 
   /* 필터 적용 데이터 받아오기 */
 
-  const dataFilterFetch = (
-    lang = null,
-    code = null,
-    keyword = null,
-    country = null,
-    dateGte = null,
-    dateLte = null,
-    pageGte = null,
-    pageLte = null,
-    isCrawled = null,
-    sort = null,
-    sortType = null,
-    host = null
-  ) => {
-    const searchObj = {
-      lang,
-      code,
-      keyword,
-      country,
-      is_crawled: isCrawled,
-      dateLte,
-      dateGte,
-      pageGte,
-      pageLte,
-      sort,
-      sortType,
-      host,
-    };
+  const dataFilterFetch = (searchObj) => {
     setSearchObj(searchObj);
   };
 

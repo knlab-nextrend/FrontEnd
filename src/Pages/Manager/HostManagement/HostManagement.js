@@ -23,7 +23,6 @@ function HostManagement({
   filterSearch,
   excelDownload,
   excelUpload,
-  dummy_data,
   selectedHost,
   _openCategoryModal,
   docCategory,

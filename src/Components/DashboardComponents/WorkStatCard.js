@@ -5,7 +5,7 @@ function WorkStatCard({workAllLogData,workAllStatus,workAllStatusHandler}) {
     <CardWrapper>
       <div className="title">
         <div className="title-main">작업량 통계</div>
-        <div className="title-sub">각 단계를 클릭하면 세부 내역을 확인할 수 있습니다.</div>
+        <div className="title-sub">각 단계를 클릭하면 원형 그래프를 확인할 수 있습니다.</div>
         {/* <div className="toggle-button">
           <input
             type="radio"
