@@ -156,6 +156,7 @@ function CrawlDataScreeningContainer() {
     trackPromise(
       ScreeningDataFetchApi(listSize, pageNo, isKeep, searchObj)
         .then((res) => {
+          console.log(res.data)
           dataCleansing(res.data);
         })
         .catch((err) => {

@@ -32,6 +32,10 @@ function HostManagement({
   hostRegisterUpload,
   _hostPublisherHandler,
   _hostWorkCycleHandler,
+  hostWorkCycle,
+  hostPublisher,
+  nextrendSync,
+  hostTestList,
 }) {
   return (
     <>
@@ -100,7 +104,7 @@ function HostManagement({
                 </tr>
               </thead>
               <tbody>
-                {dummy_data.map((host, index) => {
+                {hostTestList.map((host, index) => {
                   return (
                     <>
                       <tr key={index}>
@@ -258,9 +262,9 @@ function HostManagement({
                   <MdOutlineSearch size="20" />
                   조건 검색 여닫기
                 </button>
-                <button >
+                <button onClick={nextrendSync}>
                   <MdSync size="20" />
-                  크롤러 DB와 SYNC 
+                  nextrend 서비스와 크롤러 동기화
                 </button>
               </DictionaryFunctionBtnWrapper>
 
@@ -284,7 +288,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 언어</div>
                     <input
-                      placeholder="이름 및 코드 입력 (정확한 데이터만 표출)"
+                      placeholder="언어명 입력"
                       name="lang"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -293,7 +297,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 해당 국가</div>
                     <input
-                      placeholder="이름 및 코드 입력 (정확한 데이터만 표출)"
+                      placeholder="국가명 입력"
                       name="country"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -311,7 +315,7 @@ function HostManagement({
                   <div className="filter-item">
                     <div>HOST 정책 분류</div>
                     <input
-                      placeholder="이름 및 코드 입력 (정확한 데이터만 표출)"
+                      placeholder="분류명 입력"
                       name="category"
                       onChange={_filterInputsHandler}
                       type="text"
@@ -389,6 +393,7 @@ function HostManagement({
                                 <div className="input-title">발급기관명</div>
                                 <input
                                   type="text"
+                                  value={hostPublisher}
                                   onChange={_hostPublisherHandler}
                                 />
                               </div>
@@ -459,6 +464,7 @@ function HostManagement({
                                 <input
                                   type="number"
                                   min="0"
+                                  value={hostWorkCycle}
                                   onChange={_hostWorkCycleHandler}
                                 />
                               </div>
@@ -557,6 +563,7 @@ const DictonaryDataTable = styled.table`
   td {
     border-bottom: solid 1px #eee;
     padding: 10px;
+    word-break: normal; word-wrap: break-word;
   }
   tbody {
     tr:nth-child(even) {

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import HostManagement from "./HostManagement";
 import XLSX from "xlsx";
-import { HostManagementApi, sessionHandler } from "../../../Utils/api";
+import {
+  HostManagementApi,
+  hostSyncApi,
+  HostTestApi,
+  sessionHandler,
+} from "../../../Utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModal,
@@ -13,6 +18,7 @@ import { trackPromise } from "react-promise-tracker";
 function HostManagementContainer() {
   const dispatch = useDispatch();
   const [hostList, setHostList] = useState([]);
+  const [hostTestList, setHostTestList] = useState([]);
   const [currentHostList, setCurrentHostList] = useState([]);
   const [selectedHost, setSelectedHost] = useState(null);
   /* 검색 필터 변수 */
@@ -84,8 +90,10 @@ function HostManagementContainer() {
       excel: null,
       ppt: null,
       etc: null,
-      test_end: false, // 나중에 map으로 다시 배열 만들어야지.. 
-      is_registered: hostList.filter(host => host.host === "https://www.worldbank.org/").length===1 // host_list 에 등록된건지 확인
+      test_end: false, // 나중에 map으로 다시 배열 만들어야지..
+      is_registered:
+        hostList.filter((host) => host.host === "https://www.worldbank.org/")
+          .length === 1, // host_list 에 등록된건지 확인
     },
     {
       idx: 444,
@@ -111,7 +119,6 @@ function HostManagementContainer() {
     setHostWorkCycle(e.target.value);
   };
   const _registerHostOpenHandler = (host) => {
-
     //현재 선택된 host_id 새로 보고자 하는 host_id 같을경우 이미 오픈된 목록을 닫는걸로 생각
     if (selectedHost) {
       if (selectedHost.idx === host.idx) {
@@ -138,16 +145,27 @@ function HostManagementContainer() {
     let _result = [...hostList];
     for (let key in filterInputs) {
       // host와 name은 포함검색되어야하기에
-      if (key !== "host" && key !== "name") {
-        if (filterInputs[key] !== "") {
-          _result = _result.filter((item) => {
-            return item[key] === filterInputs[key];
-          });
-        }
-      } else {
+      if (key === "host" || key === "name") {
         _result = _result.filter((item) => {
           return item[key].includes(filterInputs[key]);
         });
+      } else {
+        if (filterInputs[key] !== "") {
+          // 빈 값이 filter에 걸리면 값이 걸러지지 않기 때문..
+          if (key === "workCycle") {
+            _result = _result.filter((item) => {
+              return item[key] == filterInputs[key];
+            });
+          } else {
+            _result = _result.filter((item) => {
+              if (item[key].length === 0) {
+                return false;
+              } else {
+                return item[key][0].CT_NM === filterInputs[key];
+              }
+            });
+          }
+        }
       }
     }
     setCurrentHostList(_result);
@@ -167,16 +185,18 @@ function HostManagementContainer() {
       const firstSheet = excelFile.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
       jsonData.map((item) => {
-        _excelData.push({
-          host: item["HOST 도메인"],
-          country: item["HOST 해당 국가"],
-          lang: item["HOST 해당 언어"],
-          name: item["발급 기관 명"],
-          category: item["HOST 정책 분류"],
-          workCycle: item["크롤링 수집주기"],
-        });
+        // _excelData.push({
+        //   host: item["HOST 도메인"],
+        //   country: item["HOST 해당 국가"],
+        //   lang: item["HOST 해당 언어"],
+        //   name: item["발급 기관 명"],
+        //   category: item["HOST 정책 분류"],
+        //   workCycle: item["크롤링 수집주기"],
+        // });
+        _excelData.push(item["HOST 도메인"]);
       });
-      wordDataUpload(_excelData);
+      console.log(_excelData)
+      //hostTestUpload(_excelData);
     };
     reader.readAsBinaryString(input.files[0]);
   };
@@ -211,8 +231,8 @@ function HostManagementContainer() {
     XLSX.writeFile(book, `host_list.xlsx`);
   };
 
-  const wordDataUpload = (excel_data) => {
-    HostManagementApi({ list: excel_data }, "POST").then((res) => {
+  const hostTestUpload = (excel_data) => {
+    HostTestApi({ list: excel_data }, "POST").then((res) => {
       if (res.status === 200) {
         alert("성공적으로 업로드되었습니다");
         dataFetch();
@@ -225,6 +245,16 @@ function HostManagementContainer() {
       if (res.status === 200) {
         alert("성공적으로 수정 되었습니다");
         dataFetch();
+      }
+    });
+  };
+
+  const nextrendSync = () => {
+    hostSyncApi().then((res) => {
+      if (res.status === 200) {
+        alert("성공적으로 동기화 되었습니다.");
+        dataFetch();
+        //testDataFetch();
       }
     });
   };
@@ -261,6 +291,22 @@ function HostManagementContainer() {
     }
   };
 
+  const testDataFetch = () => {
+    trackPromise(
+      HostTestApi(null, "GET")
+        .then((res) => {
+          console.log(res.data);
+          testDataCleansing(res.data);
+        })
+        .catch((err) => {
+          sessionHandler(err, dispatch).then((res) => {
+            HostTestApi(null, "GET").then((res) => {
+              testDataCleansing(res.data);
+            });
+          });
+        })
+    );
+  };
   const dataFetch = () => {
     trackPromise(
       HostManagementApi(null, "GET")
@@ -291,19 +337,35 @@ function HostManagementContainer() {
     setHostList(_arr);
   };
 
+  const testDataCleansing = (rawData) => {
+    const _arr = rawData.map((item,index) => {
+      let _obj = { ...item };
+      _obj["idx"]=index;
+      _obj["test_end"] = true;
+      _obj["is_registered"] =
+        hostList.filter((host) => host.host === "https://www.worldbank.org/")
+          .length === 1;
+      return _obj;
+    });
+    setHostTestList(_arr);
+  };
+
   useEffect(() => {
     dataFetch();
+    //testDataFetch();
   }, []);
   useEffect(() => {
     setCurrentHostList(hostList);
   }, [hostList]);
   useEffect(() => {
-    if(!!selectedHost){
+    if (!!selectedHost) {
+      console.log(selectedHost);
+      setHostPublisher(selectedHost.name);
+      setHostWorkCycle(selectedHost.workCycle);
       dispatch(setModalData(selectedHost.category, "doc_category")); // 값 세팅
       dispatch(setModalData(selectedHost.country, "doc_country")); // 값 세팅
       dispatch(setModalData(selectedHost.lang, "doc_language")); // 값 세팅
     }
-
   }, [selectedHost]);
   return (
     <>
@@ -325,6 +387,11 @@ function HostManagementContainer() {
         hostRegisterUpload={hostRegisterUpload}
         _hostPublisherHandler={_hostPublisherHandler}
         _hostWorkCycleHandler={_hostWorkCycleHandler}
+        hostWorkCycle={hostWorkCycle}
+        hostPublisher={hostPublisher}
+        nextrendSync={nextrendSync}
+        hostTestList={hostTestList}
+
       />
     </>
   );

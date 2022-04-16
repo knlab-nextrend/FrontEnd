@@ -59,7 +59,7 @@ const ScreeningDataKeepApi = (keepDataList) => {
 /* 크롤데이터 스크리닝 단계에서 버리기 */
 const ScreeningDataDeleteApi = (deleteDataList) => {
   const config = {
-    headers: headers,
+    headers: { authorization: `Bearer ${getToken()}` },
     params: {
       list: deleteDataList,
     },
@@ -85,7 +85,7 @@ const CrawlDataListFetchApi = (
 /* 크롤데이터 버리기 */
 const CrawlDataRejectApi = (_id, statusCode) => {
   const config = {
-    headers: headers,
+    headers: { authorization: `Bearer ${getToken()}` },
     params: {
       statusCode,
     },
@@ -409,7 +409,7 @@ const MultilingualDictionaryApi = (data = null, method) => {
   };
   if (method === "GET") {
     const config = {
-      headers: { headers },
+      headers: { authorization: `Bearer ${getToken()}` },
     };
     return axios.get(`/nextrend/multilingual`, config);
   }
@@ -426,7 +426,7 @@ const MultilingualDictionaryApi = (data = null, method) => {
   }
   if (method === "DELETE") {
     const config2 = {
-      headers: headers,
+      headers: { authorization: `Bearer ${getToken()}` },
       params: {
         ...data,
       },
@@ -447,14 +447,24 @@ const HostManagementApi = (data = null, method) => {
     return axios.get(`/nextrend/host`, config);
   }
   if (method === "POST") {
-
     return axios.post(`/nextrend/host`, data, config);
   }
 };
+const HostTestApi = (data = null, method)=>{
+  const config = {
+    headers: { authorization: `Bearer ${getToken()}` },
+  };
+  if (method === "GET") {
+    return axios.get(`/nextrend/host/test`, config);
+  }
+  if (method === "POST") {
+    return axios.post(`/nextrend/host/test`, data, config);
+  }
+}
 
 const userCustomCurationDataFetchApi = (axis, archive = null) => {
   const config = {
-    headers: { headers },
+    headers: { authorization: `Bearer ${getToken()}` },
     params: { axis, statusCode: archive ? 6 : 8 },
   };
   return axios.get(`/nextrend/custom/search`, config);
@@ -475,7 +485,7 @@ const curationRequestApi = (_id) => {
 
 const crawlHostDataFetchApi = (host_id=null) =>{
   const config = {
-    headers: { headers },
+    headers: { authorization: `Bearer ${getToken()}` },
   };
   const router = host_id?`/crawl/host/${host_id}`:`/crawl/host`
 
@@ -508,8 +518,15 @@ const countryWorkListFetchApi = (process)=>{
   return axios.get(`/nextrend/board`,config)
 }
 const workAllLogFetchApi = (process)=>{
-
   return axios.get(`/nextrend/board/all`,{headers: { headers }})
+}
+
+const hostSyncApi = ()=>{
+  const config = {
+    headers: { authorization: `Bearer ${getToken()}` }
+  };
+  return axios.put(`/nextrend/host/sync/ `,config)
+ 
 }
 export {
   LoginApi,
@@ -549,6 +566,7 @@ export {
   userAxisMenuSaveApi,
   MultilingualDictionaryApi,
   HostManagementApi,
+  HostTestApi,
   userCustomCurationDataFetchApi,
   curationRequestApi,
   crawlHostDataFetchApi,
@@ -557,4 +575,5 @@ export {
   curationWorkListFetchApi,
   countryWorkListFetchApi,
   workAllLogFetchApi,
+  hostSyncApi,
 };

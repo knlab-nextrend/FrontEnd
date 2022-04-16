@@ -5,6 +5,7 @@ function WorkStatCard({workAllLogData,workAllStatus,workAllStatusHandler}) {
     <CardWrapper>
       <div className="title">
         <div className="title-main">작업량 통계</div>
+        <div className="title-sub">각 단계를 클릭하면 세부 내역을 확인할 수 있습니다.</div>
         {/* <div className="toggle-button">
           <input
             type="radio"
@@ -56,6 +57,10 @@ const CardWrapper = styled.div`
     font-size: 18px;
     color: rgb(59, 59, 59);
     padding-bottom: 0.25rem;
+  }
+  .title-sub {
+    font-size: 12px;
+    color: #939ba2;
   }
   .toggle-button {
     display: inline-block;

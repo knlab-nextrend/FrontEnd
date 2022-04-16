@@ -83,7 +83,7 @@ function CrawlDataDetailContainer() {
         _rawStatusDetailData.doc_content || "",
       doc_collect_date: _rawStatusDetailData.doc_collect_date || "",
       doc_write_date: _rawStatusDetailData.doc_write_date || "",
-      doc_register_date : _rawStatusDetailData.doc_collect_date || "",
+      doc_register_date : _rawStatusDetailData.doc_register_date || "",
       doc_publish_date : _rawStatusDetailData.doc_publish_date||"",
       doc_keyword: _rawStatusDetailData.doc_keyowrd || [], // 오타로 필드가 설정되어있어서 ... 
       doc_publisher: _rawStatusDetailData.doc_publisher || "",

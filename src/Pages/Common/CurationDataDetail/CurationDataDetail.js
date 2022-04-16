@@ -54,21 +54,21 @@ function CurationDataDetail({ docs, permission, goDataManage }) {
                 </div>
               </Info>
               <Info>
-                <div className="title">▶ 발행 HOST / 기관 명</div>
+                <div className="title">▶ 기관 명 / 발행 HOST</div>
                 <div className="content">
                   {docs.doc_publisher} / {docs.doc_host}
                 </div>
               </Info>
               <Info>
-                <div className="title">▶ 발행면수</div>
+                <div className="title">▶ 발행 면수</div>
                 <div className="content">{docs.doc_page}</div>
               </Info>
               <Info>
-                <div className="title">▶ 발행국가</div>
+                <div className="title">▶ 발행 국가</div>
                 <div className="content">{docs.doc_publish_country_list}</div>
               </Info>
               <Info>
-                <div className="title">▶ 정책분류</div>
+                <div className="title">▶ 정책 분류</div>
                 <div className="content">{docs.doc_category_list}</div>
               </Info>
               <Info>

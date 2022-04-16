@@ -209,13 +209,13 @@ function Dashboard({
             >
               <DateRange setDateGte={setDateGte} />
               <Duration setDuration={setDuration} />
-              <LineGraphWrapper>
+              <LineGraphOnlyOneWrapper>
                 <LineGraph
                   divName={"chartdiv"}
                   lineGraphData={lineGraphData}
                   duration={duration}
                 />
-              </LineGraphWrapper>
+              </LineGraphOnlyOneWrapper>
             </TitleCard>
             <TitleCard
               title={"큐레이션 작업 내역"}
@@ -529,6 +529,10 @@ const CrawlStatusTable = styled.table`
     min-width: 190px;
   }
 `;
+
+const LineGraphOnlyOneWrapper = styled.div`
+padding: 3rem;
+` 
 
 const LineGraphWrapper = styled.div`
   padding: 3rem;

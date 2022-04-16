@@ -20,6 +20,7 @@ function CurationDataDetailContainer() {
   const dataFetch = () => {
     trackPromise(CrawlDataDetailFetchApi(statusCode, _id)
       .then((res) => {
+        console.log(res.data)
         dataCleansing(res.data);
       })
       .catch((err) => {
@@ -73,7 +74,7 @@ function CurationDataDetailContainer() {
       doc_topic_list : _rawStatusDetailData.doc_topic.map((x) => x.CT_NM).join(", "),
       doc_language : _rawStatusDetailData.doc_language || [],
       doc_language_list: _rawStatusDetailData.doc_language.map((x) => x.CT_NM).join(", "),
-        doc_host:_rawStatusDetailData.doc_host ? _rawStatusDetailData.doc_host[0].HOST : ""
+        doc_host:_rawStatusDetailData.doc_host.length!==0 ? _rawStatusDetailData.doc_host[0].HOST : ""
     };
     setDocs(_docs);
   };
