@@ -19,6 +19,7 @@ function HostManagementContainer() {
   const dispatch = useDispatch();
   const [hostList, setHostList] = useState([]);
   const [hostTestList, setHostTestList] = useState([]);
+
   const [currentHostList, setCurrentHostList] = useState([]);
   const [selectedHost, setSelectedHost] = useState(null);
   /* 검색 필터 변수 */
@@ -322,7 +323,7 @@ function HostManagementContainer() {
         hostPublisher={hostPublisher}
         nextrendSync={nextrendSync}
         hostTestList={hostTestList}
-
+        
       />
     </>
   );

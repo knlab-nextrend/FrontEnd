@@ -253,16 +253,9 @@ function ExcelDataRegisterContainer() {
     }
   };
 
-  useEffect(() => {
+  useEffect( () => {
     const str = "기획재정-경제일반-그결과는/국정일반-없는중분류/외교안보";
     const arr1 = str.split("/")
-    arr1.forEach(item=>{
-      const arr2=item.split("-");
-      findCategoryCode(1,arr2).then((res)=>{
-        console.log(res)
-      })
-    })
-    
   }, []);
   return (
     <>

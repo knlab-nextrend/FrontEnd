@@ -118,7 +118,7 @@ function CurationDataListContainer() {
     else{
       customDataFetch();
     }
-  }, [pageNo,axisObj,searchObj]);
+  }, [pageNo,listSize,axisObj,searchObj]);
 
   return (
     <>
@@ -127,6 +127,7 @@ function CurationDataListContainer() {
         statusCode={statusCode}
         dcCount={dcCount}
         listSize={listSize}
+        setListSize={setListSize}
         pageNo={pageNo}
         setPageNo={setPageNo}
         viewTypeHandler={viewTypeHandler}
