@@ -12,6 +12,7 @@ function CurationDataCard({ curationDataItem }) {
                               `/img/curation_default_image.png`
                         } />
         </ImageContainer>
+      
         <ContentContainer>
           <Title>
             <div>[{curationDataItem.doc_country_list}]</div>
@@ -43,7 +44,7 @@ function CurationDataCard({ curationDataItem }) {
 }
 
 const CardWrapper = styled.div`
-
+  width:inherit;
   display: flex;
   padding: 1rem;
   box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
@@ -55,7 +56,6 @@ const CardWrapper = styled.div`
     cursor: pointer;
   }
   background-color: white;
-  flex-direction:column;
 `;
 const ImageContainer = styled.div`
   min-width: 12rem;
@@ -79,12 +79,12 @@ const ContentContainer = styled.div`
   }
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  padding: 1rem;
 `;
 const Title = styled.div`
   display: flex;
   div:nth-child(1){
-    min-width:4rem;
+    min-width:5rem;
   }
   div {
     margin-right: 0.5rem;
@@ -104,6 +104,8 @@ const SubTitle = styled.div`
   /* p태그 세번째 요소는 원문 제목*/
   font-size: 14px;
   color: grey;
+  word-break:break-all;
+  word-wrap:break-word;
 `;
 const Info = styled.div`
   font-size: 12px;
@@ -165,5 +167,6 @@ const Content = styled.div`
   -webkit-box-orient: vertical;
 
   word-wrap: break-word;
+  word-break:break-all;
 `;
 export default CurationDataCard;

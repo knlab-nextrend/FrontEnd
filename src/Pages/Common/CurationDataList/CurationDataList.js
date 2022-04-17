@@ -211,6 +211,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 const RowContainer = styled.div`
@@ -333,8 +334,7 @@ const CurationListWrapper = styled.div`
 const CurationCard1Wrapper = styled.div`
 width: 100%;
   display:grid;
-  width: 100%;
-  grid-template-columns:50% 50%;
+  grid-template-columns:1fr 1fr;
 `;
 const CurationCard2Wrapper = styled.div`
   display: flex;
