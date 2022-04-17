@@ -332,7 +332,8 @@ const CurationListWrapper = styled.div`
 `;
 const CurationCard1Wrapper = styled.div`
   display:grid;
-  grid-template-columns:1fr 1fr;
+  width: 100%;
+  grid-template-columns:50% 50%;
 `;
 const CurationCard2Wrapper = styled.div`
   display: flex;
