@@ -55,6 +55,7 @@ const CardWrapper = styled.div`
     cursor: pointer;
   }
   background-color: white;
+  flex-direction:column;
 `;
 const ImageContainer = styled.div`
   min-width: 12rem;

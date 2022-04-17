@@ -96,6 +96,7 @@ const AdminBody = styled.div`
   padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
   grid-template-columns: minmax(260px, 1fr) 8fr;
   min-height: 1280px;
+  overflow-x:hidden;
 `;
 const UserBody = styled.div`
   padding-top: ${(props) => (!props.isLogin ? "0rem" : "6.5rem")};
@@ -103,7 +104,7 @@ const UserBody = styled.div`
 `;
 
 const Section = styled.section`
-  width: 100%;
+  width:calc(100vw - 260px);
 `;
 
 export default App;
