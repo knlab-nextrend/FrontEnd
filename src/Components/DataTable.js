@@ -78,7 +78,7 @@ function DataTable({
                         {item.is_crawled ? (
                           <Badge is_crawled>크롤</Badge>
                         ) : (
-                          <Badge>업로드</Badge>
+                          <Badge>수기</Badge>
                         )}
                       </td>
                       <td>{item.doc_country_list}</td>

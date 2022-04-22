@@ -108,6 +108,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
     setDocPublishing(e.target.value);
   };
   const _docRecommentHandler = (e) => {
+    e.target.value = e.target.value.replace(/[^A-Za-z]/ig, '')
     setDocRecomment(e.target.value);
   };
   const _docPublishDateHandler = (e) => {
@@ -186,7 +187,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
       _docs["doc_memo"] = docMemo;
       _docs["doc_publisher"] = docPublisher;
       _docs["doc_publishing"] = docPublishing;
-      _docs["doc_recomment"] = docRecomment;
+      _docs["doc_recomment"] = docRecomment.charCodeAt(0);
       _docs["doc_bundle_title"] = docBundleTitle;
       _docs["doc_bundle_url"] = docBundleUrl;
       _docs["doc_relate_title"] = docRelateTitle;
@@ -685,6 +686,8 @@ function CrawlDataForm({ docs, type, _id }, ref) {
               type="text"
               value={docRecomment}
               onChange={_docRecommentHandler}
+              maxlength = "1"
+              placeholder="큐레이션 추천 등급을 입력하세요. (알파벳 하나만 입력가능)"
             />
           </CustomFormItem>
           <CustomFormItem>

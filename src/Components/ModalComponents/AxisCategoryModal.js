@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { sessionHandler, categoryListFetchApi } from "../../Utils/api";
 import { trackPromise } from "react-promise-tracker";
 
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 
 function CategoryModal({ executeModal, closeModal }) {
   const dispatch = useDispatch();
@@ -169,10 +169,10 @@ function CategoryModal({ executeModal, closeModal }) {
                       {category.list.length === 0 ? (
                         <ListItem>상위분류를 먼저 선택하세요</ListItem>
                       ) : (
-                        category.list.map((item, index) => {
+                        category.list.map((item, index2) => {
                           return (
                             <>
-                              <ListItem>
+                              <ListItem  active={upperCode[index+(2+index)] === item.CODE}>
                                 <div
                                   className="title"
                                   value={item.CODE}
@@ -318,6 +318,12 @@ const ListItem = styled.li`
   padding: 1rem;
   min-height: 1.5rem;
   border-bottom: dotted 1px #eeeeee;
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: rgba(67,82,105,0.1);
+      font-weight:bold;
+    `};
 `;
 
 const CategoryList = styled.div`

@@ -23,6 +23,7 @@ function CategoryManagement({
   onChangeAddInput,
   categoryAdd,
   categoryDelete,
+  upperCode
 }) {
   return (
     <>
@@ -144,9 +145,9 @@ function CategoryManagement({
                   {categoryList.map((category, index) => {
                     return (
                       <ListWrapper key={index}>
-                        {category.list.map((item, index) => {
+                        {category.list.map((item, index2) => {
                           return (
-                            <div key={index}>
+                            <div key={index2}>
                               {editableCode === item.CODE ? (
                                 <EditItem>
                                   <input
@@ -172,7 +173,7 @@ function CategoryManagement({
                                   </div>
                                 </EditItem>
                               ) : (
-                                <ViewItem >
+                                <ViewItem active={upperCode[index+(2+index)] === item.CODE}>
                                   <div
                                     className="title"
                                     value={item.CODE}
@@ -345,6 +346,14 @@ const ViewItem = styled(ListItem)`
     background-color: #b80000;
     color: white;
   }
+
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: rgba(67,82,105,0.1);
+      font-weight:bold;
+    `};
+
 `;
 const EditItem = styled(ListItem)`
   input {

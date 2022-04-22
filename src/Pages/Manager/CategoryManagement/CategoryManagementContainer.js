@@ -141,6 +141,7 @@ function CategoryManagementContainer() {
 
   useEffect(() => {
     dataFetch();
+    console.log(upperCode[2])
   }, [type, length, upperCode]);
 
   return (
@@ -161,6 +162,7 @@ function CategoryManagementContainer() {
         onChangeAddInput={onChangeAddInput}
         categoryAdd={categoryAdd}
         categoryDelete={categoryDelete}
+        upperCode={upperCode}
       />
     </>
   );
