@@ -103,7 +103,7 @@ const ModeSwitchButton = styled.button`
   border: solid 1px #d6d6d6;
   box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
   z-index: 999;
-  right: 0;
+  right: 3.5rem;
   bottom: 0;
   margin: 2rem;
   cursor: pointer;
