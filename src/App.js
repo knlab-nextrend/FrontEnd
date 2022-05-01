@@ -7,6 +7,7 @@ import MainPage from "./Pages/Common/MainPage";
 import AsideMenuBar from "./Components/AsideMenuBar";
 import Footer from "./Components/Footer";
 import GlobalModal from "./Components/ModalComponents/GlobalModal";
+import TopButton from "./Components/TopButton";
 
 /* body */
 import LoginContainer from "./Pages/Common/Login/LoginContainer";
@@ -87,6 +88,7 @@ function App() {
         </>
       )}
       <GlobalModal /> {/* 모달 전역 제어 */}
+      <TopButton/> {/* 전역 탑 버튼 */}
     </>
   );
 }
