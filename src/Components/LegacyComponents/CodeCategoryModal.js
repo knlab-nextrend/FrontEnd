@@ -65,7 +65,6 @@ function CodeCategoryModal({ executeModal, closeModal }) {
 
   const saveCategory = () => {
     executeModal(selectedCategoryList, "dc_code");
-    alert("성공적으로 저장되었습니다.");
     closeModal();
   };
 

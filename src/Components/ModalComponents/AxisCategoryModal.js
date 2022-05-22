@@ -71,7 +71,6 @@ function CategoryModal({ executeModal, closeModal }) {
     } else {
       // 1. 모달에서 값 선택 후 redux에 저장
       executeModal(selectedCategory, "axis_category");
-      alert("성공적으로 저장되었습니다.");
       closeModal();
     }
   };

@@ -49,7 +49,6 @@ function CountryCategoryModal({ closeModal, executeModal}) {
 
   const saveCountry = () => {
     executeModal(selectedCountryList, "dc_country");
-    alert("성공적으로 저장되었습니다.");
     closeModal();
   };
 
