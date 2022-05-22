@@ -50,7 +50,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
   const [docPublisher, setDocPublisher] = useState(""); // doc_publisher 문서 발급 기관명
   const [docPublishing, setDocPublishing] = useState(""); // doc_publishing 주문형 조사과제명의 세부과업명
   const [docRecomment, setDocRecomment] = useState(""); // doc_recomment 큐레이션 추천문서
-  const [docPublishDate, setDocPublishDate] = useState(""); // doc_publish_date 수집 문서의 발간일
+  const [docPublishDate, setDocPublishDate] = useState(""); // doc_publish_date 수집 문서의 발행일
   const [docWriteDate, setDocWriteDate] = useState(""); // doc_write_date 수집 문서의 작성일
   const [docRegisterDate, setDocRegisterDate] = useState(""); // doc_register_date 문서의 서비스 등록일
   const [docCollectDate, setDocCollectDate] = useState(""); // doc_collect_date 문서 수집일 (크롤링 일)
@@ -580,13 +580,13 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
           <CustomFormItem>
-            <p className="title">원문 발간일</p>
+            <p className="title">원문 발행일</p>
             <input
               value={docPublishDate}
               onChange={_docPublishDateHandler}
               className="form"
               type="date"
-              placeholder="원문이 발간된 날짜를 입력하세요"
+              placeholder="원문이 발행된 날짜를 입력하세요"
             />
           </CustomFormItem>
         </CustomFormRow>
@@ -602,7 +602,7 @@ function CrawlDataForm({ docs, type, _id }, ref) {
             />
           </CustomFormItem>
           <CustomFormItem>
-            <p className="title">문서 등록일</p>
+            <p className="title">서비스 등록일</p>
             <input
               value={docRegisterDate}
               onChange={_docRegisterDateHandler}

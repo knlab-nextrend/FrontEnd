@@ -39,7 +39,7 @@ function Dashboard({
   workAllStatusHandler,
   processTitle,
   countryDocumentData,
-  getCountryMapChartData
+  getCountryMapChartData,
 }) {
   return (
     <>
@@ -75,7 +75,6 @@ function Dashboard({
             시스템 접속 통계
           </TabButton>
           */}
-
         </div>
       </Tab>
       <Wrapper>
@@ -95,7 +94,7 @@ function Dashboard({
                     "국가를 클릭하면 해당 국가에 대한 문서 작업 현황을 확인할 수 있습니다."
                   }
                 >
-                  <Map getCountryMapChartData={getCountryMapChartData}/>
+                  <Map getCountryMapChartData={getCountryMapChartData} />
                 </TitleCard>
                 <div>
                   <ChartCard>
@@ -352,39 +351,34 @@ function Dashboard({
             >
               <CrawlStatusTable>
                 <colgroup>
-                  <col width="8%" />
-                  <col width="27%" />
-                  <col width="8%" />
-                  <col width="19%" />
-                  <col width="19%" />
-                  <col width="19%" />
-                </colgroup>
+                  <col width="10%"/>
+                  <col width="30%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="5%"/>
+                  <col width="15%"/>
+                  <col width="10%"/>
+                </colgroup> 
                 <thead>
                   <tr>
-                    <th>
-                      HOST ID <br />
-                      (host_id)
-                    </th>
-                    <th>
-                      HOST 도메인 <br />
-                      (host)
-                    </th>
-                    <th>
-                      작업 총량 <br />
-                      (worked_count)
-                    </th>
-                    <th>
-                      최근 작업일 <br />
-                      (worked_at)
-                    </th>
-                    <th>
-                      다음 작업 예약일 <br />
-                      (schedule_at)
-                    </th>
-                    <th>
-                      작업 생성일 <br />
-                      (created_at)
-                    </th>
+                    <th rowSpan={2}>HOST ID</th>
+                    <th rowSpan={2}>HOST 도메인</th>
+                    <th colSpan={7}>작업 총량</th>
+                    <th rowSpan={2}>작업 생성일</th>
+                    <th rowSpan={2}>크롤링 상태</th>
+                  </tr>
+                  <tr>
+                    <th>URL</th>
+                    <th>HTML</th>
+                    <th>PDF</th>
+                    <th>WORD</th>
+                    <th>EXCEL</th>
+                    <th>PPT</th>
+                    <th>ETC</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -394,19 +388,24 @@ function Dashboard({
                         <tr
                           key={index}
                           onClick={() => {
-                            rowClickHandler(item.host_id);
+                            rowClickHandler(item.job_id);
                           }}
                         >
                           <td>{item.job_id}</td>
                           <td>{item.host}</td>
-                          <td>{item.worked_count}</td>
-                          <td>{item.worked_at}</td>
-                          <td>{item.schedule_at}</td>
+                          <td>{item.url}</td>
+                          <td>{item.html}</td>
+                          <td>{item.pdf}</td>
+                          <td>{item.word}</td>
+                          <td>{item.excel}</td>
+                          <td>{item.ppt}</td>
+                          <td>{item.etc}</td>
                           <td>{item.created_at}</td>
+                          <td style={{fontWeight:"bold"}}>{item.status.toUpperCase()}</td>
                         </tr>
-                        {selectedHostId === item.host_id && (
+                        {selectedHostId === item.job_id && (
                           <tr key={index + 999}>
-                            <td colSpan="6">
+                            <td colSpan="11">
                               <div className="work-log-wrapper">
                                 {currentCrawlHostLog.length === 0 ? (
                                   <div>작업 로그가 없습니다.</div>

@@ -266,10 +266,10 @@ function DataFilter({ dataFilterFetch = null, type }) {
                               원문 작성일 기준
                             </option>
                             <option value="doc_publish_date">
-                              원문 공개일 기준
+                              원문 발행일 기준
                             </option>
                             <option value="doc_register_date">
-                              문서 등록일 기준
+                              서비스 등록일 기준
                             </option>
                           </>
                         )}

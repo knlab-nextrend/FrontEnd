@@ -80,6 +80,7 @@ function DashboardContainer() {
     trackPromise(
       crawlHostDataFetchApi()
         .then((res) => {
+          console.log(res.data)
           setCrawlHostList(res.data);
           crawlSumDataFetchApi().then((res) => {
             setCrawlSum(res.data[0]);

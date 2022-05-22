@@ -173,7 +173,7 @@ function CurationList({ curationData, handleRowClick }) {
             <th>문서 분류</th>
             <th>발급 기관 명</th>
             <th>페이지 수</th>
-            <th>데이터 등록일</th>
+            <th>서비스 등록일</th>
           </tr>
         </thead>
         <tbody>
