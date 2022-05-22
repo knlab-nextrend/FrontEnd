@@ -41,6 +41,8 @@ function DashboardContainer() {
   const [workAllLogData, setWorkAllLogData] = useState({});
   const [workAllStatus, setWorkAllStatus] = useState(-1); // 전체 작업에서 통계를 확인할 단계
 
+  const [sortType,setSortType] = useState("asc");
+  const [sortDataType,setSortDataType] = useState(null);
   const processTitle = {
     0: "스크리닝",
     1: "정제",
@@ -76,6 +78,15 @@ function DashboardContainer() {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
   }
 
+  const crawlCountSort = (dataType) => {
+    setSortDataType(dataType);
+    if(sortType==="asc"){
+      setSortType("desc")
+    }
+    else{
+      setSortType("asc")
+    }
+  }
   const getCrawlHostList = () => {
     trackPromise(
       crawlHostDataFetchApi()
@@ -280,6 +291,19 @@ function DashboardContainer() {
     }
   }, [selectedHostId]);
 
+  useEffect(()=>{
+    if(sortDataType !==null){
+      if(sortType==="asc"){
+        const sortResult = crawlHostList.sort((a, b) => a[sortDataType] - b[sortDataType]);
+        setCrawlHostList(sortResult);
+      }
+      else{
+        const sortResult = crawlHostList.sort((a, b) => b[sortDataType] - a[sortDataType]);
+        setCrawlHostList(sortResult);
+      }
+      
+    }
+  },[sortType,sortDataType])
   return (
     <>
       <Dashboard
@@ -308,6 +332,7 @@ function DashboardContainer() {
         processTitle={processTitle}
         countryDocumentData={countryDocumentData}
         getCountryMapChartData={getCountryMapChartData}
+        crawlCountSort={crawlCountSort}
       />
     </>
   );

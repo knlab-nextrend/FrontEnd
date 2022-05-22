@@ -13,6 +13,7 @@ import LineGraph from "./LineGraph";
 import styled from "styled-components";
 import Duration from "../../../Components/DashboardComponents/Duration";
 import { ResponsivePie } from "@nivo/pie"; // 원형차트 임시...
+import {FaSort} from "react-icons/fa"
 
 function Dashboard({
   countryPieChartData,
@@ -40,6 +41,7 @@ function Dashboard({
   processTitle,
   countryDocumentData,
   getCountryMapChartData,
+  crawlCountSort,
 }) {
   return (
     <>
@@ -372,13 +374,13 @@ function Dashboard({
                     <th rowSpan={2}>크롤링 상태</th>
                   </tr>
                   <tr>
-                    <th>URL</th>
-                    <th>HTML</th>
-                    <th>PDF</th>
-                    <th>WORD</th>
-                    <th>EXCEL</th>
-                    <th>PPT</th>
-                    <th>ETC</th>
+                    <th>URL<FaSort className="sort-btn" onClick={()=>{crawlCountSort("url")}}/></th>
+                    <th>HTML<FaSort className="sort-btn" onClick={()=>{crawlCountSort("html")}}/></th>
+                    <th>PDF<FaSort className="sort-btn" onClick={()=>{crawlCountSort("pdf")}}/></th>
+                    <th>WORD<FaSort className="sort-btn" onClick={()=>{crawlCountSort("word")}}/></th>
+                    <th>EXCEL<FaSort className="sort-btn" onClick={()=>{crawlCountSort("excel")}}/></th>
+                    <th>PPT<FaSort className="sort-btn" onClick={()=>{crawlCountSort("ppt")}}/></th>
+                    <th>ETC<FaSort className="sort-btn" onClick={()=>{crawlCountSort("etc")}}/></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -535,6 +537,9 @@ const CrawlStatusTable = styled.table`
     box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px;
     padding: 1rem;
     min-width: 190px;
+  }
+  .sort-btn{
+    cursor:pointer;
   }
 `;
 
